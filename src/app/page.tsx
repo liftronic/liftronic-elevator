@@ -3,6 +3,7 @@ import AboutUs from "~/components/AboutUs";
 import ProductsInteractive from "~/components/ProductsInteractive";
 import Services from "~/components/Services";
 import ClientsMarquee from "~/components/ClientsMarquee";
+import BlogSection from "~/components/BlogSection";
 import Testimonials from "~/components/Testimonials";
 import ContactSection from "~/components/ContactSection";
 import Footer from "~/components/Footer";
@@ -15,6 +16,7 @@ export default function Home() {
       <ProductsInteractive />
       <Services />
       <ClientsMarquee />
+      <BlogSection />
       <Testimonials />
       <ContactSection />
       <Footer />

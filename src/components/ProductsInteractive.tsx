@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 type Product = {
@@ -44,7 +44,41 @@ const products: Product[] = [
 
 export default function ProductsInteractive() {
   const [active, setActive] = useState(products[0].id);
+  const [isAutoRotating, setIsAutoRotating] = useState(true);
   const current = products.find((p) => p.id === active)!;
+  const currentIndex = products.findIndex((p) => p.id === active);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-rotate products every 10 seconds
+  useEffect(() => {
+    if (isAutoRotating) {
+      intervalRef.current = setInterval(() => {
+        const nextIndex = (currentIndex + 1) % products.length;
+        setActive(products[nextIndex].id);
+      }, 10000); // 10 seconds
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isAutoRotating, currentIndex, products]);
+
+  // Handle manual product selection
+  const handleProductClick = (productId: string) => {
+    setActive(productId);
+    setIsAutoRotating(false); // Pause auto-rotation when user interacts
+
+    // Resume auto-rotation after 30 seconds of inactivity
+    setTimeout(() => {
+      setIsAutoRotating(true);
+    }, 30000);
+  };
   return (
     <section id="products" className="py-20 scroll-mt-24">
       <div className="container mx-auto px-4 mb-12">
@@ -65,7 +99,7 @@ export default function ProductsInteractive() {
             return (
               <button
                 key={p.id}
-                onClick={() => setActive(p.id)}
+                onClick={() => handleProductClick(p.id)}
                 className={`w-full text-left px-4 py-3 rounded-lg border transition-colors ${
                   isActive
                     ? "border-accent bg-accent/10"

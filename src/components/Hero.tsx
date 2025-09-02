@@ -2,6 +2,14 @@
 import { motion } from "motion/react";
 
 export default function Hero() {
+  const handleScroll = () => {
+    const el = document.getElementById("about");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+    }
+  };
   return (
     <section className="relative h-[100vh] min-h-[620px] w-full overflow-hidden">
       {/* Background video */}
@@ -87,8 +95,13 @@ export default function Hero() {
           </motion.p>
         </div>
 
-        {/* Scroll cue */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 text-xs pointer-events-none">
+        {/* Scroll cue (clickable) */}
+        <button
+          type="button"
+          onClick={handleScroll}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-md px-2 py-1 hover:text-white transition"
+          aria-label="Scroll to content"
+        >
           <div className="flex flex-col items-center">
             <span>Scroll</span>
             <svg
@@ -101,7 +114,7 @@ export default function Hero() {
               <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" />
             </svg>
           </div>
-        </div>
+        </button>
       </div>
     </section>
   );
