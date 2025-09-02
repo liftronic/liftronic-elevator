@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function ClientsMarquee() {
   const logos = [
     { src: "/vercel.svg", alt: "Vercel" },
@@ -12,10 +14,12 @@ export default function ClientsMarquee() {
       <div className="overflow-hidden">
         <div className="whitespace-nowrap marquee-track">
           {row.map((l, i) => (
-            <img
+            <Image
               key={`${l.alt}-${i}`}
               src={l.src}
               alt={l.alt}
+              width={120}
+              height={32}
               className="inline-block h-8 w-auto mx-10 opacity-70 hover:opacity-100 transition-opacity"
             />
           ))}

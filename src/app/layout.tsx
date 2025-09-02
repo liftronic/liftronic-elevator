@@ -22,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} antialiased bg-soft text-charcoal`}>
+      <body
+        className={`${dmSans.variable} antialiased bg-soft text-charcoal`}
+        suppressHydrationWarning={true}
+      >
         <Navbar />
         {children}
       </body>
