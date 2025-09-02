@@ -1,37 +1,22 @@
 "use client";
 import { motion } from "motion/react";
+import { BiPackage, BiWrench, BiArrowToTop } from "react-icons/bi";
 
 const services = [
   {
     title: "Supply",
     desc: "Certified components and complete elevator systems with traceable quality.",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M4 7h16v10H4z" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 7V4h8v3" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
+    icon: <BiPackage size={20} />,
   },
   {
     title: "Installation & Maintenance",
     desc: "End-to-end installation with preventive maintenance for maximum uptime.",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M6 19l12-12" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="7" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="17" cy="17" r="3" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
+    icon: <BiWrench size={20} />,
   },
   {
     title: "Upgrades & Replacement",
     desc: "Safety, efficiency, and control upgrades tailored to your site.",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M12 5v14" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 9l4-4 4 4" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    ),
+    icon: <BiArrowToTop size={20} />,
   },
 ];
 

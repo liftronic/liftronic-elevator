@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import { BiMapPin, BiCheckCircle, BiTime } from "react-icons/bi";
 
 function useCounter(target: number, start: boolean, duration = 1200) {
   const [value, setValue] = useState(0);
@@ -89,25 +90,7 @@ export default function AboutUs() {
           >
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-accent"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
+                <BiMapPin className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Pan India Coverage
@@ -120,19 +103,7 @@ export default function AboutUs() {
 
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-accent"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <BiCheckCircle className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Quality Assurance
@@ -145,19 +116,7 @@ export default function AboutUs() {
 
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  className="w-8 h-8 text-accent"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <BiTime className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 24/7 Support
