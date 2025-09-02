@@ -11,17 +11,17 @@ export default function Hero() {
     }
   };
   return (
-    <section className="relative h-[100vh] min-h-[620px] w-full overflow-hidden">
+    <section className="relative h-[100svh] min-h-[620px] w-full overflow-hidden">
       {/* Background video */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <video
-          className="w-full h-full object-cover"
-          src="/assets/sample.mp4"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
+          src="/assets/sample_1.mp4"
           autoPlay
           loop
           muted
           playsInline
-          poster="/assets/sample.mp4"
+          poster="/assets/sample_1.mp4"
         />
         {/* Darken for contrast */}
         <div className="absolute inset-0 bg-black/55" />
