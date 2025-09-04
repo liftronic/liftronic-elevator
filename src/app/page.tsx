@@ -6,7 +6,6 @@ import ClientsMarquee from "~/components/ClientsMarquee";
 import BlogSection from "~/components/BlogSection";
 import Testimonials from "~/components/Testimonials";
 import ContactSection from "~/components/ContactSection";
-import Footer from "~/components/Footer";
 
 export default function Home() {
   return (
@@ -19,7 +18,6 @@ export default function Home() {
       <BlogSection />
       <Testimonials />
       <ContactSection />
-      <Footer />
     </main>
   );
 }

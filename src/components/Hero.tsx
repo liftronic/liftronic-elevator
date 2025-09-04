@@ -39,7 +39,7 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[12px] tracking-wide text-white/90"
           >
-            <span className="size-1.5 rounded-full bg-[var(--accent)]" />
+            <span className="size-1.5 rounded-full bg-accent" />
             Elevators • Lifts • Modernization
           </motion.div>
 
@@ -50,11 +50,7 @@ export default function Hero() {
             transition={{ delay: 0.05, duration: 0.6, ease: "easeOut" }}
             className="mt-4 text-5xl sm:text-6xl md:text-7xl leading-tight font-extrabold text-white tracking-tight"
           >
-            Premium
-            <span className="mx-3 bg-gradient-to-r from-emerald-300 via-emerald-200 to-teal-200 bg-clip-text text-transparent">
-              Lift Solutions
-            </span>
-            for Every Building
+            <span className="text-accent">Elevate</span> Experience
           </motion.h1>
 
           <motion.p

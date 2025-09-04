@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { unstable_ViewTransition as ViewTransition } from "react";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "~/components/Navbar";
+import Footer from "~/components/Footer";
 import Script from "next/script";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -85,13 +87,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body
         className={`${dmSans.variable} antialiased bg-soft text-charcoal`}
         suppressHydrationWarning={true}
       >
         {/* JSON-LD: Organization with aggregate rating */}
-        <Script id="ld-org" type="application/ld+json" strategy="afterInteractive">
+        <Script
+          id="ld-org"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
@@ -114,7 +120,11 @@ export default function RootLayout({
           })}
         </Script>
         {/* JSON-LD: Website + Sitelinks Searchbox */}
-        <Script id="ld-website" type="application/ld+json" strategy="afterInteractive">
+        <Script
+          id="ld-website"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
@@ -128,7 +138,11 @@ export default function RootLayout({
           })}
         </Script>
         {/* JSON-LD: Local service with areas served + rating */}
-        <Script id="ld-local-service" type="application/ld+json" strategy="afterInteractive">
+        <Script
+          id="ld-local-service"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "HomeAndConstructionBusiness",
@@ -174,19 +188,36 @@ export default function RootLayout({
           })}
         </Script>
         {/* JSON-LD: Breadcrumbs */}
-        <Script id="ld-breadcrumbs" type="application/ld+json" strategy="afterInteractive">
+        <Script
+          id="ld-breadcrumbs"
+          type="application/ld+json"
+          strategy="afterInteractive"
+        >
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-              { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/#services` },
-              { "@type": "ListItem", position: 3, name: "Contact", item: `${siteUrl}/#contact` },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Services",
+                item: `${siteUrl}/#services`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: "Contact",
+                item: `${siteUrl}/#contact`,
+              },
             ],
           })}
         </Script>
-        <Navbar />
-        {children}
+        <ViewTransition>
+          <Navbar />
+          {children}
+          <Footer />
+        </ViewTransition>
       </body>
     </html>
   );

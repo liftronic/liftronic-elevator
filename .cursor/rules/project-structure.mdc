@@ -1,0 +1,12 @@
+---
+alwaysApply: true
+---
+
+# Project Structure
+
+- Next.js 15 App Router with TypeScript (strict mode)
+- `src/app/`: Routes, layout, globals.css
+- `src/components/`: React components (PascalCase files)
+- `public/`: Static assets, videos in `assets/` subfolder
+- Import alias: `~/` maps to `src/`
+- Package manager: `pnpm`

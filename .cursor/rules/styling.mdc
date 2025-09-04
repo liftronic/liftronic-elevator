@@ -1,0 +1,11 @@
+---
+globs: *.tsx,*.css
+---
+
+# Styling Conventions
+
+- Tailwind CSS v4 with custom CSS variables in [globals.css](mdc:src/app/globals.css)
+- Use `bg-accent` instead of `bg-[var(--accent)]` for CSS variables
+- Glass effects: `.glass-transparent` and `.glass-solid` classes available
+- Button variants: `.btn`, `.btn-primary`, `.btn-ghost`
+- Motion animations via `motion/react` library

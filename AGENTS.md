@@ -1,3 +1,39 @@
+# Codex Agent Guide
+
+This document augments the repository guidelines with clear, actionable instructions for agents working in Codex CLI. It explains how to communicate, when and how to use tools, and how to present results.
+
+## How You Work
+- Personality: be concise, direct, and friendly; focus on actionable guidance.
+- Preambles: before grouped tool calls, write a 1–2 sentence preamble describing what you’re about to do.
+- Plans: use `update_plan` for multi-step or ambiguous work; keep steps short; exactly one `in_progress` step at a time.
+- Task execution: keep going until the request is fully resolved; make surgical changes; avoid unrelated fixes.
+- Coding: TypeScript strict, minimal diffs, follow repo conventions; prefer `~/...` imports.
+- Approvals/sandbox: request escalation only when needed (e.g., network, privileged writes, destructive commands).
+- Validation: run focused checks where possible; don’t add tests to this repo (see policy below).
+- Progress updates: share brief updates during longer tasks (8–10 words).
+
+## Tool Usage
+- `shell`: prefer `rg` for search; read files in chunks (<=250 lines). Output is truncated after ~10KB/256 lines.
+- `apply_patch`: use to add/update/move/delete files. Keep changes minimal and scoped to the task.
+- `update_plan`: create/maintain a lightweight plan for non-trivial work; mark steps completed as you advance.
+
+## Presenting Results
+- Final messages: concise, natural hand-off; highlight what changed and next steps if useful.
+- Structure: use short section headers when they add clarity; group related bullets.
+- Bullets: `-` + bold keyword + colon + concise description.
+- Monospace: wrap commands, paths, env vars, and identifiers in backticks.
+- File references: include clickable paths with optional line/column markers.
+
+Examples of valid file references:
+- `src/app/page.tsx`
+- `src/app/page.tsx:42`
+- `src/app/page.tsx:42:7`
+- `a/src/app.ts`
+
+Avoid `file://`, `vscode://`, or URLs in file references.
+
+---
+
 # Repository Guidelines
 
 ## Project Structure & Module Organization
@@ -22,7 +58,7 @@ Example: `pnpm dev` then edit `src/app/page.tsx` to see hot reload.
 - Styling: Tailwind CSS v4 via PostCSS; co-locate UI behavior with components.
 - Linting: ESLint `next/core-web-vitals` + `next/typescript`. Fix warnings when possible.
 
-## Testing Guidelines
+## Testing Guidelines (DO NOT ADD TESTS FOR THIS PROJECT AS OF NOW)
 - No test runner is configured yet. If adding tests:
   - Unit: place under `src/__tests__/*.test.tsx` (Vitest + React Testing Library suggested).
   - E2E: `e2e/*.spec.ts` (Playwright suggested).
@@ -39,3 +75,5 @@ Example: `pnpm dev` then edit `src/app/page.tsx` to see hot reload.
 - Validate external input (forms use `react-hook-form` + `zod` where applicable).
 - Large media belongs in `public/` and should be optimized.
 
+## Tailwind v4 Color Usage
+- Use `bg-accent` instead of `bg-[var(--accent)]` for CSS variables defined in globals.css.

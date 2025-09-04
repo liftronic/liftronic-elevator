@@ -1,0 +1,11 @@
+---
+globs: *.tsx
+---
+
+# React Patterns
+
+- Functional components with TypeScript
+- Client components: `"use client"` directive when using hooks/browser APIs
+- SSR hydration: Use `mounted` state pattern to prevent mismatches
+- Form handling: `react-hook-form` + `zod` validation
+- Icons: `react-icons` library
