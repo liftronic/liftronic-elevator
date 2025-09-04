@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { IoChevronDown } from "react-icons/io5";
 
@@ -100,9 +101,9 @@ export default function ProductFAQ({ faqs }: ProductFAQProps) {
               Our technical experts are here to help you find the perfect
               elevator solution.
             </p>
-            <a href="/#contact" className="btn btn-primary">
+            <Link href="/#contact" className="btn btn-primary">
               Contact Our Experts
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

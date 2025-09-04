@@ -67,7 +67,7 @@ export default function ProductsInteractive() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isAutoRotating, currentIndex, products]);
+  }, [isAutoRotating, currentIndex]);
 
   // Handle manual product selection
   const handleProductClick = (productId: string) => {
