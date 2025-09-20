@@ -12,8 +12,8 @@ export default function Home() {
     <main suppressHydrationWarning>
       <Hero />
       <AboutUs />
-      <ProductsInteractive />
       <Services />
+      <ProductsInteractive />
       <ClientsMarquee />
       <BlogSection />
       <Testimonials />

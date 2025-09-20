@@ -43,6 +43,25 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/safari-pinned-tab.svg",
+        color: "#2ae394",
+      },
+    ],
+  },
+  manifest: "/site.webmanifest",
+  // themeColor moved to viewport export per Next.js metadata guidance
   openGraph: {
     type: "website",
     url: siteUrl,
@@ -79,6 +98,16 @@ export const metadata: Metadata = {
     },
   },
   category: "technology",
+};
+
+// Viewport config (include themeColor here to satisfy Next.js guidance)
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // Accent color from src/app/globals.css : --accent -> #2ae394
+  themeColor: "#2ae394",
 };
 
 export default function RootLayout({

@@ -140,8 +140,25 @@ export default function AboutUs() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
+            transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10"
+          >
+            {stats.map((stat) => (
+              <Stat
+                key={stat.label}
+                label={stat.label}
+                value={stat.value}
+                suffix={stat.suffix}
+              />
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
             transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-            className="grid md:grid-cols-3 gap-6 mb-10"
+            className="grid md:grid-cols-3 gap-6"
           >
             <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -181,23 +198,6 @@ export default function AboutUs() {
                 and internationally
               </p>
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-5"
-          >
-            {stats.map((stat) => (
-              <Stat
-                key={stat.label}
-                label={stat.label}
-                value={stat.value}
-                suffix={stat.suffix}
-              />
-            ))}
           </motion.div>
         </div>
       </div>
