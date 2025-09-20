@@ -63,7 +63,9 @@ export default function Navbar() {
                 }`}
               >
                 <Image
-                  src={defaultScrolled ? "/liftronic.png" : "/liftronic-white.png"}
+                  src={
+                    defaultScrolled ? "/liftronic.png" : "/liftronic-white.png"
+                  }
                   alt="Liftronic logo"
                   width={40}
                   height={40}
