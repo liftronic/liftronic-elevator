@@ -96,7 +96,7 @@ export default function AboutUs() {
           >
             <div className="text-lg text-gray-600 leading-relaxed space-y-3 mb-6">
               <p>
-                <span className="text-accent font-semibold">
+                <span className="font-semibold text-accent">
                   Innovation Meets Elegance
                 </span>
                 . With over{" "}
@@ -107,7 +107,7 @@ export default function AboutUs() {
                 <span className="font-semibold">home elevators</span> and{" "}
                 <span className="font-semibold">residential lifts</span> across
                 India. Our dedicated team specializes in custom solutions that
-                enhance your home's style and convenience, using the latest
+                enhance your home&apos;s style and convenience, using the latest
                 technology to ensure satisfaction.
               </p>
 
@@ -125,7 +125,7 @@ export default function AboutUs() {
               </p>
 
               <p>
-                Beyond just elevators, we've artfully blended{" "}
+                Beyond just elevators, we&apos;ve artfully blended{" "}
                 <span className="font-semibold text-accent">
                   European technology
                 </span>{" "}
@@ -164,8 +164,8 @@ export default function AboutUs() {
                 Custom Solutions
               </h3>
               <p className="text-gray-600">
-                Tailored elevator designs that enhance your home's style and
-                meet specific requirements
+                Tailored elevator designs that enhance your home&apos;s style
+                and meet specific requirements
               </p>
             </div>
 
