@@ -1,9 +1,23 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
-    <footer className="bg-footer text-white py-12 mt-20">
+    <footer
+      className="bg-footer text-white py-12 mt-20"
+      suppressHydrationWarning
+    >
       <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8">
         <div>
-          <div className="font-semibold text-lg">Liftronic</div>
+          <div className="flex items-center gap-3">
+            <Image
+              src="/liftronic.png"
+              alt="Liftronic logo"
+              width={48}
+              height={48}
+              className="size-12"
+            />
+            <span className="font-semibold text-lg">Liftronic</span>
+          </div>
           <p className="mt-2 text-sm text-white/70">
             Elevators engineered for precision and reliability.
           </p>
@@ -37,4 +51,3 @@ export default function Footer() {
     </footer>
   );
 }
-
