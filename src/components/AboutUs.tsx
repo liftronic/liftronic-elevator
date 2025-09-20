@@ -66,7 +66,7 @@ export default function AboutUs() {
   ];
 
   return (
-    <section id="about" className="relative overflow-hidden py-20">
+    <section id="about" className="relative overflow-hidden py-16">
       <div
         aria-hidden="true"
         className="absolute left-0 right-0 bottom-0 top-16 bg-center bg-no-repeat opacity-15"
@@ -92,9 +92,9 @@ export default function AboutUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
-            className="max-w-4xl mx-auto mb-12"
+            className="max-w-4xl mx-auto mb-10"
           >
-            <div className="text-lg text-gray-600 leading-relaxed space-y-4 mb-8">
+            <div className="text-lg text-gray-600 leading-relaxed space-y-3 mb-6">
               <p>
                 <span className="text-accent font-semibold">
                   Innovation Meets Elegance
@@ -141,10 +141,10 @@ export default function AboutUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-            className="grid md:grid-cols-3 gap-8 mb-12"
+            className="grid md:grid-cols-3 gap-6 mb-10"
           >
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <BiCog className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -156,8 +156,8 @@ export default function AboutUs() {
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <BiStar className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -169,8 +169,8 @@ export default function AboutUs() {
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <BiShield className="w-8 h-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -188,7 +188,7 @@ export default function AboutUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            className="grid grid-cols-2 md:grid-cols-4 gap-5"
           >
             {stats.map((stat) => (
               <Stat
