@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -25,7 +26,7 @@ export default function Navbar() {
     if (isHomePage) {
       const onScroll = () => {
         // Change navbar style when scrolled past a reasonable threshold
-        setScrolled(window.scrollY > 200);
+        setScrolled(window.scrollY > 940);
       };
       onScroll();
       window.addEventListener("scroll", onScroll);
@@ -57,13 +58,23 @@ export default function Navbar() {
             <div className="flex items-center justify-between h-16 px-6">
               <Link
                 href="/"
-                className={`font-bold text-lg tracking-tight transition-all duration-700 ${
-                  defaultScrolled
-                    ? "text-gray-800"
-                    : "text-white drop-shadow-lg"
+                className={`flex items-center gap-3 font-bold text-lg tracking-tight transition-all duration-700 ${
+                  defaultScrolled ? "text-gray-800" : "text-white"
                 }`}
               >
-                Liftronic
+                <Image
+                  src={defaultScrolled ? "/liftronic.png" : "/liftronic-white.png"}
+                  alt="Liftronic logo"
+                  width={40}
+                  height={40}
+                  priority
+                  className="size-10"
+                />
+                <span
+                  className={!defaultScrolled ? "drop-shadow-lg" : undefined}
+                >
+                  Liftronic
+                </span>
               </Link>
 
               <div className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -122,11 +133,21 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 px-6">
             <Link
               href="/"
-              className={`font-bold text-lg tracking-tight transition-all duration-700 ${
-                scrolled ? "text-gray-800" : "text-white drop-shadow-lg"
+              className={`flex items-center gap-3 font-bold text-lg tracking-tight transition-all duration-700 ${
+                scrolled ? "text-gray-800" : "text-white"
               }`}
             >
-              Liftronic
+              <Image
+                src={scrolled ? "/liftronic.png" : "/liftronic-white.png"}
+                alt="Liftronic logo"
+                width={40}
+                height={40}
+                priority
+                className="size-10"
+              />
+              <span className={!scrolled ? "drop-shadow-lg" : undefined}>
+                Liftronic
+              </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-8 text-sm font-medium">
