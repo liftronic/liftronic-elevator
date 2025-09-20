@@ -42,7 +42,7 @@ export default function Navbar() {
     // For SSR, show appropriate style based on page
     const defaultScrolled = !isHomePage;
     return (
-      <div className="fixed top-0 inset-x-0 z-50">
+      <div className="fixed top-0 inset-x-0 z-50" suppressHydrationWarning>
         <div
           className={`mx-auto container px-4 transition-all ${
             defaultScrolled ? "mt-2" : "mt-4"
@@ -121,7 +121,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className="fixed top-0 inset-x-0 z-50">
+    <div className="fixed top-0 inset-x-0 z-50" suppressHydrationWarning>
       <div
         className={`mx-auto container px-4 transition-all ${
           scrolled ? "mt-2" : "mt-4"

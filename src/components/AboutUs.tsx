@@ -1,14 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import {
-  BiMapPin,
-  BiCheckCircle,
-  BiTime,
-  BiShield,
-  BiCog,
-  BiStar,
-} from "react-icons/bi";
+import { BiShield, BiCog, BiStar } from "react-icons/bi";
 
 function useCounter(target: number, start: boolean, duration = 1200) {
   const [value, setValue] = useState(0);
@@ -73,18 +66,14 @@ export default function AboutUs() {
   ];
 
   return (
-    <section id="about" className="relative overflow-hidden py-16">
+    <section id="about" className="relative overflow-hidden py-20">
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-center bg-no-repeat"
+        className="absolute left-0 right-0 bottom-0 top-16 bg-center bg-no-repeat opacity-15"
         style={{
           backgroundImage: "url('/liftronic-crop.png')",
           backgroundSize: "contain",
         }}
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-br from-white/95 via-white/95 to-white/90"
       />
       <div className="relative container mx-auto px-4">
         <div className="text-center">
