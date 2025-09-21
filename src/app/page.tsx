@@ -1,3 +1,4 @@
+import { getSocial } from "~/sanity/utils/getSocials";
 import Hero from "~/components/Hero";
 import AboutUs from "~/components/AboutUs";
 import ProductsInteractive from "~/components/ProductsInteractive";
@@ -7,10 +8,11 @@ import BlogSection from "~/components/BlogSection";
 import Testimonials from "~/components/Testimonials";
 import ContactSection from "~/components/ContactSection";
 
-export default function Home() {
+export default async function Home() {
+  const socials = await getSocial();
   return (
     <main suppressHydrationWarning>
-      <Hero />
+      <Hero socials={socials} />
       <AboutUs />
       <Services />
       <ProductsInteractive />

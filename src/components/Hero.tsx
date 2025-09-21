@@ -7,8 +7,13 @@ import {
   FiMail,
   FiPhoneCall,
 } from "react-icons/fi";
+import { Social } from "~/../typings";
 
-export default function Hero() {
+interface HeroProps {
+  socials: Social[];
+}
+
+export default function Hero({ socials }: HeroProps) {
   const handleScroll = () => {
     const el = document.getElementById("about");
     if (el) {
@@ -113,24 +118,26 @@ export default function Hero() {
               <span className="text-xs uppercase tracking-[0.28em] text-white/60">
                 Connect
               </span>
-              <a
-                href="https://www.instagram.com/liftronic"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
-              >
-                <FiInstagram className="text-lg text-accent" aria-hidden />
-                <span>@liftronic</span>
-              </a>
-              <a
-                href="https://www.facebook.com/liftronic"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
-              >
-                <FiFacebook className="text-lg text-accent" aria-hidden />
-                <span>/liftronic</span>
-              </a>
+              {socials?.map((social) => (
+                <a
+                  key={social._id}
+                  href={social.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
+                >
+                  {social.title.toLowerCase().includes("instagram") ? (
+                    <FiInstagram className="text-lg text-accent" aria-hidden />
+                  ) : (
+                    <FiFacebook className="text-lg text-accent" aria-hidden />
+                  )}
+                  <span>
+                    {social.title.toLowerCase().includes("instagram")
+                      ? "@liftronic"
+                      : "/liftronic"}
+                  </span>
+                </a>
+              ))}
             </div>
           </motion.div>
 
