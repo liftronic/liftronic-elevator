@@ -90,8 +90,8 @@ export default function Services() {
       id="services"
       className="relative isolate overflow-hidden scroll-mt-24 text-white"
     >
-      <div className="absolute inset-0 -z-10 bg-[#071812]" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-accent/30 via-[#0d221a]/70 to-[#04110c]/85" />
+      <div className="absolute inset-0 -z-10 bg-[#071812]/80" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-accent/20 via-[#0d221a]/60 to-[#04110c]/75" />
       <div className="container mx-auto flex min-h-screen flex-col justify-center px-4 py-24">
         <div className="max-w-3xl space-y-4">
           <h2 className="text-4xl font-extrabold text-white md:text-5xl">

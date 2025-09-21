@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const runtime = "nodejs";
+
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   return {
@@ -12,4 +14,3 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: `${siteUrl}/sitemap.xml`,
   };
 }
-
