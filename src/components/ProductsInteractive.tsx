@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
+import Link from "next/link";
 
 type Product = {
   id: string;
@@ -199,7 +199,7 @@ export default function ProductsInteractive() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              <a
+              <Link
                 href="/products"
                 className="inline-flex items-center gap-2 text-accent hover:text-gray-900 transition-colors font-medium"
               >
@@ -217,7 +217,7 @@ export default function ProductsInteractive() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
 

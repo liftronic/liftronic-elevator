@@ -1,12 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import {
-  FiFacebook,
-  FiHeadphones,
-  FiInstagram,
-  FiMail,
-  FiPhoneCall,
-} from "react-icons/fi";
+import { FiHeadphones, FiMail, FiPhoneCall } from "react-icons/fi";
 import { Social } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
 
@@ -129,7 +123,9 @@ export default function Hero({ socials }: HeroProps) {
                     rel="noreferrer"
                     className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
                   >
-                    {Icon && <Icon className="text-lg text-accent" aria-hidden />}
+                    {Icon && (
+                      <Icon className="text-lg text-accent" aria-hidden />
+                    )}
                     <span>{social.title}</span>
                   </a>
                 );

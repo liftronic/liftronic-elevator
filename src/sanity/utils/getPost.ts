@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { Post, Author, Category, BlockContent } from "../../../typings";
+import { Post } from "../../../typings";
 import { client } from "../lib/client";
 
 export async function getPosts(): Promise<Post[]> {
