@@ -6,6 +6,7 @@ export async function getSocial(): Promise<Social[]> {
   const query = groq`*[_type == "social"]{
     _id,
     title,
+    icon,
     url,
     tags[]->{
       _id,
