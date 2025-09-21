@@ -8,6 +8,7 @@ import {
   FiPhoneCall,
 } from "react-icons/fi";
 import { Social } from "~/../typings";
+import { getIcon } from "~/sanity/utils/iconMapper";
 
 interface HeroProps {
   socials: Social[];
@@ -118,26 +119,21 @@ export default function Hero({ socials }: HeroProps) {
               <span className="text-xs uppercase tracking-[0.28em] text-white/60">
                 Connect
               </span>
-              {socials?.map((social) => (
-                <a
-                  key={social._id}
-                  href={social.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
-                >
-                  {social.title.toLowerCase().includes("instagram") ? (
-                    <FiInstagram className="text-lg text-accent" aria-hidden />
-                  ) : (
-                    <FiFacebook className="text-lg text-accent" aria-hidden />
-                  )}
-                  <span>
-                    {social.title.toLowerCase().includes("instagram")
-                      ? "@liftronic"
-                      : "/liftronic"}
-                  </span>
-                </a>
-              ))}
+              {socials?.map((social) => {
+                const Icon = getIcon(social.icon);
+                return (
+                  <a
+                    key={social._id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
+                  >
+                    {Icon && <Icon className="text-lg text-accent" aria-hidden />}
+                    <span>{social.title}</span>
+                  </a>
+                );
+              })}
             </div>
           </motion.div>
 

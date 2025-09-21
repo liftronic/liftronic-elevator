@@ -4,6 +4,7 @@ import { SanityDocument, Reference } from "sanity";
 export interface Social extends SanityDocument {
   _type: "social";
   title: string;
+  icon: string;
   url: string;
   tags?: Reference<Tag>[];
 }

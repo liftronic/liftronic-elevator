@@ -14,6 +14,12 @@ export const socialsType = defineType({
       type: "string",
     }),
     defineField({
+      name: "icon",
+      title: "Icon",
+      description: "Name of the icon from react-icons (e.g., fiInstagram)",
+      type: "string",
+    }),
+    defineField({
       name: "url",
       title: "Url",
       type: "url",
