@@ -242,11 +242,7 @@ export default function RootLayout({
             ],
           })}
         </Script>
-        <ViewTransition>
-          <Navbar />
-          {children}
-          <Footer />
-        </ViewTransition>
+        <ViewTransition>{children}</ViewTransition>
       </body>
     </html>
   );
