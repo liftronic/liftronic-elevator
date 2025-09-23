@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "~/components/Navbar";
-import Footer from "~/components/Footer";
 import Script from "next/script";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
