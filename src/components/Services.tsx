@@ -217,7 +217,10 @@ function CarouselDots({
   onSelect: (index: number) => void;
 }) {
   return (
-    <div className="mx-auto flex gap-2" aria-hidden>
+    <div
+      className="mx-auto mt-6 flex w-full justify-center gap-2 md:mt-0 md:w-auto"
+      aria-hidden
+    >
       {Array.from({ length: total }).map((_, index) => (
         <button
           key={`dot-${index}`}
