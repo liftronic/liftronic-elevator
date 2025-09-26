@@ -16,79 +16,6 @@ type ProductCardProps = {
   imageAlt?: string;
 };
 
-function PlaceholderArt({
-  label,
-  index = 0,
-}: {
-  label: string;
-  index?: number;
-}) {
-  // Subtle gradient variants to avoid same look for all cards
-  const gradients = [
-    "from-gray-100 to-gray-200",
-    "from-emerald-50 to-gray-100",
-    "from-slate-50 to-gray-200",
-    "from-teal-50 to-gray-100",
-    "from-zinc-50 to-gray-200",
-  ];
-  const g = gradients[index % gradients.length];
-  return (
-    <div className={`absolute inset-0 bg-gradient-to-b ${g}`}>
-      {/* Minimal elevator illustration */}
-      <svg
-        aria-hidden
-        viewBox="0 0 400 300"
-        className="w-full h-full"
-        role="img"
-      >
-        <defs>
-          <linearGradient id="door" x1="0" x2="1">
-            <stop offset="0%" stopColor="#e7e7e7" />
-            <stop offset="100%" stopColor="#f5f5f5" />
-          </linearGradient>
-        </defs>
-        {/* Frame */}
-        <rect
-          x="40"
-          y="30"
-          width="320"
-          height="240"
-          rx="14"
-          fill="#ffffff"
-          stroke="#e5e7eb"
-        />
-        {/* Indicator */}
-        <circle cx="340" cy="50" r="6" fill="#2ae394" />
-        {/* Doors */}
-        <rect
-          x="70"
-          y="60"
-          width="120"
-          height="180"
-          fill="url(#door)"
-          stroke="#e5e7eb"
-        />
-        <rect
-          x="210"
-          y="60"
-          width="120"
-          height="180"
-          fill="url(#door)"
-          stroke="#e5e7eb"
-        />
-        {/* Door gap */}
-        <rect x="198" y="60" width="4" height="180" fill="#d1d5db" />
-        {/* Floor */}
-        <rect x="60" y="240" width="280" height="8" fill="#e5e7eb" />
-        {/* Label */}
-        <text x="50%" y="290" textAnchor="middle" fontSize="14" fill="#9ca3af">
-          {label}
-        </text>
-      </svg>
-    </div>
-  );
-}
-
 export default function ProductCard({
   title,
   summary,
@@ -128,9 +55,12 @@ export default function ProductCard({
       } as React.CSSProperties)
     : {};
 
+  // Use the specified product image or fallback to placeholder
+  const finalImageSrc = imageSrc || "/illustrations/product01.png";
+
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${
+      className={`group relative overflow-hidden rounded-xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
         productId ? "product-card cursor-pointer" : ""
       }`}
       style={cardStyle}
@@ -138,84 +68,125 @@ export default function ProductCard({
       onMouseEnter={handleMouseEnter}
     >
       {!!badge && (
-        <span className="absolute left-3 top-3 z-10 rounded px-2 py-1 text-[11px] font-semibold bg-accent text-black">
-          {badge}
-        </span>
+        <div className="absolute right-3 top-3 z-10">
+          <span className="inline-flex items-center rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-black shadow-sm">
+            {badge}
+          </span>
+        </div>
       )}
-      <div
-        className={`relative aspect-[4/3] ${productId ? "product-image" : ""}`}
-      >
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={imageAlt ?? title}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          />
-        ) : (
-          <PlaceholderArt label="Product image" index={index} />
-        )}
-      </div>
-      <div className="p-5">
-        <h3
-          className={`text-lg font-semibold tracking-tight ${
-            productId ? "product-title" : ""
-          }`}
-        >
-          {title}
-        </h3>
-        <p className="mt-1 text-sm text-gray-600">{summary}</p>
-        {tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {tags.map((t) => (
-              <span
-                key={t}
-                className="text-xs rounded-full bg-soft border border-black/5 px-2.5 py-1 text-gray-700"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        )}
 
-        <div className="mt-4 flex items-center justify-between">
-          {productId ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                transitionTo(productHref);
-              }}
-              className="btn btn-primary h-9 px-3 text-sm"
+      {/* Image Container with better aspect ratio and styling */}
+      <div
+        className={`relative aspect-[5/3] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 ${
+          productId ? "product-image" : ""
+        }`}
+      >
+        <Image
+          src={finalImageSrc}
+          alt={imageAlt ?? title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+      </div>
+
+      {/* Content with better spacing and typography */}
+      <div className="p-6">
+        <div className="flex flex-col h-full">
+          <div className="flex-grow">
+            <h3
+              className={`text-xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
+                productId ? "product-title" : ""
+              }`}
             >
-              Learn More
-            </button>
-          ) : (
-            <Link
-              href={productHref}
-              className="btn btn-primary h-9 px-3 text-sm"
-            >
-              Enquire
-            </Link>
-          )}
-          {productId ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                transitionTo(productHref);
-              }}
-              className="text-sm text-accent transition-transform group-hover:translate-x-0.5"
-            >
-              View Details →
-            </button>
-          ) : (
-            <Link
-              href={productHref}
-              className="text-sm text-accent transition-transform group-hover:translate-x-0.5"
-            >
-              Learn more →
-            </Link>
-          )}
+              {title}
+            </h3>
+            <p className="mt-2 text-gray-600 text-sm leading-relaxed line-clamp-3">
+              {summary}
+            </p>
+
+            {/* Tags with improved styling */}
+            {tags.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-200"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Action area with better alignment */}
+          <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-100">
+            {productId ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  transitionTo(productHref);
+                }}
+                className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              >
+                Learn More
+              </button>
+            ) : (
+              <Link
+                href={productHref}
+                className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+              >
+                Enquire
+              </Link>
+            )}
+
+            {productId ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  transitionTo(productHref);
+                }}
+                className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
+              >
+                View Details
+                <svg
+                  className="ml-1 h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </button>
+            ) : (
+              <Link
+                href={productHref}
+                className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
+              >
+                Learn more
+                <svg
+                  className="ml-1 h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -34,6 +34,8 @@ const products: Record<string, Product> = {
     summary: "Compact, quiet lifts purpose-built for residences and villas.",
     description:
       "Our home elevators combine luxury with functionality, designed specifically for residential properties. With whisper-quiet operation and space-efficient design, these elevators seamlessly integrate into your home while providing safe, comfortable transportation between floors.",
+    imageSrc: "/illustrations/product01.png",
+    imageAlt: "Home elevator render",
     tags: ["Residential", "Compact", "Quiet Operation"],
     features: [
       {
@@ -96,6 +98,8 @@ const products: Record<string, Product> = {
     summary: "Reliable people movement for apartments, offices and hotels.",
     description:
       "Built for high-traffic commercial and residential buildings, our passenger elevators deliver exceptional reliability, energy efficiency, and passenger comfort. Engineered to handle frequent use while maintaining smooth, quiet operation.",
+    imageSrc: "/illustrations/product01.png",
+    imageAlt: "Passenger elevator interior visualization",
     tags: ["Commercial", "High-usage", "Energy Efficient"],
     features: [
       {
@@ -158,6 +162,8 @@ const products: Record<string, Product> = {
     summary: "Heavy‑duty cabins with rugged finishes for goods and logistics.",
     description:
       "Our freight elevators are engineered for demanding industrial applications. Built with reinforced structures and heavy-duty components, they ensure reliable transportation of goods, equipment, and materials in warehouses, manufacturing facilities, and commercial buildings.",
+    imageSrc: "/illustrations/product01.png",
+    imageAlt: "Freight elevator render",
     tags: ["Industrial", "High-capacity", "Heavy Duty"],
     features: [
       {
@@ -220,6 +226,8 @@ const products: Record<string, Product> = {
     summary: "Wide cabins and smooth acceleration tailored for healthcare.",
     description:
       "Specifically designed for healthcare facilities, our hospital elevators prioritize patient comfort, hygiene, and accessibility. With spacious cabins, smooth ride quality, and infection control features, they ensure safe patient transport in critical care environments.",
+    imageSrc: "/illustrations/product01.png",
+    imageAlt: "Hospital elevator visualization",
     tags: ["Healthcare", "Spacious", "Smooth Ride"],
     features: [
       {
@@ -282,6 +290,8 @@ const products: Record<string, Product> = {
     summary: "Space‑efficient design with excellent energy performance.",
     description:
       "Our Machine-Room-Less elevators eliminate the need for a separate machine room, saving valuable building space while delivering superior performance. Perfect for modern buildings where space optimization and energy efficiency are priorities.",
+    imageSrc: "/illustrations/product01.png",
+    imageAlt: "Machine-room-less elevator render",
     tags: ["Space Saving", "Energy Efficient", "Modern"],
     features: [
       {
