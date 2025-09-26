@@ -63,8 +63,22 @@ export interface KeyFeature extends SanityDocument {
 export interface Service extends SanityDocument {
   _type: "service";
   title: string;
+  slug?: string;
+  summary?: string;
   description: string;
+  featured?: boolean;
+  tags?: string[];
   icon: string;
+  image?: string;
+  features?: Array<{
+    title: string;
+    description: string;
+    icon: string;
+  }>;
+  specifications?: Array<{
+    label: string;
+    value: string;
+  }>;
 }
 
 export interface ProductSpecification {

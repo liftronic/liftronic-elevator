@@ -65,7 +65,7 @@ body {
   );
   backdrop-filter: blur(18px) saturate(170%);
   border: 1px solid transparent; /* remove hard edge */
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.1);
 }
 
 .shadow-elevate {
@@ -172,6 +172,24 @@ p {
   will-change: transform;
 }
 
+.service-card {
+  view-transition-name: var(--transition-name);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.service-image {
+  view-transition-name: var(--image-transition-name);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.service-title {
+  view-transition-name: var(--title-transition-name);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
 /* View Transition animations - Optimized for smoothness */
 
 /* Faster, smoother generic transitions */
@@ -202,6 +220,26 @@ p {
 
 ::view-transition-old(product-title),
 ::view-transition-new(product-title) {
+  animation-duration: 280ms;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-fill-mode: both;
+  /* Prevent font rendering issues */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Service element transitions - matching product timing */
+::view-transition-old(service-image),
+::view-transition-new(service-image) {
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-fill-mode: both;
+  /* Prevent blurring during transition */
+  image-rendering: crisp-edges;
+}
+
+::view-transition-old(service-title),
+::view-transition-new(service-title) {
   animation-duration: 280ms;
   animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   animation-fill-mode: both;
