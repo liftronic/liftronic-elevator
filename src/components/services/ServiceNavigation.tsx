@@ -62,7 +62,7 @@ export default function ServiceNavigation({
             className="flex items-center space-x-2 overflow-x-auto scrollbar-hide max-w-3xl mx-6"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {services.map((service, index) => (
+            {services.map((service) => (
               <motion.button
                 key={service.id}
                 onClick={() => onServiceChange(service.id)}

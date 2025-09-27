@@ -42,25 +42,25 @@ const products: Record<string, Product> = {
         title: "Space Efficient Design",
         description:
           "Minimal footprint design that fits perfectly in residential spaces without compromising aesthetics.",
-        icon: "🏠",
+        icon: "fiHome",
       },
       {
         title: "Whisper Quiet Operation",
         description:
           "Advanced noise reduction technology ensures peaceful operation day and night.",
-        icon: "🔇",
+        icon: "fiVolumeX",
       },
       {
         title: "Safety First",
         description:
           "Multiple safety systems including emergency communication and backup power options.",
-        icon: "🛡️",
+        icon: "fiShieldCheck",
       },
       {
         title: "Custom Interiors",
         description:
           "Personalize your elevator with premium finishes and lighting options.",
-        icon: "✨",
+        icon: "fiSparkles",
       },
     ],
     specifications: [
@@ -106,25 +106,25 @@ const products: Record<string, Product> = {
         title: "High Traffic Capacity",
         description:
           "Designed to handle thousands of trips daily with consistent performance and reliability.",
-        icon: "👥",
+        icon: "fiUsers",
       },
       {
         title: "Energy Efficient",
         description:
           "Advanced regenerative drives and LED lighting reduce energy consumption by up to 40%.",
-        icon: "⚡",
+        icon: "fiZapElectric",
       },
       {
         title: "Smart Controls",
         description:
           "Intelligent destination control systems optimize passenger flow and reduce wait times.",
-        icon: "🧠",
+        icon: "fiBrain",
       },
       {
         title: "Premium Comfort",
         description:
           "Smooth acceleration, quiet operation, and climate control for passenger comfort.",
-        icon: "🎯",
+        icon: "fiTarget",
       },
     ],
     specifications: [
@@ -170,25 +170,25 @@ const products: Record<string, Product> = {
         title: "Heavy Load Capacity",
         description:
           "Designed to handle loads from 1000kg to 5000kg with reinforced cabin structure.",
-        icon: "🏗️",
+        icon: "fiTruck",
       },
       {
         title: "Rugged Construction",
         description:
           "Industrial-grade materials and finishes that withstand harsh operating conditions.",
-        icon: "🛠️",
+        icon: "fiWrench",
       },
       {
         title: "Bi-Parting Doors",
         description:
           "Wide opening doors for easy loading and unloading of large items and equipment.",
-        icon: "🚪",
+        icon: "fiDoor",
       },
       {
         title: "Safety Systems",
         description:
           "Advanced safety features including overload protection and emergency stops.",
-        icon: "⚠️",
+        icon: "fiAlertTriangle",
       },
     ],
     specifications: [
@@ -234,25 +234,25 @@ const products: Record<string, Product> = {
         title: "Spacious Design",
         description:
           "Extra-wide cabins to accommodate stretchers, wheelchairs, and medical equipment.",
-        icon: "🏥",
+        icon: "fiHeart",
       },
       {
         title: "Smooth Operation",
         description:
           "Advanced vibration control and smooth acceleration for patient comfort.",
-        icon: "🛌",
+        icon: "fiBed",
       },
       {
         title: "Infection Control",
         description:
           "Antimicrobial surfaces and air purification systems for enhanced hygiene.",
-        icon: "🧼",
+        icon: "fiDroplet",
       },
       {
         title: "Emergency Features",
         description:
           "Independent service mode, emergency communication, and backup power systems.",
-        icon: "🚨",
+        icon: "fiAlertCircle",
       },
     ],
     specifications: [
@@ -298,25 +298,25 @@ const products: Record<string, Product> = {
         title: "No Machine Room",
         description:
           "Compact design eliminates the need for a separate machine room, saving building space.",
-        icon: "📦",
+        icon: "fiPackage",
       },
       {
         title: "Energy Efficient",
         description:
           "Advanced drive systems and regenerative technology reduce energy consumption by 40%.",
-        icon: "🌿",
+        icon: "fiLeaf",
       },
       {
         title: "Quiet Operation",
         description:
           "Low-noise gearless motors and advanced vibration isolation for silent operation.",
-        icon: "🔉",
+        icon: "fiSpeaker",
       },
       {
         title: "Easy Maintenance",
         description:
           "Accessible components and remote monitoring for simplified maintenance procedures.",
-        icon: "🔧",
+        icon: "fiToolbox",
       },
     ],
     specifications: [

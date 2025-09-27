@@ -4,19 +4,11 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { BiPlay, BiCheck, BiAward, BiTrendingUp } from "react-icons/bi";
+import { BiCheck } from "react-icons/bi";
 import WhyUsSection from "~/components/aboutus/WhyUsSection";
 import VisionMissionValues from "~/components/aboutus/VisionMissionValues";
 import TeamSection from "~/components/aboutus/TeamSection";
 import Link from "next/link";
-
-// Company stats data
-const companyStats = [
-  { label: "Years of Excellence", value: "15+", icon: <BiAward /> },
-  { label: "Projects Completed", value: "2000+", icon: <BiCheck /> },
-  { label: "Happy Clients", value: "500+", icon: <BiTrendingUp /> },
-  { label: "Team Members", value: "50+", icon: <BiPlay /> },
-];
 
 // Timeline data for company history
 const companyTimeline = [

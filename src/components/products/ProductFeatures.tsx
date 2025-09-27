@@ -49,24 +49,38 @@ export default function ProductFeatures({ features }: ProductFeaturesProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group rounded-2xl border border-gray-200/60 bg-gradient-to-br from-white to-gray-50/30 p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:border-accent/20"
+                className="group relative overflow-hidden rounded-3xl border border-gray-200/60 bg-gradient-to-br from-white via-gray-50/20 to-gray-100/30 p-8 shadow-lg transition-all duration-300 hover:shadow-xl hover:shadow-accent/5 hover:border-accent/20 hover:-translate-y-1"
               >
-                <div className="space-y-6">
+                {/* Subtle background pattern */}
+                <div className="absolute top-0 right-0 w-28 h-28 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
+                  <div className="w-full h-full bg-gradient-to-br from-accent/80 to-accent/40 rounded-full blur-2xl"></div>
+                </div>
+                
+                <div className="relative z-10 space-y-6">
                   {/* Icon Container */}
-                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-accent/10 group-hover:scale-110 transition-transform duration-300">
-                    {IconComponent ? (
-                      <IconComponent className="h-8 w-8 text-accent" />
-                    ) : (
-                      <span className="text-3xl">{feature.icon}</span>
-                    )}
+                  <div className="relative inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 group-hover:scale-105 group-hover:rotate-1 transition-all duration-300 shadow-md group-hover:shadow-accent/15">
+                    {/* Background glow effect */}
+                    <div className="absolute inset-0 rounded-2xl bg-accent/5 blur-xl group-hover:bg-accent/5 transition-all duration-300"></div>
+                    
+                    {/* Icon */}
+                    <div className="relative z-10">
+                      {IconComponent ? (
+                        <IconComponent className="h-10 w-10 text-accent drop-shadow-sm transition-all duration-200" />
+                      ) : (
+                        <span className="text-4xl filter drop-shadow-sm">{feature.icon}</span>
+                      )}
+                    </div>
+                    
+                    {/* Subtle inner border */}
+                    <div className="absolute inset-0 rounded-2xl border border-accent/20 group-hover:border-accent/25 transition-all duration-300"></div>
                   </div>
 
                   {/* Content */}
-                  <div className="space-y-3">
-                    <h3 className="text-xl font-bold text-charcoal leading-tight">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold text-charcoal leading-tight group-hover:text-accent/70 transition-colors duration-300">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-700 leading-relaxed text-sm">
+                    <p className="text-gray-600 leading-relaxed text-sm group-hover:text-gray-700 transition-colors duration-300">
                       {feature.description}
                     </p>
                   </div>

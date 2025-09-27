@@ -4,7 +4,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { BiLogoLinkedin, BiMailSend, BiPhone } from "react-icons/bi";
 import { FiLinkedin, FiMail, FiPhone } from "react-icons/fi";
 
 type TeamMember = {

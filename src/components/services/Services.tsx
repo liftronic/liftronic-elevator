@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type ReactElement } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { BiBrush, BiGlobeAlt, BiPhoneCall, BiRefresh } from "react-icons/bi";
@@ -53,9 +52,6 @@ const services: Service[] = [
     href: "/services#consultation",
   },
 ];
-
-const AUTO_ROTATE_MS = 5000;
-const DESKTOP_VISIBLE = 3;
 
 export default function Services() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -251,81 +247,5 @@ export default function Services() {
         </motion.div>
       </div>
     </section>
-  );
-}
-function ImageBackdrop({ alt, sizes }: { alt: string; sizes: string }) {
-  return (
-    <>
-      <div className="absolute inset-0">
-        <Image
-          src="/assets/sample_img.jpg"
-          alt={alt}
-          fill
-          sizes={sizes}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-br from-[#071812]/80 via-[#0f231b]/72 to-accent/30" />
-    </>
-  );
-}
-
-function CardContent({ service }: { service: Service }) {
-  return (
-    <div className="relative flex h-full flex-col justify-between gap-10 text-white">
-      <div className="space-y-6">
-        <div className="flex flex-col gap-4">
-          <span className="flex size-14 items-center justify-center rounded-full bg-accent/15 text-accent shadow-sm ring-1 ring-accent/30">
-            {service.icon}
-          </span>
-          <h3 className="text-2xl font-bold md:text-3xl">{service.title}</h3>
-        </div>
-        <p className="text-base leading-relaxed text-white/85 md:text-lg">
-          {service.description}
-        </p>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {service.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 capitalize backdrop-blur-sm"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CarouselDots({
-  activeIndex,
-  total,
-  onSelect,
-}: {
-  activeIndex: number;
-  total: number;
-  onSelect: (index: number) => void;
-}) {
-  return (
-    <div
-      className="mx-auto mt-6 flex w-full justify-center gap-2 md:mt-0 md:w-auto"
-      aria-hidden
-    >
-      {Array.from({ length: total }).map((_, index) => (
-        <button
-          key={`dot-${index}`}
-          type="button"
-          onClick={() => onSelect(index)}
-          className={`h-2.5 w-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
-            index === activeIndex
-              ? "bg-white scale-110"
-              : "bg-white/30 hover:bg-white/55"
-          }`}
-          aria-label={`Show service ${index + 1}`}
-          aria-pressed={index === activeIndex}
-        />
-      ))}
-    </div>
   );
 }

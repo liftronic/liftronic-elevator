@@ -4,11 +4,9 @@
 import { motion } from "motion/react";
 import {
   BiShield,
-  BiTime,
   BiCog,
   BiStar,
   BiSupport,
-  BiTrendingUp,
   BiCheckCircle,
   BiGlobe,
 } from "react-icons/bi";
