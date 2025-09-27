@@ -1,11 +1,58 @@
 ---
-globs: *.tsx
+globs: *.tsx,*.ts
 ---
 
-# React Patterns
+# React Patterns & Component Guidelines
 
-- Functional components with TypeScript
-- Client components: `"use client"` directive when using hooks/browser APIs
-- SSR hydration: Use `mounted` state pattern to prevent mismatches
-- Form handling: `react-hook-form` + `zod` validation
-- Icons: `react-icons` library
+## Component Architecture
+- **Functional components only** with explicit TypeScript types
+- **Server Components by default** - only use `"use client"` when:
+  - Using React hooks (`useState`, `useEffect`, etc.)
+  - Accessing browser APIs
+  - Event handlers for interactivity
+  - Animation libraries like `motion/react`
+
+## Motion Library Usage
+- **Client components**: `import { motion } from "motion/react"`
+- **Server components**: `import * as motion from "motion/react-client"`
+- Use motion for transitions, animations, and interactive elements
+- Common pattern: `motion.div` with `initial`, `whileInView`, `transition` props
+
+## View Transitions
+- Use [useViewTransition](mdc:src/hooks/useViewTransition.ts) hook for page navigation
+- Set CSS custom properties for transition names:
+  ```tsx
+  const cardStyle = {
+    "--transition-name": `product-card-${id}`,
+    "--image-transition-name": `product-image-${id}`,
+    "--title-transition-name": `product-title-${id}`,
+  } as React.CSSProperties;
+  ```
+- Apply classes: `.product-card`, `.product-image`, `.product-title`
+
+## Forms & Validation
+- Use `react-hook-form` with `zod` for validation
+- Pattern: Define schema with `z.object()`, use `useForm()` hook
+- Example in [ContactSection](mdc:src/components/ContactSection.tsx)
+
+## Icons & Images
+- Icons: `react-icons` library (prefer Fi* icons)
+- Images: Next.js `Image` component with `priority` for above-fold content
+- Use `alt` attributes for accessibility
+
+## TypeScript Patterns
+- Define prop interfaces: `interface ComponentProps { ... }`
+- Use `Promise<Type>` for async server components
+- Reference Sanity types from [typings.d.ts](mdc:typings.d.ts)
+
+## Hooks & State Management
+- Custom hooks in `src/hooks/` directory
+- Use `useCallback` for event handlers in client components
+- `useSmoothScroll` for anchor navigation
+- `useViewTransition` for page transitions
+
+## Navigation Patterns
+- Use Next.js `Link` component for internal navigation
+- `usePathname()` for current route detection
+- `router.prefetch()` for hover prefetching
+- Hash links (`#contact`) handled with smooth scroll

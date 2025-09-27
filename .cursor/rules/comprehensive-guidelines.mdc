@@ -1,10 +1,16 @@
-# Repository Guidelines
+---
+alwaysApply: true
+---
+
+# Comprehensive Development Guidelines
+
+This rule incorporates all guidelines from [AGENTS.md](mdc:AGENTS.md) and discovered patterns.
 
 ## Project Structure & Module Organization
 - `src/app/`: Next.js App Router entry points, route segments, and shared layout files. Keep route folders kebab-case and colocate `page.tsx`, `layout.tsx`, and segment-specific assets.
 - `src/components/`: Reusable UI composed as functional React components in PascalCase files (e.g., `HeroBanner.tsx`). Import them with the `~/components/...` alias.
 - `public/`: Static assets, favicons, and illustrations served from the root; optimize media before committing.
-- Configuration lives at the repository root (`next.config.ts`, `eslint.config.mjs`, `postcss.config.mjs`, `tsconfig.json`). Sanity Studio resides under `src/app/studio` with supporting config in `sanity.config.ts`.
+- Configuration lives at the repository root ([next.config.ts](mdc:next.config.ts), [eslint.config.mjs](mdc:eslint.config.mjs), [postcss.config.mjs](mdc:postcss.config.mjs), [tsconfig.json](mdc:tsconfig.json)). Sanity Studio resides under `src/app/studio` with supporting config in [sanity.config.ts](mdc:sanity.config.ts).
 
 ## Build, Test, and Development Commands
 - `pnpm dev`: Launches the Next.js development server with Turbopack on `http://localhost:3000` and enables hot refresh.
@@ -36,3 +42,15 @@
 - Never commit secrets or environment-specific credentials; use `.env.local` and document required keys in README onboarding sections.
 - Validate inputs from forms or webhooks using the existing `react-hook-form` and `zod` patterns.
 - Store large media under `public/` and prefer compressed formats to keep bundles lightweight.
+
+## Component Patterns
+- Use [useViewTransition](mdc:src/hooks/useViewTransition.ts) for page navigation with View Transitions API
+- Implement smooth scrolling with [useSmoothScroll](mdc:src/hooks/useSmoothScroll.ts) for anchor links
+- Form validation pattern: `react-hook-form` + `zod` as shown in [ContactSection](mdc:src/components/ContactSection.tsx)
+- Motion animations: Use motion library for interactive elements and page transitions
+
+## Content Management
+- Sanity CMS integration for dynamic content
+- Schema definitions in `src/sanity/schemaTypes/`
+- Data fetching utilities in `src/sanity/utils/`
+- Studio accessible at `/studio` route for content editing

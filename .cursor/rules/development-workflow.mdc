@@ -1,0 +1,50 @@
+---
+description: Development workflow and tooling guidelines
+---
+
+# Development Workflow & Tooling
+
+## Package Management
+- **Use `pnpm` exclusively** for package management
+- Commands:
+  - `pnpm dev`: Development server with Turbopack
+  - `pnpm build`: Production build
+  - `pnpm start`: Serve production build
+  - `pnpm lint`: Run ESLint checks
+
+## Code Quality
+- **ESLint configuration**: Uses Next.js and TypeScript rules
+- **TypeScript strict mode**: Enabled with proper type checking
+- **File naming conventions**:
+  - Components: PascalCase (e.g., `HeroBanner.tsx`)
+  - Utilities: camelCase (e.g., `useSmoothScroll.ts`)
+  - Routes: kebab-case for directories
+
+## Git Workflow
+- **Commit format**: Imperative mood (e.g., "Add passenger elevator specs")
+- **Optional prefixes**: `feat:`, `fix:`, `chore:`
+- **Reference issues**: Use `#123` when applicable
+- **Current branch**: `dev-sushil`
+
+## Environment Configuration
+- **Environment files**: Use `.env.local` for local settings
+- **Never commit secrets**: Keep credentials in environment files
+- **Required variables**: Document in README onboarding sections
+
+## Build & Deployment
+- **Validate locally**: Run `pnpm build` before significant changes
+- **Linting**: Ensure `pnpm lint` passes before PR
+- **Manual testing**: No automated tests configured yet
+- **Static assets**: Optimize media before committing
+
+## Performance Guidelines
+- **Image optimization**: Use WebP format, include `priority` for above-fold
+- **Bundle size**: Keep imports minimal, use dynamic imports when appropriate
+- **Loading states**: Implement for data fetching operations
+- **Accessibility**: Test with screen readers and keyboard navigation
+
+## Debugging & Development
+- **Browser DevTools**: Use React DevTools for component debugging
+- **View Transitions**: Check browser support and fallbacks
+- **Responsive testing**: Test across mobile, tablet, desktop
+- **Content editing**: Use Sanity Studio at `/studio` for CMS changes
