@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb";
 import BlogCard from "~/components/blog/BlogCard";
 import { useViewTransition } from "~/hooks/useViewTransition";
+import { motion } from "motion/react";
 
 // Blog post type definition
 type BlogPost = {
@@ -321,18 +322,23 @@ export default function BlogPostClient({
             </div>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-              <Link
-                href="/#contact"
-                className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Schedule Consultation
+              <Link href="/#contact">
+                <motion.button
+                  className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Schedule Consultation
+                </motion.button>
               </Link>
-              <button
+              <motion.button
                 onClick={handleBackClick}
                 className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Read More Articles
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>

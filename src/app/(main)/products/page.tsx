@@ -119,22 +119,22 @@ export default function ProductsPage() {
             </p>
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
-                <motion.a
+                <motion.button
                   className="btn btn-primary"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Request a Quote
-                </motion.a>
+                </motion.button>
               </Link>
               <Link href="/services" className="btn">
-                <motion.a
+                <motion.button
                   className="btn"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   View Services
-                </motion.a>
+                </motion.button>
               </Link>
             </div>
           </div>
