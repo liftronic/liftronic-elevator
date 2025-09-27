@@ -109,27 +109,29 @@ export default function Hero({ socials }: HeroProps) {
             transition={{ delay: 0.32, duration: 0.6, ease: "easeOut" }}
             className="mt-10"
           >
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-3 text-sm text-white/80">
-              <span className="text-xs uppercase tracking-[0.28em] text-white/60">
+            <div className="flex items-start gap-4 text-sm text-white/80">
+              <span className="flex-shrink-0 pt-1.5 text-xs uppercase tracking-[0.28em] text-white/60">
                 Connect
               </span>
-              {socials?.map((social) => {
-                const Icon = getIcon(social.icon);
-                return (
-                  <a
-                    key={social._id}
-                    href={social.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
-                  >
-                    {Icon && (
-                      <Icon className="text-lg text-accent" aria-hidden />
-                    )}
-                    <span>{social.title}</span>
-                  </a>
-                );
-              })}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+                {socials?.map((social) => {
+                  const Icon = getIcon(social.icon);
+                  return (
+                    <a
+                      key={social._id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
+                    >
+                      {Icon && (
+                        <Icon className="text-lg text-accent" aria-hidden />
+                      )}
+                      <span>{social.title}</span>
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
 
@@ -139,11 +141,11 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.42, duration: 0.6, ease: "easeOut" }}
-            className="mt-4 flex flex-wrap gap-3 text-white/90"
+            className="mt-4 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-2 text-white/90"
           >
             <a
               href="tel:18008908411"
-              className="flex items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text whitespace-nowrap"
+              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiHeadphones
                 className="mt-0.5 shrink-0 text-2xl text-accent"
@@ -160,7 +162,7 @@ export default function Hero({ socials }: HeroProps) {
             </a>
             <a
               href="mailto:info@liftronicelevator.com"
-              className="flex items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text whitespace-nowrap"
+              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiMail
                 className="mt-0.5 shrink-0 text-2xl text-accent"
@@ -175,7 +177,7 @@ export default function Hero({ socials }: HeroProps) {
                 </span>
               </div>
             </a>
-            <div className="flex items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus-within:outline-none focus-within:ring-2 focus-within:ring-white/60 select-text whitespace-nowrap">
+            <div className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus-within:outline-none focus-within:ring-2 focus-within:ring-white/60 select-text">
               <FiPhoneCall
                 className="mt-0.5 shrink-0 text-2xl text-accent"
                 aria-hidden
