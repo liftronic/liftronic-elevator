@@ -8,7 +8,6 @@ import { BiPlay, BiCheck, BiAward, BiTrendingUp } from "react-icons/bi";
 import WhyUsSection from "~/components/aboutus/WhyUsSection";
 import VisionMissionValues from "~/components/aboutus/VisionMissionValues";
 import TeamSection from "~/components/aboutus/TeamSection";
-import Testimonials from "~/components/Testimonials";
 import Link from "next/link";
 
 // Company stats data
