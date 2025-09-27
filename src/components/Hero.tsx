@@ -44,7 +44,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.05, duration: 0.6, ease: "easeOut" }}
-            className="mt-4 text-5xl sm:text-6xl md:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
+            className="mt-16 sm:mt-4 text-5xl sm:text-6xl md:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
           >
             <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
             Experience
