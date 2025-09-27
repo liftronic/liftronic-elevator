@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, MouseEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
 const navLinks = [
@@ -34,10 +34,7 @@ export default function Navbar() {
     }
   }, [isHomePage]);
 
-  const handleLinkClick = (
-    e: MouseEvent<HTMLAnchorElement>,
-    href: string
-  ) => {
+  const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith("#")) {
       e.preventDefault();
       scrollTo(href);
@@ -67,9 +64,7 @@ export default function Navbar() {
             />
             <span
               className={`transition-colors ${
-                scrolled || open
-                  ? "text-gray-800"
-                  : "text-white drop-shadow-lg"
+                scrolled || open ? "text-gray-800" : "text-white drop-shadow-lg"
               }`}
             >
               Liftronic
