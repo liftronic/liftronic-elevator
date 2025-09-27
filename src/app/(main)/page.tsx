@@ -1,8 +1,8 @@
 import { getSocial } from "~/sanity/utils/getSocials";
 import Hero from "~/components/Hero";
 import AboutUs from "~/components/AboutUs";
-import ProductsInteractive from "~/components/ProductsInteractive";
-import Services from "~/components/Services";
+import ProductsInteractive from "~/components/products/ProductsInteractive";
+import Services from "~/components/services/Services";
 import ClientsMarquee from "~/components/ClientsMarquee";
 import BlogSection from "~/components/BlogSection";
 import Testimonials from "~/components/Testimonials";

@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { HiHome, HiChevronRight } from "react-icons/hi";
-import ProductFeatures from "~/components/ProductFeatures";
-import ProductFAQ from "~/components/ProductFAQ";
+import ProductFeatures from "~/components/products/ProductFeatures";
+import ProductFAQ from "~/components/products/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
 
 // Service type definition

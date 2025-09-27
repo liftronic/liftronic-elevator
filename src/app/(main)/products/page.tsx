@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import ProductCard from "~/components/ProductCard";
+import ProductCard from "~/components/products/ProductCard";
 
 type Product = {
   id: string;
@@ -117,7 +117,7 @@ export default function ProductsPage() {
               <Link href="/#contact" className="btn btn-primary">
                 Request a Quote
               </Link>
-              <Link href="/#services" className="btn">
+              <Link href="/services" className="btn">
                 View Services
               </Link>
             </div>
