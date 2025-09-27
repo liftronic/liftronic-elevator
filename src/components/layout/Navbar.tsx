@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, MouseEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
 const navLinks = [
@@ -35,14 +35,13 @@ export default function Navbar() {
   }, [isHomePage]);
 
   const handleLinkClick = (
-    e: React.MouseEvent<HTMLElement>,
+    e: MouseEvent<HTMLAnchorElement>,
     href: string
   ) => {
     if (href.startsWith("#")) {
       e.preventDefault();
-      scrollTo(href, () => {
-        setOpen(false);
-      });
+      scrollTo(href);
+      setOpen(false);
     }
   };
 
