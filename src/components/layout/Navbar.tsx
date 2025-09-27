@@ -2,8 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
 const navLinks = [
   { href: "/products", label: "Products" },
@@ -15,6 +16,7 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { scrollTo } = useSmoothScroll();
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(!isHomePage);
   const [open, setOpen] = useState(false);
@@ -31,6 +33,17 @@ export default function Navbar() {
       setScrolled(true);
     }
   }, [isHomePage]);
+
+  const handleLinkClick = (
+    e: MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      scrollTo(href);
+      setOpen(false);
+    }
+  };
 
   return (
     <div className="fixed top-4 inset-x-0 z-50 px-5">
@@ -68,6 +81,7 @@ export default function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
+                onClick={(e) => handleLinkClick(e, l.href)}
                 className={`nav-link-underline ${
                   scrolled
                     ? "text-gray-700 hover:text-brand"
@@ -77,7 +91,11 @@ export default function Navbar() {
                 {l.label}
               </Link>
             ))}
-            <Link href="#contact" className="btn btn-primary">
+            <Link
+              href="#contact"
+              onClick={(e) => handleLinkClick(e, "#contact")}
+              className="btn btn-primary"
+            >
               Request a Quote
             </Link>
           </div>
@@ -118,20 +136,20 @@ export default function Navbar() {
                     <Link
                       key={l.href}
                       href={l.href}
+                      onClick={(e) => handleLinkClick(e, l.href)}
                       className={`py-3 px-4 rounded-lg transition-colors font-medium ${
                         scrolled
                           ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
                           : "text-white/90 hover:bg-white/10 hover:text-white"
                       }`}
-                      onClick={() => setOpen(false)}
                     >
                       {l.label}
                     </Link>
                   ))}
                   <Link
                     href="#contact"
+                    onClick={(e) => handleLinkClick(e, "#contact")}
                     className="btn btn-primary w-full mt-2"
-                    onClick={() => setOpen(false)}
                   >
                     Request a Quote
                   </Link>
