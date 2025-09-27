@@ -3,7 +3,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
-import ServiceCard from "~/components/ServiceCard";
+import ServiceCard from "~/components/services/ServiceCard";
 
 type Service = {
   id: string;
@@ -68,11 +68,23 @@ export default function ServicesPage() {
               industrial properties.
             </p>
             <div className="mt-6 flex gap-3">
-              <Link href="/#contact" className="btn btn-primary">
-                Get Service Quote
+              <Link href="/#contact">
+                <motion.button
+                  className="btn btn-primary px-8 py-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Get Service Quote
+                </motion.button>
               </Link>
-              <Link href="/products" className="btn">
-                View Products
+              <Link href="/products">
+                <motion.button
+                  className="btn px-8 py-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  View Products
+                </motion.button>
               </Link>
             </div>
           </div>
@@ -136,16 +148,24 @@ export default function ServicesPage() {
               viewport={{ once: true }}
               className="flex flex-col sm:flex-row gap-6 justify-center items-center"
             >
-              <button className="btn bg-white hover:bg-gray-100 text-lg px-8 py-4 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+              <motion.button
+                className="btn bg-white hover:bg-gray-100 text-lg px-8 py-4 shadow-xl hover:shadow-2xl transition-all duration-300 group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <span>Get Free Consultation</span>
-                <motion.span className="ml-2 group-hover:translate-x-1 transition-transform duration-300 animate-bounce">
+                <motion.span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">
                   →
                 </motion.span>
-              </button>
+              </motion.button>
 
-              <button className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 backdrop-blur-sm">
+              <motion.button
+                className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 backdrop-blur-sm"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <span>Call: +1 (555) 123-4567</span>
-              </button>
+              </motion.button>
             </motion.div>
 
             {/* Trust Indicators */}

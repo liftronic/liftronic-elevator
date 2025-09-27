@@ -35,7 +35,7 @@ export default function Navbar() {
   }, [isHomePage]);
 
   const handleLinkClick = (
-    e: MouseEvent<HTMLAnchorElement>,
+    e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
     href: string
   ) => {
     if (href.startsWith("#")) {

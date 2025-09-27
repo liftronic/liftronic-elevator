@@ -7,6 +7,7 @@ import ProductBreadcrumb from "~/components/ProductBreadcrumb";
 import ProductFeatures from "~/components/products/ProductFeatures";
 import ProductFAQ from "~/components/products/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
+import { motion } from "motion/react";
 
 // Product type definition
 type Product = {
@@ -128,17 +129,23 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
               {/* Action Buttons */}
               <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-                <Link
-                  href="/#contact"
-                  className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Get a Quote
+                <Link href="/#contact">
+                  <motion.a
+                    className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Get a Quote
+                  </motion.a>
                 </Link>
-                <Link
-                  href="/services"
-                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
-                >
-                  Explore Services
+                <Link href="/services">
+                  <motion.a
+                    className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Explore Services
+                  </motion.a>
                 </Link>
               </div>
             </div>
@@ -276,18 +283,23 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
             </div>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-              <Link
-                href="/#contact"
-                className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Request Consultation
+              <Link href="/#contact">
+                <motion.a
+                  className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Request Consultation
+                </motion.a>
               </Link>
-              <button
+              <motion.button
                 onClick={handleBackClick}
                 className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 View All Products
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>

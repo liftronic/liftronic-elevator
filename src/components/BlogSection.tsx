@@ -75,11 +75,14 @@ export default function BlogSection() {
               maintenance.
             </p>
           </div>
-          <Link
-            href="#contact"
-            className="btn btn-primary hidden sm:inline-flex"
-          >
-            Get a Quote
+          <Link href="#contact">
+            <motion.button
+              className="btn btn-primary px-8 py-3"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Get a Quote
+            </motion.button>
           </Link>
         </div>
 

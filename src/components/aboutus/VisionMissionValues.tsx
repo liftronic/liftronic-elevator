@@ -259,12 +259,21 @@ export default function VisionMissionValues() {
               Together, we can build a safer, more connected world.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn bg-white hover:bg-gray-100 text-lg px-8 py-3">
+              <motion.button
+                className="btn bg-white hover:bg-gray-100 text-lg px-8 py-3"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Explore Careers
-              </button>
-              <button className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-3">
+              </motion.button>
+
+              <motion.button
+                className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-3"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Partner With Us
-              </button>
+              </motion.button>
             </div>
           </div>
         </motion.div>
