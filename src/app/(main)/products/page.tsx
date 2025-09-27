@@ -2,6 +2,7 @@
 import Link from "next/link";
 import ProductCard from "~/components/products/ProductCard";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb";
+import { motion } from "motion/react";
 
 type Product = {
   id: string;
@@ -117,11 +118,23 @@ export default function ProductsPage() {
               needs. Designed for safety, efficiency and seamless ride quality.
             </p>
             <div className="mt-6 flex gap-3">
-              <Link href="/#contact" className="btn btn-primary">
-                Request a Quote
+              <Link href="/#contact">
+                <motion.a
+                  className="btn btn-primary"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Request a Quote
+                </motion.a>
               </Link>
               <Link href="/services" className="btn">
-                View Services
+                <motion.a
+                  className="btn"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  View Services
+                </motion.a>
               </Link>
             </div>
           </div>

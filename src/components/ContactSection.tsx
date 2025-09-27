@@ -127,12 +127,14 @@ export default function ContactSection() {
             </div>
           </div>
           <div className="mt-6 flex items-center gap-3">
-            <button
-              disabled={isSubmitting}
-              className="btn-primary rounded-full px-5 py-3 font-medium disabled:opacity-60"
+            <motion.button
+              className="btn btn-primary font-semibold px-8 py-3"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
+            </motion.button>
+
             {isSubmitSuccessful && (
               <span className="text-sm text-green-600">
                 Thanks! We’ll be in touch.

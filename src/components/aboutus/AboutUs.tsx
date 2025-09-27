@@ -96,29 +96,31 @@ export default function AboutUs() {
           >
             <div className="text-lg text-gray-600 leading-relaxed space-y-3 mb-6">
               <p>
-                <span className="font-semibold">Innovation Meets Elegance</span>.
-                With over <span className="font-semibold">20 years of experience</span>,
+                <span className="font-semibold">Innovation Meets Elegance</span>
+                . With over{" "}
+                <span className="font-semibold">20 years of experience</span>,
                 Liftronic Elevator delivers top-quality{" "}
                 <span className="font-semibold">home elevators</span> and{" "}
-                <span className="font-semibold">residential lifts</span> across India.
-                Our dedicated team specializes in custom solutions that enhance
-                your home&apos;s style and convenience, using the latest technology to
-                ensure satisfaction.
+                <span className="font-semibold">residential lifts</span> across
+                India. Our dedicated team specializes in custom solutions that
+                enhance your home&apos;s style and convenience, using the latest
+                technology to ensure satisfaction.
               </p>
 
               <p>
-                <span className="font-semibold">Liftronic India Pvt Ltd</span> stands
-                proudly as a pioneering lift supplier nestled in the bustling city
-                of <span className="font-semibold">Mumbai</span>. We offer a
-                comprehensive range of top-notch services from seamless{" "}
-                <span className="font-semibold">Sales</span> and impeccable{" "}
-                <span className="font-semibold">Installation</span> to diligent{" "}
-                <span className="font-semibold">Maintenance</span> of elevators and
-                escalators. Beyond just elevators, we&apos;ve artfully blended{" "}
-                <span className="font-semibold">European technology</span> with Indian
-                warmth, culminating in a truly exceptional product. Step into the
-                world of Liftronic Elevator and experience the seamless fusion of
-                artistry and engineering.
+                <span className="font-semibold">Liftronic India Pvt Ltd</span>{" "}
+                stands proudly as a pioneering lift supplier nestled in the
+                bustling city of <span className="font-semibold">Mumbai</span>.
+                We offer a comprehensive range of top-notch services from
+                seamless <span className="font-semibold">Sales</span> and
+                impeccable <span className="font-semibold">Installation</span>{" "}
+                to diligent <span className="font-semibold">Maintenance</span>{" "}
+                of elevators and escalators. Beyond just elevators, we&apos;ve
+                artfully blended{" "}
+                <span className="font-semibold">European technology</span> with
+                Indian warmth, culminating in a truly exceptional product. Step
+                into the world of Liftronic Elevator and experience the seamless
+                fusion of artistry and engineering.
               </p>
             </div>
           </motion.div>

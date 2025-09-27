@@ -80,11 +80,23 @@ export default function AboutPage() {
               excellence.
             </p>
             <div className="mt-6 flex gap-3">
-              <Link href="/#contact" className="btn btn-primary">
-                Get Service Quote
+              <Link href="/#contact">
+                <motion.button
+                  className="btn btn-primary px-8 py-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Get Service Quote
+                </motion.button>
               </Link>
-              <Link href="/products" className="btn">
-                View Products
+              <Link href="/products">
+                <motion.button
+                  className="btn px-8 py-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  View Products
+                </motion.button>
               </Link>
             </div>
           </div>
@@ -249,12 +261,20 @@ export default function AboutPage() {
               elevate your building together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn bg-white hover:bg-gray-100 text-lg px-8 py-4">
+              <motion.button
+                className="btn bg-white hover:bg-gray-100 text-lg px-8 py-4"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Get Free Consultation
-              </button>
-              <button className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4">
+              </motion.button>
+              <motion.button
+                className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 View Our Projects
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         </div>
