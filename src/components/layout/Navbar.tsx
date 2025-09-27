@@ -141,13 +141,12 @@ export default function Navbar() {
                       {l.label}
                     </Link>
                   ))}
-                  <Link
-                    href="#contact"
+                  <button
                     onClick={(e) => handleLinkClick(e, "#contact")}
                     className="btn btn-primary w-full mt-2"
                   >
                     Request a Quote
-                  </Link>
+                  </button>
                 </div>
               </div>
             </motion.div>
