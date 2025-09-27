@@ -352,7 +352,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                 <span className="font-semibold text-charcoal">
                   Need custom finishes?
                 </span>{" "}
-                Share your inspiration and we'll create detailed mockups
+                Share your inspiration and we&apos;ll create detailed mockups
                 matching your exact vision.
               </p>
             </div>

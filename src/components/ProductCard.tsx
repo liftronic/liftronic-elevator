@@ -11,7 +11,6 @@ type ProductCardProps = {
   href?: string;
   productId?: string;
   badge?: string;
-  index?: number;
   imageSrc?: string;
   imageAlt?: string;
 };
@@ -23,7 +22,6 @@ export default function ProductCard({
   href,
   productId,
   badge,
-  index = 0,
   imageSrc,
   imageAlt,
 }: ProductCardProps) {

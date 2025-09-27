@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -11,7 +10,6 @@ type ServiceCardProps = {
   href?: string;
   serviceId?: string;
   badge?: string;
-  index?: number;
   imageSrc?: string;
   imageAlt?: string;
 };
@@ -23,7 +21,6 @@ export default function ServiceCard({
   href,
   serviceId,
   badge,
-  index = 0,
   imageSrc,
   imageAlt,
 }: ServiceCardProps) {

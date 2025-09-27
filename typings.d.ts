@@ -139,7 +139,11 @@ export interface BlockContent {
     text: string;
     marks?: string[];
   }[];
-  markDefs?: any[];
+  markDefs?: {
+    _key: string;
+    _type: string;
+    [key: string]: unknown;
+  }[];
   // For images
   asset?: { _ref: string; _type: "reference" };
   alt?: string;
