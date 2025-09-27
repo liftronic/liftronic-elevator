@@ -3,6 +3,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import Breadcrumb from "~/components/Breadcrumb";
 import ServiceCard from "~/components/services/ServiceCard";
 
 type Service = {
@@ -53,7 +54,13 @@ export default function ServicesPage() {
         />
 
         {/* Content overlay */}
-        <div className="relative z-10 container mx-auto px-4 py-16 md:py-20">
+        <div className="relative z-10 container mx-auto px-4 py-16 md:pt-28 md:py-20">
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Services", isCurrentPage: true },
+            ]}
+          />
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">
               Our Services
@@ -102,7 +109,6 @@ export default function ServicesPage() {
                 summary={service.summary}
                 tags={service.tags}
                 serviceId={service.id}
-                badge={"Popular"}
               />
             ))}
           </div>
@@ -117,7 +123,7 @@ export default function ServicesPage() {
         viewport={{ once: true }}
         className="relative mt-20"
       >
-        <div className="bg-gradient-to-r from-accent to-accent/80 rounded-3xl p-12 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-accent to-green-500 p-12 relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-32 -translate-y-32"></div>

@@ -8,6 +8,7 @@ import { BiCheck } from "react-icons/bi";
 import WhyUsSection from "~/components/aboutus/WhyUsSection";
 import VisionMissionValues from "~/components/aboutus/VisionMissionValues";
 import TeamSection from "~/components/aboutus/TeamSection";
+import Breadcrumb from "~/components/Breadcrumb";
 import Link from "next/link";
 
 // Timeline data for company history
@@ -66,7 +67,14 @@ export default function AboutPage() {
           }}
         />
 
-        <div className="relative z-10 container mx-auto px-4 py-16 md:py-20">
+        <div className="relative z-10 container mx-auto px-4 py-16 md:pt-28 md:py-20">
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "About Us", isCurrentPage: true },
+            ]}
+          />
+
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">
               Est. 2009 • 15+ Years of Excellence

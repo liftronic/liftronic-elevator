@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import BlogCard from "~/components/blog/BlogCard";
 import FeaturedBlogCard from "~/components/blog/FeaturedBlogCard";
-import ProductBreadcrumb from "~/components/ProductBreadcrumb";
+import Breadcrumb from "~/components/Breadcrumb";
 
 type BlogPost = {
   id: string;
@@ -148,7 +148,7 @@ export default function BlogPage() {
 
         {/* Content overlay */}
         <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
-          <ProductBreadcrumb items={breadcrumbItems} />
+          <Breadcrumb items={breadcrumbItems} />
 
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">

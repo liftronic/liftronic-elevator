@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import ProductCard from "~/components/products/ProductCard";
-import ProductBreadcrumb from "~/components/ProductBreadcrumb";
+import Breadcrumb from "~/components/Breadcrumb";
 import { motion } from "motion/react";
 
 type Product = {
@@ -104,7 +104,12 @@ export default function ProductsPage() {
 
         {/* Content overlay */}
         <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
-          <ProductBreadcrumb />
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Products", isCurrentPage: true },
+            ]}
+          />
 
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">

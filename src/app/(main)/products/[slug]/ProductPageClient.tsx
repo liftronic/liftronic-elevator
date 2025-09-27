@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import ProductBreadcrumb from "~/components/ProductBreadcrumb";
+import Breadcrumb from "~/components/Breadcrumb";
 import ProductFeatures from "~/components/products/ProductFeatures";
 import ProductFAQ from "~/components/products/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
@@ -91,7 +91,13 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         </div>
 
         <div className="container mx-auto px-6 py-16 md:py-28">
-          <ProductBreadcrumb productTitle={product.title} />
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Products", href: "/products" },
+              { label: product.title, isCurrentPage: true },
+            ]}
+          />
 
           <div className="grid items-start gap-16 lg:grid-cols-[1fr_0.85fr] lg:items-center mt-6">
             {/* Content */}

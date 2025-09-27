@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { HiHome, HiChevronRight } from "react-icons/hi";
 import ProductFeatures from "~/components/products/ProductFeatures";
 import ProductFAQ from "~/components/products/ProductFAQ";
+import Breadcrumb from "~/components/Breadcrumb";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
 
@@ -80,117 +80,94 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
     Array.isArray(service.specifications) && service.specifications.length > 0;
 
   return (
-    <main
-      className="min-h-screen bg-gradient-to-br from-white via-gray-50/30 to-blue-50/20"
-      style={pageStyle}
-    >
-      {/* Breadcrumb Navigation */}
-      <div className="border-b border-gray-200/60 bg-white/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 py-4">
-          <nav
-            className="flex items-center gap-2 text-sm"
-            aria-label="Breadcrumb"
-          >
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-gray-600 transition-colors hover:text-accent"
-            >
-              <HiHome className="h-4 w-4" />
-              <span>Home</span>
-            </Link>
-            <HiChevronRight className="h-4 w-4 text-gray-400" />
-            <motion.button
-              onClick={handleBackClick}
-              className="text-gray-600 transition-colors hover:text-accent"
-            >
-              Services
-            </motion.button>
-            <HiChevronRight className="h-4 w-4 text-gray-400" />
-            <span className="font-medium text-gray-900">{service.title}</span>
-          </nav>
-        </div>
-      </div>
-
+    <main className="min-h-screen" style={pageStyle}>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-white via-blue-50/30 to-white py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-            {/* Content */}
-            <div className="flex flex-col justify-center">
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {service.tags?.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h1
-                    className="text-4xl font-extrabold leading-tight text-charcoal md:text-5xl lg:text-6xl service-title"
-                    style={
-                      {
-                        "--title-transition-name": `service-title-${service.id}`,
-                      } as React.CSSProperties
-                    }
-                  >
-                    {service.title}
-                  </h1>
-                  <p className="text-xl text-gray-700 leading-relaxed">
-                    {service.summary}
-                  </p>
-                </div>
-                <div className="prose prose-lg text-gray-600 max-w-none">
-                  <p>{service.description}</p>
-                </div>
-                <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-                  <Link href="/#contact">
-                    <motion.a
-                      className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Get Service Quote
-                    </motion.a>
-                  </Link>
+      <section className="relative isolate overflow-hidden bg-gradient-to-br from-white via-white/80 to-gray-50/50">
+        {/* Background Elements */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_farthest-corner_at_top_right,_rgba(42,227,148,0.12),_transparent_60%)]" />
+          <div className="absolute -left-20 top-1/3 h-80 w-80 -translate-y-1/2 rounded-full bg-accent/20 blur-3xl opacity-60" />
+          <div className="absolute -right-24 bottom-20 h-72 w-72 rounded-full bg-accent/15 blur-3xl opacity-50" />
+        </div>
+        <div className="container mx-auto px-6 py-16 md:py-28">
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Services", href: "/services" },
+              { label: service.title, isCurrentPage: true },
+            ]}
+          />
 
+          <div className="grid items-start gap-16 lg:grid-cols-[1fr_0.85fr] lg:items-center mt-6">
+            {/* Content */}
+            <div className="space-y-8">
+              {/* Title and Summary */}
+              <div className="space-y-4">
+                <h1 className="service-title text-4xl font-bold leading-tight text-charcoal md:text-5xl lg:text-6xl">
+                  {service.title}
+                </h1>
+                <p className="text-xl leading-relaxed text-gray-700 md:text-2xl lg:max-w-xl">
+                  {service.summary}
+                </p>
+              </div>
+
+              {/* Service Tags */}
+              {service.tags && service.tags.length > 0 && (
+                <div className="flex flex-wrap gap-3">
+                  {service.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center rounded-full bg-gradient-to-r from-accent to-accent/80 px-5 py-2 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_35px_-10px_rgba(42,227,148,0.65)] ring-1 ring-inset ring-white/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Description Card */}
+              <div>
+                <p className="text-lg leading-relaxed text-gray-700">
+                  {service.description}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+                <Link href="/#contact">
                   <motion.button
-                    onClick={handleBackClick}
+                    className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Request Service
+                  </motion.button>
+                </Link>
+                <Link href="/products">
+                  <motion.button
                     className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    View All Services
+                    Explore Products
                   </motion.button>
-                </div>
+                </Link>
               </div>
             </div>
 
-            {/* Hero Image */}
-            <div className="relative">
-              <div
-                className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-200/60 shadow-2xl service-image"
-                style={
-                  {
-                    "--image-transition-name": `service-image-${service.id}`,
-                  } as React.CSSProperties
-                }
-              >
+            {/* Service Image */}
+            <div className="order-first lg:order-last">
+              <div className="relative mx-auto aspect-[4/3] w-full overflow-hidden rounded-3xl border border-gray-200/60 bg-white shadow-2xl service-image">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-gray-900/5" />
                 <Image
                   src={heroImage}
-                  alt={service.imageAlt || service.title}
+                  alt={service.imageAlt || `${service.title} service`}
                   fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw"
                   className="object-cover"
                   priority
                 />
               </div>
-              {/* Decorative elements */}
-              <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-full bg-accent/20 blur-2xl" />
-              <div className="absolute -top-4 -left-4 h-32 w-32 rounded-full bg-blue-200/30 blur-3xl" />
             </div>
           </div>
         </div>
@@ -205,8 +182,8 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-4xl">
               <div className="text-center space-y-6 mb-12">
-                <div className="inline-block rounded-full bg-blue-50 px-4 py-2">
-                  <span className="text-sm font-bold uppercase tracking-wider text-blue-600">
+                <div className="inline-block rounded-fullpx-4 py-2">
+                  <span className="text-sm font-bold uppercase tracking-wider text-accent">
                     Service Details
                   </span>
                 </div>
@@ -243,15 +220,15 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
       <section className="border-t border-gray-200/60 bg-gradient-to-br from-blue-50/30 via-white to-gray-50/30 py-20 md:py-28">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-6 mb-16">
-            <div className="inline-block rounded-full bg-blue-50 px-4 py-2">
-              <span className="text-sm font-bold uppercase tracking-wider text-blue-600">
+            <div className="inline-block rounded-full px-4 py-2">
+              <span className="text-sm font-bold uppercase tracking-wider text-accent">
                 Our Process
               </span>
             </div>
             <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
               Experience the
               <br />
-              <span className="text-blue-600">service excellence</span>
+              <span className="text-accent">service excellence</span>
             </h2>
             <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
               Professional service delivery with attention to detail and
@@ -312,19 +289,19 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
       <ProductFAQ faqs={service.faqs} />
 
       {/* Call to Action */}
-      <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
+      <section className="border-t border-gray-200/60 py-20 md:py-28 bg-gradient-to-r from-accent to-green-500">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center space-y-10">
             <div className="space-y-6">
               <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
-                <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                <span className="text-sm font-bold uppercase tracking-wider">
                   Get Started
                 </span>
               </div>
               <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
                 Ready to experience
                 <br />
-                <span className="text-accent">professional service?</span>
+                <span>professional service?</span>
               </h2>
               <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
                 Connect with our service specialists to discuss your
@@ -344,7 +321,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
               </Link>
               <motion.button
                 onClick={handleBackClick}
-                className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
+                className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
