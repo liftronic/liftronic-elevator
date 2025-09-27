@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb";
-import ProductFeatures from "~/components/ProductFeatures";
-import ProductFAQ from "~/components/ProductFAQ";
+import ProductFeatures from "~/components/products/ProductFeatures";
+import ProductFAQ from "~/components/products/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
 
 // Product type definition
@@ -135,7 +135,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                   Get a Quote
                 </Link>
                 <Link
-                  href="/#services"
+                  href="/services"
                   className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
                 >
                   Explore Services
