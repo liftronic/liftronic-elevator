@@ -43,11 +43,7 @@ export default function Navbar() {
     const defaultScrolled = !isHomePage;
     return (
       <div className="fixed top-0 inset-x-0 z-50" suppressHydrationWarning>
-        <div
-          className={`mx-auto container px-4 transition-all ${
-            defaultScrolled ? "mt-2" : "mt-4"
-          }`}
-        >
+        <div className={`mx-auto container transition-all`}>
           <div
             className={`rounded-2xl transition-all duration-700 ease-in-out ${
               defaultScrolled
@@ -122,11 +118,7 @@ export default function Navbar() {
 
   return (
     <div className="fixed top-0 inset-x-0 z-50" suppressHydrationWarning>
-      <div
-        className={`mx-auto container px-4 transition-all ${
-          scrolled ? "mt-2" : "mt-4"
-        }`}
-      >
+      <div className={`mx-auto container transition-all`}>
         <div
           className={`rounded-2xl transition-all duration-700 ease-in-out ${
             scrolled ? "glass-solid shadow-elevate" : "glass-transparent"

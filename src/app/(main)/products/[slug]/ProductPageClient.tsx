@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { HiHome, HiChevronRight } from "react-icons/hi";
+import ProductBreadcrumb from "~/components/ProductBreadcrumb";
 import ProductFeatures from "~/components/ProductFeatures";
 import ProductFAQ from "~/components/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
@@ -79,39 +79,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
     Array.isArray(product.specifications) && product.specifications.length > 0;
 
   return (
-    <main
-      className="min-h-screen bg-gradient-to-br from-white via-gray-50/30 to-soft"
-      style={pageStyle}
-    >
-      {/* Breadcrumb Navigation */}
-      <div className="border-b border-gray-200/60 bg-white/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 py-4">
-          <nav
-            className="flex items-center gap-2 text-sm"
-            aria-label="Breadcrumb"
-          >
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-gray-600 transition-colors hover:text-accent"
-            >
-              <HiHome className="h-4 w-4" />
-              <span>Home</span>
-            </Link>
-            <HiChevronRight className="h-4 w-4 text-gray-400" />
-            <Link
-              href="/products"
-              className="text-gray-600 transition-colors hover:text-accent font-medium"
-            >
-              Products
-            </Link>
-            <HiChevronRight className="h-4 w-4 text-gray-400" />
-            <span className="text-charcoal font-semibold max-w-[200px] truncate">
-              {product.title}
-            </span>
-          </nav>
-        </div>
-      </div>
-
+    <main className="min-h-screen" style={pageStyle}>
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-white via-white/80 to-gray-50/50">
         {/* Background Elements */}
@@ -121,26 +89,14 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
           <div className="absolute -right-24 bottom-20 h-72 w-72 rounded-full bg-accent/15 blur-3xl opacity-50" />
         </div>
 
-        <div className="container mx-auto px-4 py-16 md:py-24">
-          <div className="grid items-start gap-16 lg:grid-cols-[1fr_0.85fr] lg:items-center">
+        <div className="container mx-auto px-6 py-16 md:py-28">
+          <ProductBreadcrumb productTitle={product.title} />
+
+          <div className="grid items-start gap-16 lg:grid-cols-[1fr_0.85fr] lg:items-center mt-6">
             {/* Content */}
             <div className="space-y-8">
-              {/* Product Tags */}
-              {product.tags && product.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {product.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center rounded-full bg-gradient-to-r from-accent/10 to-accent/5 px-4 py-2 text-xs font-bold uppercase tracking-wider text-accent border border-accent/20 shadow-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
               {/* Title and Summary */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <h1 className="product-title text-4xl font-bold leading-tight text-charcoal md:text-5xl lg:text-6xl">
                   {product.title}
                 </h1>
@@ -149,8 +105,22 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                 </p>
               </div>
 
+              {/* Product Tags */}
+              {product.tags && product.tags.length > 0 && (
+                <div className="flex flex-wrap gap-3">
+                  {product.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center rounded-full bg-gradient-to-r from-accent to-accent/80 px-5 py-2 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_35px_-10px_rgba(42,227,148,0.65)] ring-1 ring-inset ring-white/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
               {/* Description Card */}
-              <div className="rounded-2xl border border-gray-200/60 bg-white/90 p-8 shadow-lg backdrop-blur-sm">
+              <div>
                 <p className="text-lg leading-relaxed text-gray-700">
                   {product.description}
                 </p>
@@ -191,101 +161,40 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         </div>
       </section>
 
-      {/* Overview Section */}
-      <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
-        <div className="container mx-auto px-4">
-          <div className="grid gap-16 lg:grid-cols-[1.3fr_0.7fr] lg:items-start">
-            {/* Main Content */}
-            <div className="space-y-10">
-              <div className="space-y-6">
-                <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
-                  <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                    Overview
-                  </span>
-                </div>
-                <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-                  Engineered for modern
-                  <br />
-                  <span className="text-accent">vertical transport</span>
-                </h2>
-                <p className="text-xl leading-relaxed text-gray-700 md:max-w-2xl">
-                  {product.description}
-                </p>
+      {hasSpecifications && (
+        <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
+          <div className="container mx-auto px-4">
+            {/* Section Header */}
+            <div className="mx-auto space-y-4 mb-8">
+              <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
+                <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                  Performance
+                </span>
               </div>
-
-              {/* Feature Grid */}
-              <div className="grid gap-6 sm:grid-cols-2">
-                <div className="group rounded-2xl border border-gray-200/60 bg-gradient-to-br from-white to-gray-50/30 p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:border-accent/20">
-                  <div className="space-y-4">
-                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
-                      <div className="h-6 w-6 rounded-full bg-accent"></div>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">
-                        Ideal Applications
-                      </h3>
-                      <p className="text-lg font-semibold text-charcoal">
-                        {product.tags?.slice(0, 2).join(" • ") ||
-                          "Versatile deployments"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="group rounded-2xl border border-gray-200/60 bg-gradient-to-br from-white to-gray-50/30 p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:border-accent/20">
-                  <div className="space-y-4">
-                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10">
-                      <div className="h-6 w-6 rounded-full bg-gradient-to-br from-accent to-accent/60"></div>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 mb-2">
-                        Expert Support
-                      </h3>
-                      <p className="text-lg text-gray-700">
-                        Dedicated engineers for planning, installation, and
-                        comprehensive maintenance.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
+                Technical specifications for {product.title}
+              </h2>
             </div>
 
-            {/* Specifications Panel */}
-            {hasSpecifications && (
-              <div className="rounded-3xl border border-gray-200/60 bg-gradient-to-br from-white via-white to-gray-50/30 p-10 shadow-xl backdrop-blur-sm">
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-2xl font-bold text-charcoal mb-3">
-                      Key Specifications
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      Essential metrics tailored to your building requirements
-                      and performance needs.
-                    </p>
-                  </div>
-
-                  <div className="space-y-4">
-                    {product.specifications?.map((spec) => (
-                      <div
-                        key={`${spec.label}-${spec.value}`}
-                        className="group rounded-xl border border-gray-200/40 bg-white/80 p-6 shadow-sm transition-all duration-200 hover:shadow-md hover:bg-white"
-                      >
-                        <dt className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
-                          {spec.label}
-                        </dt>
-                        <dd className="text-xl font-bold text-charcoal">
-                          {spec.value}
-                        </dd>
-                      </div>
-                    ))}
-                  </div>
+            {/* Specifications Grid */}
+            <dl className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {product.specifications?.map((spec) => (
+                <div
+                  key={`${spec.label}-${spec.value}`}
+                  className="group rounded-2xl border border-gray-200/60 bg-gradient-to-br from-white to-gray-50/30 p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:border-accent/20"
+                >
+                  <dt className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
+                    {spec.label}
+                  </dt>
+                  <dd className="mt-3 text-2xl font-bold text-charcoal md:text-3xl">
+                    {spec.value}
+                  </dd>
                 </div>
-              </div>
-            )}
+              ))}
+            </dl>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <ProductFeatures features={product.features} />
 
@@ -293,18 +202,16 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
       <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
         <div className="container mx-auto px-4">
           {/* Section Header */}
-          <div className="mx-auto max-w-4xl text-center space-y-6 mb-16">
+          <div className="mx-auto space-y-6 mb-16">
             <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
               <span className="text-sm font-bold uppercase tracking-wider text-accent">
                 Visual Gallery
               </span>
             </div>
             <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-              Experience the
-              <br />
-              <span className="text-accent">quality in detail</span>
+              Experience the quality in detail
             </h2>
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
               High-fidelity renders showcasing cabin design, control systems,
               and installation excellence.
             </p>
@@ -344,19 +251,6 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
               );
             })}
           </div>
-
-          {/* Custom Finishes Call-out */}
-          <div className="mt-16 text-center">
-            <div className="mx-auto max-w-2xl rounded-2xl border border-gray-200/60 bg-white/80 p-8 shadow-lg backdrop-blur-sm">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                <span className="font-semibold text-charcoal">
-                  Need custom finishes?
-                </span>{" "}
-                Share your inspiration and we&apos;ll create detailed mockups
-                matching your exact vision.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -365,7 +259,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
       {/* Call to Action */}
       <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
         <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-4xl text-center space-y-10">
+          <div className="space-y-10">
             <div className="space-y-6">
               <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
                 <span className="text-sm font-bold uppercase tracking-wider text-accent">
@@ -373,17 +267,15 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                 </span>
               </div>
               <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-                Ready to elevate
-                <br />
-                <span className="text-accent">your project?</span>
+                Ready to elevate your project?
               </h2>
-              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
                 Partner with our specialists to scope, install, and maintain a
                 lift solution that perfectly fits your building requirements.
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
               <Link
                 href="/#contact"
                 className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"

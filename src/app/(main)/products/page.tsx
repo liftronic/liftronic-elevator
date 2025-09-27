@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import ProductCard from "~/components/ProductCard";
+import ProductBreadcrumb from "~/components/ProductBreadcrumb";
 
 type Product = {
   id: string;
@@ -94,14 +95,16 @@ export default function ProductsPage() {
       <section className="relative">
         {/* Background image */}
         <div
-          className="absolute inset-0 bg-cover md:bg-contain bg-center bg-no-repeat opacity-80"
+          className="absolute inset-0 bg-cover opacity-10 sm:bg-cover bg-no-repeat bg-right md:opacity-60"
           style={{
             backgroundImage: "url(/illustrations/lift01.png)",
           }}
         />
 
         {/* Content overlay */}
-        <div className="relative z-10 container mx-auto px-4 py-16 md:py-20">
+        <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
+          <ProductBreadcrumb />
+
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">
               Our Products

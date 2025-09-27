@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { IoChevronDown } from "react-icons/io5";
 
@@ -28,17 +27,22 @@ export default function ProductFAQ({ faqs }: ProductFAQProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-12"
         >
+          <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-6">
+            <span className="text-sm font-bold uppercase tracking-wider text-accent">
+              FAQ
+            </span>
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl">
             Get answers to common questions about our elevator solutions.
           </p>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto">
+        <div>
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
@@ -84,28 +88,6 @@ export default function ProductFAQ({ faqs }: ProductFAQProps) {
             </motion.div>
           ))}
         </div>
-
-        {/* Contact CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <div className="bg-gradient-to-r from-accent/10 to-accent/5 rounded-2xl p-8">
-            <h3 className="text-xl font-semibold text-charcoal mb-3">
-              Still have questions?
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Our technical experts are here to help you find the perfect
-              elevator solution.
-            </p>
-            <Link href="/#contact" className="btn btn-primary">
-              Contact Our Experts
-            </Link>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
