@@ -36,19 +36,21 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 scroll-mt-24 bg-white">
-      <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-10">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-semibold">Let’s Talk</h2>
-          <p className="mt-3 opacity-80">
-            Quick response, engineered solutions, dependable support.
+    <section id="contact" className="py-20 scroll-mt-24 bg-white text-charcoal">
+      <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-4xl md:text-5xl font-semibold text-charcoal">
+            Get in Touch
+          </h2>
+          <p className="mt-4 text-lg text-charcoal/80">
+            Have a project in mind? We&apos;d love to hear from you.
           </p>
-          <ul className="mt-6 space-y-2 text-sm">
-            <li>• Site assessment and consultation</li>
-            <li>• Compliance-first safety approach</li>
-            <li>• Post-installation training and support</li>
-          </ul>
-          <div className="mt-8 h-48 rounded-xl border border-black/10 overflow-hidden">
+          <div className="mt-8 h-80 rounded-2xl overflow-hidden shadow-lg">
             <iframe
               src="https://maps.google.com/maps?q=Mumbai,Maharashtra,India&output=embed"
               width="100%"
@@ -57,88 +59,94 @@ export default function ContactSection() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="rounded-xl"
             ></iframe>
           </div>
-        </div>
+        </motion.div>
 
         <motion.form
           onSubmit={handleSubmit(onSubmit)}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5 }}
-          className="rounded-xl border border-black/10 p-6 bg-soft"
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="rounded-2xl bg-soft p-8 shadow-elevate text-charcoal"
         >
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-5">
             <div>
-              <label className="text-sm">Name</label>
+              <label className="text-sm font-medium text-charcoal/80">Name</label>
               <input
                 {...register("name")}
-                className="mt-1 w-full rounded-lg border border-black/10 bg-white p-3"
+                className="mt-1 w-full rounded-lg bg-white p-3 border border-gray-300 focus:ring-2 focus:ring-brand text-charcoal"
                 placeholder="Your name"
               />
               {errors.name && (
-                <p className="mt-1 text-xs text-red-600">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.name.message}
                 </p>
               )}
             </div>
             <div>
-              <label className="text-sm">Email</label>
+              <label className="text-sm font-medium text-charcoal/80">Email</label>
               <input
                 {...register("email")}
                 type="email"
-                className="mt-1 w-full rounded-lg border border-black/10 bg-white p-3"
+                className="mt-1 w-full rounded-lg bg-white p-3 border border-gray-300 focus:ring-2 focus:ring-brand text-charcoal"
                 placeholder="you@example.com"
               />
               {errors.email && (
-                <p className="mt-1 text-xs text-red-600">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.email.message}
                 </p>
               )}
             </div>
             <div className="sm:col-span-2">
-              <label className="text-sm">Phone</label>
+              <label className="text-sm font-medium text-charcoal/80">Phone</label>
               <input
                 {...register("phone")}
-                className="mt-1 w-full rounded-lg border border-black/10 bg-white p-3"
+                className="mt-1 w-full rounded-lg bg-white p-3 border border-gray-300 focus:ring-2 focus:ring-brand text-charcoal"
                 placeholder="+91 90000 00000"
               />
               {errors.phone && (
-                <p className="mt-1 text-xs text-red-600">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.phone.message}
                 </p>
               )}
             </div>
             <div className="sm:col-span-2">
-              <label className="text-sm">Message</label>
+              <label className="text-sm font-medium text-charcoal/80">
+                Message
+              </label>
               <textarea
                 {...register("message")}
                 rows={4}
-                className="mt-1 w-full rounded-lg border border-black/10 bg-white p-3"
+                className="mt-1 w-full rounded-lg bg-white p-3 border border-gray-300 focus:ring-2 focus:ring-brand text-charcoal"
                 placeholder="Tell us about your requirement"
               />
               {errors.message && (
-                <p className="mt-1 text-xs text-red-600">
+                <p className="mt-1 text-xs text-red-500">
                   {errors.message.message}
                 </p>
               )}
             </div>
           </div>
-          <div className="mt-6 flex items-center gap-3">
+          <div className="mt-6 flex items-center gap-4">
             <motion.button
-              className="btn btn-primary font-semibold px-8 py-3"
-              whileHover={{ scale: 1.05 }}
+              className="btn bg-accent text-charcoal font-bold px-8 py-3 rounded-lg shadow-lg"
+              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
               whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
             >
-              {isSubmitting ? "Submitting..." : "Submit"}
+              {isSubmitting ? "Submitting..." : "Submit Inquiry"}
             </motion.button>
 
             {isSubmitSuccessful && (
-              <span className="text-sm text-green-600">
-                Thanks! We’ll be in touch.
-              </span>
+                <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-sm text-charcoal/90 font-medium"
+              >
+                Thanks! We&apos;ll be in touch.
+              </motion.span>
             )}
           </div>
         </motion.form>

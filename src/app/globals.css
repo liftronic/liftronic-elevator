@@ -6,6 +6,7 @@
   --soft: #f9f9f9;
   --footer: #111111;
   --accent: #2ae394;
+  --marquee-duration: 12s; /* faster, tunable */
   --brand: #00A86B; /* A modern, sleek green */
 }
 
@@ -182,7 +183,23 @@ p {
 }
 
 .marquee-track {
-  animation: marquee 20s linear infinite;
+  animation: marquee var(--marquee-duration) linear infinite;
+  /* pause when hovered so users can read logos */
+  will-change: transform;
+}
+
+/* pause animation on hover/focus for better UX */
+.marquee-track:hover,
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+/* Respect user's reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    transform: translateX(0);
+  }
 }
 
 /* View Transitions */

@@ -19,26 +19,36 @@ function Stars({ count }: { count: number }) {
 
 export default function Testimonials() {
   return (
-    <section className="py-20">
+    <section className="py-20 bg-soft">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-semibold">Testimonials</h2>
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h2 className="text-3xl md:text-4xl font-semibold text-center text-charcoal">
+          What Our Clients Say
+        </h2>
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map((t, idx) => (
             <motion.div
               key={t.name}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ delay: idx * 0.05 }}
-              whileHover={{ scale: 1.02 }}
-              className="rounded-xl border border-black/10 bg-white p-6"
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{ y: -8 }}
+              className="rounded-2xl bg-white p-8 transition-all duration-150 shadow-elevate"
             >
-              <div className="text-4xl leading-none">“</div>
-              <p className="mt-2 text-sm opacity-90">{t.text}</p>
-              <div className="mt-4 flex items-center justify-between">
-                <div className="font-medium">{t.name}</div>
-                <Stars count={t.rating} />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-brand">
+                    {t.name.charAt(0)}
+                  </span>
+                </div>
+                <div>
+                  <div className="font-semibold text-charcoal">{t.name}</div>
+                  <Stars count={t.rating} />
+                </div>
               </div>
+              <p className="mt-5 text-charcoal/80 italic">
+                “{t.text}”
+              </p>
             </motion.div>
           ))}
         </div>
