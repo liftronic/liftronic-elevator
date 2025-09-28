@@ -7,25 +7,19 @@ type BreadcrumbItem = {
   isCurrentPage?: boolean;
 };
 
-type ProductBreadcrumbProps = {
-  productTitle?: string;
+type BreadcrumbProps = {
+  title?: string;
   items?: BreadcrumbItem[];
 };
 
-export default function ProductBreadcrumb({
-  productTitle,
-  items,
-}: ProductBreadcrumbProps) {
-  // Default breadcrumb structure for products
-  const defaultItems: BreadcrumbItem[] = [
-    { label: "Home", href: "/" },
-    { label: "Products", href: "/products", isCurrentPage: !productTitle },
-  ];
+export default function Breadcrumb({ title, items }: BreadcrumbProps) {
+  // Default breadcrumb structure
+  const defaultItems: BreadcrumbItem[] = [{ label: "Home", href: "/" }];
 
-  // If productTitle is provided, add it as the final item
-  if (productTitle) {
+  // If title is provided, add it as the final item
+  if (title) {
     defaultItems.push({
-      label: productTitle,
+      label: title,
       isCurrentPage: true,
     });
   }
