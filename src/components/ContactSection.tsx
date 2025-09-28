@@ -88,8 +88,9 @@ export default function ContactSection() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
             <motion.form
+              id="request-quote"
               onSubmit={handleSubmit(onSubmit)}
-              className="rounded-2xl bg-white/80 p-6 shadow-xl border border-accent/10 text-black relative overflow-visible min-w-0 h-full"
+              className="rounded-2xl bg-white/80 p-6 shadow-xl border border-accent/10 text-black relative overflow-visible min-w-0 h-full scroll-mt-22"
               initial={{ scale: 1 }}
             >
               {/* Card header (site theme) */}
