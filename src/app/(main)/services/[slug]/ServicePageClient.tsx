@@ -293,11 +293,6 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center space-y-10">
             <div className="space-y-6">
-              <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
-                <span className="text-sm font-bold uppercase tracking-wider">
-                  Get Started
-                </span>
-              </div>
               <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
                 Ready to experience
                 <br />
@@ -312,7 +307,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
               <Link href="/#contact">
                 <motion.a
-                  className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="btn bg-white text-black text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -321,7 +316,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
               </Link>
               <motion.button
                 onClick={handleBackClick}
-                className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 transition-all duration-300"
+                className="btn border-2 border-gray-200 bg-transparent text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
