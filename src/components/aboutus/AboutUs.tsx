@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "motion/react";
 import { BiCog, BiStar, BiBuildings, BiGlobe, BiWrench } from "react-icons/bi";
 
 // A custom hook to animate a number from 0 to a target value.
