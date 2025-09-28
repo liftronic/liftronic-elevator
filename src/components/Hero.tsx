@@ -44,7 +44,9 @@ export default function Hero({ socials }: HeroProps) {
     }
   };
   return (
-  <section className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden">
+  <section className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden overflow-x-hidden">
+  {/* hide native scrollbars for small horizontal scroll areas (mobile socials) */}
+  <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;}`}</style>
       {/* Background video */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -64,13 +66,13 @@ export default function Hero({ socials }: HeroProps) {
         <div className="absolute inset-0 [background:radial-gradient(60%_60%_at_20%_30%,rgba(42,227,148,0.12),transparent_60%)]" />
       </div>
 
-      <div className="relative h-full container mx-auto px-4 flex items-center justify-between gap-8">
+  <div className="relative h-full container mx-auto px-4 flex items-center justify-center lg:justify-between gap-8 overflow-x-hidden">
         {/* Decorative blobs */}
         <div className="pointer-events-none hidden lg:block absolute -top-12 -right-24 w-[380px] h-[380px] rounded-full bg-gradient-to-br from-accent/30 to-indigo-600/20 blur-3xl opacity-60 transform rotate-12" aria-hidden />
         <div className="pointer-events-none hidden lg:block absolute -bottom-16 left-20 w-[260px] h-[260px] rounded-full bg-gradient-to-tr from-white/8 to-accent/20 blur-2xl opacity-40" aria-hidden />
 
-        {/* Left: Messaging */}
-        <div className="max-w-2xl text-left">
+  {/* Left: Messaging */}
+  <div className="max-w-2xl text-center lg:text-left w-full min-w-0">
           <motion.h1
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -246,7 +248,7 @@ export default function Hero({ socials }: HeroProps) {
           >
             <div className="flex flex-col gap-3 text-sm text-white/80">
               <span className="text-xs uppercase tracking-[0.28em] text-white/60">Connect</span>
-              <div className="flex items-center gap-2 whitespace-nowrap overflow-x-auto">
+              <div className="flex items-center gap-2 whitespace-nowrap overflow-x-auto hide-scrollbar max-w-full">
                 {socials?.map((social) => {
                   const Icon = getIcon(social.icon);
                   return (
@@ -255,7 +257,7 @@ export default function Hero({ socials }: HeroProps) {
                       href={social.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-shrink-0 flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/5 px-2 py-1 text-white transition hover:text-accent"
+                      className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/5 px-2 py-1 text-white transition hover:text-accent"
                     >
                       {Icon && (
                         <Icon className="text-base text-accent" aria-hidden />
