@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "motion/react";
+import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 import { FiHeadphones, FiMail, FiPhoneCall } from "react-icons/fi";
 import { Social } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
@@ -9,6 +10,7 @@ interface HeroProps {
 }
 
 export default function Hero({ socials }: HeroProps) {
+  const { scrollTo } = useSmoothScroll();
   const handleScroll = () => {
     const el = document.getElementById("about");
     if (el) {
@@ -18,7 +20,7 @@ export default function Hero({ socials }: HeroProps) {
     }
   };
   return (
-    <section className="relative h-[100svh] min-h-[620px] w-full overflow-hidden">
+  <section className="relative h-[100svh] min-h-[460px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden">
       {/* Background video */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -44,7 +46,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.05, duration: 0.6, ease: "easeOut" }}
-            className="mt-16 sm:mt-4 text-5xl sm:text-6xl md:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
+            className="mt-10 sm:mt-4 text-3xl sm:text-5xl md:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
           >
             <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
             Experience
@@ -55,10 +57,10 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.15, duration: 0.6, ease: "easeOut" }}
-            className="mt-5 text-lg md:text-2xl text-white font-medium max-w-[46ch] drop-shadow-lg"
+            className="mt-2 text-sm sm:text-base md:text-2xl text-white font-medium max-w-[42ch] drop-shadow-lg"
           >
-            Design, installation, and maintenance engineered for precision,
-            safety, and seamless passenger experience.
+            <span className="hidden sm:inline">Design, installation, and maintenance engineered for precision, safety, and seamless passenger experience.</span>
+            <span className="sm:hidden">Design, install & maintain elevators with precision and care.</span>
           </motion.p>
 
           <motion.div
@@ -66,31 +68,39 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
-            className="mt-8 flex flex-wrap gap-3 justify-start"
+            className="mt-5 flex flex-col sm:flex-row gap-3 justify-start w-full max-w-[22rem] sm:max-w-none"
           >
             <a
-              href="#contact"
-              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105"
+              href="#request-quote"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("#request-quote");
+              }}
+              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
             >
               Get a Quote
             </a>
             <a
               href="#services"
-              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("#services");
+              }}
+              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
             >
               View Services
             </a>
           </motion.div>
           {/* Trust line */}
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.45, duration: 0.5 }}
-            className="mt-6 text-sm text-white/70"
+            className="hidden sm:block mt-4 sm:mt-6 text-sm text-white/70"
           >
             Trusted by residential, commercial, and industrial projects.
-          </motion.p>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -107,7 +117,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.32, duration: 0.6, ease: "easeOut" }}
-            className="mt-10"
+            className="hidden sm:block mt-6 sm:mt-10"
           >
             <div className="flex items-start gap-4 text-sm text-white/80">
               <span className="flex-shrink-0 pt-1.5 text-xs uppercase tracking-[0.28em] text-white/60">
@@ -125,7 +135,7 @@ export default function Hero({ socials }: HeroProps) {
                       className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
                     >
                       {Icon && (
-                        <Icon className="text-lg text-accent" aria-hidden />
+                        <Icon className="text-base sm:text-lg text-accent" aria-hidden />
                       )}
                       <span>{social.title}</span>
                     </a>
@@ -192,6 +202,38 @@ export default function Hero({ socials }: HeroProps) {
                 >
                   +91 9028226664
                 </a>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Socials (mobile) - show below contacts on small screens */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
+            className="block sm:hidden mt-4"
+          >
+            <div className="flex flex-col gap-3 text-sm text-white/80">
+              <span className="text-xs uppercase tracking-[0.28em] text-white/60">Connect</span>
+              <div className="flex flex-wrap items-center gap-2">
+                {socials?.map((social) => {
+                  const Icon = getIcon(social.icon);
+                  return (
+                    <a
+                      key={social._id + "-mobile"}
+                      href={social.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/5 px-3 py-1 text-white transition hover:text-accent"
+                    >
+                      {Icon && (
+                        <Icon className="text-base text-accent" aria-hidden />
+                      )}
+                      <span className="text-sm">{social.title}</span>
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
