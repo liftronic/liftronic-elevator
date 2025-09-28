@@ -1,9 +1,9 @@
 import Link from "next/link";
 import ProductCard from "~/components/products/ProductCard";
-import ProductBreadcrumb from "~/components/ProductBreadcrumb";
+import Breadcrumb from "~/components/Breadcrumb";
 import * as motion from "motion/react-client";
 import CallToActionSection from "~/components/CallToActionSection";
-import { FiMessageSquare, FiEye } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 
 type Product = {
   id: string;
@@ -105,7 +105,12 @@ export default function ProductsPage() {
 
         {/* Content overlay */}
         <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
-          <ProductBreadcrumb />
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Products", isCurrentPage: true },
+            ]}
+          />
 
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">
@@ -119,27 +124,25 @@ export default function ProductsPage() {
               needs. Designed for safety, efficiency and seamless ride quality.
             </p>
             <div className="mt-6 flex gap-3">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link href="/#contact" className="btn btn-primary inline-flex">
-                  <FiMessageSquare className="text-base" />
+              <Link href="/#contact">
+                <motion.button
+                  className="btn btn-primary"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Request a Quote
-                </Link>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link
-                  href="/services"
-                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 inline-flex"
+                </motion.button>
+              </Link>
+              <Link href="/services" className="btn">
+                <motion.button
+                  className="btn"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <FiEye className="text-base" />
                   View Services
-                </Link>
-              </motion.div>
+                </motion.button>
+              </Link>
             </div>
           </div>
         </div>

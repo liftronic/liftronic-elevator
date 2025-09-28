@@ -4,6 +4,7 @@ import AboutUs from "~/components/aboutus/AboutUs";
 import ProductsInteractive from "~/components/products/ProductsInteractive";
 import Services from "~/components/services/Services";
 import ClientsMarquee from "~/components/ClientsMarquee";
+import MediaPreview from "~/components/MediaPreview";
 import BlogSection from "~/components/BlogSection";
 import Testimonials from "~/components/Testimonials";
 import ContactSection from "~/components/ContactSection";
@@ -17,6 +18,7 @@ export default async function Home() {
       <Services />
       <ProductsInteractive />
       <ClientsMarquee />
+      <MediaPreview />
       <BlogSection />
       <Testimonials />
       <ContactSection />

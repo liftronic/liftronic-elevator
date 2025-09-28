@@ -2,6 +2,7 @@
 
 import * as motion from "motion/react-client";
 import Link from "next/link";
+import Breadcrumb from "~/components/Breadcrumb";
 import ServiceCard from "~/components/services/ServiceCard";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiMessageSquare, FiEye } from "react-icons/fi";
@@ -54,7 +55,13 @@ export default function ServicesPage() {
         />
 
         {/* Content overlay */}
-        <div className="relative z-10 container mx-auto px-4 py-16 md:py-20">
+        <div className="relative z-10 container mx-auto px-4 py-16 md:pt-28 md:py-20">
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Services", isCurrentPage: true },
+            ]}
+          />
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">
               Our Services
@@ -105,7 +112,6 @@ export default function ServicesPage() {
                 summary={service.summary}
                 tags={service.tags}
                 serviceId={service.id}
-                badge={"Popular"}
               />
             ))}
           </div>

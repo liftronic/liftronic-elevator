@@ -10,6 +10,7 @@ import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 const navLinks = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
+  { href: "/media", label: "Media" },
   { href: "/blogs", label: "Blogs" },
   { href: "/aboutus", label: "About Us" },
 ];
@@ -81,13 +82,13 @@ export default function Navbar() {
 
     // navigate to home and then scroll a tick later
     await router.push("/");
-      setTimeout(() => {
-        try {
-          scrollTo("body");
-        } catch {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-      }, 80);
+    setTimeout(() => {
+      try {
+        scrollTo("body");
+      } catch {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 80);
   };
 
   return (
@@ -100,7 +101,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 px-5">
           <Link
             href="/"
-            onClick={(e) => handleLogoClick(e as unknown as MouseEvent<HTMLAnchorElement>)}
+            onClick={(e) =>
+              handleLogoClick(e as unknown as MouseEvent<HTMLAnchorElement>)
+            }
             className="flex items-center gap-3 font-bold text-lg tracking-tight"
           >
             <Image

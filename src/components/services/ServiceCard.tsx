@@ -129,7 +129,7 @@ export default function ServiceCard({
 
         {/* Action area with hover effect */}
         <div className="mt-6 pt-4 border-t border-gray-100 group-hover:border-gray-200 transition-colors">
-          <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
+          <div className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1">
             <span className="text-sm font-medium">
               {serviceId ? "Learn more" : "Get quote"}
             </span>

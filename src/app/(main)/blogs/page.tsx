@@ -1,9 +1,9 @@
+import * as motion from "motion/react-client";
 import Link from "next/link";
 import BlogCard from "~/components/blog/BlogCard";
 import FeaturedBlogCard from "~/components/blog/FeaturedBlogCard";
-import ProductBreadcrumb from "~/components/ProductBreadcrumb";
+import Breadcrumb from "~/components/Breadcrumb";
 import CallToActionSection from "~/components/CallToActionSection";
-import { FiMessageSquare, FiEye } from "react-icons/fi";
 
 type BlogPost = {
   id: string;
@@ -148,7 +148,7 @@ export default function BlogPage() {
 
         {/* Content overlay */}
         <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
-          <ProductBreadcrumb items={breadcrumbItems} />
+          <Breadcrumb items={breadcrumbItems} />
 
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">
@@ -163,13 +163,23 @@ export default function BlogPage() {
               expert team.
             </p>
             <div className="mt-6 flex gap-3">
-              <Link href="/#contact" className="btn btn-primary">
-                <FiMessageSquare className="text-base" />
-                Get Expert Consultation
+              <Link href="/#contact">
+                <motion.button
+                  className="btn btn-primary"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Get Expert Consultation
+                </motion.button>
               </Link>
-              <Link href="/services" className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300">
-                <FiEye className="text-base" />
-                View Services
+              <Link href="/services">
+                <motion.button
+                  className="btn"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  View Services
+                </motion.button>
               </Link>
             </div>
           </div>
