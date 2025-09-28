@@ -74,7 +74,7 @@ export default function Navbar() {
       // scroll to top element
       try {
         scrollTo("body");
-      } catch (err) {
+      } catch {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
       return;
@@ -82,13 +82,13 @@ export default function Navbar() {
 
     // navigate to home and then scroll a tick later
     await router.push("/");
-    setTimeout(() => {
-      try {
-        scrollTo("body");
-      } catch (err) {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    }, 80);
+      setTimeout(() => {
+        try {
+          scrollTo("body");
+        } catch {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, 80);
   };
 
   return (
