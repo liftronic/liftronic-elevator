@@ -64,6 +64,33 @@ export default function Navbar() {
     setOpen(false);
   };
 
+  const handleLogoClick = async (e: MouseEvent<HTMLAnchorElement>) => {
+    // Prevent full page reload. Smooth-scroll to top on homepage,
+    // otherwise navigate to homepage then scroll.
+    e.preventDefault();
+    // close mobile menu if open
+    setOpen(false);
+    if (isHomePage) {
+      // scroll to top element
+      try {
+        scrollTo("body");
+      } catch (err) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
+
+    // navigate to home and then scroll a tick later
+    await router.push("/");
+    setTimeout(() => {
+      try {
+        scrollTo("body");
+      } catch (err) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }, 80);
+  };
+
   return (
     <div className="fixed top-4 inset-x-0 z-50 px-5">
       <div
@@ -72,8 +99,9 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between h-16 px-5">
-          <Link
+          <a
             href="/"
+            onClick={(e) => handleLogoClick(e as unknown as MouseEvent<HTMLAnchorElement>)}
             className="flex items-center gap-3 font-bold text-lg tracking-tight"
           >
             <Image
@@ -91,7 +119,7 @@ export default function Navbar() {
             >
               Liftronic
             </span>
-          </Link>
+          </a>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.map((l) => (
