@@ -216,7 +216,7 @@ export default function Hero({ socials }: HeroProps) {
           >
             <div className="flex flex-col gap-3 text-sm text-white/80">
               <span className="text-xs uppercase tracking-[0.28em] text-white/60">Connect</span>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2 whitespace-nowrap overflow-x-auto">
                 {socials?.map((social) => {
                   const Icon = getIcon(social.icon);
                   return (
@@ -225,7 +225,7 @@ export default function Hero({ socials }: HeroProps) {
                       href={social.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/5 px-3 py-1 text-white transition hover:text-accent"
+                      className="flex-shrink-0 flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/5 px-2 py-1 text-white transition hover:text-accent"
                     >
                       {Icon && (
                         <Icon className="text-base text-accent" aria-hidden />
@@ -237,13 +237,35 @@ export default function Hero({ socials }: HeroProps) {
               </div>
             </div>
           </motion.div>
+          {/* Inline centered scroll button for very small screens (below socials) */}
+          <div className="flex sm:hidden w-full justify-center mt-3">
+            <button
+              type="button"
+              onClick={handleScroll}
+              className="text-white/80 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-md px-3 py-1 hover:text-white transition z-40 bg-black/30 backdrop-blur-sm"
+              aria-label="Scroll to content"
+            >
+              <div className="flex flex-col items-center">
+                <span>Scroll</span>
+                <svg
+                  className="mt-1 animate-bounce"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" />
+                </svg>
+              </div>
+            </button>
+          </div>
         </div>
 
-        {/* Scroll cue (clickable) */}
+        {/* Floating scroll cue for sm+ screens */}
         <button
           type="button"
           onClick={handleScroll}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-md px-2 py-1 hover:text-white transition"
+          className="hidden sm:block absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-md px-2 py-1 hover:text-white transition z-40"
           aria-label="Scroll to content"
         >
           <div className="flex flex-col items-center">
