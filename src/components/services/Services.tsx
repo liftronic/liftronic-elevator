@@ -158,6 +158,41 @@ export default function Services() {
             onSelect={setActiveIndex}
           />
         </div>
+
+        <div className="mt-12 bg-gradient-to-r from-white/10 via-white/15 to-white/10 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black/20 rounded-xl md:rounded-2xl p-4 md:p-6">
+          <div className="flex flex-col gap-4 md:gap-6 md:flex-row md:items-center md:justify-between">
+            {/* Quote */}
+            <div className="flex-1">
+              <blockquote className="text-sm md:text-base font-medium text-white/90 italic leading-tight">
+                &ldquo;Comprehensive solutions from design to deployment — every
+                project delivered with precision and care.&rdquo;
+              </blockquote>
+            </div>
+
+            {/* CTA Button */}
+            <div className="flex-shrink-0 w-full md:w-auto">
+              <Link
+                href="/#contact"
+                className="inline-flex items-center justify-center w-full md:w-auto rounded-lg bg-accent px-4 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-medium text-black transition-all hover:bg-accent/90 hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 shadow-sm"
+              >
+                Get Service Quote
+                <svg
+                  className="ml-2 h-4 w-4 md:h-5 md:w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

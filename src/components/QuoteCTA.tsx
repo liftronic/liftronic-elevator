@@ -18,9 +18,16 @@ export default function QuoteCTA({
   onClick,
   className = "",
 }: QuoteCTAProps) {
+  // Check if custom background is provided in className
+  const hasCustomBackground =
+    className?.includes("bg-") || className?.includes("backdrop-blur");
+  const defaultBackground = hasCustomBackground
+    ? ""
+    : "bg-gradient-to-r from-gray-50 to-white border-gray-100 shadow-sm";
+
   return (
     <motion.div
-      className={`flex flex-col gap-4 md:gap-6 p-4 md:p-6 bg-gradient-to-r from-gray-50 to-white rounded-xl md:rounded-2xl border border-gray-100 shadow-sm md:flex-row md:items-center md:justify-between ${className}`}
+      className={`flex flex-col gap-4 md:gap-6 p-4 md:p-6 rounded-xl md:rounded-2xl md:flex-row md:items-center md:justify-between ${defaultBackground} ${className}`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
