@@ -1,103 +1,83 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import Link from "next/link";
+import ProductCard from "~/components/products/ProductCard";
+import QuoteCTA from "~/components/QuoteCTA";
 
 type Product = {
   id: string;
   title: string;
   summary: string;
-  description: string;
-  specs: {
-    speed: string;
-    capacity: string;
-    drive: string;
-  };
+  tags?: string[];
   featured?: boolean;
+  imageSrc?: string;
+  imageAlt?: string;
 };
 
 const products: Product[] = [
   {
-    id: "gearless",
-    title: "Gearless Traction Elevators",
-    summary:
-      "High-efficiency, smooth ride systems ideal for mid to high-rise buildings.",
-    description:
-      "Advanced permanent magnet synchronous motor technology delivers exceptional energy efficiency and whisper-quiet operation for premium installations.",
-    specs: {
-      speed: "1–2.5 m/s",
-      capacity: "6–20 persons",
-      drive: "Gearless PMSM",
-    },
+    id: "home",
+    title: "Home Elevators",
+    summary: "Compact, quiet lifts purpose-built for residences and villas.",
+    tags: ["Residential", "Compact"],
     featured: true,
+    imageSrc: "/illustrations/product01.png",
+    imageAlt: "Home elevator installation",
   },
   {
-    id: "mrl",
-    title: "MRL (Machine-Room-Less)",
-    summary:
-      "Space-saving technology with reduced energy consumption and clean installation.",
-    description:
-      "Innovative compact design eliminates the need for a separate machine room, maximizing building space while maintaining superior performance standards.",
-    specs: {
-      speed: "0.5–1.6 m/s",
-      capacity: "4–13 persons",
-      drive: "Compact Gearless",
-    },
+    id: "passenger",
+    title: "Passenger Elevators",
+    summary: "Reliable people movement for apartments, offices and hotels.",
+    tags: ["Commercial", "High-usage"],
+    imageSrc: "/illustrations/lift01.png",
+    imageAlt: "Commercial passenger elevator",
   },
   {
     id: "freight",
     title: "Freight Elevators",
-    summary:
-      "Rugged, high-capacity elevators for industrial transport and logistics.",
-    description:
-      "Heavy-duty construction with reinforced components designed to handle demanding industrial environments and continuous operation cycles.",
-    specs: {
-      speed: "0.25–1.0 m/s",
-      capacity: "1000–5000 kg",
-      drive: "Geared Traction",
-    },
+    summary: "Heavy-duty cabins with rugged finishes for goods and logistics.",
+    tags: ["Industrial", "High-capacity"],
+    imageSrc: "/illustrations/lift02.png",
+    imageAlt: "Industrial freight elevator",
   },
   {
-    id: "home",
-    title: "Home Elevators",
-    summary:
-      "Compact, quiet lifts for residential convenience and accessibility.",
-    description:
-      "Elegant residential solutions combining modern aesthetics with reliable functionality, perfect for enhancing home accessibility and value.",
-    specs: {
-      speed: "0.15–0.3 m/s",
-      capacity: "2–5 persons",
-      drive: "Hydraulic/Traction",
-    },
+    id: "hospital",
+    title: "Hospital / Stretcher Elevators",
+    summary: "Wide cabins and smooth acceleration tailored for healthcare.",
+    tags: ["Healthcare", "Spacious"],
+    imageSrc: "/illustrations/product01.png",
+    imageAlt: "Hospital stretcher elevator",
   },
   {
-    id: "modernization",
-    title: "Modernization Kits",
-    summary: "Upgrade safety, control, and efficiency with modular retrofits.",
-    description:
-      "Comprehensive upgrade solutions that transform existing elevators with latest safety features, smart controls, and energy-efficient components.",
-    specs: {
-      speed: "Variable",
-      capacity: "Existing + 20%",
-      drive: "Upgraded Systems",
-    },
+    id: "mrl",
+    title: "MRL (Machine-Room-Less)",
+    summary: "Space-efficient design with excellent energy performance.",
+    tags: ["Space saving", "Efficient"],
+    featured: true,
+    imageSrc: "/illustrations/lift01.png",
+    imageAlt: "MRL elevator system",
+  },
+  {
+    id: "hydraulic",
+    title: "Hydraulic Lifts",
+    summary: "Cost-effective solution for low-rise buildings with smooth ride.",
+    tags: ["Low-rise", "Value"],
+    imageSrc: "/illustrations/lift02.png",
+    imageAlt: "Hydraulic elevator system",
   },
 ];
 
 export default function ProductsInteractive() {
-  const [active, setActive] = useState(products[0].id);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(true);
-  const current = products.find((p) => p.id === active)!;
-  const currentIndex = products.findIndex((p) => p.id === active);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto-rotate products every 10 seconds
+  // Auto-rotate products every 8 seconds
   useEffect(() => {
     if (isAutoRotating) {
       intervalRef.current = setInterval(() => {
-        const nextIndex = (currentIndex + 1) % products.length;
-        setActive(products[nextIndex].id);
-      }, 10000); // 10 seconds
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
+      }, 8000);
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -109,26 +89,32 @@ export default function ProductsInteractive() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isAutoRotating, currentIndex]);
+  }, [isAutoRotating]);
 
-  // Handle manual product selection
-  const handleProductClick = (productId: string) => {
-    setActive(productId);
-    setIsAutoRotating(false); // Pause auto-rotation when user interacts
-
-    // Resume auto-rotation after 30 seconds of inactivity
+  // Handle manual interaction
+  const handleInteraction = () => {
+    setIsAutoRotating(false);
+    // Resume auto-rotation after 20 seconds of inactivity
     setTimeout(() => {
       setIsAutoRotating(true);
-    }, 30000);
+    }, 20000);
   };
+
+  // Get 3 visible products starting from currentIndex
+  const getVisibleProducts = () => {
+    const visible = [];
+    for (let i = 0; i < 3; i++) {
+      visible.push(products[(currentIndex + i) % products.length]);
+    }
+    return visible;
+  };
+
+  const visibleProducts = getVisibleProducts();
+
   return (
-    <section
-      id="products"
-      className="min-h-screen py-20 scroll-mt-24 relative overflow-hidden bg-white"
-    >
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
-        {/* Header section matching other sections' typography */}
+    <section id="products" className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        {/* Header section matching BlogSection typography */}
         <motion.div
           className="text-left mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -146,154 +132,78 @@ export default function ProductsInteractive() {
           </p>
         </motion.div>
 
-        {/* Products Grid */}
-        <div className="grid lg:grid-cols-5 gap-6 items-start max-w-7xl mx-auto">
-          {/* Product Selection Sidebar */}
-          <motion.div
-            className="lg:col-span-2 space-y-3"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {products.map((p, index) => {
-              const isActive = p.id === active;
-              return (
-                <motion.button
-                  key={p.id}
-                  onClick={() => handleProductClick(p.id)}
-                  className={`w-full text-left p-4 rounded-xl border transition-all duration-300 ${
-                    isActive
-                      ? "border-accent bg-accent/10 shadow-lg shadow-accent/10"
-                      : "border-gray-200 bg-white hover:bg-gray-50 hover:border-gray-300 shadow-sm"
-                  }`}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.4, delay: 0.1 * index }}
-                >
-                  <div className="flex items-center justify-between gap-3 mb-2">
-                    <h3 className="font-semibold text-gray-900 text-sm md:text-base">
-                      {p.title}
-                    </h3>
-                    {p.featured && (
-                      <span className="text-[10px] uppercase tracking-wide bg-accent text-black px-2 py-1 rounded font-medium">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {p.summary}
-                  </p>
-                </motion.button>
-              );
-            })}
-
-            {/* Call to action */}
-            <motion.div
-              className="pt-4"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 text-accent hover:text-gray-900 transition-colors font-medium"
+        {/* Products Cards Grid - matching BlogSection layout */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <AnimatePresence initial={false} mode="popLayout">
+            {visibleProducts.map((product) => (
+              <motion.div
+                key={product.id}
+                layout
+                initial={{ opacity: 0, x: 80 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -80 }}
+                transition={{
+                  duration: 0.55,
+                  ease: "easeOut",
+                }}
+                onMouseEnter={handleInteraction}
+                onClick={handleInteraction}
               >
-                Explore all products
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
-            </motion.div>
-          </motion.div>
+                <ProductCard
+                  title={product.title}
+                  summary={product.summary}
+                  tags={product.tags}
+                  productId={product.id}
+                  badge={product.featured ? "Featured" : undefined}
+                  imageSrc={product.imageSrc}
+                  imageAlt={product.imageAlt}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
-          {/* Product Details Card */}
-          <motion.div
-            className="lg:col-span-3"
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <div className="relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-lg">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.4 }}
-                  className="p-6 md:p-8"
-                >
-                  <div className="mb-6">
-                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                      {current.title}
-                    </h3>
-                    <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-4">
-                      {current.summary}
-                    </p>
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                      {current.description}
-                    </p>
-                  </div>
+        {/* Carousel Dots - matching Services section */}
+        <motion.div
+          className="flex justify-center mb-8"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <div className="flex gap-2">
+            {products.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  handleInteraction();
+                }}
+                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                  index === currentIndex
+                    ? "bg-accent scale-110"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
+                aria-label={`Show products starting from ${products[index].title}`}
+                aria-pressed={index === currentIndex}
+              />
+            ))}
+          </div>
+        </motion.div>
 
-                  {/* Specifications Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-center">
-                      <div className="text-accent text-xl font-bold mb-1">
-                        {current.specs.speed}
-                      </div>
-                      <div className="text-gray-600 text-sm font-medium">
-                        Speed Range
-                      </div>
-                    </div>
-                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-center">
-                      <div className="text-accent text-xl font-bold mb-1">
-                        {current.specs.capacity}
-                      </div>
-                      <div className="text-gray-600 text-sm font-medium">
-                        Capacity
-                      </div>
-                    </div>
-                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-center">
-                      <div className="text-accent text-lg font-bold mb-1">
-                        {current.specs.drive}
-                      </div>
-                      <div className="text-gray-600 text-sm font-medium">
-                        Drive System
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Action Button */}
-                  <div className="mt-8">
-                    <motion.button
-                      className="btn btn-primary px-8 py-3"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Learn More About {current.title}
-                    </motion.button>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        </div>
+        {/* Quote and CTA Section */}
+        <QuoteCTA
+          quote="Quality and reliability built into every installation."
+          ctaText="See All Products"
+          ctaHref="/products"
+          onClick={handleInteraction}
+        />
       </div>
     </section>
   );

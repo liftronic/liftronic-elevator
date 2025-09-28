@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Breadcrumb from "~/components/Breadcrumb";
 import BlogCard from "~/components/blog/BlogCard";
+import CallToActionSection from "~/components/CallToActionSection";
 import { useViewTransition } from "~/hooks/useViewTransition";
-import { motion } from "motion/react";
 
 // Blog post type definition
 type BlogPost = {
@@ -301,43 +301,12 @@ export default function BlogPostClient({
         </section>
       )}
 
-      {/* Call to Action */}
-      <section className="border-t border-gray-200/60 py-20 md:py-28 bg-gradient-to-r from-accent to-green-500">
-        <div className="container mx-auto px-4">
-          <div className="space-y-10">
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-                Ready to implement these insights?
-              </h2>
-              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
-                Connect with our expert team to discuss how these solutions can
-                be applied to your specific elevator needs and building
-                requirements.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-              <Link href="/#contact">
-                <motion.button
-                  className="btn bg-white text-black text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Schedule Consultation
-                </motion.button>
-              </Link>
-              <motion.button
-                onClick={handleBackClick}
-                className="btn border-2 border-gray-200 bg-transparent text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Read More Articles
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CallToActionSection
+        secondaryAction={{
+          label: "Read More Articles",
+          onClick: handleBackClick,
+        }}
+      />
     </main>
   );
 }

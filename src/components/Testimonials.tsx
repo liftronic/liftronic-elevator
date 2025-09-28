@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { motion } from "motion/react";
+import QuoteCTA from "~/components/QuoteCTA";
 
 const items = Array.from({ length: 6 }).map((_, i) => ({
   name: `Client ${i + 1}`,
@@ -90,19 +91,42 @@ function TestimonialCard({ name, rating, text, index }: { name: string; rating: 
 
 export default function Testimonials() {
   return (
-    <section className="py-20 bg-soft">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-semibold text-center text-black">
-          What Our Clients Say
-        </h2>
+        <motion.div
+          className="text-left mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            What Our Clients Say
+          </h2>
+          <p className="text-md md:text-lg text-gray-600 max-w-3xl leading-relaxed">
+            Stories from property managers and facility directors who count on
+            Liftronic for safe, reliable elevator experiences every day.
+          </p>
+        </motion.div>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
           {items.map((t, idx) => (
             <TestimonialCard key={t.name} name={t.name} rating={t.rating} text={t.text} index={idx} />
           ))}
-        </div>
+        </motion.div>
+
+        <QuoteCTA
+          quote="Trust is earned through every smooth ride and on-time service call."
+          ctaText="Talk With Our Team"
+          ctaHref="/#contact"
+        />
       </div>
     </section>
   );
 }
-

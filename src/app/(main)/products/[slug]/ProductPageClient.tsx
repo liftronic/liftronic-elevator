@@ -8,6 +8,8 @@ import ProductFeatures from "~/components/products/ProductFeatures";
 import ProductFAQ from "~/components/products/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
+import CallToActionSection from "~/components/CallToActionSection";
+import { FiMessageSquare, FiEye } from "react-icons/fi";
 
 // Product type definition
 type Product = {
@@ -118,7 +120,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                   {product.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center rounded-full bg-gradient-to-r from-accent to-accent/80 px-5 py-2 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_35px_-10px_rgba(42,227,148,0.65)] ring-1 ring-inset ring-white/20"
+                      className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white shadow-md"
                     >
                       {tag}
                     </span>
@@ -141,6 +143,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
+                    <FiMessageSquare className="text-lg" />
                     Get a Quote
                   </motion.button>
                 </Link>
@@ -150,6 +153,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
+                    <FiEye className="text-lg" />
                     Explore Services
                   </motion.button>
                 </Link>
@@ -269,42 +273,12 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
       <ProductFAQ faqs={product.faqs} />
 
-      {/* Call to Action */}
-      <section className="border-t border-gray-200/60 py-20 md:py-28 bg-gradient-to-r from-accent to-green-500">
-        <div className="container mx-auto px-4">
-          <div className="space-y-10">
-            <div className="space-y-6">
-              <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-                Ready to elevate your project?
-              </h2>
-              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
-                Partner with our specialists to scope, install, and maintain a
-                lift solution that perfectly fits your building requirements.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-              <Link href="/#contact">
-                <motion.a
-                  className="btn bg-white text-black text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Request Consultation
-                </motion.a>
-              </Link>
-              <motion.button
-                onClick={handleBackClick}
-                className="btn border-2 border-gray-200 bg-transparent text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View All Products
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CallToActionSection
+        secondaryAction={{
+          label: "View All Products",
+          onClick: handleBackClick,
+        }}
+      />
     </main>
   );
 }

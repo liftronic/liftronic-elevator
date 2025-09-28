@@ -1,7 +1,5 @@
-// components/WhyUsSection.tsx
-"use client";
-
-import { motion } from "motion/react";
+import type { ReactNode } from "react";
+import * as motion from "motion/react-client";
 import {
   BiShield,
   BiCog,
@@ -15,7 +13,7 @@ type WhyUsCard = {
   id: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   stats?: string;
   features: string[];
 };

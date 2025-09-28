@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import React, { useCallback } from "react";
@@ -60,7 +61,7 @@ export default function ProductCard({
     <div
       className={`group relative overflow-hidden rounded-xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
         productId ? "product-card cursor-pointer" : ""
-      }`}
+      } flex flex-col h-full`}
       style={cardStyle}
       onClick={handleCardClick}
       onMouseEnter={handleMouseEnter}
@@ -90,101 +91,99 @@ export default function ProductCard({
       </div>
 
       {/* Content with better spacing and typography */}
-      <div className="p-6">
-        <div className="flex flex-col h-full">
-          <div className="flex-grow">
-            <h3
-              className={`text-xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
-                productId ? "product-title" : ""
-              }`}
+      <div className="p-6 flex flex-col flex-1">
+        <div className="flex-grow">
+          <h3
+            className={`text-xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
+              productId ? "product-title" : ""
+            }`}
+          >
+            {title}
+          </h3>
+          <p className="mt-2 text-gray-600 text-sm leading-relaxed line-clamp-3">
+            {summary}
+          </p>
+
+          {/* Tags with improved styling */}
+          {tags.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-200"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Action area with better alignment */}
+        <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-100 flex-shrink-0">
+          {productId ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                transitionTo(productHref);
+              }}
+              className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
             >
-              {title}
-            </h3>
-            <p className="mt-2 text-gray-600 text-sm leading-relaxed line-clamp-3">
-              {summary}
-            </p>
+              Learn More
+            </button>
+          ) : (
+            <Link
+              href={productHref}
+              className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+            >
+              Enquire
+            </Link>
+          )}
 
-            {/* Tags with improved styling */}
-            {tags.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-200"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Action area with better alignment */}
-          <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-100">
-            {productId ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  transitionTo(productHref);
-                }}
-                className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+          {productId ? (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                transitionTo(productHref);
+              }}
+              className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
+            >
+              View Details
+              <svg
+                className="ml-1 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
               >
-                Learn More
-              </button>
-            ) : (
-              <Link
-                href={productHref}
-                className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </button>
+          ) : (
+            <Link
+              href={productHref}
+              className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
+            >
+              Learn more
+              <svg
+                className="ml-1 h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
               >
-                Enquire
-              </Link>
-            )}
-
-            {productId ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  transitionTo(productHref);
-                }}
-                className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
-              >
-                View Details
-                <svg
-                  className="ml-1 h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                  />
-                </svg>
-              </button>
-            ) : (
-              <Link
-                href={productHref}
-                className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
-              >
-                Learn more
-                <svg
-                  className="ml-1 h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                  />
-                </svg>
-              </Link>
-            )}
-          </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </Link>
+          )}
         </div>
       </div>
     </div>

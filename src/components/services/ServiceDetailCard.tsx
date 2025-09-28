@@ -1,8 +1,7 @@
 // components/ServiceDetailCard.tsx
-"use client";
 
 import Image from "next/image";
-import { motion } from "motion/react";
+import * as motion from "motion/react-client";
 import { BiCheck, BiPhone, BiMailSend } from "react-icons/bi";
 
 type ServiceDetail = {

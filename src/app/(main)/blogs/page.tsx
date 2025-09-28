@@ -1,9 +1,10 @@
-"use client";
-import { motion } from "motion/react";
+import * as motion from "motion/react-client";
 import Link from "next/link";
 import BlogCard from "~/components/blog/BlogCard";
 import FeaturedBlogCard from "~/components/blog/FeaturedBlogCard";
 import Breadcrumb from "~/components/Breadcrumb";
+import CallToActionSection from "~/components/CallToActionSection";
+import { FiEye, FiMessageSquare } from "react-icons/fi";
 
 type BlogPost = {
   id: string;
@@ -165,19 +166,21 @@ export default function BlogPage() {
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
                 <motion.button
-                  className="btn btn-primary"
+                  className="btn btn-primary px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiMessageSquare className="text-base" />
                   Get Expert Consultation
                 </motion.button>
               </Link>
               <Link href="/services">
                 <motion.button
-                  className="btn"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiEye className="text-base" />
                   View Services
                 </motion.button>
               </Link>
@@ -253,6 +256,8 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
+
+      <CallToActionSection />
     </main>
   );
 }

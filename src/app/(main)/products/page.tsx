@@ -1,8 +1,9 @@
-"use client";
 import Link from "next/link";
 import ProductCard from "~/components/products/ProductCard";
 import Breadcrumb from "~/components/Breadcrumb";
-import { motion } from "motion/react";
+import * as motion from "motion/react-client";
+import CallToActionSection from "~/components/CallToActionSection";
+import { FiEye, FiMessageSquare } from "react-icons/fi";
 
 type Product = {
   id: string;
@@ -24,13 +25,13 @@ const products: Product[] = [
     id: "passenger",
     title: "Passenger Elevators",
     summary: "Reliable people movement for apartments, offices and hotels.",
-    tags: ["Commercial", "High‑usage"],
+    tags: ["Commercial", "High-usage"],
   },
   {
     id: "freight",
     title: "Freight Elevators",
-    summary: "Heavy‑duty cabins with rugged finishes for goods and logistics.",
-    tags: ["Industrial", "High‑capacity"],
+    summary: "Heavy-duty cabins with rugged finishes for goods and logistics.",
+    tags: ["Industrial", "High-capacity"],
   },
   {
     id: "hospital",
@@ -40,16 +41,16 @@ const products: Product[] = [
   },
   {
     id: "mrl",
-    title: "MRL (Machine‑Room‑Less)",
-    summary: "Space‑efficient design with excellent energy performance.",
+    title: "MRL (Machine-Room-Less)",
+    summary: "Space-efficient design with excellent energy performance.",
     tags: ["Space saving", "Efficient"],
     featured: true,
   },
   {
     id: "hydraulic",
     title: "Hydraulic Lifts",
-    summary: "Cost‑effective solution for low‑rise buildings with smooth ride.",
-    tags: ["Low‑rise", "Value"],
+    summary: "Cost-effective solution for low-rise buildings with smooth ride.",
+    tags: ["Low-rise", "Value"],
   },
   {
     id: "dumbwaiter",
@@ -125,19 +126,21 @@ export default function ProductsPage() {
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
                 <motion.button
-                  className="btn btn-primary"
+                  className="btn btn-primary px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiMessageSquare className="text-base" />
                   Request a Quote
                 </motion.button>
               </Link>
-              <Link href="/services" className="btn">
+              <Link href="/services">
                 <motion.button
-                  className="btn"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiEye className="text-base" />
                   View Services
                 </motion.button>
               </Link>
@@ -163,6 +166,8 @@ export default function ProductsPage() {
           </div>
         </div>
       </section>
+
+      <CallToActionSection />
     </main>
   );
 }
