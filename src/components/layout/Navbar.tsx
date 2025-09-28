@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, MouseEvent } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
@@ -16,6 +17,7 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const { scrollTo } = useSmoothScroll();
+  const router = useRouter();
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(!isHomePage);
   const [open, setOpen] = useState(false);
@@ -33,12 +35,59 @@ export default function Navbar() {
     }
   }, [isHomePage]);
 
-  const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleLinkClick = async (
+    e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+    href: string
+  ) => {
+    // Handle hash links specially: if we're not on the home page,
+    // navigate to the home page with the hash so the target exists.
     if (href.startsWith("#")) {
       e.preventDefault();
-      scrollTo(href);
+      // close the menu first so layout stabilizes
       setOpen(false);
+
+      if (!isHomePage) {
+        // navigate to home with hash, then scroll after navigation completes
+        await router.push(`/${href}`);
+        // give browser a tick to render / mount elements, then smooth-scroll
+        setTimeout(() => scrollTo(href), 80);
+        return;
+      }
+
+      // if already on homepage, wait briefly for menu close animation to finish
+      setTimeout(() => scrollTo(href), 80);
+      return;
     }
+
+    // For normal links, just close the mobile menu (no-op on desktop)
+    setOpen(false);
+  };
+
+  const handleLogoClick = async (e: MouseEvent<HTMLAnchorElement>) => {
+    // Prevent full page reload. Smooth-scroll to top on homepage,
+    // otherwise navigate to homepage then scroll.
+    e.preventDefault();
+    // close mobile menu if open
+    setOpen(false);
+    if (isHomePage) {
+      // scroll to top element
+      try {
+        scrollTo("body");
+      } catch {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
+
+    // navigate to home and then scroll a tick later
+    await router.push("/");
+      setTimeout(() => {
+        try {
+          scrollTo("body");
+        } catch {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, 80);
   };
 
   return (
@@ -51,6 +100,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 px-5">
           <Link
             href="/"
+            onClick={(e) => handleLogoClick(e as unknown as MouseEvent<HTMLAnchorElement>)}
             className="flex items-center gap-3 font-bold text-lg tracking-tight"
           >
             <Image
@@ -86,8 +136,8 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, "#contact")}
+              href="#request-quote"
+              onClick={(e) => handleLinkClick(e, "#request-quote")}
               className="btn btn-primary"
             >
               Request a Quote
@@ -140,13 +190,12 @@ export default function Navbar() {
                       {l.label}
                     </Link>
                   ))}
-                  <Link
-                    href="#contact"
-                    onClick={(e) => handleLinkClick(e, "#contact")}
+                  <button
+                    onClick={(e) => handleLinkClick(e, "#request-quote")}
                     className="btn btn-primary w-full mt-2"
                   >
                     Request a Quote
-                  </Link>
+                  </button>
                 </div>
               </div>
             </motion.div>

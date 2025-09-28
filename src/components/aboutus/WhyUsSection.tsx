@@ -197,9 +197,13 @@ export default function WhyUsSection() {
               Join thousands of satisfied customers who trust us with their
               elevator needs.
             </p>
-            <button className="btn bg-accent text-black hover:bg-accent/90 text-lg px-8 py-3">
+            <motion.button
+              className="btn bg-accent text-black hover:bg-accent/90 text-lg px-8 py-3"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Get Started Today
-            </button>
+            </motion.button>
           </div>
         </motion.div>
       </div>
