@@ -4,9 +4,35 @@ alwaysApply: true
 
 # Project Structure
 
+## Technology Stack
 - Next.js 15 App Router with TypeScript (strict mode)
-- `src/app/`: Routes, layout, globals.css
-- `src/components/`: React components (PascalCase files)
-- `public/`: Static assets, videos in `assets/` subfolder
-- Import alias: `~/` maps to `src/`
+- React 19.1.0 with experimental View Transitions enabled
+- Tailwind CSS v4 with custom CSS variables defined in [globals.css](mdc:src/app/globals.css)
+- Sanity CMS for content management (studio at `/studio`)
+- Motion library for animations (`motion/react`)
 - Package manager: `pnpm`
+
+## Directory Organization
+- `src/app/`: Next.js App Router structure
+  - `(main)/`: Route group for main site pages
+  - `globals.css`: Global styles and CSS custom properties
+  - `layout.tsx`: Root layout with SEO and JSON-LD
+  - `studio/`: Sanity Studio for content management
+- `src/components/`: React components (PascalCase files)
+  - Organized by feature (`aboutus/`, `blog/`, `layout/`, `products/`, `services/`)
+  - Server components by default, client components when marked with `"use client"`
+- `src/hooks/`: Custom React hooks (`useSmoothScroll.ts`, `useViewTransition.ts`)
+- `src/sanity/`: Sanity CMS integration
+  - `schemaTypes/`: Content schema definitions
+  - `utils/`: Data fetching utilities
+  - `lib/`: Client configuration
+- `public/`: Static assets
+  - `assets/`: Videos and images
+  - `illustrations/`: Product and service illustrations
+- `typings.d.ts`: TypeScript type definitions for Sanity documents
+
+## Import Patterns
+- Import alias: `~/` maps to `src/` (configured in [tsconfig.json](mdc:tsconfig.json))
+- Relative imports for sibling files: `../../hooks/useSmoothScroll`
+- Always use `~/components/...` for component imports
+- Sanity utilities: `~/sanity/utils/...`

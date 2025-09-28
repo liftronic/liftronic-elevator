@@ -1,0 +1,75 @@
+---
+globs: **/app/**/*.tsx,**/app/**/*.ts
+---
+
+# Next.js App Router Patterns
+
+## Route Structure
+- **Route groups**: Use `(main)` for grouping routes without URL segments
+- **Dynamic routes**: `[slug]` for dynamic segments, `[[...tool]]` for catch-all
+- **File conventions**: `page.tsx`, `layout.tsx`, `not-found.tsx`
+- **Parallel routes**: Co-locate related pages in same directory
+
+## Server Components (Default)
+```tsx
+// src/app/(main)/page.tsx
+import { getSocial } from "~/sanity/utils/getSocials";
+
+export default async function Home() {
+  const socials = await getSocial();
+  return <main>...</main>;
+}
+```
+- Fetch data directly in server components
+- Use async/await for data fetching
+- No client-side hooks needed
+
+## Client Components
+```tsx
+// src/app/(main)/products/[slug]/ProductPageClient.tsx
+"use client";
+import { motion } from "motion/react";
+
+export default function ProductPageClient({ product }) {
+  // Client-side logic here
+}
+```
+- Separate client components into `*Client.tsx` files
+- Used for interactivity and browser APIs
+
+## Metadata Generation
+```tsx
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  return {
+    title: "Page Title",
+    description: "Page description",
+    alternates: { canonical: `/path/${slug}` },
+  };
+}
+```
+- Export `generateMetadata` for dynamic SEO
+- Include canonical URLs for SEO
+- Use `alternates.canonical` for proper URL structure
+
+## Static Generation
+```tsx
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
+}
+```
+- Use for dynamic routes that can be pre-generated
+- Return array of param objects
+
+## Error Handling
+- Use `notFound()` from `next/navigation` for 404s
+- Implement `error.tsx` for error boundaries
+- Check data existence before rendering
+
+## SEO & Performance
+- **Viewport config**: Export `viewport` object for mobile optimization
+- **JSON-LD**: Include structured data in root layout
+- **Image optimization**: Use Next.js `Image` with proper sizing
+- **Font optimization**: Use `next/font/google` for web fonts

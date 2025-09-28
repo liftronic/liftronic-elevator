@@ -2,10 +2,67 @@
 globs: *.tsx,*.css
 ---
 
-# Styling Conventions
+# Styling Conventions & Design System
 
-- Tailwind CSS v4 with custom CSS variables in [globals.css](mdc:src/app/globals.css)
-- Use `bg-accent` instead of `bg-[var(--accent)]` for CSS variables
-- Glass effects: `.glass-transparent` and `.glass-solid` classes available
-- Button variants: `.btn`, `.btn-primary`, `.btn-ghost`
-- Motion animations via `motion/react` library
+## Tailwind CSS v4 Configuration
+- Custom CSS variables defined in [globals.css](mdc:src/app/globals.css)
+- **Use semantic color classes**: `bg-accent`, `text-brand`, `bg-soft`, `text-charcoal`
+- **Avoid arbitrary values**: Prefer `bg-accent` over `bg-[var(--accent)]`
+- Container max-width: `1200px` (defined as `--container`)
+
+## Color System
+```css
+:root {
+  --bg: #ffffff;        /* bg-bg */
+  --charcoal: #333333;  /* text-charcoal */
+  --soft: #f9f9f9;      /* bg-soft */
+  --footer: #111111;    /* bg-footer */
+  --accent: #2ae394;    /* bg-accent, text-accent */
+  --brand: #00A86B;     /* bg-brand, text-brand */
+}
+```
+
+## Typography
+- Font: DM Sans (weights: 300, 400, 500, 600, 700)
+- Headings: `font-weight: 600`, `letter-spacing: -0.02em`, `line-height: 1.2`
+- Body text: `line-height: 1.6`
+- Use semantic heading tags (`h1`, `h2`, etc.)
+
+## Button System
+- **Base class**: `.btn` (44px height, 10px border-radius, flexbox centered)
+- **Primary**: `.btn-primary` (brand green with shadow and hover effects)
+- **Ghost**: `.btn-ghost` (transparent with white text, for dark backgrounds)
+- **Hover effects**: Transform and shadow changes for premium feel
+
+## Glass Morphism Effects
+- **Transparent**: `.glass-transparent` (for hero navbar)
+- **Solid**: `.glass-solid` (backdrop-blur with white background)
+- Used primarily for navigation states
+
+## Layout & Spacing
+- **Container**: `container mx-auto px-4` for consistent max-width
+- **Sections**: Use `py-16` for vertical spacing
+- **Scroll margin**: `scroll-mt-24` for anchor navigation offset
+
+## Animations & Transitions
+- **Motion library**: Framer Motion for complex animations
+- **CSS transitions**: `transition-all duration-300` for hover effects
+- **Hover transforms**: `hover:-translate-y-1`, `hover:scale-105`
+- **View transitions**: CSS-based with optimized timing functions
+
+## Responsive Design
+- **Mobile-first**: Use `sm:`, `md:`, `lg:` breakpoints
+- **Viewport units**: `h-[100svh]` for full-height sections
+- **Flexible layouts**: Combine flexbox and grid as needed
+
+## Accessibility
+- Include `aria-label` for icon buttons
+- Use `aria-hidden` for decorative elements
+- Ensure focus states with `focus-visible:ring-2`
+- Alt text for all images
+
+## Performance Optimizations
+- **Hardware acceleration**: `transform: translateZ(0)` for animated elements
+- **Will-change**: Applied to view transition elements
+- **Passive event listeners**: For scroll handlers
+- **Image optimization**: WebP format preferred, include `priority` for above-fold
