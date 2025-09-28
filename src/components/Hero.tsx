@@ -38,7 +38,11 @@ export default function Hero({ socials }: HeroProps) {
         <div className="absolute inset-0 [background:radial-gradient(60%_60%_at_20%_30%,rgba(42,227,148,0.12),transparent_60%)]" />
       </div>
 
-      <div className="relative h-full container mx-auto px-4 flex items-center justify-start">
+      <div className="relative h-full container mx-auto px-4 flex items-center justify-between gap-8">
+        {/* Decorative blobs */}
+        <div className="pointer-events-none hidden lg:block absolute -top-12 -right-24 w-[380px] h-[380px] rounded-full bg-gradient-to-br from-accent/30 to-indigo-600/20 blur-3xl opacity-60 transform rotate-12" aria-hidden />
+        <div className="pointer-events-none hidden lg:block absolute -bottom-16 left-20 w-[260px] h-[260px] rounded-full bg-gradient-to-tr from-white/8 to-accent/20 blur-2xl opacity-40" aria-hidden />
+
         {/* Left: Messaging */}
         <div className="max-w-2xl text-left">
           <motion.h1
@@ -46,7 +50,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.05, duration: 0.6, ease: "easeOut" }}
-            className="mt-10 sm:mt-4 text-3xl sm:text-5xl md:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
+            className="mt-10 sm:mt-4 text-4xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
           >
             <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
             Experience
@@ -57,7 +61,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.15, duration: 0.6, ease: "easeOut" }}
-            className="mt-2 text-sm sm:text-base md:text-2xl text-white font-medium max-w-[42ch] drop-shadow-lg"
+            className="mt-2 text-sm sm:text-base md:text-2xl text-white font-medium max-w-[52ch] drop-shadow-lg"
           >
             <span className="hidden sm:inline">Design, installation, and maintenance engineered for precision, safety, and seamless passenger experience.</span>
             <span className="sm:hidden">Design, install & maintain elevators with precision and care.</span>
@@ -145,13 +149,13 @@ export default function Hero({ socials }: HeroProps) {
             </div>
           </motion.div>
 
-          {/* Contact Us */}
+          {/* Contact Us (hidden on desktop — desktop uses the right promo card) */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.42, duration: 0.6, ease: "easeOut" }}
-            className="mt-4 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-2 text-white/90"
+            className="mt-6 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-3 text-white/90 lg:hidden"
           >
             <a
               href="tel:18008908411"
@@ -260,6 +264,54 @@ export default function Hero({ socials }: HeroProps) {
             </button>
           </div>
         </div>
+
+        {/* Right: Promo / contact card for desktop */}
+        <aside className="hidden lg:flex flex-col w-full max-w-sm rounded-3xl bg-white/6 backdrop-blur-md border border-white/10 p-6 shadow-2xl text-white z-20">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold">Request a Quote</h3>
+              <p className="text-sm text-white/70">Fast response — design & installation specialists</p>
+            </div>
+            <div className="rounded-full bg-white/8 p-2">
+              <FiHeadphones className="text-accent text-2xl" aria-hidden />
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3">
+            <a href="tel:18008908411" className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8">
+              <div>
+                <p className="text-xs text-white/70">Support</p>
+                <p className="font-medium">1800 890 8411</p>
+              </div>
+              <FiPhoneCall className="text-accent text-xl" aria-hidden />
+            </a>
+
+            <a href="mailto:info@liftronicelevator.com" className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8">
+              <div>
+                <p className="text-xs text-white/70">Email</p>
+                <p className="font-medium">info@liftronicelevator.com</p>
+              </div>
+              <FiMail className="text-accent text-xl" aria-hidden />
+            </a>
+
+            <a href="tel:+919028226664" className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8">
+              <div>
+                <p className="text-xs text-white/70">Sales Enquiry</p>
+                <p className="font-medium">+91 9028226664</p>
+              </div>
+              <FiPhoneCall className="text-accent text-xl" aria-hidden />
+            </a>
+
+            <button
+              onClick={() => scrollTo("#request-quote")}
+              className="mt-1 btn btn-primary text-sm w-full"
+            >
+              Get a Quote
+            </button>
+          </div>
+
+          <div className="mt-5 text-xs text-white/60">Serving Mumbai, Pune & major metros</div>
+        </aside>
 
         {/* Floating scroll cue for sm+ screens */}
         <button
