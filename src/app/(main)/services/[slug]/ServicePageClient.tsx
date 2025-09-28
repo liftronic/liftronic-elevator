@@ -8,6 +8,9 @@ import ProductFeatures from "~/components/products/ProductFeatures";
 import ProductFAQ from "~/components/products/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
+import CallToActionSection from "~/components/CallToActionSection";
+
+const MotionLink = motion(Link);
 
 // Service type definition
 type Service = {
@@ -147,15 +150,14 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
                   <p>{service.description}</p>
                 </div>
                 <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
-                  <Link href="/#contact">
-                    <motion.a
-                      className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Get Service Quote
-                    </motion.a>
-                  </Link>
+                  <MotionLink
+                    href="/#contact"
+                    className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Get Service Quote
+                  </MotionLink>
 
                   <motion.button
                     onClick={handleBackClick}
@@ -311,49 +313,12 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
 
       <ProductFAQ faqs={service.faqs} />
 
-      {/* Call to Action */}
-      <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-4xl text-center space-y-10">
-            <div className="space-y-6">
-              <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
-                <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                  Get Started
-                </span>
-              </div>
-              <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-                Ready to experience
-                <br />
-                <span className="text-accent">professional service?</span>
-              </h2>
-              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-                Connect with our service specialists to discuss your
-                requirements and receive a customized service proposal.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
-              <Link href="/#contact">
-                <motion.a
-                  className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Request Service
-                </motion.a>
-              </Link>
-              <motion.button
-                onClick={handleBackClick}
-                className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 text-lg px-8 py-4 backdrop-blur-sm transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View All Services
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CallToActionSection
+        secondaryAction={{
+          label: "View All Services",
+          onClick: handleBackClick,
+        }}
+      />
     </main>
   );
 }

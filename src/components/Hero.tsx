@@ -2,7 +2,7 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
-import { FiHeadphones, FiMail, FiPhoneCall } from "react-icons/fi";
+import { FiHeadphones, FiMail, FiPhoneCall, FiMessageSquare, FiEye } from "react-icons/fi";
 import { Social } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
 
@@ -108,6 +108,7 @@ export default function Hero({ socials }: HeroProps) {
               }}
               className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto"
             >
+              <FiMessageSquare className="text-base" />
               Get a Quote
             </a>
             <a
@@ -118,6 +119,7 @@ export default function Hero({ socials }: HeroProps) {
               }}
               className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto"
             >
+              <FiEye className="text-base" />
               View Services
             </a>
           </motion.div>
@@ -332,6 +334,7 @@ export default function Hero({ socials }: HeroProps) {
               onClick={() => scrollTo("#request-quote")}
               className="mt-1 btn btn-primary text-sm w-full"
             >
+              <FiMessageSquare className="text-base" />
               Get a Quote
             </button>
           </div>

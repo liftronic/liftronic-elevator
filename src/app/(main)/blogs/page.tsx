@@ -1,8 +1,9 @@
-"use client";
 import Link from "next/link";
 import BlogCard from "~/components/blog/BlogCard";
 import FeaturedBlogCard from "~/components/blog/FeaturedBlogCard";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb";
+import CallToActionSection from "~/components/CallToActionSection";
+import { FiMessageSquare, FiEye } from "react-icons/fi";
 
 type BlogPost = {
   id: string;
@@ -163,9 +164,11 @@ export default function BlogPage() {
             </p>
             <div className="mt-6 flex gap-3">
               <Link href="/#contact" className="btn btn-primary">
+                <FiMessageSquare className="text-base" />
                 Get Expert Consultation
               </Link>
-              <Link href="/services" className="btn">
+              <Link href="/services" className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300">
+                <FiEye className="text-base" />
                 View Services
               </Link>
             </div>
@@ -240,6 +243,8 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
+
+      <CallToActionSection />
     </main>
   );
 }

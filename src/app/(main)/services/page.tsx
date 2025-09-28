@@ -1,9 +1,10 @@
 // app/(main)/services/page.tsx
-"use client";
 
-import { motion } from "motion/react";
+import * as motion from "motion/react-client";
 import Link from "next/link";
 import ServiceCard from "~/components/services/ServiceCard";
+import CallToActionSection from "~/components/CallToActionSection";
+import { FiMessageSquare, FiEye } from "react-icons/fi";
 
 type Service = {
   id: string;
@@ -74,15 +75,17 @@ export default function ServicesPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiMessageSquare className="text-base" />
                   Get Service Quote
                 </motion.button>
               </Link>
               <Link href="/products">
                 <motion.button
-                  className="btn px-8 py-3"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiEye className="text-base" />
                   View Products
                 </motion.button>
               </Link>
@@ -109,91 +112,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Enhanced Contact CTA with Modern Design */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="relative mt-20"
-      >
-        <div className="bg-gradient-to-r from-accent to-accent/80 rounded-3xl p-12 relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl transform translate-x-32 -translate-y-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full blur-2xl transform -translate-x-24 translate-y-24"></div>
-          </div>
-
-          <div className="relative text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ scale: 0.9 }}
-              whileInView={{ scale: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to Elevate Your Building?
-              </h3>
-              <p className="text-xl mb-8 opacity-95 leading-relaxed">
-                Get expert consultation and personalized solutions tailored to
-                your specific needs. Our team is ready to transform your
-                vertical transportation experience.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-            >
-              <motion.button
-                className="btn bg-white hover:bg-gray-100 text-lg px-8 py-4 shadow-xl hover:shadow-2xl transition-all duration-300 group"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Get Free Consultation</span>
-                <motion.span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">
-                  →
-                </motion.span>
-              </motion.button>
-
-              <motion.button
-                className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 backdrop-blur-sm"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>Call: +1 (555) 123-4567</span>
-              </motion.button>
-            </motion.div>
-
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              viewport={{ once: true }}
-              className="mt-8 pt-8 border-t border-white/20"
-            >
-              <div className="flex flex-wrap justify-center items-center gap-8 text-sm opacity-90">
-                <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-white rounded-full"></span>
-                  <span>Licensed & Insured</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-white rounded-full"></span>
-                  <span>24/7 Emergency Service</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-white rounded-full"></span>
-                  <span>Certified Technicians</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
+      <CallToActionSection />
     </main>
   );
 }

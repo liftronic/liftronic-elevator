@@ -1,5 +1,4 @@
-"use client";
-import { motion } from "motion/react";
+import * as motion from "motion/react-client";
 import { getIcon } from "~/sanity/utils/iconMapper";
 
 type Feature = {
@@ -55,22 +54,24 @@ export default function ProductFeatures({ features }: ProductFeaturesProps) {
                 <div className="absolute top-0 right-0 w-28 h-28 opacity-5 group-hover:opacity-10 transition-opacity duration-300">
                   <div className="w-full h-full bg-gradient-to-br from-accent/80 to-accent/40 rounded-full blur-2xl"></div>
                 </div>
-                
+
                 <div className="relative z-10 space-y-6">
                   {/* Icon Container */}
                   <div className="relative inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 group-hover:scale-105 group-hover:rotate-1 transition-all duration-300 shadow-md group-hover:shadow-accent/15">
                     {/* Background glow effect */}
                     <div className="absolute inset-0 rounded-2xl bg-accent/5 blur-xl group-hover:bg-accent/5 transition-all duration-300"></div>
-                    
+
                     {/* Icon */}
                     <div className="relative z-10">
                       {IconComponent ? (
                         <IconComponent className="h-10 w-10 text-accent drop-shadow-sm transition-all duration-200" />
                       ) : (
-                        <span className="text-4xl filter drop-shadow-sm">{feature.icon}</span>
+                        <span className="text-4xl filter drop-shadow-sm">
+                          {feature.icon}
+                        </span>
                       )}
                     </div>
-                    
+
                     {/* Subtle inner border */}
                     <div className="absolute inset-0 rounded-2xl border border-accent/20 group-hover:border-accent/25 transition-all duration-300"></div>
                   </div>

@@ -1,14 +1,14 @@
 // app/(main)/about/page.tsx
-"use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import * as motion from "motion/react-client";
 import Image from "next/image";
 import { BiCheck } from "react-icons/bi";
 import WhyUsSection from "~/components/aboutus/WhyUsSection";
 import VisionMissionValues from "~/components/aboutus/VisionMissionValues";
 import TeamSection from "~/components/aboutus/TeamSection";
 import Link from "next/link";
+import CallToActionSection from "~/components/CallToActionSection";
+import { FiMessageSquare, FiEye } from "react-icons/fi";
 
 // Timeline data for company history
 const companyTimeline = [
@@ -47,14 +47,6 @@ const companyTimeline = [
 ];
 
 export default function AboutPage() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <main>
       <section className="relative">
@@ -86,15 +78,17 @@ export default function AboutPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiMessageSquare className="text-base" />
                   Get Service Quote
                 </motion.button>
               </Link>
               <Link href="/products">
                 <motion.button
-                  className="btn px-8 py-3"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiEye className="text-base" />
                   View Products
                 </motion.button>
               </Link>
@@ -243,42 +237,7 @@ export default function AboutPage() {
       {/* Our Team */}
       <TeamSection />
 
-      {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-accent to-green-500">
-        <div className="container mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Work with Liftronic?
-            </h2>
-            <p className="text-xl mb-8 opacity-95 max-w-3xl mx-auto">
-              Experience the difference that comes with choosing a partner
-              committed to excellence, innovation, and your success. Let&apos;s
-              elevate your building together.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                className="btn bg-white hover:bg-gray-100 text-lg px-8 py-4"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Get Free Consultation
-              </motion.button>
-              <motion.button
-                className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View Our Projects
-              </motion.button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CallToActionSection />
     </main>
   );
 }
