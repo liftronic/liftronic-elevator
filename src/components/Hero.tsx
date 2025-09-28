@@ -66,13 +66,13 @@ export default function Hero({ socials }: HeroProps) {
         <div className="absolute inset-0 [background:radial-gradient(60%_60%_at_20%_30%,rgba(42,227,148,0.12),transparent_60%)]" />
       </div>
 
-  <div className="relative h-full container mx-auto px-4 flex items-center justify-center lg:justify-between gap-8 overflow-x-hidden">
+  <div className="relative h-full container mx-auto px-4 flex items-center justify-center lg:justify-between gap-8">
         {/* Decorative blobs */}
         <div className="pointer-events-none hidden lg:block absolute -top-12 -right-24 w-[380px] h-[380px] rounded-full bg-gradient-to-br from-accent/30 to-indigo-600/20 blur-3xl opacity-60 transform rotate-12" aria-hidden />
         <div className="pointer-events-none hidden lg:block absolute -bottom-16 left-20 w-[260px] h-[260px] rounded-full bg-gradient-to-tr from-white/8 to-accent/20 blur-2xl opacity-40" aria-hidden />
 
   {/* Left: Messaging */}
-  <div className="max-w-2xl text-center lg:text-left w-full min-w-0">
+  <div className="max-w-2xl text-center lg:text-left">
           <motion.h1
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -100,7 +100,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
-            className="mt-5 flex flex-col sm:flex-row gap-3 justify-start w-full max-w-full sm:max-w-[22rem]"
+            className="mt-5 flex flex-col sm:flex-row gap-3 justify-center sm:justify-start items-center w-full max-w-full sm:max-w-[22rem]"
           >
             <a
               href="#request-quote"
@@ -108,7 +108,7 @@ export default function Hero({ socials }: HeroProps) {
                 e.preventDefault();
                 scrollTo("#request-quote");
               }}
-              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto"
+              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto mx-auto sm:mx-0"
             >
               Get a Quote
             </a>
@@ -118,7 +118,7 @@ export default function Hero({ socials }: HeroProps) {
                 e.preventDefault();
                 scrollTo("#services");
               }}
-              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto"
+              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto mx-auto sm:mx-0"
             >
               View Services
             </a>
