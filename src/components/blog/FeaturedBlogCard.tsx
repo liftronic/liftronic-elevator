@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useViewTransition } from "~/hooks/useViewTransition";
 
-type BlogCardProps = {
+type FeaturedBlogCardProps = {
   title: string;
   excerpt: string;
   tag: string;
@@ -17,7 +17,7 @@ type BlogCardProps = {
   imageAlt?: string;
 };
 
-export default function BlogCard({
+export default function FeaturedBlogCard({
   title,
   excerpt,
   tag,
@@ -28,7 +28,7 @@ export default function BlogCard({
   href,
   imageSrc,
   imageAlt,
-}: BlogCardProps) {
+}: FeaturedBlogCardProps) {
   const blogHref = href || (blogId ? `/blogs/${blogId}` : "#");
   const { transitionTo } = useViewTransition();
   const router = useRouter();
@@ -41,7 +41,6 @@ export default function BlogCard({
   };
 
   const handleMouseEnter = useCallback(() => {
-    // Prefetch the blog page on hover for faster navigation
     if (blogId) {
       router.prefetch(blogHref);
     }
@@ -67,33 +66,28 @@ export default function BlogCard({
       onClick={handleCardClick}
       onMouseEnter={handleMouseEnter}
     >
-      {/* Image Container */}
-      <div
-        className={`relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 ${
-          blogId ? "blog-image" : ""
-        } aspect-[5/3]`}
-      >
-        <Image
-          src={finalImageSrc}
-          alt={imageAlt ?? title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
-
-        {/* Tag overlay */}
-        <div className="absolute top-3 left-3">
-          <span className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-semibold text-gray-700 shadow-sm border border-white/20">
-            {tag}
-          </span>
-        </div>
-      </div>
-
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
         <div className="flex-grow">
-          {/* Meta information */}
+          {/* Hero Image Section */}
+          <div className="relative mb-6 h-48 w-full overflow-hidden rounded-xl bg-gradient-to-br from-gray-50 to-gray-100">
+            <Image
+              src={finalImageSrc}
+              alt={imageAlt ?? title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+
+            {/* Tag overlay */}
+            <div className="absolute top-3 left-3">
+              <span className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-semibold text-gray-700 shadow-sm border border-white/20">
+                {tag}
+              </span>
+            </div>
+          </div>
           <div className="flex items-center gap-2 text-xs text-gray-500 mb-3 overflow-hidden">
             <time dateTime={date} className="whitespace-nowrap flex-shrink-0">
               {date}
@@ -104,22 +98,19 @@ export default function BlogCard({
             <span className="truncate min-w-0">{author}</span>
           </div>
 
-          {/* Title */}
           <h3
             className={`font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
               blogId ? "blog-title" : ""
-            } text-lg`}
+            } text-xl lg:text-2xl`}
           >
             {title}
           </h3>
 
-          {/* Excerpt */}
-          <p className="mt-2 text-gray-600 leading-relaxed text-sm line-clamp-3">
+          <p className="mt-2 text-gray-600 leading-relaxed text-base lg:text-lg line-clamp-4">
             {excerpt}
           </p>
         </div>
 
-        {/* Action area */}
         <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-100 flex-shrink-0">
           {blogId ? (
             <button

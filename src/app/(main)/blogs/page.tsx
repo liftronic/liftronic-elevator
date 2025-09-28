@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import BlogCard from "~/components/blog/BlogCard";
+import FeaturedBlogCard from "~/components/blog/FeaturedBlogCard";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb";
 
 type BlogPost = {
@@ -191,7 +192,7 @@ export default function BlogPage() {
               .filter((post) => post.featured)
               .slice(0, 2)
               .map((post) => (
-                <BlogCard
+                <FeaturedBlogCard
                   key={post.id}
                   title={post.title}
                   excerpt={post.excerpt}
@@ -202,7 +203,6 @@ export default function BlogPage() {
                   blogId={post.id}
                   imageSrc={post.imageSrc}
                   imageAlt={post.imageAlt}
-                  featured
                 />
               ))}
           </div>
