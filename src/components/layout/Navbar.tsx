@@ -99,7 +99,7 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between h-16 px-5">
-          <a
+          <Link
             href="/"
             onClick={(e) => handleLogoClick(e as unknown as MouseEvent<HTMLAnchorElement>)}
             className="flex items-center gap-3 font-bold text-lg tracking-tight"
@@ -119,7 +119,7 @@ export default function Navbar() {
             >
               Liftronic
             </span>
-          </a>
+          </Link>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             {navLinks.map((l) => (
