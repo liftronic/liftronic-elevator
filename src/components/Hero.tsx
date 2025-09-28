@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "motion/react";
+import { useEffect } from "react";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 import { FiHeadphones, FiMail, FiPhoneCall } from "react-icons/fi";
 import { Social } from "~/../typings";
@@ -11,6 +12,29 @@ interface HeroProps {
 
 export default function Hero({ socials }: HeroProps) {
   const { scrollTo } = useSmoothScroll();
+  useEffect(() => {
+    const v = document.getElementById("hero-bg") as HTMLVideoElement | null;
+    if (!v) return;
+    const tryPlay = () => {
+      v.play().catch(() => {
+        /* autoplay blocked — will retry on interaction */
+      });
+    };
+    tryPlay();
+    const t = window.setTimeout(tryPlay, 500);
+    const onFirst = () => {
+      tryPlay();
+      window.removeEventListener("touchstart", onFirst);
+      window.removeEventListener("click", onFirst);
+    };
+    window.addEventListener("touchstart", onFirst, { once: true });
+    window.addEventListener("click", onFirst, { once: true });
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("touchstart", onFirst);
+      window.removeEventListener("click", onFirst);
+    };
+  }, []);
   const handleScroll = () => {
     const el = document.getElementById("about");
     if (el) {
@@ -20,12 +44,14 @@ export default function Hero({ socials }: HeroProps) {
     }
   };
   return (
-  <section className="relative h-[100svh] min-h-[460px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden">
+  <section className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden">
       {/* Background video */}
       <div className="absolute inset-0 overflow-hidden">
         <video
+          id="hero-bg"
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
           src="/assets/sample_1.mp4"
+          preload="auto"
           autoPlay
           loop
           muted
@@ -50,7 +76,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.05, duration: 0.6, ease: "easeOut" }}
-            className="mt-10 sm:mt-4 text-4xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
+            className="mt-6 sm:mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
           >
             <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
             Experience
@@ -61,7 +87,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.15, duration: 0.6, ease: "easeOut" }}
-            className="mt-2 text-sm sm:text-base md:text-2xl text-white font-medium max-w-[52ch] drop-shadow-lg"
+            className="mt-2 text-xs sm:text-sm md:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg"
           >
             <span className="hidden sm:inline">Design, installation, and maintenance engineered for precision, safety, and seamless passenger experience.</span>
             <span className="sm:hidden">Design, install & maintain elevators with precision and care.</span>
@@ -72,7 +98,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
-            className="mt-5 flex flex-col sm:flex-row gap-3 justify-start w-full max-w-[22rem] sm:max-w-none"
+            className="mt-5 flex flex-col sm:flex-row gap-3 justify-start w-full max-w-full sm:max-w-[22rem]"
           >
             <a
               href="#request-quote"
@@ -80,7 +106,7 @@ export default function Hero({ socials }: HeroProps) {
                 e.preventDefault();
                 scrollTo("#request-quote");
               }}
-              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
+              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto"
             >
               Get a Quote
             </a>
@@ -90,7 +116,7 @@ export default function Hero({ socials }: HeroProps) {
                 e.preventDefault();
                 scrollTo("#services");
               }}
-              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-sm sm:text-base w-full sm:w-auto"
+              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto"
             >
               View Services
             </a>
@@ -155,11 +181,11 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.42, duration: 0.6, ease: "easeOut" }}
-            className="mt-6 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-3 text-white/90 lg:hidden"
+            className="mt-4 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-2 text-white/90 lg:hidden"
           >
             <a
               href="tel:18008908411"
-              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
+              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-2 sm:p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiHeadphones
                 className="mt-0.5 shrink-0 text-2xl text-accent"
@@ -169,14 +195,14 @@ export default function Hero({ socials }: HeroProps) {
                 <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
                   Liftronic Care
                 </p>
-                <span className="block text-base font-semibold text-white">
+                <span className="block text-sm sm:text-base font-semibold text-white">
                   1800 890 8411
                 </span>
               </div>
             </a>
             <a
               href="mailto:info@liftronicelevator.com"
-              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
+              className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-2 sm:p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiMail
                 className="mt-0.5 shrink-0 text-2xl text-accent"
@@ -186,12 +212,12 @@ export default function Hero({ socials }: HeroProps) {
                 <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
                   Send us Email
                 </p>
-                <span className="block text-base font-semibold text-white">
+                <span className="block text-sm sm:text-base font-semibold text-white">
                   info@liftronicelevator.com
                 </span>
               </div>
             </a>
-            <div className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus-within:outline-none focus-within:ring-2 focus-within:ring-white/60 select-text">
+            <div className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-2 sm:p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus-within:outline-none focus-within:ring-2 focus-within:ring-white/60 select-text">
               <FiPhoneCall
                 className="mt-0.5 shrink-0 text-2xl text-accent"
                 aria-hidden
@@ -202,7 +228,7 @@ export default function Hero({ socials }: HeroProps) {
                 </p>
                 <a
                   href="tel:+919028226664"
-                  className="block text-base font-semibold text-white transition hover:text-accent"
+                  className="block text-sm sm:text-base font-semibold text-white transition hover:text-accent"
                 >
                   +91 9028226664
                 </a>
@@ -216,7 +242,7 @@ export default function Hero({ socials }: HeroProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
-            className="block sm:hidden mt-4"
+            className="block sm:hidden mt-3"
           >
             <div className="flex flex-col gap-3 text-sm text-white/80">
               <span className="text-xs uppercase tracking-[0.28em] text-white/60">Connect</span>
@@ -242,7 +268,7 @@ export default function Hero({ socials }: HeroProps) {
             </div>
           </motion.div>
           {/* Inline centered scroll button for very small screens (below socials) */}
-          <div className="flex sm:hidden w-full justify-center mt-3">
+          <div className="flex sm:hidden w-full justify-center mt-4 mb-2">
             <button
               type="button"
               onClick={handleScroll}
