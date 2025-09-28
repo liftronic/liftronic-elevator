@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { BiCog, BiStar, BiBuildings, BiGlobe, BiWrench } from "react-icons/bi";
 
@@ -30,12 +29,21 @@ function useCounter(target: number, start: boolean, duration = 1500) {
 }
 
 // Small animated stat used inside the green stats bar.
-function AnimatedStat({ label, value, suffix = "+" }: { label: string; value: number; suffix?: string }) {
+function AnimatedStat({
+  label,
+  value,
+  suffix = "+",
+}: {
+  label: string;
+  value: number;
+  suffix?: string;
+}) {
   const animated = useCounter(value, true, 1200);
   return (
     <div>
       <div className="text-4xl md:text-5xl font-extrabold">
-        <span className="text-white">{animated}</span><span className="ml-1 text-white">{suffix}</span>
+        <span className="text-white">{animated}</span>
+        <span className="ml-1 text-white">{suffix}</span>
       </div>
       <div className="text-sm font-medium text-white">{label}</div>
     </div>
@@ -43,7 +51,15 @@ function AnimatedStat({ label, value, suffix = "+" }: { label: string; value: nu
 }
 
 // TiltCard: lightweight mouse-driven 3D card with subtle glare
-function TiltCard({ title, children, icon: Icon }: { title: string; children: React.ReactNode; icon: React.ElementType }) {
+function TiltCard({
+  title,
+  children,
+  icon: Icon,
+}: {
+  title: string;
+  children: React.ReactNode;
+  icon: React.ElementType;
+}) {
   const innerRef = useRef<HTMLDivElement | null>(null);
   const raf = useRef<number | null>(null);
   const target = useRef({ rx: 0, ry: 0, s: 1 });
@@ -73,7 +89,8 @@ function TiltCard({ title, children, icon: Icon }: { title: string; children: Re
   const handleLeave = () => {
     target.current = { rx: 0, ry: 0, s: 1 };
     if (innerRef.current) {
-      innerRef.current.style.transition = "transform 450ms cubic-bezier(0.2,0.8,0.2,1)";
+      innerRef.current.style.transition =
+        "transform 450ms cubic-bezier(0.2,0.8,0.2,1)";
       innerRef.current.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
       window.setTimeout(() => {
         if (innerRef.current) innerRef.current.style.transition = "";
@@ -92,11 +109,19 @@ function TiltCard({ title, children, icon: Icon }: { title: string; children: Re
         <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-accent/20">
           <Icon className="w-6 h-6 text-accent" />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">{title}</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-2 text-center">
+          {title}
+        </h3>
         <p className="text-gray-600 text-center">{children}</p>
 
         {/* subtle glossy highlight */}
-        <div className="pointer-events-none absolute inset-0 rounded-2xl" style={{ background: 'radial-gradient(600px 200px at 10% 10%, rgba(255,255,255,0.18), transparent 20%)' }} />
+        <div
+          className="pointer-events-none absolute inset-0 rounded-2xl"
+          style={{
+            background:
+              "radial-gradient(600px 200px at 10% 10%, rgba(255,255,255,0.18), transparent 20%)",
+          }}
+        />
       </div>
     </div>
   );
@@ -117,26 +142,25 @@ export default function AboutUs() {
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  
+
   // Parallax transformations for decorative elements
   const bgY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
-  const illustrationY1 = useTransform(scrollYProgress, [0, 1], ["-50px", "50px"]);
-  const illustrationY2 = useTransform(scrollYProgress, [0, 1], ["-30px", "30px"]);
 
   // We'll animate individual items with explicit initial/whileInView props
 
   return (
-    <section ref={sectionRef} id="about" className="relative overflow-hidden py-20 md:py-28 bg-gray-50">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="relative overflow-hidden py-20 md:py-28 bg-gray-50"
+    >
       {/* BACKGROUND DECORATIONS */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
         {/* Subtle gradient glow */}
-  <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-accent/10 blur-3xl opacity-40" />
-        
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-accent/10 blur-3xl opacity-40" />
+
         {/* Parallax background image */}
-        <motion.div
-          className="absolute inset-0"
-          style={{ y: bgY }}
-        >
+        <motion.div className="absolute inset-0" style={{ y: bgY }}>
           <div
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] md:w-[640px] md:h-[640px] opacity-10"
             style={{
@@ -146,38 +170,6 @@ export default function AboutUs() {
               backgroundPosition: "center",
             }}
           />
-        </motion.div>
-        
-        {/* Parallax corner illustrations */}
-        <motion.div 
-            style={{ y: illustrationY1 }} 
-            className="absolute top-10 left-4 hidden lg:block opacity-20"
-        >
-          <div className="w-[380px] transform -rotate-12 relative">
-            <Image
-              src="/illustrations/lift01.png"
-              alt="Decorative lift illustration"
-              width={380}
-              height={380}
-              className="w-full h-auto"
-              priority={false}
-            />
-          </div>
-        </motion.div>
-         <motion.div 
-            style={{ y: illustrationY2 }} 
-            className="absolute bottom-10 right-4 hidden lg:block opacity-20"
-        >
-          <div className="w-[420px] transform rotate-10 relative">
-            <Image
-              src="/illustrations/lift02.png"
-              alt="Decorative lift illustration"
-              width={420}
-              height={420}
-              className="w-full h-auto"
-              priority={false}
-            />
-          </div>
         </motion.div>
       </div>
 
@@ -190,18 +182,45 @@ export default function AboutUs() {
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               About Liftronic
             </h2>
-            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              <strong className="block text-xl text-accent">Innovation Meets Elegance.</strong>
-              For over <span className="font-bold text-accent ml-1">20 years</span>, Liftronic has been elevating homes across India with beautifully designed residential lifts. We craft <span className="text-accent font-semibold">bespoke solutions</span> that pair refined aesthetics with dependable, <span className="text-accent font-semibold">European-engineered performance</span> — making everyday movement <span className="italic font-medium">effortless</span> and <span className="italic font-medium">elegant</span>.
-            </p>
-            <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
-              Headquartered in <span className="text-accent font-semibold">Mumbai</span>, Liftronic India Pvt Ltd delivers <span className="text-accent font-semibold">end-to-end</span> elevator experiences: expert consultation and
-              <span className="text-accent font-semibold ml-1">Sales</span>, precise
-              <span className="text-accent font-semibold ml-1">Installation</span>, and proactive
-              <span className="text-accent font-semibold ml-1">Maintenance</span>. Our designs blend <span className="text-accent font-semibold ml-1">European technology</span> with Indian sensibilities to create lifts that feel <span className="text-accent font-semibold ml-1">custom-made</span> for your space. Discover an elevator that improves <span className="text-accent font-semibold ml-1">accessibility</span>, adds <span className="text-accent font-semibold ml-1">luxury</span>, and transforms how you live.
+            <p className="text-md md:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              <strong className="block text-lg md:text-xl font-semibold text-gray-900">
+                Innovation Meets Elegance.
+              </strong>
+              For over <span className="font-bold text-gray-900">20 years</span>
+              , Liftronic has been elevating homes across India with beautifully
+              designed residential lifts. We craft{" "}
+              <span className="font-semibold text-gray-900">
+                bespoke solutions
+              </span>{" "}
+              that pair refined aesthetics with dependable{" "}
+              <span className="font-semibold text-gray-900">
+                European-engineered performance
+              </span>{" "}
+              — making everyday movement{" "}
+              <span className="italic font-medium">effortless</span> and{" "}
+              <span className="italic font-medium">elegant</span>. Headquartered
+              in <span className="font-semibold text-gray-900">Mumbai</span>,
+              Liftronic India Pvt Ltd delivers{" "}
+              <span className="font-semibold text-gray-900">end-to-end</span>{" "}
+              elevator experiences: expert consultation and{" "}
+              <span className="font-semibold text-gray-900">Sales</span>,
+              precise{" "}
+              <span className="font-semibold text-gray-900">Installation</span>,
+              and proactive{" "}
+              <span className="font-semibold text-gray-900">Maintenance</span>.
+              Our designs blend{" "}
+              <span className="font-semibold text-gray-900">
+                European technology
+              </span>{" "}
+              with Indian sensibilities to create lifts that feel{" "}
+              <span className="font-semibold text-gray-900">custom-made</span>{" "}
+              for your space. Discover an elevator that improves{" "}
+              <span className="font-semibold text-gray-900">accessibility</span>
+              , adds <span className="font-semibold text-gray-900">luxury</span>
+              , and transforms how you live.
             </p>
           </motion.div>
         </div>
@@ -215,7 +234,8 @@ export default function AboutUs() {
             transition={{ duration: 0.5 }}
           >
             <TiltCard title="European Technology" icon={BiCog}>
-              Advanced engineering solutions blended with innovative design for superior performance.
+              Advanced engineering solutions blended with innovative design for
+              superior performance.
             </TiltCard>
           </motion.div>
 
@@ -226,7 +246,8 @@ export default function AboutUs() {
             transition={{ duration: 0.5, delay: 0.08 }}
           >
             <TiltCard title="Custom Solutions" icon={BiStar}>
-              Tailored elevator designs that enhance your home&apos;s style and meet specific requirements.
+              Tailored elevator designs that enhance your home&apos;s style and
+              meet specific requirements.
             </TiltCard>
           </motion.div>
 
@@ -237,7 +258,8 @@ export default function AboutUs() {
             transition={{ duration: 0.5, delay: 0.16 }}
           >
             <TiltCard title="Global Expertise" icon={BiGlobe}>
-              Proven track record with successful projects completed in India and internationally.
+              Proven track record with successful projects completed in India
+              and internationally.
             </TiltCard>
           </motion.div>
         </div>
@@ -254,7 +276,12 @@ export default function AboutUs() {
           <div className="absolute inset-0 bg-black/18 pointer-events-none rounded-2xl" />
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 items-center text-center relative z-10">
             {stats.map((s) => (
-              <AnimatedStat key={s.label} label={s.label} value={s.value} suffix={s.suffix} />
+              <AnimatedStat
+                key={s.label}
+                label={s.label}
+                value={s.value}
+                suffix={s.suffix}
+              />
             ))}
           </div>
         </motion.div>

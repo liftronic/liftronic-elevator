@@ -3,7 +3,7 @@ import ProductCard from "~/components/products/ProductCard";
 import Breadcrumb from "~/components/Breadcrumb";
 import * as motion from "motion/react-client";
 import CallToActionSection from "~/components/CallToActionSection";
-import { FiEye } from "react-icons/fi";
+import { FiEye, FiMessageSquare } from "react-icons/fi";
 
 type Product = {
   id: string;
@@ -126,16 +126,17 @@ export default function ProductsPage() {
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
                 <motion.button
-                  className="btn btn-primary"
+                  className="btn btn-primary px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
+                  <FiMessageSquare className="text-base" />
                   Request a Quote
                 </motion.button>
               </Link>
-              <Link href="/services" className="btn">
+              <Link href="/services">
                 <motion.button
-                  className="btn"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

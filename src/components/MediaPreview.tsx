@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
-import Link from "next/link";
 import { HiPlay, HiPhotograph, HiArrowRight } from "react-icons/hi";
+import AnimatedNumbers from "~/components/AnimatedNumbers";
+import QuoteCTA from "~/components/QuoteCTA";
 
 // Featured media items for homepage preview
 const featuredMedia = [
@@ -31,6 +32,14 @@ const featuredMedia = [
   },
 ];
 
+// Statistics data for animated numbers
+const mediaStats = [
+  { number: 150, suffix: "+", label: "Project Photos" },
+  { number: 25, suffix: "+", label: "Installation Videos" },
+  { number: 50, suffix: "+", label: "Product Showcases" },
+  { number: 100, suffix: "+", label: "Service Updates" },
+];
+
 export default function MediaPreview() {
   const [mounted, setMounted] = useState(false);
 
@@ -41,32 +50,34 @@ export default function MediaPreview() {
   if (!mounted) return null;
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-br from-gray-50/30 via-white to-blue-50/20">
-      <div className="container mx-auto px-6">
-        {/* Section Header */}
+    <section id="media" className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        {/* Header section matching BlogSection typography */}
         <motion.div
+          className="text-left mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
         >
-          <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-6">
-            <span className="text-sm font-bold uppercase tracking-wider text-accent">
-              Media Gallery
-            </span>
-          </div>
-          <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             See Our Work in Action
           </h2>
-          <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-md md:text-lg text-gray-600 max-w-3xl leading-relaxed">
             Explore our latest projects, installations, and product showcases
-            through our comprehensive media gallery.
+            through our comprehensive media gallery featuring real-world
+            implementations.
           </p>
         </motion.div>
 
-        {/* Featured Media Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        {/* Media Cards Grid */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
           {featuredMedia.map((item, index) => (
             <motion.div
               key={item.id}
@@ -126,53 +137,17 @@ export default function MediaPreview() {
               </div>
             </motion.div>
           ))}
-        </div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <Link href="/media">
-            <motion.button
-              className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center gap-3"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <HiPhotograph className="w-5 h-5" />
-              Explore Full Media Gallery
-              <HiArrowRight className="w-5 h-5" />
-            </motion.button>
-          </Link>
         </motion.div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
-        >
-          {[
-            { number: "150+", label: "Project Photos" },
-            { number: "25+", label: "Installation Videos" },
-            { number: "50+", label: "Product Showcases" },
-            { number: "100+", label: "Service Updates" },
-          ].map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-accent mb-2">
-                {stat.number}
-              </div>
-              <div className="text-gray-600 text-sm md:text-base">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </motion.div>
+        {/* Quote and CTA Section */}
+        <QuoteCTA
+          quote="Every project tells a story of innovation and excellence."
+          ctaText="Explore Full Media Gallery"
+          ctaHref="/media"
+        />
+
+        {/* Animated Numbers Section */}
+        <AnimatedNumbers stats={mediaStats} />
       </div>
     </section>
   );

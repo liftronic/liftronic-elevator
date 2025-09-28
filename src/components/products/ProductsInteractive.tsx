@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import Link from "next/link";
 import ProductCard from "~/components/products/ProductCard";
+import QuoteCTA from "~/components/QuoteCTA";
 
 type Product = {
   id: string;
@@ -140,16 +140,16 @@ export default function ProductsInteractive() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <AnimatePresence mode="wait">
-            {visibleProducts.map((product, index) => (
+          <AnimatePresence initial={false} mode="popLayout">
+            {visibleProducts.map((product) => (
               <motion.div
-                key={`${product.id}-${currentIndex}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                key={product.id}
+                layout
+                initial={{ opacity: 0, x: 80 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -80 }}
                 transition={{
-                  duration: 0.5,
-                  delay: index * 0.1,
+                  duration: 0.55,
                   ease: "easeOut",
                 }}
                 onMouseEnter={handleInteraction}
@@ -197,35 +197,13 @@ export default function ProductsInteractive() {
           </div>
         </motion.div>
 
-        {/* See All Products Button - matching BlogSection */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <Link
-            href="/products"
-            className="inline-flex items-center rounded-lg bg-accent px-6 py-3 text-base font-medium text-black transition-all hover:bg-accent/90 hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-            onClick={handleInteraction}
-          >
-            See All Products
-            <svg
-              className="ml-2 h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-              />
-            </svg>
-          </Link>
-        </motion.div>
+        {/* Quote and CTA Section */}
+        <QuoteCTA
+          quote="Quality and reliability built into every installation."
+          ctaText="See All Products"
+          ctaHref="/products"
+          onClick={handleInteraction}
+        />
       </div>
     </section>
   );

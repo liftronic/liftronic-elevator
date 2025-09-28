@@ -5,7 +5,9 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { HiPlay, HiPhotograph, HiEye } from "react-icons/hi";
+import { FiEye, FiMessageSquare } from "react-icons/fi";
 import Breadcrumb from "~/components/Breadcrumb";
+import CallToActionSection from "~/components/CallToActionSection";
 
 // Media item types
 type MediaItem = {
@@ -259,17 +261,19 @@ export default function MediaPage() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-white via-gray-50/30 to-blue-50/20">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white/80 to-gray-50/50 py-16 md:py-20">
-        {/* Background Elements */}
-        <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_farthest-corner_at_top_right,_rgba(42,227,148,0.12),_transparent_60%)]" />
-          <div className="absolute -left-20 top-1/3 h-80 w-80 -translate-y-1/2 rounded-full bg-accent/20 blur-3xl opacity-60" />
-          <div className="absolute -right-24 bottom-20 h-72 w-72 rounded-full bg-accent/15 blur-3xl opacity-50" />
-        </div>
+    <main>
+      {/* Page hero */}
+      <section className="relative">
+        {/* Background image */}
+        <div
+          className="absolute inset-0 bg-cover opacity-10 sm:bg-cover bg-no-repeat bg-right md:opacity-60"
+          style={{
+            backgroundImage: "url(/assets/service_banner.png)",
+          }}
+        />
 
-        <div className="container mx-auto md:pt-28 px-6">
+        {/* Content overlay */}
+        <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
           <Breadcrumb
             items={[
               { label: "Home", href: "/" },
@@ -277,21 +281,40 @@ export default function MediaPage() {
             ]}
           />
 
-          <div className="mt-12 text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h1 className="text-4xl font-bold leading-tight text-charcoal md:text-5xl lg:text-6xl mb-6">
-                Explore Our Work
-              </h1>
-              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-                Discover our latest projects, product showcases, and
-                behind-the-scenes content showcasing our elevator solutions and
-                installations.
-              </p>
-            </motion.div>
+          <div className="max-w-3xl mt-10">
+            <p className="text-sm font-semibold tracking-wide text-gray-500">
+              Media Gallery
+            </p>
+            <h1 className="mt-2 text-4xl md:text-5xl font-extrabold tracking-tight">
+              Explore Our Work
+            </h1>
+            <p className="mt-4 text-lg text-gray-600">
+              Discover our latest projects, product showcases, and
+              behind-the-scenes content showcasing our elevator solutions and
+              installations.
+            </p>
+            <div className="mt-6 flex gap-3">
+              <Link href="/#contact">
+                <motion.button
+                  className="btn btn-primary px-8 py-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FiMessageSquare className="text-base" />
+                  Request a Quote
+                </motion.button>
+              </Link>
+              <Link href="/products">
+                <motion.button
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FiEye className="text-base" />
+                  View Products
+                </motion.button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -331,10 +354,10 @@ export default function MediaPage() {
       </section>
 
       {/* Media Grid */}
-      <section className="py-16 md:py-20">
-        <div className="container mx-auto px-6">
+      <section className="py-12 md:py-16 shadow-sm">
+        <div className="container mx-auto px-4">
           {filteredItems.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filteredItems.map((item, index) => (
                 <MediaCard key={item.id} item={item} index={index} />
               ))}
@@ -355,45 +378,18 @@ export default function MediaPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-accent to-green-500">
-        <div className="container mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold leading-tight md:text-4xl lg:text-5xl mb-6">
-              Want to see your project featured?
-            </h2>
-            <p className="text-xl leading-relaxed max-w-2xl mx-auto mb-8">
-              Get in touch with us to discuss your elevator needs and join our
-              gallery of successful installations.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center sm:gap-6">
-              <Link href="/#contact">
-                <motion.button
-                  className="btn bg-white text-black hover:bg-gray-100 text-lg px-8 py-4 shadow-lg"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Start Your Project
-                </motion.button>
-              </Link>
-              <Link href="/products">
-                <motion.button
-                  className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-4 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  View Products
-                </motion.button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CallToActionSection
+        title="Want to see your project featured?"
+        description="Get in touch with us to discuss your elevator needs and join our gallery of successful installations."
+        primaryAction={{
+          label: "Start Your Project",
+          href: "/#contact",
+        }}
+        secondaryAction={{
+          label: "View Products",
+          href: "/products",
+        }}
+      />
     </main>
   );
 }
