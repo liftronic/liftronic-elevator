@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Breadcrumb from "~/components/Breadcrumb";
-import ProductFeatures from "~/components/products/ProductFeatures";
+import Features from "~/components/Features";
 import ProductFAQ from "~/components/products/ProductFAQ";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
@@ -213,7 +213,7 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         </section>
       )}
 
-      <ProductFeatures features={product.features} />
+      <Features features={product.features} />
 
       {/* Gallery Section */}
       <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">

@@ -3,12 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import ProductFeatures from "~/components/products/ProductFeatures";
+import Features from "~/components/Features";
 import ProductFAQ from "~/components/products/ProductFAQ";
 import Breadcrumb from "~/components/Breadcrumb";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
 import CallToActionSection from "~/components/CallToActionSection";
+import { FiMessageSquare, FiEye } from "react-icons/fi";
 
 // Service type definition
 type Service = {
@@ -118,7 +119,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
                   {service.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="inline-flex items-center rounded-full bg-gradient-to-r from-accent to-accent/80 px-5 py-2 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-[0_10px_35px_-10px_rgba(42,227,148,0.65)] ring-1 ring-inset ring-white/20"
+                      className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white shadow-md"
                     >
                       {tag}
                     </span>
@@ -141,6 +142,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
+                    <FiMessageSquare className="text-lg" />
                     Request Service
                   </motion.button>
                 </Link>
@@ -150,6 +152,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
+                    <FiEye className="text-lg" />
                     Explore Products
                   </motion.button>
                 </Link>
@@ -174,66 +177,63 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
         </div>
       </section>
 
-      {/* Service Features */}
-      <ProductFeatures features={service.features} />
-
       {/* Service Specifications */}
       {hasSpecifications && (
-        <section className="border-t border-gray-200/60 bg-white py-16 md:py-20">
+        <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
           <div className="container mx-auto px-4">
-            <div className="mx-auto max-w-4xl">
-              <div className="text-center space-y-6 mb-12">
-                <div className="inline-block rounded-fullpx-4 py-2">
-                  <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                    Service Details
-                  </span>
-                </div>
-                <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl">
-                  What you can expect
-                </h2>
-                <p className="text-xl text-gray-700 leading-relaxed">
-                  Key service parameters and performance metrics for your peace
-                  of mind.
-                </p>
+            <div className="mx-auto space-y-4 mb-8">
+              <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
+                <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                  Service Details
+                </span>
               </div>
-
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {service.specifications?.map((spec, index) => (
-                  <div
-                    key={index}
-                    className="rounded-xl border border-gray-200/60 bg-white p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-300"
-                  >
-                    <dt className="text-sm font-medium text-gray-600 uppercase tracking-wider">
-                      {spec.label}
-                    </dt>
-                    <dd className="mt-2 text-2xl font-bold text-charcoal">
-                      {spec.value}
-                    </dd>
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
+                Specifications for {service.title}
+              </h2>
+              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
+                Key performance indicators and maintenance metrics tailored to
+                your operations.
+              </p>
             </div>
+
+            <dl className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {service.specifications?.map((spec) => (
+                <div
+                  key={`${spec.label}-${spec.value}`}
+                  className="group rounded-2xl border border-gray-200/60 bg-gradient-to-br from-white to-gray-50/30 p-8 shadow-md transition-all duration-300 hover:shadow-lg hover:border-accent/20"
+                >
+                  <dt className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-500">
+                    {spec.label}
+                  </dt>
+                  <dd className="mt-3 text-2xl font-bold text-charcoal md:text-3xl">
+                    {spec.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
       )}
 
-      {/* Service Process Gallery */}
-      <section className="border-t border-gray-200/60 bg-gradient-to-br from-blue-50/30 via-white to-gray-50/30 py-20 md:py-28">
+      {/* Service Features */}
+      <Features features={service.features} />
+
+      {/* Service Gallery */}
+      <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
         <div className="container mx-auto px-4">
-          <div className="text-center space-y-6 mb-16">
-            <div className="inline-block rounded-full px-4 py-2">
+          {/* Section Header */}
+          <div className="mx-auto space-y-6 mb-16">
+            <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
               <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                Our Process
+                Service Gallery
               </span>
             </div>
             <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-              Experience the
-              <br />
-              <span className="text-accent">service excellence</span>
+              Experience our service craftsmanship
             </h2>
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
-              Professional service delivery with attention to detail and
-              commitment to quality.
+            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
+              Step inside our maintenance workflow, on-site expertise, and
+              safety-first execution through vivid visuals.
             </p>
           </div>
 
@@ -270,19 +270,6 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
                 </div>
               );
             })}
-          </div>
-
-          {/* Service Guarantee Call-out */}
-          <div className="mt-16 text-center">
-            <div className="mx-auto max-w-2xl rounded-2xl border border-gray-200/60 bg-white/80 p-8 shadow-lg backdrop-blur-sm">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                <span className="font-semibold text-charcoal">
-                  100% Satisfaction Guaranteed:
-                </span>{" "}
-                We stand behind our service quality with comprehensive
-                warranties and ongoing support commitments.
-              </p>
-            </div>
           </div>
         </div>
       </section>
