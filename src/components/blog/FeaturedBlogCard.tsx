@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { HiArrowRight } from "react-icons/hi";
 import { useViewTransition } from "~/hooks/useViewTransition";
 
 type FeaturedBlogCardProps = {
@@ -142,19 +143,7 @@ export default function FeaturedBlogCard({
               className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
             >
               Continue reading
-              <svg
-                className="ml-1 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                />
-              </svg>
+              <HiArrowRight className="ml-1 h-4 w-4" />
             </button>
           ) : (
             <Link
@@ -162,19 +151,7 @@ export default function FeaturedBlogCard({
               className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
             >
               Continue reading
-              <svg
-                className="ml-1 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                />
-              </svg>
+              <HiArrowRight className="ml-1 h-4 w-4" />
             </Link>
           )}
         </div>
