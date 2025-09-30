@@ -18,6 +18,7 @@ type FeaturedBlogCardProps = {
   href?: string;
   imageSrc?: string;
   imageAlt?: string;
+  blurDataURL?: string;
 };
 
 export default function FeaturedBlogCard({
@@ -31,6 +32,7 @@ export default function FeaturedBlogCard({
   href,
   imageSrc,
   imageAlt,
+  blurDataURL,
 }: FeaturedBlogCardProps) {
   const blogHref = href || (blogId ? `/blogs/${blogId}` : "#");
   const { transitionTo } = useViewTransition();
@@ -81,6 +83,8 @@ export default function FeaturedBlogCard({
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(min-width: 1024px) 40vw, 100vw"
               priority
+              placeholder={blurDataURL ? "blur" : "empty"}
+              blurDataURL={blurDataURL}
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
 

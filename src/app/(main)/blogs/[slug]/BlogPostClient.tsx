@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,38 +8,21 @@ import Breadcrumb from "~/components/Breadcrumb";
 import BlogCard from "~/components/blog/BlogCard";
 import CallToActionSection from "~/components/CallToActionSection";
 import { useViewTransition } from "~/hooks/useViewTransition";
-
-// Blog post type definition
-type BlogPost = {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  tag: string;
-  date: string;
-  readTime: string;
-  author: string;
-  imageSrc?: string;
-  imageAlt?: string;
-  relatedPosts?: string[];
-};
+import PortableTextRenderer from "~/components/blog/PortableTextRenderer";
+import type { BlogPostFull } from "~/sanity/lib/blogTypes";
 
 type BlogPostClientProps = {
-  post: BlogPost;
-  allPosts: Record<string, BlogPost>;
+  post: BlogPostFull;
 };
 
-export default function BlogPostClient({
-  post,
-  allPosts,
-}: BlogPostClientProps) {
+export default function BlogPostClient({ post }: BlogPostClientProps) {
   const { transitionTo } = useViewTransition();
   const router = useRouter();
 
   const pageStyle = {
-    "--transition-name": `blog-card-${post.id}`,
-    "--image-transition-name": `blog-image-${post.id}`,
-    "--title-transition-name": `blog-title-${post.id}`,
+    "--transition-name": `blog-card-${post.slug}`,
+    "--image-transition-name": `blog-image-${post.slug}`,
+    "--title-transition-name": `blog-title-${post.slug}`,
   } as React.CSSProperties;
 
   const handleBackClick = (e: React.MouseEvent) => {
@@ -52,131 +35,21 @@ export default function BlogPostClient({
     router.prefetch("/blogs");
   }, [router]);
 
-  const heroImage = post.imageSrc || "/assets/service_banner.png";
+  const heroImage = post.mainImage || "/assets/service_banner.png";
+  const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
-  // Get related posts
-  const relatedPosts = post.relatedPosts
-    ? post.relatedPosts.map((id) => allPosts[id]).filter(Boolean)
-    : Object.values(allPosts)
-        .filter((p) => p.id !== post.id && p.tag === post.tag)
-        .slice(0, 3);
+  // Get related posts from the post data
+  const relatedPosts = post.relatedPosts || [];
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blogs" },
     { label: post.title, isCurrentPage: true },
   ];
-
-  // Function to render markdown-like content as HTML
-  const renderContent = (content: string) => {
-    const lines = content.trim().split("\n");
-    const elements: React.ReactElement[] = [];
-    let currentParagraph: string[] = [];
-    let listItems: string[] = [];
-    let inList = false;
-
-    const flushParagraph = () => {
-      if (currentParagraph.length > 0) {
-        elements.push(
-          <p
-            key={elements.length}
-            className="mb-4 text-gray-700 leading-relaxed"
-          >
-            {currentParagraph.join(" ")}
-          </p>
-        );
-        currentParagraph = [];
-      }
-    };
-
-    const flushList = () => {
-      if (listItems.length > 0) {
-        elements.push(
-          <ul key={elements.length} className="mb-6 space-y-2">
-            {listItems.map((item, idx) => (
-              <li key={idx} className="flex items-start">
-                <span className="text-accent mr-2 font-bold">•</span>
-                <span className="text-gray-700">{item}</span>
-              </li>
-            ))}
-          </ul>
-        );
-        listItems = [];
-        inList = false;
-      }
-    };
-
-    lines.forEach((line) => {
-      const trimmedLine = line.trim();
-
-      if (trimmedLine.startsWith("# ")) {
-        flushParagraph();
-        flushList();
-        elements.push(
-          <h1
-            key={elements.length}
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 mt-8 first:mt-0"
-          >
-            {trimmedLine.slice(2)}
-          </h1>
-        );
-      } else if (trimmedLine.startsWith("## ")) {
-        flushParagraph();
-        flushList();
-        elements.push(
-          <h2
-            key={elements.length}
-            className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 mt-8"
-          >
-            {trimmedLine.slice(3)}
-          </h2>
-        );
-      } else if (trimmedLine.startsWith("### ")) {
-        flushParagraph();
-        flushList();
-        elements.push(
-          <h3
-            key={elements.length}
-            className="text-xl md:text-2xl font-semibold text-gray-900 mb-3 mt-6"
-          >
-            {trimmedLine.slice(4)}
-          </h3>
-        );
-      } else if (trimmedLine.startsWith("- ")) {
-        flushParagraph();
-        if (!inList) {
-          inList = true;
-        }
-        listItems.push(trimmedLine.slice(2));
-      } else if (trimmedLine.startsWith("**") && trimmedLine.endsWith("**")) {
-        flushParagraph();
-        flushList();
-        elements.push(
-          <h4
-            key={elements.length}
-            className="text-lg font-semibold text-gray-900 mb-2 mt-4"
-          >
-            {trimmedLine.slice(2, -2)}
-          </h4>
-        );
-      } else if (trimmedLine === "") {
-        flushParagraph();
-        if (inList) {
-          flushList();
-        }
-      } else {
-        if (inList) {
-          flushList();
-        }
-        currentParagraph.push(trimmedLine);
-      }
-    });
-
-    flushParagraph();
-    flushList();
-
-    return elements;
-  };
 
   return (
     <main className="min-h-screen" style={pageStyle}>
@@ -200,11 +73,11 @@ export default function BlogPostClient({
                 <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-accent font-semibold">
                   {post.tag}
                 </span>
-                <time dateTime={post.date}>{post.date}</time>
+                <time dateTime={post.publishedAt}>{formattedDate}</time>
                 <span>•</span>
                 <span>{post.readTime}</span>
                 <span>•</span>
-                <span>{post.author}</span>
+                <span>{post.author.name}</span>
               </div>
 
               {/* Title and Summary */}
@@ -256,49 +129,83 @@ export default function BlogPostClient({
       <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
         <div className="container mx-auto px-4">
           <div className="prose prose-lg max-w-none">
-            {renderContent(post.content)}
+            <Suspense
+              fallback={
+                <div className="space-y-4 animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded w-full"></div>
+                  <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                </div>
+              }
+            >
+              <PortableTextRenderer value={post.body} />
+            </Suspense>
           </div>
         </div>
       </section>
 
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
-        <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
-          <div className="container mx-auto px-4">
-            {/* Section Header */}
-            <div className="mx-auto space-y-6 mb-16">
-              <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
-                <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                  Continue Reading
-                </span>
+        <Suspense
+          fallback={
+            <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
+              <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-pulse">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="bg-gray-200 rounded-xl h-96"></div>
+                  ))}
+                </div>
               </div>
-              <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-                Related articles
-              </h2>
-              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
-                Explore more insights and expertise from our technical team
-              </p>
-            </div>
+            </section>
+          }
+        >
+          <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
+            <div className="container mx-auto px-4">
+              {/* Section Header */}
+              <div className="mx-auto space-y-6 mb-16">
+                <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
+                  <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                    Continue Reading
+                  </span>
+                </div>
+                <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
+                  Related articles
+                </h2>
+                <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
+                  Explore more insights and expertise from our technical team
+                </p>
+              </div>
 
-            {/* Related Posts Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {relatedPosts.slice(0, 3).map((relatedPost) => (
-                <BlogCard
-                  key={relatedPost.id}
-                  title={relatedPost.title}
-                  excerpt={relatedPost.excerpt}
-                  tag={relatedPost.tag}
-                  date={relatedPost.date}
-                  readTime={relatedPost.readTime}
-                  author={relatedPost.author}
-                  blogId={relatedPost.id}
-                  imageSrc={relatedPost.imageSrc}
-                  imageAlt={relatedPost.imageAlt}
-                />
-              ))}
+              {/* Related Posts Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {relatedPosts.slice(0, 3).map((relatedPost) => (
+                  <BlogCard
+                    key={relatedPost._id}
+                    title={relatedPost.title}
+                    excerpt={relatedPost.excerpt}
+                    tag={relatedPost.tag}
+                    date={new Date(relatedPost.publishedAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      }
+                    )}
+                    readTime={relatedPost.readTime}
+                    author={relatedPost.author}
+                    blogId={relatedPost.slug}
+                    imageSrc={relatedPost.mainImage}
+                    imageAlt={relatedPost.imageAlt}
+                    blurDataURL={relatedPost.mainImageLqip}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </Suspense>
       )}
 
       <CallToActionSection
