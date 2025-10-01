@@ -12,6 +12,7 @@ import { clientType } from "./clients";
 import { faqType } from "./faq";
 import { keyFeatureType } from "./keyFeatures";
 import { productType } from "./products";
+import { serviceType } from "./serviceOffered";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -27,5 +28,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     faqType,
     keyFeatureType,
     productType,
+    serviceType,
   ],
 };

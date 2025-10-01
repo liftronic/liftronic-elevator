@@ -3,6 +3,49 @@ import Image from "next/image";
 import React, { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useViewTransition } from "~/hooks/useViewTransition";
+import {
+  BiWrench,
+  BiShield,
+  BiRefresh,
+  BiCog,
+  BiStar,
+  BiSupport,
+  BiCheckCircle,
+  BiGlobe,
+  BiBuildings,
+  BiTrendingUp,
+  BiHeart,
+} from "react-icons/bi";
+
+// Enhanced icon mapping for services
+const getServiceIcon = (iconName: string) => {
+  // Map icon names from backend to actual React icon components
+  const iconMap: Record<string, React.ReactElement> = {
+    wrench: <BiWrench className="h-5 w-5 text-accent" />,
+    shield: <BiShield className="h-5 w-5 text-accent" />,
+    refresh: <BiRefresh className="h-5 w-5 text-accent" />,
+    cog: <BiCog className="h-5 w-5 text-accent" />,
+    star: <BiStar className="h-5 w-5 text-accent" />,
+    support: <BiSupport className="h-5 w-5 text-accent" />,
+    check: <BiCheckCircle className="h-5 w-5 text-accent" />,
+    globe: <BiGlobe className="h-5 w-5 text-accent" />,
+    buildings: <BiBuildings className="h-5 w-5 text-accent" />,
+    trending: <BiTrendingUp className="h-5 w-5 text-accent" />,
+    heart: <BiHeart className="h-5 w-5 text-accent" />,
+    // Add emoji to icon mapping
+    "🔧": <BiWrench className="h-5 w-5 text-accent" />,
+    "🛡️": <BiShield className="h-5 w-5 text-accent" />,
+    "🔄": <BiRefresh className="h-5 w-5 text-accent" />,
+    "⚙️": <BiCog className="h-5 w-5 text-accent" />,
+    "⭐": <BiStar className="h-5 w-5 text-accent" />,
+    "🏢": <BiBuildings className="h-5 w-5 text-accent" />,
+    "📈": <BiTrendingUp className="h-5 w-5 text-accent" />,
+    "❤️": <BiHeart className="h-5 w-5 text-accent" />,
+  };
+
+  // Return mapped icon or fallback icon
+  return iconMap[iconName] || <BiCog className="h-5 w-5 text-accent" />;
+};
 
 type ServiceCardProps = {
   title: string;
@@ -13,6 +56,9 @@ type ServiceCardProps = {
   badge?: string;
   imageSrc?: string;
   imageAlt?: string;
+  featured?: boolean;
+  image?: string;
+  icon?: string;
 };
 
 export default function ServiceCard({
@@ -24,6 +70,9 @@ export default function ServiceCard({
   badge,
   imageSrc,
   imageAlt,
+  featured,
+  image,
+  icon,
 }: ServiceCardProps) {
   const serviceHref =
     href || (serviceId ? `/services/${serviceId}` : "/#contact");
@@ -53,8 +102,9 @@ export default function ServiceCard({
       } as React.CSSProperties)
     : {};
 
-  // Use the specified service image or fallback to illustration
-  const finalImageSrc = imageSrc || "/illustrations/lift02.png";
+  // Use the specified service image from backend, or fallback to imageSrc prop, or default illustration
+  const finalImageSrc = image || imageSrc || "/illustrations/lift02.png";
+  const finalBadge = badge || (featured ? "Popular" : undefined);
 
   return (
     <div
@@ -65,10 +115,10 @@ export default function ServiceCard({
       onClick={handleCardClick}
       onMouseEnter={handleMouseEnter}
     >
-      {!!badge && (
+      {!!finalBadge && (
         <div className="absolute right-3 top-3 z-10">
           <span className="inline-flex items-center rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-black shadow-sm">
-            {badge}
+            {finalBadge}
           </span>
         </div>
       )}
@@ -93,16 +143,27 @@ export default function ServiceCard({
       <div className="p-6">
         <div className="flex flex-col h-full">
           <div className="flex-grow">
-            <h3
-              className={`text-xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
-                serviceId ? "service-title" : ""
-              }`}
-            >
-              {title}
-            </h3>
-            <p className="mt-3 text-gray-600 leading-relaxed text-sm line-clamp-3">
-              {summary}
-            </p>
+            <div className="flex items-start gap-3">
+              {icon && (
+                <div className="flex-shrink-0 mt-0.5">
+                  <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center">
+                    {getServiceIcon(icon)}
+                  </div>
+                </div>
+              )}
+              <div className="flex-grow">
+                <h3
+                  className={`text-xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
+                    serviceId ? "service-title" : ""
+                  }`}
+                >
+                  {title}
+                </h3>
+                <p className="mt-3 text-gray-600 leading-relaxed text-sm line-clamp-3">
+                  {summary}
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Tags section with improved styling */}
