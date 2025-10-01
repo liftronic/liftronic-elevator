@@ -180,8 +180,8 @@ function MediaCard({ item, index }: { item: MediaItem; index: number }) {
           <span
             className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${
               item.type === "video"
-                ? "bg-red-500/90 text-white"
-                : "bg-blue-500/90 text-white"
+                ? "bg-accent text-black"
+                : "bg-accent text-black"
             }`}
           >
             {item.type === "video" ? (
