@@ -1,6 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
+import Image from "next/image";
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -100,9 +101,11 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
               {/* Left side - Branding */}
               <div className="hidden lg:flex lg:w-1/3 flex-col justify-center items-center bg-gradient-to-br from-[var(--color-brand)] to-[var(--color-accent)] rounded-xl p-6 text-white">
                 <div className="text-center">
-                  <img 
+                  <Image 
                     src="/liftronic-white.png" 
                     alt="Liftronic" 
+                    width={128}
+                    height={64}
                     className="w-32 h-auto mb-4 mx-auto"
                   />
                   <h3 className="text-xl font-bold mb-2">Liftronic Elevators</h3>
@@ -120,7 +123,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 <h2 className="mb-2 text-2xl sm:text-3xl font-bold text-[var(--color-charcoal)]">
                   Get a Quote
                 </h2>
-                <p className="mb-4 sm:mb-6 text-sm text-gray-600">Fill out the form below and we'll get back to you shortly.</p>
+                <p className="mb-4 sm:mb-6 text-sm text-gray-600">Fill out the form below and we&apos;ll get back to you shortly.</p>
 
               <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
@@ -287,7 +290,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                     Thank you! Your quote request has been submitted successfully.
                   </p>
                   <p className="mt-2 text-sm text-gray-600">
-                    We'll get back to you shortly.
+                    We&apos;ll get back to you shortly.
                   </p>
                 </div>
               ) : (
