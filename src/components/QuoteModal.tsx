@@ -472,6 +472,7 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       </motion.button>
                     )}
                   </form>
+
                 </div>
               </div>
             </div>
