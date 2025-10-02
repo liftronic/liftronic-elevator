@@ -213,7 +213,7 @@ export default function Services() {
                         <div
                           className={index === 0 ? "text-accent" : "text-white"}
                         >
-                          {getServiceIcon(service.icon)}
+                          {getServiceIcon(service.icon || "")}
                         </div>
                       </div>
                     </div>
@@ -284,7 +284,7 @@ export default function Services() {
                     <div className="flex items-center gap-3 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10">
                         <div className="text-accent">
-                          {getServiceIcon(currentService.icon)}
+                          {getServiceIcon(currentService.icon || "")}
                         </div>
                       </div>
                       <span className="text-sm font-semibold text-charcoal">

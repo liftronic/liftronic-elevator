@@ -1,8 +1,3 @@
-// components/VisionMissionValues.tsx
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
 import {
   BiTrendingUp,
   BiHeart,
@@ -112,9 +107,6 @@ type VisionMissionValuesProps = {
 export default function VisionMissionValues({
   data,
 }: VisionMissionValuesProps) {
-  const [activeCard, setActiveCard] = useState("vision");
-  const [isLoaded, setIsLoaded] = useState(false);
-
   const vmvInfo = data || fallbackVMV;
 
   // Transform backend data to component format
@@ -157,31 +149,6 @@ export default function VisionMissionValues({
     ][index % 6],
   }));
 
-  // Lazy loading with Intersection Observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isLoaded) {
-            setIsLoaded(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const section = document.getElementById("vmv-section");
-    if (section) {
-      observer.observe(section);
-    }
-
-    return () => {
-      if (section) {
-        observer.unobserve(section);
-      }
-    };
-  }, [isLoaded]);
-
   return (
     <section
       id="vmv-section"
@@ -189,13 +156,7 @@ export default function VisionMissionValues({
     >
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-charcoal mb-6">
             Our Foundation
           </h2>
@@ -204,137 +165,76 @@ export default function VisionMissionValues({
             committed to transforming the vertical transportation industry
             through innovation and excellence.
           </p>
-        </motion.div>
+        </div>
 
         {/* Vision, Mission, Values Cards */}
         <div className="grid lg:grid-cols-3 gap-8 mb-20">
-          {isLoaded &&
-            vmvData.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
-                className="group cursor-pointer"
-                onClick={() => setActiveCard(item.id)}
-              >
+          {vmvData.map((item) => (
+            <div key={item.id} className="group cursor-pointer">
+              <div className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden h-full hover:ring-2 hover:ring-accent">
+                {/* Gradient Background */}
                 <div
-                  className={`relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden h-full ${
-                    activeCard === item.id
-                      ? "ring-2 ring-accent shadow-2xl"
-                      : ""
-                  }`}
-                >
-                  {/* Gradient Background */}
+                  className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-5 group-hover:opacity-10 transition-opacity duration-300`}
+                ></div>
+
+                <div className="relative p-8">
+                  {/* Icon */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-5 group-hover:opacity-10 transition-opacity duration-300`}
-                  ></div>
-
-                  <div className="relative p-8">
-                    {/* Icon */}
-                    <div
-                      className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      {item.icon}
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-2xl font-bold text-charcoal mb-4 group-hover:text-accent transition-colors">
-                      {item.title}
-                    </h3>
-
-                    {/* Content */}
-                    <p className="text-gray-600 leading-relaxed mb-6">
-                      {item.content}
-                    </p>
-
-                    {/* Hover Effect */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                    className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    {item.icon}
                   </div>
-                </div>
-              </motion.div>
-            ))}
 
-          {/* Skeleton Loading for VMV Cards */}
-          {!isLoaded &&
-            Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-3xl shadow-lg p-8 animate-pulse"
-              >
-                <div className="w-16 h-16 bg-gray-200 rounded-2xl mb-6"></div>
-                <div className="h-6 bg-gray-200 rounded mb-4 w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-charcoal mb-4 group-hover:text-accent transition-colors">
+                    {item.title}
+                  </h3>
+
+                  {/* Content */}
+                  <p className="text-gray-600 leading-relaxed mb-6">
+                    {item.content}
+                  </p>
+
+                  {/* Hover Effect */}
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
 
         {/* Core Values Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-16"
-        >
+        <div className="mb-16">
           <h3 className="text-3xl font-bold text-charcoal text-center mb-12">
             Our Core Values in Action
           </h3>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {isLoaded &&
-              coreValues.map((value, index) => (
-                <motion.div
-                  key={value.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 group hover:-translate-y-2"
-                >
-                  <div
-                    className={`w-12 h-12 ${value.color} rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    {value.icon}
-                  </div>
-
-                  <h4 className="text-lg font-bold text-charcoal mb-3 group-hover:text-accent transition-colors">
-                    {value.title}
-                  </h4>
-
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {value.description}
-                  </p>
-                </motion.div>
-              ))}
-
-            {/* Skeleton Loading for Core Values */}
-            {!isLoaded &&
-              Array.from({ length: 6 }).map((_, index) => (
+            {coreValues.map((value) => (
+              <div
+                key={value.id}
+                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 group hover:-translate-y-2"
+              >
                 <div
-                  key={index}
-                  className="bg-white rounded-2xl shadow-lg p-6 animate-pulse"
+                  className={`w-12 h-12 ${value.color} rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}
                 >
-                  <div className="w-12 h-12 bg-gray-200 rounded-xl mb-4"></div>
-                  <div className="h-5 bg-gray-200 rounded mb-3 w-3/4"></div>
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  {value.icon}
                 </div>
-              ))}
+
+                <h4 className="text-lg font-bold text-charcoal mb-3 group-hover:text-accent transition-colors">
+                  {value.title}
+                </h4>
+
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {value.description}
+                </p>
+              </div>
+            ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
+        <div className="text-center">
           <div className="bg-gradient-to-r from-accent to-green-500 rounded-3xl p-8 md:p-12">
             <h3 className="text-3xl font-bold mb-4">Join Us in Our Mission</h3>
             <p className="text-xl mb-8 opacity-95 max-w-2xl mx-auto">
@@ -342,24 +242,16 @@ export default function VisionMissionValues({
               Together, we can build a safer, more connected world.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                className="btn bg-white hover:bg-gray-100 text-lg px-8 py-3"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <button className="btn bg-white hover:bg-gray-100 text-lg px-8 py-3">
                 Explore Careers
-              </motion.button>
+              </button>
 
-              <motion.button
-                className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-3"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <button className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-3">
                 Partner With Us
-              </motion.button>
+              </button>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -58,14 +58,6 @@ export const serviceType = defineType({
       },
     }),
     defineField({
-      name: "icon",
-      title: "Icon",
-      description:
-        'Enter the React icon component name (e.g. "FiCode", "SettingsIcon"). This will be mapped to an icon in the frontend.',
-      type: "string",
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: "image",
       title: "Service Image",
       type: "image",
@@ -95,18 +87,10 @@ export const serviceType = defineType({
               rows: 2,
               validation: (Rule) => Rule.required(),
             }),
-            defineField({
-              name: "icon",
-              title: "Feature Icon",
-              type: "string",
-              description: "Emoji or icon identifier",
-              validation: (Rule) => Rule.required(),
-            }),
           ],
           preview: {
             select: {
               title: "title",
-              subtitle: "icon",
             },
           },
         },
@@ -147,13 +131,6 @@ export const serviceType = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "icon",
-    },
-    prepare({ title, subtitle }) {
-      return {
-        title,
-        subtitle: subtitle ? `Icon: ${subtitle}` : "",
-      };
     },
   },
 });

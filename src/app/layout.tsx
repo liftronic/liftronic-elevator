@@ -115,6 +115,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Resource hints for Sanity CDN */}
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${dmSans.variable} antialiased bg-soft text-charcoal`}
         suppressHydrationWarning={true}

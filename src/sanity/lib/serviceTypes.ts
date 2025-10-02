@@ -7,11 +7,11 @@ export type ServiceOffered = {
   image?: string;
   imageLqip?: string;
   imageAlt?: string;
-  icon: string;
   tags?: string[];
   featured?: boolean;
   _createdAt: string;
   _updatedAt?: string;
+  icon?: string;
 };
 
 // Full service type with complete details
@@ -25,7 +25,6 @@ export type ServiceOfferedFull = {
   description: string;
   image?: string;
   imageAlt?: string;
-  icon: string;
   tags?: string[];
   featured?: boolean;
   features?: ServiceFeature[];
@@ -65,7 +64,6 @@ export type RelatedService = {
   image?: string;
   imageLqip?: string;
   imageAlt?: string;
-  icon: string;
   tags?: string[];
   featured?: boolean;
 };

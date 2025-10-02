@@ -36,6 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// ISR: Revalidate every 60 minutes (3600 seconds)
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   const slugs = await getServiceSlugs();
   return slugs.map((slug) => ({

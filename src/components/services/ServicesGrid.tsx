@@ -62,9 +62,8 @@ function LazyServiceCard({
           tags={service.tags}
           serviceId={service.slug}
           featured={service.featured}
-          image={service.image}
+          imageSrc={service.image}
           imageAlt={service.imageAlt}
-          icon={service.icon}
         />
       ) : (
         // Loading skeleton

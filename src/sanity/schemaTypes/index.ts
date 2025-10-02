@@ -18,6 +18,7 @@ import { timelineType } from "./timeline";
 import { teamMemberType } from "./teamMember";
 import { whyChooseUsType } from "./whyChooseUs";
 import { visionMissionValuesType } from "./visionMissionValues";
+import mediaType from "./media";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -39,5 +40,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     teamMemberType,
     whyChooseUsType,
     visionMissionValuesType,
+    mediaType,
   ],
 };
