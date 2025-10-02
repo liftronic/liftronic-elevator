@@ -45,7 +45,7 @@ export default function MediaCard({ item, onClick }: MediaCardProps) {
   return (
     <div
       onClick={onClick}
-      className="group relative overflow-hidden rounded-2xl border border-gray-200/60 bg-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer"
+      className="group relative overflow-hidden rounded-2xl border border-gray-200/60 bg-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02] cursor-pointer h-full flex flex-col"
     >
       {/* Media Preview */}
       <div className="relative aspect-video overflow-hidden bg-gray-100">
@@ -91,11 +91,11 @@ export default function MediaCard({ item, onClick }: MediaCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-6 flex-1 flex flex-col">
         <h3 className="font-bold text-lg text-charcoal mb-2 line-clamp-1">
           {item.title}
         </h3>
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+        <p className="text-gray-600 text-sm mb-3 line-clamp-2 flex-1">
           {item.description}
         </p>
 

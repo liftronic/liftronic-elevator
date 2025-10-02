@@ -210,3 +210,108 @@ export const mediaByCategoryQuery = groq`*[_type == "media" && category == $cate
   tags,
   publishedAt
 }`;
+
+// ============================================
+// Service Queries
+// ============================================
+
+// Query to get all services
+export const servicesQuery = groq`*[_type == "serviceOffered"] | order(order asc) {
+  _id,
+  title,
+  "slug": slug.current,
+  shortDescription,
+  description,
+  "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+  "mainImageLqip": mainImage.asset->metadata.lqip,
+  "imageAlt": mainImage.alt,
+  icon
+}`;
+
+// ============================================
+// Client Queries
+// ============================================
+
+// Query to get all clients
+export const clientsQuery = groq`*[_type == "client"] | order(_createdAt desc) {
+  _id,
+  title,
+  "image": image.asset->url + "?w=200&h=80&fit=max&auto=format&fm=webp&q=85",
+  "imageAlt": image.alt
+}`;
+
+// ============================================
+// Testimonial Queries
+// ============================================
+
+// Query to get all testimonials
+export const testimonialsQuery = groq`*[_type == "testimonial"] | order(_createdAt desc) {
+  _id,
+  testimonialFrom,
+  testimonialDetail,
+  "companyImage": companyImage.asset->url + "?w=100&h=100&fit=crop&auto=format&fm=webp&q=85",
+  "imageAlt": companyImage.alt
+}`;
+
+// ============================================
+// Home Page Combined Query
+// ============================================
+
+// Query to get all home page data in a single request
+export const homePageDataQuery = groq`{
+  "featuredProducts": *[_type == "product" && featured == true] | order(title asc) [0...6] {
+    _id,
+    title,
+    "slug": slug.current,
+    subtitle,
+    description,
+    "tags": tags[]->{
+      _id,
+      title,
+      "slug": slug.current
+    },
+    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImageLqip": mainImage.asset->metadata.lqip,
+    "imageAlt": mainImage.alt,
+    featured
+  },
+  "clients": *[_type == "client"] | order(_createdAt desc) {
+    _id,
+    title,
+    "image": image.asset->url + "?w=200&h=80&fit=max&auto=format&fm=webp&q=85",
+    "imageAlt": image.alt
+  },
+  "featuredMedia": *[_type == "media" && defined(publishedAt)] | order(publishedAt desc) [0...3] {
+    _id,
+    title,
+    description,
+    type,
+    image,
+    youtubeUrl,
+    thumbnail,
+    category,
+    tags,
+    publishedAt
+  },
+  "featuredBlogs": *[_type == "post" && featured == true && defined(publishedAt)] | order(publishedAt desc) [0...3] {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImageLqip": mainImage.asset->metadata.lqip,
+    "imageAlt": mainImage.alt,
+    "tag": tag->title,
+    "tagSlug": tag->slug.current,
+    publishedAt,
+    readTime,
+    "author": author->name
+  },
+  "testimonials": *[_type == "testimonial"] | order(_createdAt desc) [0...6] {
+    _id,
+    testimonialFrom,
+    testimonialDetail,
+    "companyImage": companyImage.asset->url + "?w=100&h=100&fit=crop&auto=format&fm=webp&q=85",
+    "imageAlt": companyImage.alt
+  }
+}`;

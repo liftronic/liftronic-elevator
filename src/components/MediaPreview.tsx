@@ -2,35 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import Image from "next/image";
-import { HiPlay, HiPhotograph, HiArrowRight } from "react-icons/hi";
 import AnimatedNumbers from "~/components/AnimatedNumbers";
 import QuoteCTA from "~/components/QuoteCTA";
+import MediaCard from "~/components/media/MediaCard";
+import MediaPreviewModal from "~/components/media/MediaPreview";
+import type { MediaItem } from "~/sanity/lib/mediaTypes";
 
-// Featured media items for homepage preview
-const featuredMedia = [
-  {
-    id: "1",
-    type: "video" as const,
-    title: "Modern Passenger Elevator Installation",
-    src: "/assets/sample_1.mp4",
-    thumbnail: "/illustrations/product01.png",
-  },
-  {
-    id: "2",
-    type: "image" as const,
-    title: "Luxury Elevator Cabin Design",
-    src: "/illustrations/lift01.png",
-    thumbnail: "/illustrations/lift01.png",
-  },
-  {
-    id: "3",
-    type: "image" as const,
-    title: "Glass Elevator Shaft",
-    src: "/illustrations/lift02.png",
-    thumbnail: "/illustrations/lift02.png",
-  },
-];
+interface MediaPreviewSectionProps {
+  mediaItems: MediaItem[];
+}
 
 // Statistics data for animated numbers
 const mediaStats = [
@@ -40,14 +20,29 @@ const mediaStats = [
   { number: 100, suffix: "+", label: "Service Updates" },
 ];
 
-export default function MediaPreview() {
+export default function MediaPreviewSection({ mediaItems }: MediaPreviewSectionProps) {
   const [mounted, setMounted] = useState(false);
+  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  const handleNext = () => {
+    if (!selectedMedia || mediaItems.length <= 1) return;
+    const currentIndex = mediaItems.findIndex((item) => item._id === selectedMedia._id);
+    const nextIndex = (currentIndex + 1) % mediaItems.length;
+    setSelectedMedia(mediaItems[nextIndex]);
+  };
+
+  const handlePrevious = () => {
+    if (!selectedMedia || mediaItems.length <= 1) return;
+    const currentIndex = mediaItems.findIndex((item) => item._id === selectedMedia._id);
+    const previousIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length;
+    setSelectedMedia(mediaItems[previousIndex]);
+  };
+
+  if (!mounted || mediaItems.length === 0) return null;
 
   return (
     <section id="media" className="py-20 bg-white">
@@ -78,63 +73,16 @@ export default function MediaPreview() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          {featuredMedia.map((item, index) => (
+          {mediaItems.slice(0, 3).map((item, index) => (
             <motion.div
-              key={item.id}
+              key={item._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group relative overflow-hidden rounded-2xl border border-gray-200/60 bg-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+              className="h-full"
             >
-              {/* Media Preview */}
-              <div className="relative aspect-video overflow-hidden bg-gray-100">
-                <Image
-                  src={item.thumbnail}
-                  alt={item.title}
-                  fill
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-
-                {/* Play button for videos */}
-                {item.type === "video" && (
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <HiPlay className="w-8 h-8 text-accent ml-1" />
-                    </div>
-                  </div>
-                )}
-
-                {/* Media type badge */}
-                <div className="absolute top-3 left-3">
-                  <span
-                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${
-                      item.type === "video"
-                        ? "bg-accent text-black"
-                        : "bg-accent text-black"
-                    }`}
-                  >
-                    {item.type === "video" ? (
-                      <HiPlay className="w-3 h-3" />
-                    ) : (
-                      <HiPhotograph className="w-3 h-3" />
-                    )}
-                    {item.type === "video" ? "Video" : "Photo"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="font-bold text-lg text-charcoal mb-2 line-clamp-2">
-                  {item.title}
-                </h3>
-                <div className="flex items-center text-accent text-sm font-medium group-hover:gap-2 transition-all duration-300">
-                  <span>View Details</span>
-                  <HiArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
-              </div>
+              <MediaCard item={item} onClick={() => setSelectedMedia(item)} />
             </motion.div>
           ))}
         </motion.div>
@@ -149,6 +97,15 @@ export default function MediaPreview() {
         {/* Animated Numbers Section */}
         <AnimatedNumbers stats={mediaStats} />
       </div>
+
+      {/* Media Preview Modal */}
+      <MediaPreviewModal
+        item={selectedMedia}
+        onClose={() => setSelectedMedia(null)}
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+        hasMultiple={mediaItems.length > 1}
+      />
     </section>
   );
 }
