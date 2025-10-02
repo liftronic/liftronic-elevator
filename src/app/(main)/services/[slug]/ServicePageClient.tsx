@@ -10,33 +10,10 @@ import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiMessageSquare, FiEye } from "react-icons/fi";
-
-// Service type definition
-type Service = {
-  id: string;
-  title: string;
-  summary: string;
-  description: string;
-  tags?: string[];
-  features: Array<{
-    title: string;
-    description: string;
-    icon: string;
-  }>;
-  specifications?: Array<{
-    label: string;
-    value: string;
-  }>;
-  faqs: Array<{
-    question: string;
-    answer: string;
-  }>;
-  imageSrc?: string;
-  imageAlt?: string;
-};
+import { ServiceOfferedFull } from "~/sanity/lib/serviceTypes";
 
 type ServicePageClientProps = {
-  service: Service;
+  service: ServiceOfferedFull;
 };
 
 export default function ServicePageClient({ service }: ServicePageClientProps) {
@@ -44,9 +21,9 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
   const router = useRouter();
 
   const pageStyle = {
-    "--transition-name": `service-card-${service.id}`,
-    "--image-transition-name": `service-image-${service.id}`,
-    "--title-transition-name": `service-title-${service.id}`,
+    "--transition-name": `service-card-${service.slug}`,
+    "--image-transition-name": `service-image-${service.slug}`,
+    "--title-transition-name": `service-title-${service.slug}`,
   } as React.CSSProperties;
 
   const handleBackClick = (e: React.MouseEvent) => {
@@ -59,7 +36,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
     router.prefetch("/services");
   }, [router]);
 
-  const heroImage = service.imageSrc || "/illustrations/lift02.png";
+  const heroImage = service.image || "/illustrations/lift02.png";
   const galleryImages = [
     {
       src: heroImage,
@@ -216,7 +193,9 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
       )}
 
       {/* Service Features */}
-      <Features features={service.features} />
+      {service.features && service.features.length > 0 && (
+        <Features features={service.features} />
+      )}
 
       {/* Service Gallery */}
       <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
@@ -274,7 +253,9 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
         </div>
       </section>
 
-      <ProductFAQ faqs={service.faqs} />
+      {service.faqs && service.faqs.length > 0 && (
+        <ProductFAQ faqs={service.faqs} />
+      )}
 
       <CallToActionSection
         secondaryAction={{

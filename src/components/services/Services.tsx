@@ -1,79 +1,81 @@
 "use client";
 
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
-import { BiBrush, BiGlobeAlt, BiPhoneCall, BiRefresh } from "react-icons/bi";
 import Link from "next/link";
+import { ServiceOffered } from "~/sanity/lib/serviceTypes";
+import { getFeaturedServices } from "~/sanity/utils/getServices";
+import {
+  BiWrench,
+  BiShield,
+  BiRefresh,
+  BiCog,
+  BiStar,
+  BiSupport,
+  BiCheckCircle,
+  BiGlobe,
+  BiBuildings,
+  BiTrendingUp,
+  BiHeart,
+} from "react-icons/bi";
 
-type Service = {
-  title: string;
-  description: string;
-  tags: string[];
-  icon: ReactElement;
+// Enhanced icon mapping for services
+const getServiceIcon = (iconName: string) => {
+  // Map icon names from backend to actual React icon components
+  const iconMap: Record<string, React.ReactElement> = {
+    wrench: <BiWrench className="h-5 w-5" />,
+    shield: <BiShield className="h-5 w-5" />,
+    refresh: <BiRefresh className="h-5 w-5" />,
+    cog: <BiCog className="h-5 w-5" />,
+    star: <BiStar className="h-5 w-5" />,
+    support: <BiSupport className="h-5 w-5" />,
+    check: <BiCheckCircle className="h-5 w-5" />,
+    globe: <BiGlobe className="h-5 w-5" />,
+    buildings: <BiBuildings className="h-5 w-5" />,
+    trending: <BiTrendingUp className="h-5 w-5" />,
+    heart: <BiHeart className="h-5 w-5" />,
+    // Add emoji to icon mapping
+    "🔧": <BiWrench className="h-5 w-5" />,
+    "🛡️": <BiShield className="h-5 w-5" />,
+    "🔄": <BiRefresh className="h-5 w-5" />,
+    "⚙️": <BiCog className="h-5 w-5" />,
+    "⭐": <BiStar className="h-5 w-5" />,
+    "🏢": <BiBuildings className="h-5 w-5" />,
+    "📈": <BiTrendingUp className="h-5 w-5" />,
+    "❤️": <BiHeart className="h-5 w-5" />,
+  };
+
+  // Return mapped icon or fallback icon
+  return iconMap[iconName] || <BiCog className="h-5 w-5" />;
 };
 
-const services: Service[] = [
-  {
-    title: "Design Strategy",
-    description:
-      "Concept-to-cab styling shaped around traffic flow, comfort, and safety priorities. We align every detail with your brand vision and passenger expectations.",
-    tags: [
-      "Design insight",
-      "Performance",
-      "Reliability",
-      "Refined aesthetics",
-    ],
-    icon: <BiBrush className="h-6 w-6 text-accent" aria-hidden />,
-  },
-  {
-    title: "Supply (Domestic / Exports)",
-    description:
-      "Certified passenger, home, and freight elevators shipped with meticulous component traceability. Logistics are synchronized for dependable global rollouts.",
-    tags: ["Passenger", "Home", "Freight", "Global delivery"],
-    icon: <BiGlobeAlt className="h-6 w-6 text-accent" aria-hidden />,
-  },
-  {
-    title: "Installation & Maintenance",
-    description:
-      "Swift deployment sustained by preventive inspections, 24/7 support, and quick resolutions. Our teams stay on-call to keep every ride smooth and secure.",
-    tags: [
-      "24/7 support",
-      "Scheduled care",
-      "Rapid callbacks",
-      "Expert repairs",
-    ],
-    icon: <BiPhoneCall className="h-6 w-6 text-accent" aria-hidden />,
-  },
-  {
-    title: "Replacement Excellence",
-    description:
-      "Modernize legacy elevators to unlock smoother rides, current tech, and enduring safety. From ambiance to automation, we future-proof every upgrade.",
-    tags: [
-      "Performance uplift",
-      "Comfort upgrade",
-      "Tech refresh",
-      "Safety assured",
-    ],
-    icon: <BiRefresh className="h-6 w-6 text-accent" aria-hidden />,
-  },
-];
-
-const AUTO_ROTATE_MS = 5000;
 const DESKTOP_VISIBLE = 3;
 
 export default function Services() {
+  const [services, setServices] = useState<ServiceOffered[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (services.length <= 1) return;
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((index) => (index + 1) % services.length);
-    }, AUTO_ROTATE_MS);
-
-    return () => window.clearInterval(timer);
+    setMounted(true);
+    loadServices();
   }, []);
+
+  const loadServices = async () => {
+    try {
+      const fetchedServices = await getFeaturedServices();
+      setServices(fetchedServices.slice(0, 4)); // Limit to 4 featured services
+    } catch (error) {
+      console.error("Error loading services:", error);
+      // Fallback to empty array if fetch fails
+      setServices([]);
+    }
+  };
+
+  // Auto-scroll removed - users can manually navigate through services
+
+  if (!mounted) return null;
 
   if (services.length === 0) {
     return null;
@@ -92,7 +94,15 @@ export default function Services() {
       className="relative isolate overflow-hidden scroll-mt-24 text-white"
     >
       <div className="absolute inset-0 -z-10 bg-[#071812]/80" />
+      <Image
+        src="/illustrations/lift02.png"
+        alt=""
+        fill
+        className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+        priority={false}
+      />
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-accent/20 via-[#0d221a]/60 to-[#04110c]/75" />
+
       <div className="container mx-auto flex flex-col justify-center px-4 py-20">
         <div className="max-w-3xl space-y-4">
           <h2 className="text-4xl font-extrabold text-white md:text-5xl">
@@ -105,6 +115,7 @@ export default function Services() {
           </p>
         </div>
 
+        {/* Mobile Carousel */}
         <div className="mt-12 md:hidden">
           <AnimatePresence initial={false} mode="wait">
             <motion.article
@@ -112,167 +123,229 @@ export default function Services() {
               initial={{ opacity: 0, x: 44 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -44 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="group relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 backdrop-blur-xl"
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="grid grid-cols-1 gap-4"
             >
-              <ImageBackdrop alt={currentService.title} sizes="100vw" />
-              <CardContent service={currentService} />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/20 shadow-2xl">
+                <Image
+                  src={currentService.image || "/illustrations/lift02.png"}
+                  alt={currentService.imageAlt || currentService.title}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 text-white">
+                  <h3 className="text-xl font-bold">{currentService.title}</h3>
+                  {currentService.featured && (
+                    <span className="mt-2 inline-block bg-accent px-3 py-1 rounded-full text-sm font-medium text-black">
+                      Featured
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-white/80 leading-relaxed">
+                  {currentService.summary}
+                </p>
+
+                {currentService.tags && currentService.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {currentService.tags.slice(0, 4).map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-block px-3 py-1 bg-white/10 backdrop-blur text-white/90 text-xs rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </motion.article>
           </AnimatePresence>
-          <CarouselDots
-            activeIndex={activeIndex}
-            total={services.length}
-            onSelect={setActiveIndex}
-          />
-        </div>
 
-        <div className="mt-12 hidden gap-6 md:grid md:grid-cols-3">
-          <AnimatePresence initial={false} mode="popLayout">
-            {visibleDesktop.map((service, offset) => (
-              <motion.article
-                layout
-                key={`${service.title}-${
-                  (activeIndex + offset) % services.length
+          {/* Mobile Dots Indicator */}
+          <div className="mt-6 flex justify-center gap-2">
+            {services.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveIndex(index)}
+                className={`h-2 w-8 rounded-full transition-all duration-300 ${
+                  index === activeIndex
+                    ? "bg-accent"
+                    : "bg-white/30 hover:bg-white/50"
                 }`}
-                initial={{ opacity: 0, x: 56 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -56 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                whileHover={{ y: -10 }}
-                className="group relative flex min-h-[460px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 transition-shadow duration-300 backdrop-blur-xl hover:shadow-2xl"
-              >
-                <ImageBackdrop
-                  alt={service.title}
-                  sizes="(min-width: 768px) 33vw"
-                />
-                <CardContent service={service} />
-              </motion.article>
+              />
             ))}
-          </AnimatePresence>
-        </div>
-
-        <div className="mt-10 hidden md:flex">
-          <CarouselDots
-            activeIndex={activeIndex}
-            total={services.length}
-            onSelect={setActiveIndex}
-          />
-        </div>
-
-        <div className="mt-12 bg-gradient-to-r from-white/10 via-white/15 to-white/10 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black/20 rounded-xl md:rounded-2xl p-4 md:p-6">
-          <div className="flex flex-col gap-4 md:gap-6 md:flex-row md:items-center md:justify-between">
-            {/* Quote */}
-            <div className="flex-1">
-              <blockquote className="text-sm md:text-base font-medium text-white/90 italic leading-tight">
-                &ldquo;Comprehensive solutions from design to deployment — every
-                project delivered with precision and care.&rdquo;
-              </blockquote>
-            </div>
-
-            {/* CTA Button */}
-            <div className="flex-shrink-0 w-full md:w-auto">
-              <Link
-                href="/#contact"
-                className="inline-flex items-center justify-center w-full md:w-auto rounded-lg bg-accent px-4 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-medium text-black transition-all hover:bg-accent/90 hover:shadow-lg hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 shadow-sm"
-              >
-                Get Service Quote
-                <svg
-                  className="ml-2 h-4 w-4 md:h-5 md:w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                  />
-                </svg>
-              </Link>
-            </div>
           </div>
         </div>
+
+        {/* Desktop Layout */}
+        <div className="mt-12 hidden grid-cols-12 gap-8 md:grid lg:gap-12">
+          {/* Service Cards - Left Side */}
+          <div className="col-span-5 space-y-4">
+            <AnimatePresence mode="wait">
+              {visibleDesktop.map((service, index) => (
+                <motion.div
+                  key={`${service._id}-${activeIndex}-${index}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className={`group relative cursor-pointer rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg ${
+                    index === 0
+                      ? "border-accent bg-white/95 shadow-lg scale-105"
+                      : "border-white/20 bg-white/10 backdrop-blur hover:border-white/40 hover:bg-white/20"
+                  }`}
+                  onClick={() =>
+                    setActiveIndex((activeIndex + index) % services.length)
+                  }
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-full ${
+                          index === 0 ? "bg-accent/10" : "bg-white/20"
+                        }`}
+                      >
+                        <div
+                          className={index === 0 ? "text-accent" : "text-white"}
+                        >
+                          {getServiceIcon(service.icon)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex-grow">
+                      <h3
+                        className={`font-bold text-lg mb-2 leading-tight ${
+                          index === 0 ? "text-charcoal" : "text-white"
+                        }`}
+                      >
+                        {service.title}
+                      </h3>
+                      <p
+                        className={`text-sm leading-relaxed mb-3 ${
+                          index === 0 ? "text-gray-600" : "text-white/70"
+                        }`}
+                      >
+                        {service.summary}
+                      </p>
+
+                      {service.tags && service.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {service.tags.slice(0, 3).map((tag) => (
+                            <span
+                              key={tag}
+                              className={`inline-block text-xs px-2 py-1 rounded-full ${
+                                index === 0
+                                  ? "bg-gray-100 text-gray-600"
+                                  : "bg-white/20 text-white/80"
+                              }`}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Main Service Display - Right Side */}
+          <div className="col-span-7">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentService._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="relative"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/20 shadow-2xl">
+                  <Image
+                    src={currentService.image || "/illustrations/lift02.png"}
+                    alt={currentService.imageAlt || currentService.title}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 768px) 58vw, 100vw"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+
+                  {/* Floating badge */}
+                  <div className="absolute top-6 left-6">
+                    <div className="flex items-center gap-3 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10">
+                        <div className="text-accent">
+                          {getServiceIcon(currentService.icon)}
+                        </div>
+                      </div>
+                      <span className="text-sm font-semibold text-charcoal">
+                        {currentService.title}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Service Details */}
+                <div className="mt-8 space-y-6">
+                  <div>
+                    <h3 className="text-3xl font-bold text-white mb-4 leading-tight">
+                      {currentService.title}
+                    </h3>
+                    <p className="text-white/80 text-lg leading-relaxed">
+                      {currentService.summary}
+                    </p>
+                  </div>
+
+                  {/* Key Features */}
+                  {/* {currentService.tags && currentService.tags.length > 0 && (
+                    <div className="grid grid-cols-2 gap-4">
+                      {currentService.tags.map((tag) => (
+                        <div
+                          key={tag}
+                          className="flex items-center gap-3 p-3 bg-white/10 backdrop-blur rounded-xl border border-white/20"
+                        >
+                          <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0" />
+                          <span className="text-white/90 font-medium text-sm">
+                            {tag}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )} */}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-16 text-center"
+        >
+          <Link href="/services">
+            <motion.button
+              className="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              View All Services
+            </motion.button>
+          </Link>
+        </motion.div>
       </div>
     </section>
-  );
-}
-
-function ImageBackdrop({ alt, sizes }: { alt: string; sizes: string }) {
-  return (
-    <>
-      <div className="absolute inset-0">
-        <Image
-          src="/assets/sample_img.jpg"
-          alt={alt}
-          fill
-          sizes={sizes}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-br from-[#071812]/80 via-[#0f231b]/72 to-accent/30" />
-    </>
-  );
-}
-
-function CardContent({ service }: { service: Service }) {
-  return (
-    <Link href="/services">
-      <div className="relative flex h-full flex-col justify-between gap-10 text-white">
-        <div className="space-y-6">
-          <div className="flex flex-col gap-4">
-            <span className="flex size-14 items-center justify-center rounded-full bg-accent/15 text-accent shadow-sm ring-1 ring-accent/30">
-              {service.icon}
-            </span>
-            <h3 className="text-2xl font-bold md:text-3xl">{service.title}</h3>
-          </div>
-          <p className="text-base leading-relaxed text-white/85 md:text-lg">
-            {service.description}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {service.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-white ring-1 ring-inset ring-white/20 capitalize backdrop-blur-sm"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function CarouselDots({
-  activeIndex,
-  total,
-  onSelect,
-}: {
-  activeIndex: number;
-  total: number;
-  onSelect: (index: number) => void;
-}) {
-  return (
-    <div
-      className="mx-auto mt-6 flex w-full justify-center gap-2 md:mt-0 md:w-auto"
-      aria-hidden
-    >
-      {Array.from({ length: total }).map((_, index) => (
-        <button
-          key={`dot-${index}`}
-          type="button"
-          onClick={() => onSelect(index)}
-          className={`h-2.5 w-2.5 rounded-full transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
-            index === activeIndex
-              ? "bg-white scale-110"
-              : "bg-white/30 hover:bg-white/55"
-          }`}
-          aria-label={`Show service ${index + 1}`}
-          aria-pressed={index === activeIndex}
-        />
-      ))}
-    </div>
   );
 }

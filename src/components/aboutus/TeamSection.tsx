@@ -1,81 +1,93 @@
 // components/TeamSection.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { FiLinkedin, FiMail, FiPhone } from "react-icons/fi";
+import type { TeamMember as TeamMemberType } from "~/sanity/lib/aboutTypes";
 
-type TeamMember = {
-  id: string;
-  name: string;
-  position: string;
-  department: string;
-  bio: string;
-  experience: string;
-  specialties: string[];
-  imageSrc: string;
-  contact: {
-    email?: string;
-    phone?: string;
-    linkedin?: string;
-  };
-};
-
-const teamMembers: TeamMember[] = [
+// Fallback data
+const fallbackMembers: TeamMemberType[] = [
   {
-    id: "1",
+    _id: "1",
+    _createdAt: new Date().toISOString(),
     name: "Michael Rodriguez",
     position: "Chief Executive Officer",
-    department: "Leadership",
     bio: "With over 20 years in the elevator industry, Michael leads Liftronic with a vision of innovation and excellence. His expertise spans from technical engineering to strategic business development.",
-    experience: "20+ Years",
-    specialties: [
-      "Strategic Planning",
-      "Industry Relations",
-      "Team Leadership",
-    ],
-    imageSrc: "/illustrations/lift02.png",
-    contact: {
-      email: "michael.rodriguez@liftronic.com",
-      linkedin: "#",
-    },
+    image: "/illustrations/lift02.png",
+    email: "michael.rodriguez@liftronic.com",
+    linkedin: "#",
+    featured: true,
+    order: 1,
   },
   {
-    id: "2",
+    _id: "2",
+    _createdAt: new Date().toISOString(),
     name: "Sarah Chen",
     position: "Chief Technology Officer",
-    department: "Engineering",
     bio: "Sarah spearheads our technology initiatives, ensuring Liftronic stays at the forefront of elevator innovation. She holds multiple patents in elevator safety systems.",
-    experience: "15+ Years",
-    specialties: ["Smart Systems", "Safety Innovation", "R&D"],
-    imageSrc: "/illustrations/lift02.png",
-    contact: {
-      email: "sarah.chen@liftronic.com",
-      linkedin: "#",
-    },
+    image: "/illustrations/lift02.png",
+    email: "sarah.chen@liftronic.com",
+    linkedin: "#",
+    featured: true,
+    order: 2,
   },
   {
-    id: "3",
+    _id: "3",
+    _createdAt: new Date().toISOString(),
     name: "David Thompson",
     position: "Head of Operations",
-    department: "Operations",
     bio: "David oversees all installation and maintenance operations, ensuring every project meets our high standards of quality and safety. His attention to detail is unmatched.",
-    experience: "18+ Years",
-    specialties: ["Project Management", "Quality Control", "Safety Standards"],
-    imageSrc: "/illustrations/lift02.png",
-    contact: {
-      email: "david.thompson@liftronic.com",
-      phone: "+1 (555) 123-4571",
-    },
+    image: "/illustrations/lift02.png",
+    email: "david.thompson@liftronic.com",
+    phone: "+1 (555) 123-4571",
+    featured: true,
+    order: 3,
   },
 ];
 
-export default function TeamSection() {
-  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+type TeamSectionProps = {
+  members?: TeamMemberType[];
+};
+
+export default function TeamSection({ members }: TeamSectionProps) {
+  const [selectedMember, setSelectedMember] = useState<TeamMemberType | null>(
+    null
+  );
+  const [isLoaded, setIsLoaded] = useState(false);
+  const teamMembers = members || fallbackMembers;
+
+  // Lazy loading with Intersection Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isLoaded) {
+            setIsLoaded(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const section = document.getElementById("team-section");
+    if (section) {
+      observer.observe(section);
+    }
+
+    return () => {
+      if (section) {
+        observer.unobserve(section);
+      }
+    };
+  }, [isLoaded]);
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+    <section
+      id="team-section"
+      className="py-20 bg-gradient-to-br from-gray-50 to-white"
+    >
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -95,100 +107,112 @@ export default function TeamSection() {
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {teamMembers.map((member, index) => (
-            <motion.div
-              key={member.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
-            >
-              {/* Image Section */}
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src={member.imageSrc}
-                  alt={member.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                {/* Contact Icons Overlay */}
-                <div className="absolute bottom-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {member.contact.email && (
-                    <a
-                      href={`mailto:${member.contact.email}`}
-                      className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
-                    >
-                      <FiMail className="text-sm" />
-                    </a>
-                  )}
-                  {member.contact.phone && (
-                    <a
-                      href={`tel:${member.contact.phone}`}
-                      className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
-                    >
-                      <FiPhone className="text-sm" />
-                    </a>
-                  )}
-                  {member.contact.linkedin && (
-                    <a
-                      href={member.contact.linkedin}
-                      className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
-                    >
-                      <FiLinkedin className="text-sm" />
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              {/* Content Section */}
-              <div className="p-6">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-charcoal mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-accent font-semibold mb-1">
-                    {member.position}
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    {member.department} • {member.experience}
-                  </p>
-                </div>
-
-                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-                  {member.bio}
-                </p>
-
-                {/* Specialties */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-charcoal mb-2">
-                    Specialties:
-                  </h4>
-                  <div className="flex flex-wrap gap-1">
-                    {member.specialties.map((specialty, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                      >
-                        {specialty}
+          {isLoaded &&
+            teamMembers.map((member, index) => (
+              <motion.div
+                key={member._id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
+              >
+                {/* Image Section */}
+                <div className="relative h-64 overflow-hidden">
+                  {member.image ? (
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      placeholder={member.imageLqip ? "blur" : undefined}
+                      blurDataURL={member.imageLqip || undefined}
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-accent/20 to-gray-200 flex items-center justify-center">
+                      <span className="text-4xl font-bold text-gray-400">
+                        {member.name.charAt(0)}
                       </span>
-                    ))}
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  {/* Contact Icons Overlay */}
+                  <div className="absolute bottom-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {member.email && (
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
+                      >
+                        <FiMail className="text-sm" />
+                      </a>
+                    )}
+                    {member.phone && (
+                      <a
+                        href={`tel:${member.phone}`}
+                        className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
+                      >
+                        <FiPhone className="text-sm" />
+                      </a>
+                    )}
+                    {member.linkedin && (
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
+                      >
+                        <FiLinkedin className="text-sm" />
+                      </a>
+                    )}
                   </div>
                 </div>
 
-                {/* Contact Button */}
-                <button
-                  onClick={() => setSelectedMember(member)}
-                  className="w-full btn bg-gray-100 text-charcoal hover:bg-accent hover:text-black text-sm transition-all duration-300"
-                >
-                  View Profile
-                </button>
+                {/* Content Section */}
+                <div className="p-6">
+                  <div className="mb-4">
+                    <h3 className="text-xl font-bold text-charcoal mb-1">
+                      {member.name}
+                    </h3>
+                    <p className="text-accent font-semibold mb-1">
+                      {member.position}
+                    </p>
+                  </div>
+
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                    {member.bio}
+                  </p>
+
+                  {/* Contact Button */}
+                  <button
+                    onClick={() => setSelectedMember(member)}
+                    className="w-full btn bg-gray-100 text-charcoal hover:bg-accent hover:text-black text-sm transition-all duration-300"
+                  >
+                    View Profile
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+
+          {/* Skeleton Loading */}
+          {!isLoaded &&
+            Array.from({ length: 3 }).map((_, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse"
+              >
+                <div className="h-64 bg-gray-200"></div>
+                <div className="p-6">
+                  <div className="h-6 bg-gray-200 rounded mb-2 w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2 w-1/2"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+                  <div className="h-10 bg-gray-200 rounded"></div>
+                </div>
               </div>
-            </motion.div>
-          ))}
+            ))}
         </div>
 
         {/* Team Stats */}

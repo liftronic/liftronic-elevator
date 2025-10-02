@@ -64,9 +64,9 @@ export default function Features({ features }: FeaturesProps) {
                     {/* Icon */}
                     <div className="relative z-10">
                       {IconComponent ? (
-                        <IconComponent className="h-10 w-10 text-accent drop-shadow-sm transition-all duration-200" />
+                        <IconComponent className="h-8 w-8 text-accent drop-shadow-sm transition-all duration-200" />
                       ) : (
-                        <span className="text-4xl filter drop-shadow-sm">
+                        <span className="text-3xl filter drop-shadow-sm">
                           {feature.icon}
                         </span>
                       )}

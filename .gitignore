@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# dist
+# dist / build artifacts
+/dist/
+/dist/*
+# ignore any folder named `dist` anywhere in the repo (packages, modules, etc.)
+**/dist/
+**/dist/*
+# monorepo package dist
+/packages/*/dist/
