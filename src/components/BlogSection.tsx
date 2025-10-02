@@ -1,59 +1,17 @@
 import * as motion from "motion/react-client";
 import BlogCard from "~/components/blog/BlogCard";
 import QuoteCTA from "~/components/QuoteCTA";
+import type { BlogPost } from "~/sanity/lib/blogTypes";
 
-type BlogPost = {
-  id: string;
-  title: string;
-  excerpt: string;
-  tag: string;
-  date: string;
-  readTime: string;
-  author: string;
-  imageSrc?: string;
-  imageAlt?: string;
-};
+interface BlogSectionProps {
+  blogs: BlogPost[];
+}
 
-const featuredBlogs: BlogPost[] = [
-  {
-    id: "modernization-elevators-age-gracefully",
-    title: "Modernization: Elevators That Age Gracefully",
-    excerpt:
-      "From controllers to door upgrades — how to extend lifespan and improve ride quality without full replacement.",
-    tag: "Modernization",
-    date: "Aug 12, 2025",
-    readTime: "5 min read",
-    author: "Liftronic Engineering Team",
-    imageSrc: "/assets/service_banner.png",
-    imageAlt: "Elevator modernization process",
-  },
-  {
-    id: "safety-checklist-residential-buildings",
-    title: "Safety Checklist: Residential Buildings",
-    excerpt:
-      "A comprehensive checklist facility managers can use monthly to keep passengers safe and downtime low.",
-    tag: "Safety",
-    date: "Jul 28, 2025",
-    readTime: "8 min read",
-    author: "Safety Engineering Team",
-    imageSrc: "/illustrations/lift01.png",
-    imageAlt: "Elevator safety inspection",
-  },
-  {
-    id: "mrl-vs-conventional-systems",
-    title: "Machine-Room-Less (MRL) vs. Conventional",
-    excerpt:
-      "Space, efficiency, and maintenance factors when choosing between MRL and conventional elevator systems.",
-    tag: "Guides",
-    date: "Jul 10, 2025",
-    readTime: "6 min read",
-    author: "Technical Advisory Team",
-    imageSrc: "/illustrations/lift02.png",
-    imageAlt: "MRL elevator system comparison",
-  },
-];
+export default function BlogSection({ blogs }: BlogSectionProps) {
+  if (blogs.length === 0) {
+    return null;
+  }
 
-export default function BlogSection() {
   return (
     <section id="blog" className="py-20 bg-soft">
       <div className="container mx-auto px-4">
@@ -82,18 +40,23 @@ export default function BlogSection() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          {featuredBlogs.map((blog) => (
+          {blogs.slice(0, 3).map((blog) => (
             <BlogCard
-              key={blog.id}
+              key={blog._id}
               title={blog.title}
               excerpt={blog.excerpt}
               tag={blog.tag}
-              date={blog.date}
+              date={new Date(blog.publishedAt).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
               readTime={blog.readTime}
               author={blog.author}
-              blogId={blog.id}
-              imageSrc={blog.imageSrc}
+              blogId={blog.slug}
+              imageSrc={blog.mainImage}
               imageAlt={blog.imageAlt}
+              blurDataURL={blog.mainImageLqip}
             />
           ))}
         </motion.div>

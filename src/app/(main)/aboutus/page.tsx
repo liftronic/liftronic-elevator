@@ -1,6 +1,5 @@
-// app/(main)/about/page.tsx
+// app/(main)/aboutus/page.tsx
 
-import * as motion from "motion/react-client";
 import Image from "next/image";
 import { BiCheck } from "react-icons/bi";
 import WhyUsSection from "~/components/aboutus/WhyUsSection";
@@ -26,9 +25,8 @@ import type {
 } from "~/sanity/lib/aboutTypes";
 import { PortableText } from "@portabletext/react";
 
-// Force dynamic rendering to handle Sanity connection issues during build
-export const dynamic = "force-dynamic";
-export const revalidate = 60; // Revalidate every 60 seconds
+// ISR: Revalidate every 60 minutes (3600 seconds)
+export const revalidate = 3600;
 
 export default async function AboutPage() {
   // Fetch data from Sanity with error handling
@@ -108,24 +106,16 @@ export default async function AboutPage() {
             </p>
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
-                <motion.button
-                  className="btn btn-primary px-8 py-3"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <button className="btn btn-primary px-8 py-3">
                   <FiMessageSquare className="text-base" />
                   Get Service Quote
-                </motion.button>
+                </button>
               </Link>
               <Link href="/products">
-                <motion.button
-                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <button className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3">
                   <FiEye className="text-base" />
                   View Products
-                </motion.button>
+                </button>
               </Link>
             </div>
           </div>
@@ -150,12 +140,7 @@ export default async function AboutPage() {
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
+            <div>
               <h2 className="text-4xl md:text-5xl font-bold text-charcoal mb-8">
                 {info?.whoWeAreTitle || "Who We Are"}
               </h2>
@@ -192,29 +177,16 @@ export default async function AboutPage() {
               {/* Key Points */}
               <div className="mt-8 space-y-4">
                 {(info?.keyPoints || []).map((point, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-center space-x-3"
-                  >
+                  <div key={index} className="flex items-center space-x-3">
                     <BiCheck className="text-accent text-2xl flex-shrink-0" />
                     <span className="text-gray-700">{point}</span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* Image & Timeline */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
+            <div className="space-y-8">
               {/* Hero Image */}
               <div className="relative h-96 rounded-3xl overflow-hidden shadow-2xl">
                 <Image
@@ -267,7 +239,7 @@ export default async function AboutPage() {
                   </div>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>

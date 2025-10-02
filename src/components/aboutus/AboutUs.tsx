@@ -1,35 +1,7 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { BiCog, BiStar, BiBuildings, BiGlobe, BiWrench } from "react-icons/bi";
+import { BiCog, BiStar, BiGlobe } from "react-icons/bi";
 
-// A custom hook to animate a number from 0 to a target value.
-function useCounter(target: number, start: boolean, duration = 1500) {
-  const [value, setValue] = useState(0);
-  const startRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!start) return;
-    let raf: number;
-    const step = (timestamp: number) => {
-      if (!startRef.current) startRef.current = timestamp;
-      const progress = Math.min(1, (timestamp - startRef.current) / duration);
-      // Apply a simple ease-out curve
-      const easedProgress = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.floor(easedProgress * target));
-      if (progress < 1) {
-        raf = requestAnimationFrame(step);
-      }
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [target, start, duration]);
-
-  return value;
-}
-
-// Small animated stat used inside the green stats bar.
-function AnimatedStat({
+// Simple stat display (no animation needed on server)
+function StatDisplay({
   label,
   value,
   suffix = "+",
@@ -38,11 +10,10 @@ function AnimatedStat({
   value: number;
   suffix?: string;
 }) {
-  const animated = useCounter(value, true, 1200);
   return (
     <div>
       <div className="text-4xl md:text-5xl font-extrabold">
-        <span className="text-white">{animated}</span>
+        <span className="text-white">{value}</span>
         <span className="ml-1 text-white">{suffix}</span>
       </div>
       <div className="text-sm font-medium text-white">{label}</div>
@@ -50,8 +21,8 @@ function AnimatedStat({
   );
 }
 
-// TiltCard: lightweight mouse-driven 3D card with subtle glare
-function TiltCard({
+// Simple feature card (no tilt effect on server)
+function FeatureCard({
   title,
   children,
   icon: Icon,
@@ -60,52 +31,9 @@ function TiltCard({
   children: React.ReactNode;
   icon: React.ElementType;
 }) {
-  const innerRef = useRef<HTMLDivElement | null>(null);
-  const raf = useRef<number | null>(null);
-  const target = useRef({ rx: 0, ry: 0, s: 1 });
-
-  const maxTilt = 12; // degrees
-  const hoverScale = 1.03;
-
-  const pushTransform = () => {
-    if (!innerRef.current) return;
-    const { rx, ry, s } = target.current;
-    innerRef.current.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(${s})`;
-    raf.current = null;
-  };
-
-  const handleMove = (e: React.MouseEvent) => {
-    const el = innerRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width;
-    const py = (e.clientY - rect.top) / rect.height;
-    const ry = (px - 0.5) * maxTilt;
-    const rx = (0.5 - py) * maxTilt;
-    target.current = { rx, ry, s: hoverScale };
-    if (raf.current == null) raf.current = requestAnimationFrame(pushTransform);
-  };
-
-  const handleLeave = () => {
-    target.current = { rx: 0, ry: 0, s: 1 };
-    if (innerRef.current) {
-      innerRef.current.style.transition =
-        "transform 450ms cubic-bezier(0.2,0.8,0.2,1)";
-      innerRef.current.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-      window.setTimeout(() => {
-        if (innerRef.current) innerRef.current.style.transition = "";
-      }, 480);
-    }
-  };
-
   return (
     <div style={{ perspective: 1000 }} className="relative">
-      <div
-        ref={innerRef}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow will-change-transform"
-      >
+      <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-shadow">
         <div className="w-14 h-14 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-accent/20">
           <Icon className="w-6 h-6 text-accent" />
         </div>
@@ -127,30 +55,17 @@ function TiltCard({
   );
 }
 
-// The main About Us component
+// The main About Us component - now a server component
 export default function AboutUs() {
   const stats = [
-    { label: "Years of Experience", value: 20, suffix: "+", icon: BiStar },
-    { label: "Projects Completed", value: 100, suffix: "+", icon: BiBuildings },
-    { label: "Countries Served", value: 6, suffix: "", icon: BiGlobe },
-    { label: "Ongoing Projects", value: 200, suffix: "+", icon: BiWrench },
+    { label: "Years of Experience", value: 20, suffix: "+" },
+    { label: "Projects Completed", value: 100, suffix: "+" },
+    { label: "Countries Served", value: 6, suffix: "" },
+    { label: "Ongoing Projects", value: 200, suffix: "+" },
   ];
-
-  // Ref for parallax effect
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Parallax transformations for decorative elements
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
-
-  // We'll animate individual items with explicit initial/whileInView props
 
   return (
     <section
-      ref={sectionRef}
       id="about"
       className="relative overflow-hidden py-20 md:py-28 bg-gray-50"
     >
@@ -159,8 +74,8 @@ export default function AboutUs() {
         {/* Subtle gradient glow */}
         <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full bg-accent/10 blur-3xl opacity-40" />
 
-        {/* Parallax background image */}
-        <motion.div className="absolute inset-0" style={{ y: bgY }}>
+        {/* Background image */}
+        <div className="absolute inset-0">
           <div
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] md:w-[640px] md:h-[640px] opacity-10"
             style={{
@@ -170,18 +85,13 @@ export default function AboutUs() {
               backgroundPosition: "center",
             }}
           />
-        </motion.div>
+        </div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4">
         {/* CENTERED HEADER & COPY */}
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
               About Liftronic
             </h2>
@@ -222,61 +132,34 @@ export default function AboutUs() {
               , adds <span className="font-semibold text-gray-900">luxury</span>
               , and transforms how you live.
             </p>
-          </motion.div>
+          </div>
         </div>
 
         {/* FEATURE CARDS */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5 }}
-          >
-            <TiltCard title="European Technology" icon={BiCog}>
-              Advanced engineering solutions blended with innovative design for
-              superior performance.
-            </TiltCard>
-          </motion.div>
+          <FeatureCard title="European Technology" icon={BiCog}>
+            Advanced engineering solutions blended with innovative design for
+            superior performance.
+          </FeatureCard>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, delay: 0.08 }}
-          >
-            <TiltCard title="Custom Solutions" icon={BiStar}>
-              Tailored elevator designs that enhance your home&apos;s style and
-              meet specific requirements.
-            </TiltCard>
-          </motion.div>
+          <FeatureCard title="Custom Solutions" icon={BiStar}>
+            Tailored elevator designs that enhance your home&apos;s style and
+            meet specific requirements.
+          </FeatureCard>
 
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, delay: 0.16 }}
-          >
-            <TiltCard title="Global Expertise" icon={BiGlobe}>
-              Proven track record with successful projects completed in India
-              and internationally.
-            </TiltCard>
-          </motion.div>
+          <FeatureCard title="Global Expertise" icon={BiGlobe}>
+            Proven track record with successful projects completed in India and
+            internationally.
+          </FeatureCard>
         </div>
 
         {/* GREEN STATS BAR */}
-        <motion.div
-          className="mt-12 bg-accent text-white rounded-2xl px-6 py-8 shadow-xl relative overflow-hidden"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="mt-12 bg-accent text-white rounded-2xl px-6 py-8 shadow-xl relative overflow-hidden">
           {/* subtle dark overlay to reduce glare on bright accent backgrounds */}
           <div className="absolute inset-0 bg-black/18 pointer-events-none rounded-2xl" />
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 items-center text-center relative z-10">
             {stats.map((s) => (
-              <AnimatedStat
+              <StatDisplay
                 key={s.label}
                 label={s.label}
                 value={s.value}
@@ -284,7 +167,7 @@ export default function AboutUs() {
               />
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

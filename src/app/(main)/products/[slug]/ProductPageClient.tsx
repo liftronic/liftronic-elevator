@@ -10,33 +10,10 @@ import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiMessageSquare, FiEye } from "react-icons/fi";
-
-// Product type definition
-type Product = {
-  id: string;
-  title: string;
-  summary: string;
-  description: string;
-  tags?: string[];
-  features: Array<{
-    title: string;
-    description: string;
-    icon: string;
-  }>;
-  specifications?: Array<{
-    label: string;
-    value: string;
-  }>;
-  faqs: Array<{
-    question: string;
-    answer: string;
-  }>;
-  imageSrc?: string;
-  imageAlt?: string;
-};
+import type { ProductFull } from "~/sanity/lib/productTypes";
 
 type ProductPageClientProps = {
-  product: Product;
+  product: ProductFull;
 };
 
 export default function ProductPageClient({ product }: ProductPageClientProps) {
@@ -44,9 +21,9 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
   const router = useRouter();
 
   const pageStyle = {
-    "--transition-name": `product-card-${product.id}`,
-    "--image-transition-name": `product-image-${product.id}`,
-    "--title-transition-name": `product-title-${product.id}`,
+    "--transition-name": `product-card-${product.slug}`,
+    "--image-transition-name": `product-image-${product.slug}`,
+    "--title-transition-name": `product-title-${product.slug}`,
   } as React.CSSProperties;
 
   const handleBackClick = (e: React.MouseEvent) => {
@@ -59,25 +36,33 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
     router.prefetch("/products");
   }, [router]);
 
-  const heroImage = product.imageSrc || "/illustrations/product01.png";
-  const galleryImages = [
-    {
-      src: heroImage,
-      alt: `${product.title} cabin perspective`,
-    },
-    {
-      src: heroImage,
-      alt: `${product.title} control panel detail`,
-    },
-    {
-      src: heroImage,
-      alt: `${product.title} shaft view render`,
-    },
-    {
-      src: heroImage,
-      alt: `${product.title} installation snapshot`,
-    },
-  ];
+  const heroImage = product.mainImage || "/illustrations/product01.png";
+
+  // Build gallery from Sanity gallery or fallback to hero image
+  const galleryImages = product.gallery && product.gallery.length > 0
+    ? product.gallery.map((img, index) => ({
+        src: img.url,
+        alt: img.alt || `${product.title} image ${index + 1}`,
+      }))
+    : [
+        {
+          src: heroImage,
+          alt: `${product.title} cabin perspective`,
+        },
+        {
+          src: heroImage,
+          alt: `${product.title} control panel detail`,
+        },
+        {
+          src: heroImage,
+          alt: `${product.title} shaft view render`,
+        },
+        {
+          src: heroImage,
+          alt: `${product.title} installation snapshot`,
+        },
+      ];
+
   const hasSpecifications =
     Array.isArray(product.specifications) && product.specifications.length > 0;
 
@@ -104,14 +89,16 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
           <div className="grid items-start gap-16 lg:grid-cols-[1fr_0.85fr] lg:items-center mt-6">
             {/* Content */}
             <div className="space-y-8">
-              {/* Title and Summary */}
+              {/* Title and Subtitle */}
               <div className="space-y-4">
                 <h1 className="product-title text-4xl font-bold leading-tight text-charcoal md:text-5xl lg:text-6xl">
                   {product.title}
                 </h1>
-                <p className="text-xl leading-relaxed text-gray-700 md:text-2xl lg:max-w-xl">
-                  {product.summary}
-                </p>
+                {product.subtitle && (
+                  <p className="text-xl leading-relaxed text-gray-700 md:text-2xl lg:max-w-xl">
+                    {product.subtitle}
+                  </p>
+                )}
               </div>
 
               {/* Product Tags */}
@@ -119,10 +106,10 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
                 <div className="flex flex-wrap gap-3">
                   {product.tags.map((tag) => (
                     <span
-                      key={tag}
+                      key={tag._id}
                       className="inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white shadow-md"
                     >
-                      {tag}
+                      {tag.title}
                     </span>
                   ))}
                 </div>
@@ -213,7 +200,15 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         </section>
       )}
 
-      <Features features={product.features} />
+      {product.keyFeatures && product.keyFeatures.length > 0 && (
+        <Features
+          features={product.keyFeatures.map(feature => ({
+            title: feature.title,
+            description: feature.description || "",
+            icon: feature.icon || "fiPackage"
+          }))}
+        />
+      )}
 
       {/* Gallery Section */}
       <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
@@ -271,7 +266,9 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
         </div>
       </section>
 
-      <ProductFAQ faqs={product.faqs} />
+      {product.faqs && product.faqs.length > 0 && (
+        <ProductFAQ faqs={product.faqs} />
+      )}
 
       <CallToActionSection
         secondaryAction={{

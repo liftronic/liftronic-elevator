@@ -14,7 +14,6 @@ export async function getServices(): Promise<ServiceOffered[]> {
     "image": image.asset->url,
     "imageLqip": image.asset->metadata.lqip,
     "imageAlt": image.alt,
-    icon,
     tags,
     featured
   }`;
@@ -34,7 +33,6 @@ export async function getFeaturedServices(): Promise<ServiceOffered[]> {
     "image": image.asset->url,
     "imageLqip": image.asset->metadata.lqip,
     "imageAlt": image.alt,
-    icon,
     tags,
     featured
   }`;
@@ -98,7 +96,6 @@ export async function getServicesByTag(
     "image": image.asset->url,
     "imageLqip": image.asset->metadata.lqip,
     "imageAlt": image.alt,
-    icon,
     tags,
     featured
   }`;
@@ -128,7 +125,6 @@ export async function getServicesPage(
     "image": image.asset->url,
     "imageLqip": image.asset->metadata.lqip,
     "imageAlt": image.alt,
-    icon,
     tags,
     featured
   }`;

@@ -1,96 +1,48 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import ProductCard from "~/components/products/ProductCard";
 import Breadcrumb from "~/components/Breadcrumb";
 import * as motion from "motion/react-client";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiEye, FiMessageSquare } from "react-icons/fi";
+import { client } from "~/sanity/lib/client";
+import { productsQuery, featuredProductsQuery } from "~/sanity/lib/queries";
+import type { Product } from "~/sanity/lib/productTypes";
 
-type Product = {
-  id: string;
-  title: string;
-  summary: string;
-  tags?: string[];
-  featured?: boolean;
+export const metadata: Metadata = {
+  title: "Products - Elevator Solutions | Lift Solutions",
+  description: "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+  openGraph: {
+    title: "Elevate every building with precision - Products",
+    description: "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+    type: "website",
+    url: "/products",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Products - Elevator Solutions | Lift Solutions",
+    description: "A curated lineup spanning residential, commercial and industrial needs.",
+  },
+  alternates: {
+    canonical: "/products",
+  },
 };
 
-const products: Product[] = [
-  {
-    id: "home",
-    title: "Home Elevators",
-    summary: "Compact, quiet lifts purpose-built for residences and villas.",
-    tags: ["Residential", "Compact"],
-    featured: true,
-  },
-  {
-    id: "passenger",
-    title: "Passenger Elevators",
-    summary: "Reliable people movement for apartments, offices and hotels.",
-    tags: ["Commercial", "High-usage"],
-  },
-  {
-    id: "freight",
-    title: "Freight Elevators",
-    summary: "Heavy-duty cabins with rugged finishes for goods and logistics.",
-    tags: ["Industrial", "High-capacity"],
-  },
-  {
-    id: "hospital",
-    title: "Hospital / Stretcher Elevators",
-    summary: "Wide cabins and smooth acceleration tailored for healthcare.",
-    tags: ["Healthcare", "Spacious"],
-  },
-  {
-    id: "mrl",
-    title: "MRL (Machine-Room-Less)",
-    summary: "Space-efficient design with excellent energy performance.",
-    tags: ["Space saving", "Efficient"],
-    featured: true,
-  },
-  {
-    id: "hydraulic",
-    title: "Hydraulic Lifts",
-    summary: "Cost-effective solution for low-rise buildings with smooth ride.",
-    tags: ["Low-rise", "Value"],
-  },
-  {
-    id: "dumbwaiter",
-    title: "Dumbwaiters",
-    summary: "Compact service lifts for kitchens, restaurants and stores.",
-    tags: ["Service", "Compact"],
-  },
-  {
-    id: "car",
-    title: "Car Elevators",
-    summary: "Move vehicles vertically to optimize parking footprints.",
-    tags: ["Automotive", "Heavy"],
-  },
-  {
-    id: "capsule",
-    title: "Glass / Capsule Elevators",
-    summary: "Panoramic cabins that add architectural drama to spaces.",
-    tags: ["Aesthetic", "Panoramic"],
-  },
-  {
-    id: "modernization",
-    title: "Modernization Kits",
-    summary: "Upgrade controls, doors and interiors for safety and comfort.",
-    tags: ["Retrofit", "Safety"],
-  },
-  {
-    id: "escalators",
-    title: "Escalators",
-    summary: "Efficient people flow for transit hubs and malls.",
-    tags: ["Transit", "Retail"],
-  },
-  {
-    id: "walks",
-    title: "Moving Walks",
-    summary: "Horizontal movers for airports and large retail formats.",
-    tags: ["Airports", "Retail"],
-  },
-];
+async function getAllProducts(): Promise<Product[]> {
+  return client.fetch(productsQuery, {}, { next: { revalidate: 3600 } });
+}
 
-export default function ProductsPage() {
+async function getFeaturedProducts(): Promise<Product[]> {
+  return client.fetch(featuredProductsQuery, {}, { next: { revalidate: 3600 } });
+}
+
+export const revalidate = 3600; // 60 minutes
+
+export default async function ProductsPage() {
+  const [allProducts, featuredProducts] = await Promise.all([
+    getAllProducts(),
+    getFeaturedProducts(),
+  ]);
   return (
     <main>
       {/* Page hero */}
@@ -149,18 +101,64 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Grid */}
+      {/* Featured Products */}
+      {featuredProducts.length > 0 && (
+        <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
+          <div className="container mx-auto px-4">
+            <div className="mb-8">
+              <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-4">
+                <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                  Featured Products
+                </span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                Popular solutions
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {featuredProducts.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  title={product.title}
+                  summary={product.description}
+                  tags={product.tags?.map((tag) => tag.title) || []}
+                  productId={product.slug}
+                  badge="Featured"
+                  imageSrc={product.mainImage}
+                  imageAlt={product.imageAlt}
+                  blurDataURL={product.mainImageLqip}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* All Products Grid */}
       <section className="py-12 md:py-16 shadow-sm">
         <div className="container mx-auto px-4">
+          <div className="mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              All products
+            </h2>
+            <p className="mt-2 text-gray-600">
+              Browse our complete product lineup ({allProducts.length} products)
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {products.map((p) => (
+            {allProducts.map((product) => (
               <ProductCard
-                key={p.id}
-                title={p.title}
-                summary={p.summary}
-                tags={p.tags}
-                productId={p.id}
-                badge={p.featured ? "Featured" : undefined}
+                key={product._id}
+                title={product.title}
+                summary={product.description}
+                tags={product.tags?.map((tag) => tag.title) || []}
+                productId={product.slug}
+                badge={product.featured ? "Featured" : undefined}
+                imageSrc={product.mainImage}
+                imageAlt={product.imageAlt}
+                blurDataURL={product.mainImageLqip}
               />
             ))}
           </div>

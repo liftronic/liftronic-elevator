@@ -82,9 +82,10 @@ export default function BlogCard({
           alt={imageAlt ?? title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           placeholder={blurDataURL ? "blur" : "empty"}
           blurDataURL={blurDataURL}
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
 

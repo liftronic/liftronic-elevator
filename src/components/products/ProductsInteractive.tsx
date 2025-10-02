@@ -3,78 +3,20 @@ import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import ProductCard from "~/components/products/ProductCard";
 import QuoteCTA from "~/components/QuoteCTA";
+import type { Product } from "~/sanity/lib/productTypes";
 
-type Product = {
-  id: string;
-  title: string;
-  summary: string;
-  tags?: string[];
-  featured?: boolean;
-  imageSrc?: string;
-  imageAlt?: string;
-};
+interface ProductsInteractiveProps {
+  products: Product[];
+}
 
-const products: Product[] = [
-  {
-    id: "home",
-    title: "Home Elevators",
-    summary: "Compact, quiet lifts purpose-built for residences and villas.",
-    tags: ["Residential", "Compact"],
-    featured: true,
-    imageSrc: "/illustrations/product01.png",
-    imageAlt: "Home elevator installation",
-  },
-  {
-    id: "passenger",
-    title: "Passenger Elevators",
-    summary: "Reliable people movement for apartments, offices and hotels.",
-    tags: ["Commercial", "High-usage"],
-    imageSrc: "/illustrations/lift01.png",
-    imageAlt: "Commercial passenger elevator",
-  },
-  {
-    id: "freight",
-    title: "Freight Elevators",
-    summary: "Heavy-duty cabins with rugged finishes for goods and logistics.",
-    tags: ["Industrial", "High-capacity"],
-    imageSrc: "/illustrations/lift02.png",
-    imageAlt: "Industrial freight elevator",
-  },
-  {
-    id: "hospital",
-    title: "Hospital / Stretcher Elevators",
-    summary: "Wide cabins and smooth acceleration tailored for healthcare.",
-    tags: ["Healthcare", "Spacious"],
-    imageSrc: "/illustrations/product01.png",
-    imageAlt: "Hospital stretcher elevator",
-  },
-  {
-    id: "mrl",
-    title: "MRL (Machine-Room-Less)",
-    summary: "Space-efficient design with excellent energy performance.",
-    tags: ["Space saving", "Efficient"],
-    featured: true,
-    imageSrc: "/illustrations/lift01.png",
-    imageAlt: "MRL elevator system",
-  },
-  {
-    id: "hydraulic",
-    title: "Hydraulic Lifts",
-    summary: "Cost-effective solution for low-rise buildings with smooth ride.",
-    tags: ["Low-rise", "Value"],
-    imageSrc: "/illustrations/lift02.png",
-    imageAlt: "Hydraulic elevator system",
-  },
-];
-
-export default function ProductsInteractive() {
+export default function ProductsInteractive({ products }: ProductsInteractiveProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Auto-rotate products every 8 seconds
   useEffect(() => {
-    if (isAutoRotating) {
+    if (isAutoRotating && products.length > 0) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
       }, 8000);
@@ -89,7 +31,7 @@ export default function ProductsInteractive() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isAutoRotating]);
+  }, [isAutoRotating, products.length]);
 
   // Handle manual interaction
   const handleInteraction = () => {
@@ -110,6 +52,10 @@ export default function ProductsInteractive() {
   };
 
   const visibleProducts = getVisibleProducts();
+
+  if (products.length === 0) {
+    return null;
+  }
 
   return (
     <section id="products" className="py-20 bg-white">
@@ -143,7 +89,7 @@ export default function ProductsInteractive() {
           <AnimatePresence initial={false} mode="popLayout">
             {visibleProducts.map((product) => (
               <motion.div
-                key={product.id}
+                key={product._id}
                 layout
                 initial={{ opacity: 0, x: 80 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -157,12 +103,13 @@ export default function ProductsInteractive() {
               >
                 <ProductCard
                   title={product.title}
-                  summary={product.summary}
-                  tags={product.tags}
-                  productId={product.id}
+                  summary={product.description}
+                  tags={product.tags?.map((tag) => tag.title) || []}
+                  productId={product.slug}
                   badge={product.featured ? "Featured" : undefined}
-                  imageSrc={product.imageSrc}
+                  imageSrc={product.mainImage}
                   imageAlt={product.imageAlt}
+                  blurDataURL={product.mainImageLqip}
                 />
               </motion.div>
             ))}

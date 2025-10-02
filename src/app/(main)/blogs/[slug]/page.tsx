@@ -7,11 +7,11 @@ import { postBySlugQuery, postSlugsQuery } from "~/sanity/lib/queries";
 import type { BlogPostFull } from "~/sanity/lib/blogTypes";
 
 async function getPostBySlug(slug: string): Promise<BlogPostFull | null> {
-  return client.fetch(postBySlugQuery, { slug }, { next: { revalidate: 60 } });
+  return client.fetch(postBySlugQuery, { slug }, { next: { revalidate: 3600 } });
 }
 
 async function getAllPostSlugs(): Promise<string[]> {
-  return client.fetch(postSlugsQuery, {}, { next: { revalidate: 60 } });
+  return client.fetch(postSlugsQuery, {}, { next: { revalidate: 3600 } });
 }
 
 // Legacy blog post data - kept for reference, can be removed after content migration
@@ -182,3 +182,5 @@ export async function generateStaticParams() {
     slug,
   }));
 }
+
+export const revalidate = 3600; // 60 minutes

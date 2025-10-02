@@ -1,16 +1,19 @@
 import Image from "next/image";
 import * as motion from "motion/react-client";
 import QuoteCTA from "~/components/QuoteCTA";
+import type { Client } from "~/sanity/lib/clientTypes";
 
-export default function ClientsMarquee() {
-  const logos = [
-    { src: "/vercel.svg", alt: "Vercel" },
-    { src: "/next.svg", alt: "Next.js" },
-    { src: "/globe.svg", alt: "Globe" },
-    { src: "/file.svg", alt: "File" },
-    { src: "/window.svg", alt: "Window" },
-  ];
-  const row = [...logos, ...logos];
+interface ClientsMarqueeProps {
+  clients: Client[];
+}
+
+export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
+  const row = clients.length > 0 ? [...clients, ...clients] : [];
+
+  if (clients.length === 0) {
+    return null;
+  }
+
   return (
     <section id="clients" className="py-20 scroll-mt-24">
       <div className="container mx-auto px-4">
@@ -39,11 +42,11 @@ export default function ClientsMarquee() {
         >
           {/* track */}
           <div className="whitespace-nowrap marquee-track py-10">
-            {row.map((l, i) => (
+            {row.map((client, i) => (
               <Image
-                key={`${l.alt}-${i}`}
-                src={l.src}
-                alt={l.alt}
+                key={`${client._id}-${i}`}
+                src={client.image}
+                alt={client.imageAlt || client.title}
                 width={140}
                 height={40}
                 className="inline-block h-10 w-auto mx-14 opacity-90 hover:opacity-100 transition-all duration-200"
