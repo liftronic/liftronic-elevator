@@ -1,6 +1,6 @@
 "use client";
-import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 import { FiHeadphones, FiMail, FiPhoneCall, FiMessageSquare, FiEye } from "react-icons/fi";
 import { Social } from "~/../typings";
@@ -14,30 +14,54 @@ interface HeroProps {
 export default function Hero({ socials }: HeroProps) {
   const { scrollTo } = useSmoothScroll();
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const v = document.getElementById("hero-bg") as HTMLVideoElement | null;
-    if (!v) return;
-    const tryPlay = () => {
-      v.play().catch(() => {
-        /* autoplay blocked — will retry on interaction */
-      });
+    // Lazy load video after initial paint
+    const loadVideo = () => {
+      if (videoRef.current && !videoLoaded) {
+        const video = videoRef.current;
+        video.src = "/assets/sample_1.mp4";
+        video.load();
+
+        const tryPlay = () => {
+          video.play().catch(() => {
+            /* autoplay blocked — will retry on interaction */
+          });
+        };
+
+        video.addEventListener("loadeddata", () => {
+          setVideoLoaded(true);
+          tryPlay();
+        }, { once: true });
+      }
     };
-    tryPlay();
-    const t = window.setTimeout(tryPlay, 500);
-    const onFirst = () => {
-      tryPlay();
-      window.removeEventListener("touchstart", onFirst);
-      window.removeEventListener("click", onFirst);
-    };
-    window.addEventListener("touchstart", onFirst, { once: true });
-    window.addEventListener("click", onFirst, { once: true });
+
+    // Use Intersection Observer to load video when hero is visible
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Delay video load slightly to prioritize FCP
+            setTimeout(loadVideo, 100);
+            observerRef.current?.disconnect();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const heroElement = document.querySelector("#hero-section");
+    if (heroElement) {
+      observerRef.current.observe(heroElement);
+    }
+
     return () => {
-      clearTimeout(t);
-      window.removeEventListener("touchstart", onFirst);
-      window.removeEventListener("click", onFirst);
+      observerRef.current?.disconnect();
     };
-  }, []);
+  }, [videoLoaded]);
   const handleScroll = () => {
     const el = document.getElementById("about");
     if (el) {
@@ -47,22 +71,34 @@ export default function Hero({ socials }: HeroProps) {
     }
   };
   return (
-  <section className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden overflow-x-hidden">
+  <section id="hero-section" className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden overflow-x-hidden">
   {/* hide native scrollbars for small horizontal scroll areas (mobile socials) */}
   <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;}`}</style>
-      {/* Background video */}
+      {/* Background video with poster image */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Static poster image for FCP - loads immediately */}
+        {!videoLoaded && (
+          <Image
+            src="/assets/hero-poster.jpg"
+            alt="Liftronic Elevator Hero"
+            fill
+            priority
+            quality={90}
+            className="object-cover"
+            sizes="100vw"
+          />
+        )}
+
+        {/* Video - lazy loaded after FCP */}
         <video
+          ref={videoRef}
           id="hero-bg"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
-          src="/assets/sample_1.mp4"
-          preload="auto"
-          autoPlay
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
           loop
           muted
           playsInline
-          poster="/assets/sample_1.mp4"
         />
+
         {/* Enhanced dark overlay for better contrast */}
         <div className="absolute inset-0 bg-black/70" />
         {/* Subtle radial glow */}
@@ -76,35 +112,17 @@ export default function Hero({ socials }: HeroProps) {
 
   {/* Left: Messaging */}
   <div className="max-w-2xl text-center lg:text-left">
-          <motion.h1
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.05, duration: 0.6, ease: "easeOut" }}
-            className="mt-6 sm:mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl"
-          >
+          <h1 className="mt-6 sm:mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
             <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
             Experience
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.15, duration: 0.6, ease: "easeOut" }}
-            className="mt-2 text-xs sm:text-sm md:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg"
-          >
+          <p className="mt-2 text-xs sm:text-sm md:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg animate-fade-in-delay-1">
             <span className="hidden sm:inline">Design, installation, and maintenance engineered for precision, safety, and seamless passenger experience.</span>
             <span className="sm:hidden">Design, install & maintain elevators with precision and care.</span>
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
-            className="mt-5 flex flex-col sm:flex-row gap-3 justify-center sm:justify-start items-center w-full max-w-full sm:max-w-[22rem]"
-          >
+          <div className="mt-5 flex flex-col sm:flex-row gap-3 justify-center sm:justify-start items-center w-full max-w-full sm:max-w-[22rem] animate-fade-in-delay-2">
             <button
               onClick={() => setIsQuoteModalOpen(true)}
               className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto mx-auto sm:mx-0"
@@ -123,35 +141,16 @@ export default function Hero({ socials }: HeroProps) {
               <FiEye className="text-base" />
               View Services
             </a>
-          </motion.div>
+          </div>
           {/* Trust line */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.45, duration: 0.5 }}
-            className="hidden sm:block mt-4 sm:mt-6 text-sm text-white/70"
-          >
+          <div className="hidden sm:block mt-4 sm:mt-6 text-sm text-white/70 animate-fade-in-delay-3">
             Trusted by residential, commercial, and industrial projects.
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="mt-9 h-px w-full max-w-sm bg-gradient-to-r from-white/0 via-white/60 to-white/0"
-            aria-hidden
-          />
+          <div className="mt-9 h-px w-full max-w-sm bg-gradient-to-r from-white/0 via-white/60 to-white/0 animate-fade-in-delay-3" aria-hidden />
 
-          {/* Socials */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.32, duration: 0.6, ease: "easeOut" }}
-            className="hidden sm:block mt-6 sm:mt-10"
-          >
+          {/* Socials - deferred rendering */}
+          <div className="hidden sm:block mt-6 sm:mt-10 animate-fade-in-delay-4">
             <div className="flex items-start gap-4 text-sm text-white/80">
               <span className="flex-shrink-0 pt-1.5 text-xs uppercase tracking-[0.28em] text-white/60">
                 Connect
@@ -176,16 +175,10 @@ export default function Hero({ socials }: HeroProps) {
                 })}
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Contact Us (hidden on desktop — desktop uses the right promo card) */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.42, duration: 0.6, ease: "easeOut" }}
-            className="mt-4 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-2 text-white/90 lg:hidden"
-          >
+          <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-2 text-white/90 lg:hidden animate-fade-in-delay-4">
             <a
               href="tel:18008908411"
               className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-2 sm:p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
@@ -237,16 +230,10 @@ export default function Hero({ socials }: HeroProps) {
                 </a>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Socials (mobile) - show below contacts on small screens */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
-            className="block sm:hidden mt-3"
-          >
+          <div className="block sm:hidden mt-3 animate-fade-in-delay-5">
             <div className="flex flex-col gap-3 text-sm text-white/80">
               <span className="text-xs uppercase tracking-[0.28em] text-white/60">Connect</span>
               <div className="flex items-center gap-2 whitespace-nowrap overflow-x-auto hide-scrollbar max-w-full">
@@ -269,7 +256,7 @@ export default function Hero({ socials }: HeroProps) {
                 })}
               </div>
             </div>
-          </motion.div>
+          </div>
           {/* Inline centered scroll button for very small screens (below socials) */}
           <div className="flex sm:hidden w-full justify-center mt-4 mb-2">
             <button
