@@ -1,6 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
+import Image from "next/image";
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -117,9 +118,11 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                 {/* Left side - Branding */}
                 <div className="hidden lg:flex lg:w-1/3 flex-col justify-center items-center bg-gradient-to-br from-[var(--color-brand)] to-[var(--color-accent)] rounded-xl p-6 text-white">
                   <div className="text-center">
-                    <img
+                    <Image
                       src="/liftronic-white.png"
                       alt="Liftronic"
+                      width={128}
+                      height={128}
                       className="w-32 h-auto mb-4 mx-auto"
                     />
                     <h3 className="text-xl font-bold mb-2">

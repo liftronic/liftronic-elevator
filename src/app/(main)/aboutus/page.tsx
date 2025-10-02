@@ -10,44 +10,71 @@ import Breadcrumb from "~/components/Breadcrumb";
 import Link from "next/link";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiMessageSquare, FiEye } from "react-icons/fi";
+import {
+  getCompanyInfo,
+  getFeaturedTimeline,
+  getWhyChooseUs,
+  getVisionMissionValues,
+  getTeamMembers,
+} from "~/sanity/utils/getAboutUs";
+import type {
+  CompanyInfo,
+  Timeline,
+  WhyChooseUs,
+  VisionMissionValues as VMVType,
+  TeamMember,
+} from "~/sanity/lib/aboutTypes";
+import { PortableText } from "@portabletext/react";
 
-// Timeline data for company history
-const companyTimeline = [
-  {
-    year: "2009",
-    title: "Foundation",
-    description:
-      "Liftronic was founded with a vision to revolutionize elevator solutions",
-  },
-  {
-    year: "2012",
-    title: "First Major Contract",
-    description:
-      "Secured our first major commercial project, establishing our reputation",
-  },
-  {
-    year: "2015",
-    title: "Technology Innovation",
-    description: "Launched our smart elevator monitoring system",
-  },
-  {
-    year: "2018",
-    title: "Market Expansion",
-    description: "Expanded operations to cover nationwide service",
-  },
-  {
-    year: "2021",
-    title: "Sustainability Initiative",
-    description: "Launched eco-friendly elevator solutions program",
-  },
-  {
-    year: "2024",
-    title: "Industry Leadership",
-    description: "Recognized as leading elevator solutions provider",
-  },
-];
+// Force dynamic rendering to handle Sanity connection issues during build
+export const dynamic = "force-dynamic";
+export const revalidate = 60; // Revalidate every 60 seconds
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  // Fetch data from Sanity with error handling
+  let companyInfo: CompanyInfo | null = null;
+  let featuredTimeline: Timeline[] = [];
+  let whyChooseUs: WhyChooseUs[] = [];
+  let visionMissionValues: VMVType | null = null;
+  let teamMembers: TeamMember[] = [];
+
+  try {
+    [
+      companyInfo,
+      featuredTimeline,
+      whyChooseUs,
+      visionMissionValues,
+      teamMembers,
+    ] = await Promise.all([
+      getCompanyInfo().catch(() => null),
+      getFeaturedTimeline(3).catch(() => []),
+      getWhyChooseUs().catch(() => []),
+      getVisionMissionValues().catch(() => null),
+      getTeamMembers().catch(() => []),
+    ]);
+  } catch (error) {
+    console.error("Error fetching About Us data:", error);
+    // Components will use fallback data
+  }
+
+  // Fallback data if backend is not ready
+  const defaultInfo = {
+    establishedYear: "2009",
+    tagline: "15+ Years of Excellence",
+    aboutHeading: "About Liftronic",
+    aboutDescription:
+      "Pioneering the future of vertical transportation with innovative solutions, uncompromising safety, and exceptional service excellence.",
+    whoWeAreTitle: "Who We Are",
+    heroImage: "/illustrations/lift02.png",
+    keyPoints: [
+      "Industry-leading safety standards and certifications",
+      "Cutting-edge technology and smart elevator solutions",
+      "Comprehensive services from installation to maintenance",
+      "24/7 emergency support and rapid response times",
+    ],
+  };
+
+  const info = companyInfo || defaultInfo;
   return (
     <main>
       <section className="relative">
@@ -69,15 +96,15 @@ export default function AboutPage() {
 
           <div className="max-w-3xl mt-10">
             <p className="text-sm font-semibold tracking-wide text-gray-500">
-              Est. 2009 • 15+ Years of Excellence
+              Est. {info?.establishedYear} •{" "}
+              {info?.tagline || "15+ Years of Excellence"}
             </p>
             <h1 className="mt-2 text-4xl md:text-5xl font-extrabold tracking-tight">
-              About Liftronic
+              {info?.aboutHeading || "About Liftronic"}
             </h1>
             <p className="mt-4 text-lg text-gray-600">
-              Pioneering the future of vertical transportation with innovative
-              solutions, uncompromising safety, and exceptional service
-              excellence.
+              {info?.aboutDescription ||
+                "Pioneering the future of vertical transportation with innovative solutions."}
             </p>
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
@@ -130,40 +157,41 @@ export default function AboutPage() {
               viewport={{ once: true }}
             >
               <h2 className="text-4xl md:text-5xl font-bold text-charcoal mb-8">
-                Who We Are
+                {info?.whoWeAreTitle || "Who We Are"}
               </h2>
 
-              <div className="space-y-6 text-gray-600 leading-relaxed">
-                <p className="text-lg">
-                  Liftronic stands as a beacon of innovation and excellence in
-                  the elevator industry. Founded in 2009, we have grown from a
-                  small startup to a leading provider of comprehensive vertical
-                  transportation solutions.
-                </p>
+              {companyInfo?.whoWeAreContent ? (
+                <div className="space-y-6 text-gray-600 leading-relaxed prose prose-lg max-w-none">
+                  <PortableText value={companyInfo.whoWeAreContent as never} />
+                </div>
+              ) : (
+                <div className="space-y-6 text-gray-600 leading-relaxed">
+                  <p className="text-lg">
+                    Liftronic stands as a beacon of innovation and excellence in
+                    the elevator industry. Founded in {info?.establishedYear},
+                    we have grown from a small startup to a leading provider of
+                    comprehensive vertical transportation solutions.
+                  </p>
 
-                <p className="text-lg">
-                  Our journey began with a simple yet powerful vision: to
-                  transform the way people move within buildings through
-                  cutting-edge technology, unwavering safety standards, and
-                  exceptional customer service.
-                </p>
+                  <p className="text-lg">
+                    Our journey began with a simple yet powerful vision: to
+                    transform the way people move within buildings through
+                    cutting-edge technology, unwavering safety standards, and
+                    exceptional customer service.
+                  </p>
 
-                <p className="text-lg">
-                  Today, we serve hundreds of satisfied clients across the
-                  nation, from residential complexes to towering commercial
-                  buildings, always delivering solutions that exceed
-                  expectations and stand the test of time.
-                </p>
-              </div>
+                  <p className="text-lg">
+                    Today, we serve hundreds of satisfied clients across the
+                    nation, from residential complexes to towering commercial
+                    buildings, always delivering solutions that exceed
+                    expectations and stand the test of time.
+                  </p>
+                </div>
+              )}
 
               {/* Key Points */}
               <div className="mt-8 space-y-4">
-                {[
-                  "Industry-leading safety standards and certifications",
-                  "Cutting-edge technology and smart elevator solutions",
-                  "Comprehensive services from installation to maintenance",
-                  "24/7 emergency support and rapid response times",
-                ].map((point, index) => (
+                {(info?.keyPoints || []).map((point, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, x: -20 }}
@@ -190,8 +218,11 @@ export default function AboutPage() {
               {/* Hero Image */}
               <div className="relative h-96 rounded-3xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/illustrations/lift02.png"
-                  alt="Liftronic team and modern elevator installation"
+                  src={info?.heroImage || "/illustrations/lift02.png"}
+                  alt={
+                    companyInfo?.heroImageAlt ||
+                    "Liftronic team and modern elevator installation"
+                  }
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -204,46 +235,51 @@ export default function AboutPage() {
               </div>
 
               {/* Company Timeline */}
-              <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-charcoal mb-6 text-center">
-                  Our Journey
-                </h3>
-                <div className="space-y-4">
-                  {companyTimeline.slice(0, 3).map((milestone, index) => (
-                    <div key={index} className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-                        {milestone.year}
-                      </div>
-                      <div>
-                        <div className="font-semibold text-charcoal">
-                          {milestone.title}
+              {featuredTimeline.length > 0 && (
+                <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6">
+                  <h3 className="text-xl font-bold text-charcoal mb-6 text-center">
+                    Our Journey
+                  </h3>
+                  <div className="space-y-4">
+                    {featuredTimeline.map((milestone) => (
+                      <div
+                        key={milestone._id}
+                        className="flex items-start space-x-4"
+                      >
+                        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                          {milestone.year}
                         </div>
-                        <div className="text-gray-600 text-sm">
-                          {milestone.description}
+                        <div>
+                          <div className="font-semibold text-charcoal">
+                            {milestone.title}
+                          </div>
+                          <div className="text-gray-600 text-sm">
+                            {milestone.description}
+                          </div>
                         </div>
                       </div>
+                    ))}
+                    <div className="text-center pt-4">
+                      <span className="text-accent font-medium text-sm">
+                        ...and many more milestones
+                      </span>
                     </div>
-                  ))}
-                  <div className="text-center pt-4">
-                    <span className="text-accent font-medium text-sm">
-                      ...and many more milestones
-                    </span>
                   </div>
                 </div>
-              </div>
+              )}
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Why Choose Us */}
-      <WhyUsSection />
+      <WhyUsSection reasons={whyChooseUs} />
 
       {/* Vision, Mission & Values */}
-      <VisionMissionValues />
+      <VisionMissionValues data={visionMissionValues || undefined} />
 
       {/* Our Team */}
-      <TeamSection />
+      <TeamSection members={teamMembers} />
 
       <CallToActionSection />
     </main>

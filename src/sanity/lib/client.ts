@@ -7,4 +7,11 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+  // Add timeout and retry configuration
+  requestTagPrefix: "sanity",
+  perspective: "published",
+  stega: {
+    enabled: false,
+    studioUrl: "/studio",
+  },
 });
