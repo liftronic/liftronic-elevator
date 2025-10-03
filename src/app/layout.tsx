@@ -247,6 +247,11 @@ export default function RootLayout({
             ],
           })}
         </Script>
+        {/* Tally embed script */}
+        <Script
+          src="https://tally.so/widgets/embed.js"
+          strategy="afterInteractive"
+        />
         <ViewTransition>{children}</ViewTransition>
       </body>
     </html>
