@@ -2,21 +2,41 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
-import { FiHeadphones, FiMail, FiPhoneCall, FiMessageSquare, FiEye } from "react-icons/fi";
-import { Social } from "~/../typings";
+import {
+  FiHeadphones,
+  FiMail,
+  FiPhoneCall,
+  FiMessageSquare,
+  FiEye,
+} from "react-icons/fi";
+import { Social, ContactInfo } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
-import QuoteModal from "./QuoteModal";
+import QuoteModal from "./../QuoteModal";
 
 interface HeroProps {
   socials: Social[];
+  contactInfo: ContactInfo | null;
 }
 
-export default function Hero({ socials }: HeroProps) {
+export default function Hero({ socials, contactInfo }: HeroProps) {
   const { scrollTo } = useSmoothScroll();
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Fallback data in case Sanity data is not available
+  const fallbackContactInfo = {
+    supportPhone: "1800 890 8411",
+    supportPhoneLabel: "Liftronic Care",
+    email: "info@liftronicelevator.com",
+    emailLabel: "Send us Email",
+    salesPhone: "+91 9028226664",
+    salesPhoneLabel: "Sales Enquiry",
+    serviceArea: "Serving Mumbai, Pune & major metros",
+  };
+
+  const contact = contactInfo || fallbackContactInfo;
 
   useEffect(() => {
     // Lazy load video after initial paint
@@ -32,10 +52,14 @@ export default function Hero({ socials }: HeroProps) {
           });
         };
 
-        video.addEventListener("loadeddata", () => {
-          setVideoLoaded(true);
-          tryPlay();
-        }, { once: true });
+        video.addEventListener(
+          "loadeddata",
+          () => {
+            setVideoLoaded(true);
+            tryPlay();
+          },
+          { once: true }
+        );
       }
     };
 
@@ -71,9 +95,12 @@ export default function Hero({ socials }: HeroProps) {
     }
   };
   return (
-  <section id="hero-section" className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden overflow-x-hidden">
-  {/* hide native scrollbars for small horizontal scroll areas (mobile socials) */}
-  <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;}`}</style>
+    <section
+      id="hero-section"
+      className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden overflow-x-hidden"
+    >
+      {/* hide native scrollbars for small horizontal scroll areas (mobile socials) */}
+      <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;}`}</style>
       {/* Background video with poster image */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Static poster image for FCP - loads immediately */}
@@ -93,7 +120,9 @@ export default function Hero({ socials }: HeroProps) {
         <video
           ref={videoRef}
           id="hero-bg"
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover transition-opacity duration-500 ${
+            videoLoaded ? "opacity-100" : "opacity-0"
+          }`}
           loop
           muted
           playsInline
@@ -105,21 +134,32 @@ export default function Hero({ socials }: HeroProps) {
         <div className="absolute inset-0 [background:radial-gradient(60%_60%_at_20%_30%,rgba(42,227,148,0.12),transparent_60%)]" />
       </div>
 
-  <div className="relative h-full container mx-auto px-4 flex items-center justify-center lg:justify-between gap-8">
+      <div className="relative h-full container mx-auto px-4 flex items-center justify-center lg:justify-between gap-8">
         {/* Decorative blobs */}
-        <div className="pointer-events-none hidden lg:block absolute -top-12 -right-24 w-[380px] h-[380px] rounded-full bg-gradient-to-br from-accent/30 to-indigo-600/20 blur-3xl opacity-60 transform rotate-12" aria-hidden />
-        <div className="pointer-events-none hidden lg:block absolute -bottom-16 left-20 w-[260px] h-[260px] rounded-full bg-gradient-to-tr from-white/8 to-accent/20 blur-2xl opacity-40" aria-hidden />
+        <div
+          className="pointer-events-none hidden lg:block absolute -top-12 -right-24 w-[380px] h-[380px] rounded-full bg-gradient-to-br from-accent/30 to-indigo-600/20 blur-3xl opacity-60 transform rotate-12"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none hidden lg:block absolute -bottom-16 left-20 w-[260px] h-[260px] rounded-full bg-gradient-to-tr from-white/8 to-accent/20 blur-2xl opacity-40"
+          aria-hidden
+        />
 
-  {/* Left: Messaging */}
-  <div className="max-w-2xl text-center lg:text-left">
+        {/* Left: Messaging */}
+        <div className="max-w-2xl text-center lg:text-left">
           <h1 className="mt-6 sm:mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
             <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
             Experience
           </h1>
 
           <p className="mt-2 text-xs sm:text-sm md:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg animate-fade-in-delay-1">
-            <span className="hidden sm:inline">Design, installation, and maintenance engineered for precision, safety, and seamless passenger experience.</span>
-            <span className="sm:hidden">Design, install & maintain elevators with precision and care.</span>
+            <span className="hidden sm:inline">
+              Design, installation, and maintenance engineered for precision,
+              safety, and seamless passenger experience.
+            </span>
+            <span className="sm:hidden">
+              Design, install & maintain elevators with precision and care.
+            </span>
           </p>
 
           <div className="mt-5 flex flex-col sm:flex-row gap-3 justify-center sm:justify-start items-center w-full max-w-full sm:max-w-[22rem] animate-fade-in-delay-2">
@@ -147,7 +187,10 @@ export default function Hero({ socials }: HeroProps) {
             Trusted by residential, commercial, and industrial projects.
           </div>
 
-          <div className="mt-9 h-px w-full max-w-sm bg-gradient-to-r from-white/0 via-white/60 to-white/0 animate-fade-in-delay-3" aria-hidden />
+          <div
+            className="mt-9 h-px w-full max-w-sm bg-gradient-to-r from-white/0 via-white/60 to-white/0 animate-fade-in-delay-3"
+            aria-hidden
+          />
 
           {/* Socials - deferred rendering */}
           <div className="hidden sm:block mt-6 sm:mt-10 animate-fade-in-delay-4">
@@ -167,7 +210,10 @@ export default function Hero({ socials }: HeroProps) {
                       className="flex items-center gap-2 rounded-[10px] border border-white/10 bg-white/10 px-3 py-1.5 text-white transition hover:text-accent"
                     >
                       {Icon && (
-                        <Icon className="text-base sm:text-lg text-accent" aria-hidden />
+                        <Icon
+                          className="text-base sm:text-lg text-accent"
+                          aria-hidden
+                        />
                       )}
                       <span>{social.title}</span>
                     </a>
@@ -180,7 +226,7 @@ export default function Hero({ socials }: HeroProps) {
           {/* Contact Us (hidden on desktop — desktop uses the right promo card) */}
           <div className="mt-4 flex flex-col sm:flex-row flex-wrap items-center sm:items-start gap-2 text-white/90 lg:hidden animate-fade-in-delay-4">
             <a
-              href="tel:18008908411"
+              href={`tel:${contact.supportPhone.replace(/\s/g, "")}`}
               className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-2 sm:p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiHeadphones
@@ -189,15 +235,15 @@ export default function Hero({ socials }: HeroProps) {
               />
               <div className="space-y-1 leading-tight">
                 <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
-                  Liftronic Care
+                  {contact.supportPhoneLabel}
                 </p>
                 <span className="block text-sm sm:text-base font-semibold text-white">
-                  1800 890 8411
+                  {contact.supportPhone}
                 </span>
               </div>
             </a>
             <a
-              href="mailto:info@liftronicelevator.com"
+              href={`mailto:${contact.email}`}
               className="flex w-full sm:w-auto items-start gap-3 rounded-[10px] border border-white/10 bg-white/5 p-2 sm:p-3 transition hover:bg-white/10 hover:shadow-lg hover:shadow-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 select-text"
             >
               <FiMail
@@ -206,10 +252,10 @@ export default function Hero({ socials }: HeroProps) {
               />
               <div className="space-y-1 leading-tight">
                 <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
-                  Send us Email
+                  {contact.emailLabel}
                 </p>
                 <span className="block text-sm sm:text-base font-semibold text-white">
-                  info@liftronicelevator.com
+                  {contact.email}
                 </span>
               </div>
             </a>
@@ -220,13 +266,13 @@ export default function Hero({ socials }: HeroProps) {
               />
               <div className="space-y-1 leading-tight">
                 <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
-                  Sales Enquiry
+                  {contact.salesPhoneLabel}
                 </p>
                 <a
-                  href="tel:+919028226664"
+                  href={`tel:${contact.salesPhone.replace(/\s/g, "")}`}
                   className="block text-sm sm:text-base font-semibold text-white transition hover:text-accent"
                 >
-                  +91 9028226664
+                  {contact.salesPhone}
                 </a>
               </div>
             </div>
@@ -235,7 +281,9 @@ export default function Hero({ socials }: HeroProps) {
           {/* Socials (mobile) - show below contacts on small screens */}
           <div className="block sm:hidden mt-3 animate-fade-in-delay-5">
             <div className="flex flex-col gap-3 text-sm text-white/80">
-              <span className="text-xs uppercase tracking-[0.28em] text-white/60">Connect</span>
+              <span className="text-xs uppercase tracking-[0.28em] text-white/60">
+                Connect
+              </span>
               <div className="flex items-center gap-2 whitespace-nowrap overflow-x-auto hide-scrollbar max-w-full">
                 {socials?.map((social) => {
                   const Icon = getIcon(social.icon);
@@ -274,7 +322,11 @@ export default function Hero({ socials }: HeroProps) {
                   viewBox="0 0 24 24"
                   fill="none"
                 >
-                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.5" />
+                  <path
+                    d="M6 9l6 6 6-6"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  />
                 </svg>
               </div>
             </button>
@@ -286,7 +338,9 @@ export default function Hero({ socials }: HeroProps) {
           <div className="flex items-center justify-between gap-4">
             <div>
               <h3 className="text-lg font-semibold">Request a Quote</h3>
-              <p className="text-sm text-white/70">Fast response — design & installation specialists</p>
+              <p className="text-sm text-white/70">
+                Fast response — design & installation specialists
+              </p>
             </div>
             <div className="rounded-full bg-white/8 p-2">
               <FiHeadphones className="text-accent text-2xl" aria-hidden />
@@ -294,26 +348,39 @@ export default function Hero({ socials }: HeroProps) {
           </div>
 
           <div className="mt-4 grid gap-3">
-            <a href="tel:18008908411" className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8">
+            <a
+              href={`tel:${contact.supportPhone.replace(/\s/g, "")}`}
+              className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8"
+            >
               <div>
-                <p className="text-xs text-white/70">Support</p>
-                <p className="font-medium">1800 890 8411</p>
+                <p className="text-xs text-white/70">
+                  {contact.supportPhoneLabel}
+                </p>
+                <p className="font-medium">{contact.supportPhone}</p>
               </div>
               <FiPhoneCall className="text-accent text-xl" aria-hidden />
             </a>
 
-            <a href="mailto:info@liftronicelevator.com" className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8">
+            <a
+              href={`mailto:${contact.email}`}
+              className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8"
+            >
               <div>
-                <p className="text-xs text-white/70">Email</p>
-                <p className="font-medium">info@liftronicelevator.com</p>
+                <p className="text-xs text-white/70">{contact.emailLabel}</p>
+                <p className="font-medium">{contact.email}</p>
               </div>
               <FiMail className="text-accent text-xl" aria-hidden />
             </a>
 
-            <a href="tel:+919028226664" className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8">
+            <a
+              href={`tel:${contact.salesPhone.replace(/\s/g, "")}`}
+              className="flex items-center justify-between gap-3 bg-white/5 p-3 rounded-lg border border-white/8 hover:bg-white/8"
+            >
               <div>
-                <p className="text-xs text-white/70">Sales Enquiry</p>
-                <p className="font-medium">+91 9028226664</p>
+                <p className="text-xs text-white/70">
+                  {contact.salesPhoneLabel}
+                </p>
+                <p className="font-medium">{contact.salesPhone}</p>
               </div>
               <FiPhoneCall className="text-accent text-xl" aria-hidden />
             </a>
@@ -327,7 +394,9 @@ export default function Hero({ socials }: HeroProps) {
             </button>
           </div>
 
-          <div className="mt-5 text-xs text-white/60">Serving Mumbai, Pune & major metros</div>
+          <div className="mt-5 text-xs text-white/60">
+            {contact.serviceArea}
+          </div>
         </aside>
 
         {/* Floating scroll cue for sm+ screens */}
@@ -353,7 +422,10 @@ export default function Hero({ socials }: HeroProps) {
       </div>
 
       {/* Quote Modal */}
-      <QuoteModal isOpen={isQuoteModalOpen} onClose={() => setIsQuoteModalOpen(false)} />
+      <QuoteModal
+        isOpen={isQuoteModalOpen}
+        onClose={() => setIsQuoteModalOpen(false)}
+      />
     </section>
   );
 }

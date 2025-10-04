@@ -1,4 +1,29 @@
-import { BiCog, BiStar, BiGlobe } from "react-icons/bi";
+import {
+  BiCog,
+  BiStar,
+  BiGlobe,
+  BiShield,
+  BiWrench,
+  BiBuilding,
+} from "react-icons/bi";
+import type { CompanyInfo } from "~/sanity/lib/aboutTypes";
+
+interface AboutUsProps {
+  companyInfo: CompanyInfo | null;
+}
+
+// Icon mapping function
+const getFeatureIcon = (iconName?: string) => {
+  const iconMap: Record<string, React.ElementType> = {
+    cog: BiCog,
+    star: BiStar,
+    globe: BiGlobe,
+    shield: BiShield,
+    wrench: BiWrench,
+    building: BiBuilding,
+  };
+  return iconMap[iconName?.toLowerCase() || "star"] || BiStar;
+};
 
 // Simple stat display (no animation needed on server)
 function StatDisplay({
@@ -56,13 +81,46 @@ function FeatureCard({
 }
 
 // The main About Us component - now a server component
-export default function AboutUs() {
-  const stats = [
+export default function AboutUs({ companyInfo }: AboutUsProps) {
+  // Fallback data
+  const defaultStats = [
     { label: "Years of Experience", value: 20, suffix: "+" },
     { label: "Projects Completed", value: 100, suffix: "+" },
     { label: "Countries Served", value: 6, suffix: "" },
     { label: "Ongoing Projects", value: 200, suffix: "+" },
   ];
+
+  const defaultFeatures = [
+    {
+      title: "European Technology",
+      description:
+        "Advanced engineering solutions blended with innovative design for superior performance.",
+      icon: "cog",
+    },
+    {
+      title: "Custom Solutions",
+      description:
+        "Tailored elevator designs that enhance your home's style and meet specific requirements.",
+      icon: "star",
+    },
+    {
+      title: "Global Expertise",
+      description:
+        "Proven track record with successful projects completed in India and internationally.",
+      icon: "globe",
+    },
+  ];
+
+  const defaultDescription = `For over 20 years, Liftronic has been elevating homes across India with beautifully designed residential lifts. We craft bespoke solutions that pair refined aesthetics with dependable European-engineered performance — making everyday movement effortless and elegant. Headquartered in Mumbai, Liftronic India Pvt Ltd delivers end-to-end elevator experiences: expert consultation and Sales, precise Installation, and proactive Maintenance. Our designs blend European technology with Indian sensibilities to create lifts that feel custom-made for your space. Discover an elevator that improves accessibility, adds luxury, and transforms how you live.`;
+
+  // Use Sanity data or fallback
+  const stats = companyInfo?.stats || defaultStats;
+  const features = companyInfo?.homepageFeatures || defaultFeatures;
+  const title = companyInfo?.homepageAboutTitle || "About Liftronic";
+  const subtitle =
+    companyInfo?.homepageAboutSubtitle || "Innovation Meets Elegance.";
+  const description =
+    companyInfo?.homepageAboutDescription || defaultDescription;
 
   return (
     <section
@@ -93,64 +151,27 @@ export default function AboutUs() {
         <div className="max-w-4xl mx-auto text-center">
           <div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              About Liftronic
+              {title}
             </h2>
             <p className="text-md md:text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
               <strong className="block text-lg md:text-xl font-semibold text-gray-900">
-                Innovation Meets Elegance.
+                {subtitle}
               </strong>
-              For over <span className="font-bold text-gray-900">20 years</span>
-              , Liftronic has been elevating homes across India with beautifully
-              designed residential lifts. We craft{" "}
-              <span className="font-semibold text-gray-900">
-                bespoke solutions
-              </span>{" "}
-              that pair refined aesthetics with dependable{" "}
-              <span className="font-semibold text-gray-900">
-                European-engineered performance
-              </span>{" "}
-              — making everyday movement{" "}
-              <span className="italic font-medium">effortless</span> and{" "}
-              <span className="italic font-medium">elegant</span>. Headquartered
-              in <span className="font-semibold text-gray-900">Mumbai</span>,
-              Liftronic India Pvt Ltd delivers{" "}
-              <span className="font-semibold text-gray-900">end-to-end</span>{" "}
-              elevator experiences: expert consultation and{" "}
-              <span className="font-semibold text-gray-900">Sales</span>,
-              precise{" "}
-              <span className="font-semibold text-gray-900">Installation</span>,
-              and proactive{" "}
-              <span className="font-semibold text-gray-900">Maintenance</span>.
-              Our designs blend{" "}
-              <span className="font-semibold text-gray-900">
-                European technology
-              </span>{" "}
-              with Indian sensibilities to create lifts that feel{" "}
-              <span className="font-semibold text-gray-900">custom-made</span>{" "}
-              for your space. Discover an elevator that improves{" "}
-              <span className="font-semibold text-gray-900">accessibility</span>
-              , adds <span className="font-semibold text-gray-900">luxury</span>
-              , and transforms how you live.
+              {description}
             </p>
           </div>
         </div>
 
         {/* FEATURE CARDS */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          <FeatureCard title="European Technology" icon={BiCog}>
-            Advanced engineering solutions blended with innovative design for
-            superior performance.
-          </FeatureCard>
-
-          <FeatureCard title="Custom Solutions" icon={BiStar}>
-            Tailored elevator designs that enhance your home&apos;s style and
-            meet specific requirements.
-          </FeatureCard>
-
-          <FeatureCard title="Global Expertise" icon={BiGlobe}>
-            Proven track record with successful projects completed in India and
-            internationally.
-          </FeatureCard>
+          {features.map((feature, index) => {
+            const Icon = getFeatureIcon(feature.icon);
+            return (
+              <FeatureCard key={index} title={feature.title} icon={Icon}>
+                {feature.description}
+              </FeatureCard>
+            );
+          })}
         </div>
 
         {/* GREEN STATS BAR */}

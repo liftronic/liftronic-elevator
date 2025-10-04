@@ -1,16 +1,19 @@
 import { getSocial } from "~/sanity/utils/getSocials";
+import { getContactInfo } from "~/sanity/utils/getContactInfo";
+import { getCompanyInfo } from "~/sanity/utils/getAboutUs";
 import { client } from "~/sanity/lib/client";
 import { homePageDataQuery } from "~/sanity/lib/queries";
 import type { HomePageData } from "~/sanity/lib/homePageTypes";
-import Hero from "~/components/Hero";
-import AboutUs from "~/components/aboutus/AboutUs";
+import { getFeaturedServices } from "~/sanity/utils/getServices";
+import Hero from "~/components/homepage/Hero";
+import AboutUs from "~/components/homepage/AboutUs";
 import ProductsInteractive from "~/components/products/ProductsInteractive";
-import Services from "~/components/services/Services";
-import ClientsMarquee from "~/components/ClientsMarquee";
-import MediaPreview from "~/components/MediaPreview";
-import BlogSection from "~/components/BlogSection";
-import Testimonials from "~/components/Testimonials";
-import ContactSection from "~/components/ContactSection";
+import Services from "~/components/homepage/Services";
+import ClientsMarquee from "~/components/homepage/ClientsMarquee";
+import MediaPreview from "~/components/homepage/MediaPreview";
+import BlogSection from "~/components/homepage/BlogSection";
+import Testimonials from "~/components/homepage/Testimonials";
+import ContactSection from "~/components/homepage/ContactSection";
 
 // ISR - revalidate every 60 minutes (3600 seconds)
 export const revalidate = 3600;
@@ -20,22 +23,26 @@ async function getHomePageData(): Promise<HomePageData> {
 }
 
 export default async function Home() {
-  const [socials, homeData] = await Promise.all([
-    getSocial(),
-    getHomePageData(),
-  ]);
+  const [socials, contactInfo, companyInfo, homeData, services] =
+    await Promise.all([
+      getSocial(),
+      getContactInfo(),
+      getCompanyInfo(),
+      getHomePageData(),
+      getFeaturedServices().catch(() => []),
+    ]);
 
   return (
     <main suppressHydrationWarning>
-      <Hero socials={socials} />
-      <AboutUs />
-      <Services />
+      <Hero socials={socials} contactInfo={contactInfo} />
+      <AboutUs companyInfo={companyInfo} />
+      <Services services={services} />
       <ProductsInteractive products={homeData.featuredProducts} />
       <ClientsMarquee clients={homeData.clients} />
       <MediaPreview mediaItems={homeData.featuredMedia} />
       <BlogSection blogs={homeData.featuredBlogs} />
       <Testimonials testimonials={homeData.testimonials} />
-      <ContactSection />
+      <ContactSection contactInfo={contactInfo} />
     </main>
   );
 }

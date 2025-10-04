@@ -12,15 +12,9 @@ interface MediaPreviewSectionProps {
   mediaItems: MediaItem[];
 }
 
-// Statistics data for animated numbers
-const mediaStats = [
-  { number: 150, suffix: "+", label: "Project Photos" },
-  { number: 25, suffix: "+", label: "Installation Videos" },
-  { number: 50, suffix: "+", label: "Product Showcases" },
-  { number: 100, suffix: "+", label: "Service Updates" },
-];
-
-export default function MediaPreviewSection({ mediaItems }: MediaPreviewSectionProps) {
+export default function MediaPreviewSection({
+  mediaItems,
+}: MediaPreviewSectionProps) {
   const [mounted, setMounted] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
 
@@ -30,15 +24,20 @@ export default function MediaPreviewSection({ mediaItems }: MediaPreviewSectionP
 
   const handleNext = () => {
     if (!selectedMedia || mediaItems.length <= 1) return;
-    const currentIndex = mediaItems.findIndex((item) => item._id === selectedMedia._id);
+    const currentIndex = mediaItems.findIndex(
+      (item) => item._id === selectedMedia._id
+    );
     const nextIndex = (currentIndex + 1) % mediaItems.length;
     setSelectedMedia(mediaItems[nextIndex]);
   };
 
   const handlePrevious = () => {
     if (!selectedMedia || mediaItems.length <= 1) return;
-    const currentIndex = mediaItems.findIndex((item) => item._id === selectedMedia._id);
-    const previousIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length;
+    const currentIndex = mediaItems.findIndex(
+      (item) => item._id === selectedMedia._id
+    );
+    const previousIndex =
+      (currentIndex - 1 + mediaItems.length) % mediaItems.length;
     setSelectedMedia(mediaItems[previousIndex]);
   };
 
@@ -93,9 +92,6 @@ export default function MediaPreviewSection({ mediaItems }: MediaPreviewSectionP
           ctaText="Explore Full Media Gallery"
           ctaHref="/media"
         />
-
-        {/* Animated Numbers Section */}
-        <AnimatedNumbers stats={mediaStats} />
       </div>
 
       {/* Media Preview Modal */}

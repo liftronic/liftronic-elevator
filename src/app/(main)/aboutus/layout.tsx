@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Liftronic - Leading Elevator Solutions Provider",
+  title: "About Liftronic - Leading Elevator Services Provider",
   description:
     "Learn about Liftronic's journey, mission, values, and expert team. Discover why we're the trusted choice for elevator installation, maintenance, and modernization services.",
   keywords: [

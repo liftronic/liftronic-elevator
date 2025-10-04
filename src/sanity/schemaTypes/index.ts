@@ -5,6 +5,7 @@ import { categoryType } from "./categoryType";
 import { postType } from "./postType";
 import { authorType } from "./authorType";
 import { socialsType } from "./socials";
+import { contactInfoType } from "./contactInfo";
 import { tagsType } from "./tags";
 import { performanceType } from "./servicePerformanceNumbers";
 import { testimonialType } from "./testimonial";
@@ -27,6 +28,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     postType,
     authorType,
     socialsType,
+    contactInfoType,
     tagsType,
     performanceType,
     testimonialType,

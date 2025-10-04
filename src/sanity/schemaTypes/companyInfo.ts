@@ -112,6 +112,76 @@ export const companyInfoType = defineType({
         },
       ],
     }),
+    // Homepage About Section fields
+    defineField({
+      name: "homepageAboutTitle",
+      title: "Homepage About Title",
+      type: "string",
+      description: "Title for homepage about section (e.g., 'About Liftronic')",
+      initialValue: "About Liftronic",
+    }),
+    defineField({
+      name: "homepageAboutSubtitle",
+      title: "Homepage About Subtitle",
+      type: "string",
+      description: "Subtitle/tagline (e.g., 'Innovation Meets Elegance.')",
+      initialValue: "Innovation Meets Elegance.",
+    }),
+    defineField({
+      name: "homepageAboutDescription",
+      title: "Homepage About Description",
+      type: "text",
+      rows: 10,
+      description: "Full description text for homepage about section",
+    }),
+    defineField({
+      name: "homepageFeatures",
+      title: "Homepage Features",
+      type: "array",
+      description: "Feature cards shown on homepage (limit: 3)",
+      validation: (Rule) => Rule.max(3),
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
+              title: "Feature Title",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "description",
+              title: "Feature Description",
+              type: "text",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "icon",
+              title: "Icon",
+              type: "string",
+              description: "Icon name (e.g., 'cog', 'star', 'globe')",
+              options: {
+                list: [
+                  { title: "Cog/Settings", value: "cog" },
+                  { title: "Star", value: "star" },
+                  { title: "Globe", value: "globe" },
+                  { title: "Shield", value: "shield" },
+                  { title: "Wrench", value: "wrench" },
+                  { title: "Building", value: "building" },
+                ],
+              },
+            }),
+          ],
+          preview: {
+            select: {
+              title: "title",
+              subtitle: "description",
+            },
+          },
+        },
+      ],
+    }),
   ],
   preview: {
     select: {
