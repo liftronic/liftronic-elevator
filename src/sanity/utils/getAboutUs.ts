@@ -24,7 +24,11 @@ export async function getCompanyInfo(): Promise<CompanyInfo | null> {
     keyPoints,
     "heroImage": heroImage.asset->url,
     "heroImageAlt": heroImage.alt,
-    stats
+    stats,
+    homepageAboutTitle,
+    homepageAboutSubtitle,
+    homepageAboutDescription,
+    homepageFeatures
   }`;
 
   return client.fetch<CompanyInfo | null>(query);

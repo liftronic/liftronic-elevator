@@ -157,28 +157,6 @@ export default function TeamSection({ members }: TeamSectionProps) {
             </div>
           ))}
         </div>
-
-        {/* Team Stats */}
-        <div className="mt-16 bg-white rounded-2xl shadow-lg p-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-accent mb-2">50+</div>
-              <div className="text-gray-600">Team Members</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-accent mb-2">15+</div>
-              <div className="text-gray-600">Avg. Years Experience</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-accent mb-2">25</div>
-              <div className="text-gray-600">Certified Engineers</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-accent mb-2">24/7</div>
-              <div className="text-gray-600">Support Coverage</div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Modal for detailed member view */}

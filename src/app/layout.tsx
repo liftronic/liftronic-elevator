@@ -3,6 +3,8 @@ import { unstable_ViewTransition as ViewTransition } from "react";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import WhatsAppButton from "~/components/WhatsAppButton";
+import { getContactInfo } from "~/sanity/utils/getContactInfo";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -110,7 +112,7 @@ export const viewport = {
   themeColor: "#2ae394",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -120,7 +122,11 @@ export default function RootLayout({
       <head>
         {/* Resource hints for Sanity CDN */}
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://cdn.sanity.io"
+          crossOrigin="anonymous"
+        />
       </head>
       <body
         className={`${dmSans.variable} antialiased bg-soft text-charcoal`}

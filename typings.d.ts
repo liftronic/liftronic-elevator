@@ -9,6 +9,20 @@ export interface Social extends SanityDocument {
   tags?: Reference<Tag>[];
 }
 
+export interface ContactInfo extends SanityDocument {
+  _type: "contactInfo";
+  supportPhone: string;
+  supportPhoneLabel?: string;
+  email: string;
+  emailLabel?: string;
+  salesPhone: string;
+  salesPhoneLabel?: string;
+  mapEmbedUrl?: string;
+  serviceArea?: string;
+  whatsappNumber?: string;
+  whatsappMessage?: string;
+}
+
 export interface Tag extends SanityDocument {
   _type: "tag";
   title: string;

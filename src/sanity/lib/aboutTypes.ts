@@ -13,6 +13,11 @@ export type CompanyInfo = {
   heroImage?: string;
   heroImageAlt?: string;
   stats?: CompanyStat[];
+  // Homepage About Section
+  homepageAboutTitle?: string;
+  homepageAboutSubtitle?: string;
+  homepageAboutDescription?: string;
+  homepageFeatures?: HomepageFeature[];
   _createdAt: string;
   _updatedAt?: string;
 };
@@ -21,6 +26,12 @@ export type CompanyStat = {
   label: string;
   value: number;
   suffix?: string;
+  icon?: string;
+};
+
+export type HomepageFeature = {
+  title: string;
+  description: string;
   icon?: string;
 };
 
