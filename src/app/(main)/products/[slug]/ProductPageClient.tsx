@@ -2,10 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Breadcrumb from "~/components/Breadcrumb";
 import Features from "~/components/Features";
 import ProductFAQ from "~/components/products/ProductFAQ";
+import ProductGalleryModal from "~/components/products/ProductGalleryModal";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
 import CallToActionSection from "~/components/CallToActionSection";
@@ -19,6 +20,9 @@ type ProductPageClientProps = {
 export default function ProductPageClient({ product }: ProductPageClientProps) {
   const { transitionTo } = useViewTransition();
   const router = useRouter();
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null
+  );
 
   const pageStyle = {
     "--transition-name": `product-card-${product.slug}`,
@@ -38,33 +42,29 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
   const heroImage = product.mainImage || "/illustrations/product01.png";
 
-  // Build gallery from Sanity gallery or fallback to hero image
-  const galleryImages = product.gallery && product.gallery.length > 0
-    ? product.gallery.map((img, index) => ({
-        src: img.url,
-        alt: img.alt || `${product.title} image ${index + 1}`,
-      }))
-    : [
-        {
-          src: heroImage,
-          alt: `${product.title} cabin perspective`,
-        },
-        {
-          src: heroImage,
-          alt: `${product.title} control panel detail`,
-        },
-        {
-          src: heroImage,
-          alt: `${product.title} shaft view render`,
-        },
-        {
-          src: heroImage,
-          alt: `${product.title} installation snapshot`,
-        },
-      ];
+  // Use gallery from Sanity
+  const galleryImages =
+    product.gallery && product.gallery.length > 0 ? product.gallery : [];
 
   const hasSpecifications =
     Array.isArray(product.specifications) && product.specifications.length > 0;
+
+  // Modal navigation handlers
+  const handleNext = () => {
+    if (selectedImageIndex === null || galleryImages.length <= 1) return;
+    setSelectedImageIndex((selectedImageIndex + 1) % galleryImages.length);
+  };
+
+  const handlePrevious = () => {
+    if (selectedImageIndex === null || galleryImages.length <= 1) return;
+    setSelectedImageIndex(
+      (selectedImageIndex - 1 + galleryImages.length) % galleryImages.length
+    );
+  };
+
+  const handleCloseModal = () => {
+    setSelectedImageIndex(null);
+  };
 
   return (
     <main className="min-h-screen" style={pageStyle}>
@@ -202,69 +202,96 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
 
       {product.keyFeatures && product.keyFeatures.length > 0 && (
         <Features
-          features={product.keyFeatures.map(feature => ({
+          features={product.keyFeatures.map((feature) => ({
             title: feature.title,
             description: feature.description || "",
-            icon: feature.icon || "fiPackage"
+            icon: feature.icon || "fiPackage",
           }))}
         />
       )}
 
-      {/* Gallery Section */}
-      <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
-        <div className="container mx-auto px-4">
-          {/* Section Header */}
-          <div className="mx-auto space-y-6 mb-16">
-            <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
-              <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                Visual Gallery
-              </span>
+      {/* Gallery Section - Bento Grid */}
+      {galleryImages.length > 0 && (
+        <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
+          <div className="container mx-auto px-4">
+            {/* Section Header */}
+            <div className="mx-auto space-y-6 mb-16">
+              <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
+                <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                  Visual Gallery
+                </span>
+              </div>
+              <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
+                Experience the quality in detail
+              </h2>
+              <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
+                High-fidelity renders showcasing cabin design, control systems,
+                and installation excellence.
+              </p>
             </div>
-            <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-              Experience the quality in detail
-            </h2>
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
-              High-fidelity renders showcasing cabin design, control systems,
-              and installation excellence.
-            </p>
-          </div>
 
-          {/* Image Grid */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {galleryImages.map((image, index) => {
-              const isWide = index === 0;
-              return (
-                <div
-                  key={`${image.alt}-${index}`}
-                  className={`group relative overflow-hidden rounded-2xl border border-gray-200/60 shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-[1.02] ${
-                    isWide
-                      ? "md:col-span-2 lg:col-span-2 aspect-[4/3]"
-                      : "aspect-square"
-                  }`}
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    sizes={
-                      isWide
-                        ? "(min-width: 1024px) 50vw, (min-width: 768px) 100vw, 100vw"
-                        : "(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
-                    }
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    <h3 className="text-lg font-semibold text-white drop-shadow-lg">
-                      {image.alt}
-                    </h3>
-                  </div>
-                </div>
-              );
-            })}
+            {/* Bento Grid Layout */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[280px]">
+              {galleryImages.map((image, index) => {
+                // Bento grid pattern: different sizes for visual interest
+                const bentoPatterns = [
+                  "col-span-2 row-span-2", // Large featured
+                  "col-span-1 row-span-1", // Small
+                  "col-span-1 row-span-1", // Small
+                  "col-span-1 row-span-2", // Tall
+                  "col-span-1 row-span-1", // Small
+                  "col-span-2 row-span-1", // Wide
+                ];
+                const pattern = bentoPatterns[index % bentoPatterns.length];
+
+                return (
+                  <motion.div
+                    key={image._key}
+                    className={`group relative overflow-hidden rounded-2xl border border-gray-200/60 shadow-lg transition-all duration-500 hover:shadow-2xl cursor-pointer ${pattern}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    onClick={() => setSelectedImageIndex(index)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View ${image.alt || `image ${index + 1}`} in fullscreen`}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelectedImageIndex(index);
+                      }
+                    }}
+                  >
+                    <Image
+                      src={image.url}
+                      alt={
+                        image.alt ||
+                        `${product.title} gallery image ${index + 1}`
+                      }
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                      placeholder={image.lqip ? "blur" : "empty"}
+                      blurDataURL={image.lqip}
+                      quality={85}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    {image.alt && (
+                      <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                        <h3 className="text-sm md:text-lg font-semibold text-white drop-shadow-lg line-clamp-2">
+                          {image.alt}
+                        </h3>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {product.faqs && product.faqs.length > 0 && (
         <ProductFAQ faqs={product.faqs} />
@@ -276,6 +303,18 @@ export default function ProductPageClient({ product }: ProductPageClientProps) {
           onClick: handleBackClick,
         }}
       />
+
+      {/* Gallery Modal */}
+      {selectedImageIndex !== null && (
+        <ProductGalleryModal
+          images={galleryImages}
+          currentIndex={selectedImageIndex}
+          onClose={handleCloseModal}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          productTitle={product.title}
+        />
+      )}
     </main>
   );
 }

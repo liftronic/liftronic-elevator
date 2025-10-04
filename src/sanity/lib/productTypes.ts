@@ -65,5 +65,6 @@ export type FAQ = {
 export type GalleryImage = {
   _key: string;
   url: string;
+  lqip?: string;
   alt?: string;
 };

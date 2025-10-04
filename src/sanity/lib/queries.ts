@@ -168,7 +168,8 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
   "imageAlt": mainImage.alt,
   "gallery": gallery[]{
     _key,
-    "url": asset->url + "?w=1200&h=800&fit=crop&auto=format&fm=webp&q=85",
+    "url": asset->url + "?w=1200&h=900&fit=crop&auto=format&fm=webp&q=85",
+    "lqip": asset->metadata.lqip,
     "alt": alt
   },
   "seoTitle": seo.metaTitle,

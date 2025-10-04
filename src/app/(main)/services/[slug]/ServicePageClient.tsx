@@ -37,24 +37,6 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
   }, [router]);
 
   const heroImage = service.image || "/illustrations/lift02.png";
-  const galleryImages = [
-    {
-      src: heroImage,
-      alt: `${service.title} service overview`,
-    },
-    {
-      src: heroImage,
-      alt: `${service.title} process detail`,
-    },
-    {
-      src: heroImage,
-      alt: `${service.title} team at work`,
-    },
-    {
-      src: heroImage,
-      alt: `${service.title} quality assurance`,
-    },
-  ];
   const hasSpecifications =
     Array.isArray(service.specifications) && service.specifications.length > 0;
 
@@ -196,62 +178,6 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
       {service.features && service.features.length > 0 && (
         <Features features={service.features} />
       )}
-
-      {/* Service Gallery */}
-      <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
-        <div className="container mx-auto px-4">
-          {/* Section Header */}
-          <div className="mx-auto space-y-6 mb-16">
-            <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
-              <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                Service Gallery
-              </span>
-            </div>
-            <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
-              Experience our service craftsmanship
-            </h2>
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
-              Step inside our maintenance workflow, on-site expertise, and
-              safety-first execution through vivid visuals.
-            </p>
-          </div>
-
-          {/* Image Grid */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {galleryImages.map((image, index) => {
-              const isWide = index === 0;
-              return (
-                <div
-                  key={`${image.alt}-${index}`}
-                  className={`group relative overflow-hidden rounded-2xl border border-gray-200/60 shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-[1.02] ${
-                    isWide
-                      ? "md:col-span-2 lg:col-span-2 aspect-[4/3]"
-                      : "aspect-square"
-                  }`}
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    sizes={
-                      isWide
-                        ? "(min-width: 1024px) 50vw, (min-width: 768px) 100vw, 100vw"
-                        : "(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
-                    }
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    <h3 className="text-lg font-semibold text-white drop-shadow-lg">
-                      {image.alt}
-                    </h3>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {service.faqs && service.faqs.length > 0 && (
         <ProductFAQ faqs={service.faqs} />

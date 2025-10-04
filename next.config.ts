@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 86400, // 24 hours
     dangerouslyAllowSVG: false,
+    qualities: [75, 85, 90, 95, 100], // Support custom quality values
   },
 };
 
