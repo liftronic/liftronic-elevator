@@ -5,6 +5,7 @@ import { BiCheck } from "react-icons/bi";
 import WhyUsSection from "~/components/aboutus/WhyUsSection";
 import VisionMissionValues from "~/components/aboutus/VisionMissionValues";
 import TeamSection from "~/components/aboutus/TeamSection";
+import CertificatesSection from "~/components/aboutus/CertificatesSection";
 import Breadcrumb from "~/components/Breadcrumb";
 import Link from "next/link";
 import CallToActionSection from "~/components/CallToActionSection";
@@ -16,6 +17,7 @@ import {
   getVisionMissionValues,
   getTeamMembers,
 } from "~/sanity/utils/getAboutUs";
+import { getAllCertificates } from "~/sanity/utils/getCertificates";
 import type {
   CompanyInfo,
   Timeline,
@@ -23,6 +25,7 @@ import type {
   VisionMissionValues as VMVType,
   TeamMember,
 } from "~/sanity/lib/aboutTypes";
+import type { Certificate } from "~/sanity/lib/certificateTypes";
 import { PortableText } from "@portabletext/react";
 
 // ISR: Revalidate every 60 minutes (3600 seconds)
@@ -35,6 +38,7 @@ export default async function AboutPage() {
   let whyChooseUs: WhyChooseUs[] = [];
   let visionMissionValues: VMVType | null = null;
   let teamMembers: TeamMember[] = [];
+  let certificates: Certificate[] = [];
 
   try {
     [
@@ -43,12 +47,14 @@ export default async function AboutPage() {
       whyChooseUs,
       visionMissionValues,
       teamMembers,
+      certificates,
     ] = await Promise.all([
       getCompanyInfo().catch(() => null),
       getFeaturedTimeline(3).catch(() => []),
       getWhyChooseUs().catch(() => []),
       getVisionMissionValues().catch(() => null),
       getTeamMembers().catch(() => []),
+      getAllCertificates().catch(() => []),
     ]);
   } catch (error) {
     console.error("Error fetching About Us data:", error);
@@ -249,6 +255,9 @@ export default async function AboutPage() {
 
       {/* Vision, Mission & Values */}
       <VisionMissionValues data={visionMissionValues || undefined} />
+
+      {/* Certificates Section */}
+      <CertificatesSection certificates={certificates} />
 
       {/* Our Team */}
       <TeamSection members={teamMembers} />
