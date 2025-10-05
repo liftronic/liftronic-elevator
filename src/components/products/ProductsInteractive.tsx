@@ -9,7 +9,9 @@ interface ProductsInteractiveProps {
   products: Product[];
 }
 
-export default function ProductsInteractive({ products }: ProductsInteractiveProps) {
+export default function ProductsInteractive({
+  products,
+}: ProductsInteractiveProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -42,10 +44,12 @@ export default function ProductsInteractive({ products }: ProductsInteractivePro
     }, 20000);
   };
 
-  // Get 3 visible products starting from currentIndex
+  // Get up to 3 visible products starting from currentIndex
+  // Ensure we don't show duplicate products if there are fewer than 3 products
   const getVisibleProducts = () => {
     const visible = [];
-    for (let i = 0; i < 3; i++) {
+    const maxVisible = Math.min(3, products.length);
+    for (let i = 0; i < maxVisible; i++) {
       visible.push(products[(currentIndex + i) % products.length]);
     }
     return visible;

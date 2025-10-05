@@ -119,7 +119,7 @@ export default function Services({ services: servicesProp }: ServicesProps) {
     }, AUTO_ROTATE_MS);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [services.length]);
 
   if (services.length === 0) {
     return null;

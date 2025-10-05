@@ -11,7 +11,6 @@ import {
 } from "react-icons/fi";
 import { Social, ContactInfo } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
-import QuoteModal from "./../QuoteModal";
 
 interface HeroProps {
   socials: Social[];
@@ -20,7 +19,6 @@ interface HeroProps {
 
 export default function Hero({ socials, contactInfo }: HeroProps) {
   const { scrollTo } = useSmoothScroll();
-  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -163,13 +161,17 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
           </p>
 
           <div className="mt-5 flex flex-col sm:flex-row gap-3 justify-center sm:justify-start items-center w-full max-w-full sm:max-w-[22rem] animate-fade-in-delay-2">
-            <button
-              onClick={() => setIsQuoteModalOpen(true)}
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("#contact");
+              }}
               className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto mx-auto sm:mx-0"
             >
               <FiMessageSquare className="text-base" />
               Get a Quote
-            </button>
+            </a>
             <a
               href="#services"
               onClick={(e) => {
@@ -385,13 +387,17 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
               <FiPhoneCall className="text-accent text-xl" aria-hidden />
             </a>
 
-            <button
-              onClick={() => setIsQuoteModalOpen(true)}
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("#contact");
+              }}
               className="mt-1 btn btn-primary text-sm w-full"
             >
               <FiMessageSquare className="text-base" />
               Get a Quote
-            </button>
+            </a>
           </div>
 
           <div className="mt-5 text-xs text-white/60">
@@ -420,12 +426,6 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
           </div>
         </button>
       </div>
-
-      {/* Quote Modal */}
-      <QuoteModal
-        isOpen={isQuoteModalOpen}
-        onClose={() => setIsQuoteModalOpen(false)}
-      />
     </section>
   );
 }

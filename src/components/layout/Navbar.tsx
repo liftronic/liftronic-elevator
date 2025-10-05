@@ -139,8 +139,8 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="#request-quote"
-              onClick={(e) => handleLinkClick(e, "#request-quote")}
+              href="#contact"
+              onClick={(e) => handleLinkClick(e, "#contact")}
               className="btn btn-primary"
             >
               Request a Quote
@@ -194,7 +194,7 @@ export default function Navbar() {
                     </Link>
                   ))}
                   <button
-                    onClick={(e) => handleLinkClick(e, "#request-quote")}
+                    onClick={(e) => handleLinkClick(e, "#contact")}
                     className="btn btn-primary w-full mt-2"
                   >
                     Request a Quote

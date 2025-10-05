@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import AnimatedNumbers from "~/components/AnimatedNumbers";
 import QuoteCTA from "~/components/QuoteCTA";
 import MediaCard from "~/components/media/MediaCard";
 import MediaPreviewModal from "~/components/media/MediaPreview";
