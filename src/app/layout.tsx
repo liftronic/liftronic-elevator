@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
@@ -256,7 +255,7 @@ export default async function RootLayout({
           src="https://tally.so/widgets/embed.js"
           strategy="afterInteractive"
         />
-        <ViewTransition>{children}</ViewTransition>
+        {children}
       </body>
     </html>
   );

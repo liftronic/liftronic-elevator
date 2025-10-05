@@ -36,7 +36,7 @@ export default function Navbar() {
     }
   }, [isHomePage]);
 
-  const handleLinkClick = async (
+  const handleLinkClick = (
     e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
     href: string
   ) => {
@@ -49,7 +49,7 @@ export default function Navbar() {
 
       if (!isHomePage) {
         // navigate to home with hash, then scroll after navigation completes
-        await router.push(`/${href}`);
+        router.push(`/${href}`);
         // give browser a tick to render / mount elements, then smooth-scroll
         setTimeout(() => scrollTo(href), 80);
         return;
@@ -64,7 +64,7 @@ export default function Navbar() {
     setOpen(false);
   };
 
-  const handleLogoClick = async (e: MouseEvent<HTMLAnchorElement>) => {
+  const handleLogoClick = (e: MouseEvent<HTMLAnchorElement>) => {
     // Prevent full page reload. Smooth-scroll to top on homepage,
     // otherwise navigate to homepage then scroll.
     e.preventDefault();
@@ -81,7 +81,7 @@ export default function Navbar() {
     }
 
     // navigate to home and then scroll a tick later
-    await router.push("/");
+    router.push("/");
     setTimeout(() => {
       try {
         scrollTo("body");
