@@ -21,7 +21,6 @@ interface CatalogModalProps {
 export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
   const [formLoaded, setFormLoaded] = useState(false);
   const [formError, setFormError] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
 
   // Load Tally embed script and reinitialize on mount
   useEffect(() => {
@@ -80,47 +79,6 @@ export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
     };
   }, [isOpen]);
 
-  // Listen for Tally form submission
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleTallyMessage = (event: MessageEvent) => {
-      // Check if the message is from Tally
-      if (
-        event.origin === "https://tally.so" &&
-        event.data &&
-        typeof event.data === "object"
-      ) {
-        // Check for form submission event
-        if (
-          event.data.event === "Tally.FormSubmitted" &&
-          event.data.payload?.formId === "mV2Vz6"
-        ) {
-          setFormSubmitted(true);
-          // Open PDF in new tab after a short delay
-          setTimeout(() => {
-            window.open(
-              "https://liftronicelevator.com/wp-content/uploads/2023/09/Liftronic-India-Pvt.-Ltd._Catalogue1.pdf",
-              "_blank"
-            );
-            // Close modal after opening PDF
-            setTimeout(() => {
-              onClose();
-              // Reset states for next time
-              setFormSubmitted(false);
-              setFormLoaded(false);
-            }, 500);
-          }, 1000);
-        }
-      }
-    };
-
-    window.addEventListener("message", handleTallyMessage);
-
-    return () => {
-      window.removeEventListener("message", handleTallyMessage);
-    };
-  }, [isOpen, onClose]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -196,38 +154,11 @@ export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
             {/* Form Container */}
             <div className="relative bg-white p-6 flex-1 overflow-y-auto">
               {/* Loading State */}
-              {!formLoaded && !formError && !formSubmitted && (
+              {!formLoaded && !formError && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-10">
                   <div className="text-center">
                     <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-accent border-r-transparent mb-4"></div>
                     <p className="text-gray-600">Loading form...</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Success State */}
-              {formSubmitted && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white z-20">
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mb-4">
-                      <svg
-                        className="w-8 h-8 text-accent"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      Thank you!
-                    </h3>
-                    <p className="text-gray-600">Opening your catalog...</p>
                   </div>
                 </div>
               )}
