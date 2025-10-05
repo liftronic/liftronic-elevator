@@ -1,3 +1,4 @@
+"use client";
 import {
   BiCog,
   BiStar,
@@ -6,6 +7,7 @@ import {
   BiWrench,
   BiBuilding,
 } from "react-icons/bi";
+import { useState, useRef } from "react";
 import type { CompanyInfo } from "~/sanity/lib/aboutTypes";
 
 interface AboutUsProps {
@@ -25,8 +27,8 @@ const getFeatureIcon = (iconName?: string) => {
   return iconMap[iconName?.toLowerCase() || "star"] || BiStar;
 };
 
-// Simple stat display (no animation needed on server)
-function StatDisplay({
+// Stat card with 3D tilt effect
+function StatCard({
   label,
   value,
   suffix = "+",
@@ -35,13 +37,80 @@ function StatDisplay({
   value: number;
   suffix?: string;
 }) {
+  const [transform, setTransform] = useState("");
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+    
+    setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`);
+  };
+
+  const handleMouseLeave = () => {
+    setTransform("perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)");
+  };
+
   return (
-    <div>
-      <div className="text-4xl md:text-5xl font-extrabold">
-        <span className="text-white">{value}</span>
-        <span className="ml-1 text-white">{suffix}</span>
+    <div 
+      ref={cardRef}
+      className="relative group"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform,
+        transition: "transform 0.1s ease-out",
+      }}
+    >
+      <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-accent/30 h-full flex flex-col items-center justify-center text-center relative overflow-hidden">
+        {/* Gradient accent on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-brand/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Shine effect */}
+        <div 
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{
+            background: "linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%)",
+            backgroundSize: "200% 200%",
+            animation: "shine 2s infinite",
+          }}
+        />
+        
+        <div className="relative z-10">
+          <div className="text-5xl md:text-6xl font-extrabold mb-2">
+            <span className="bg-gradient-to-r from-accent to-brand bg-clip-text text-transparent">
+              {value}{suffix}
+            </span>
+          </div>
+          <div className="text-sm md:text-base font-medium text-gray-600 group-hover:text-gray-900 transition-colors">
+            {label}
+          </div>
+        </div>
+
+        {/* Decorative corner accent */}
+        <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-accent/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
-      <div className="text-sm font-medium text-white">{label}</div>
+
+      <style jsx>{`
+        @keyframes shine {
+          0% {
+            background-position: -200% -200%;
+          }
+          100% {
+            background-position: 200% 200%;
+          }
+        }
+      `}</style>
     </div>
   );
 }
@@ -174,13 +243,11 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
           })}
         </div>
 
-        {/* GREEN STATS BAR */}
-        <div className="mt-12 bg-accent text-white rounded-2xl px-6 py-8 shadow-xl relative overflow-hidden">
-          {/* subtle dark overlay to reduce glare on bright accent backgrounds */}
-          <div className="absolute inset-0 bg-black/18 pointer-events-none rounded-2xl" />
-          <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 items-center text-center relative z-10">
+        {/* STATS CARDS SECTION */}
+        <div className="mt-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {stats.map((s) => (
-              <StatDisplay
+              <StatCard
                 key={s.label}
                 label={s.label}
                 value={s.value}
