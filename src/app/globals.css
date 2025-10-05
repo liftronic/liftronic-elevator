@@ -195,7 +195,7 @@ p {
   border-color: color-mix(in oklab, white 28%, transparent);
 }
 
-/* Custom scrollbar for a sleek look */
+/* Custom scrollbar for a sleek look
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -211,7 +211,7 @@ p {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #aaa;
-}
+} */
 
 /* Marquee animation */
 @keyframes marquee {

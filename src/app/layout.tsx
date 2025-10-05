@@ -250,11 +250,6 @@ export default async function RootLayout({
             ],
           })}
         </Script>
-        {/* Tally embed script */}
-        <Script
-          src="https://tally.so/widgets/embed.js"
-          strategy="afterInteractive"
-        />
         {children}
       </body>
     </html>

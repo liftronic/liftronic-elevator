@@ -100,6 +100,7 @@ Never use relative paths like `../../components/Hero`.
 - Sanity Studio available at `/studio` route
 - Client configured in `src/sanity/lib/client.ts`
 - All Sanity queries use GROQ syntax
+- Use `~/sanity/utils/iconMapper.ts` for all backend-integrated icons instead of local imports
 
 **Environment Variables:**
 Required in `.env.local`:

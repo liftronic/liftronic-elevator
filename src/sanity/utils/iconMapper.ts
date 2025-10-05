@@ -94,6 +94,31 @@ import {
   FiInfo,
   FiHelpCircle,
 } from "react-icons/fi";
+import {
+  HiChevronRight,
+  HiHome,
+  HiX,
+  HiChevronLeft,
+  HiPlay,
+  HiPhotograph,
+  HiEye,
+  HiArrowRight,
+} from "react-icons/hi";
+import {
+  BiShield,
+  BiCog,
+  BiStar,
+  BiSupport,
+  BiCheckCircle,
+  BiGlobe,
+  BiWrench,
+  BiRocket,
+  BiTrendingUp,
+  BiHeart,
+  BiUser,
+} from "react-icons/bi";
+import { IoChevronDown } from "react-icons/io5";
+import { FaWhatsapp } from "react-icons/fa";
 import { IconType } from "react-icons";
 
 // You can keep adding here as your Sanity grows
@@ -214,6 +239,48 @@ const iconMap: Record<string, IconType> = {
   fiFeather: FiFeather, // 🪶
   fiInfo: FiInfo, // ℹ️
   fiHelpCircle: FiHelpCircle, // ❓
+
+  // HeroIcons (Hi prefix)
+  hiChevronRight: HiChevronRight, // ›
+  hiHome: HiHome, // 🏠
+  hiX: HiX, // ✕
+  hiChevronLeft: HiChevronLeft, // ‹
+  hiPlay: HiPlay, // ▶️
+  hiPhotograph: HiPhotograph, // 📷
+  hiEye: HiEye, // 👁️
+  hiArrowRight: HiArrowRight, // →
+
+  // BoxIcons (Bi prefix)
+  biShield: BiShield, // 🛡️
+  biCog: BiCog, // ⚙️
+  biStar: BiStar, // ⭐
+  biSupport: BiSupport, // 🎧
+  biCheckCircle: BiCheckCircle, // ✅
+  biGlobe: BiGlobe, // 🌐
+  biWrench: BiWrench, // 🔧
+  biRocket: BiRocket, // 🚀
+  biTrendingUp: BiTrendingUp, // 📈
+  biHeart: BiHeart, // ❤️
+  biUser: BiUser, // 👤
+
+  // Ionicons (Io prefix)
+  ioChevronDown: IoChevronDown, // ˅
+
+  // FontAwesome (Fa prefix)
+  faWhatsapp: FaWhatsapp, // 💬
+
+  // Aliases for backend compatibility (lowercase names)
+  star: BiStar,
+  shield: BiShield,
+  support: BiSupport,
+  cog: BiCog,
+  check: BiCheckCircle,
+  globe: BiGlobe,
+  wrench: BiWrench,
+  rocket: BiRocket,
+  trending: BiTrendingUp,
+  heart: BiHeart,
+  user: BiUser,
 };
 
 // Utility to get icon safely

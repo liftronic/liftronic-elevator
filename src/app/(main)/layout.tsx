@@ -1,6 +1,8 @@
+import Script from "next/script";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
 import WhatsAppButton from "~/components/WhatsAppButton";
+import DownloadCatalogButton from "~/components/DownloadCatalogButton";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -16,6 +18,9 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         whatsappNumber={contactInfo?.whatsappNumber}
         whatsappMessage={contactInfo?.whatsappMessage}
       />
+      <DownloadCatalogButton />
+      {/* Tally embed script */}
+      <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
     </div>
   );
 };

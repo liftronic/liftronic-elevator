@@ -19,6 +19,7 @@
 - In client components import motion as `import { motion } from "motion/react"`; in server components import it as `import * as motion from "motion/react-client"`.
 - Follow Tailwind CSS v4 utilities; lean on semantic tokens such as `bg-accent` instead of custom inline variables.
 - Use `~/` path aliases for anything under `src/`; avoid long relative paths.
+- Use `~/sanity/utils/iconMapper.ts` for all backend-integrated icons instead of local imports.
 - Maintain responsive layouts by default and document non-obvious styling choices with concise comments only when necessary.
 
 ## Testing Guidelines

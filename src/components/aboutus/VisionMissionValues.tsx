@@ -1,48 +1,5 @@
-import {
-  BiTrendingUp,
-  BiHeart,
-  BiShield,
-  BiStar,
-  BiGlobe,
-  BiUser,
-  BiCheckCircle,
-} from "react-icons/bi";
+import { getIcon } from "~/sanity/utils/iconMapper";
 import type { VisionMissionValues as VMVType } from "~/sanity/lib/aboutTypes";
-
-// Icon mapping function
-const getIcon = (iconName: string | undefined): React.ReactNode => {
-  if (!iconName) return <BiTrendingUp className="text-3xl" />;
-
-  const iconMap: Record<string, React.ReactNode> = {
-    trending: <BiTrendingUp className="text-3xl" />,
-    heart: <BiHeart className="text-3xl" />,
-    shield: <BiShield className="text-3xl" />,
-    star: <BiStar className="text-3xl" />,
-    globe: <BiGlobe className="text-3xl" />,
-    user: <BiUser className="text-3xl" />,
-    check: <BiCheckCircle className="text-3xl" />,
-  };
-
-  return (
-    iconMap[iconName.toLowerCase()] || <BiTrendingUp className="text-3xl" />
-  );
-};
-
-const getSmallIcon = (iconName: string | undefined): React.ReactNode => {
-  if (!iconName) return <BiStar className="text-2xl" />;
-
-  const iconMap: Record<string, React.ReactNode> = {
-    trending: <BiTrendingUp className="text-2xl" />,
-    heart: <BiHeart className="text-2xl" />,
-    shield: <BiShield className="text-2xl" />,
-    star: <BiStar className="text-2xl" />,
-    globe: <BiGlobe className="text-2xl" />,
-    user: <BiUser className="text-2xl" />,
-    check: <BiCheckCircle className="text-2xl" />,
-  };
-
-  return iconMap[iconName.toLowerCase()] || <BiStar className="text-2xl" />;
-};
 
 // Fallback data
 const fallbackVMV: VMVType = {
@@ -115,21 +72,21 @@ export default function VisionMissionValues({
       id: "vision",
       title: vmvInfo.visionTitle || "Our Vision",
       content: vmvInfo.visionDescription,
-      icon: getIcon(vmvInfo.visionIcon),
+      iconName: vmvInfo.visionIcon || "trending",
       color: "from-blue-500 to-blue-600",
     },
     {
       id: "mission",
       title: vmvInfo.missionTitle || "Our Mission",
       content: vmvInfo.missionDescription,
-      icon: getIcon(vmvInfo.missionIcon),
+      iconName: vmvInfo.missionIcon || "heart",
       color: "from-accent to-green-500",
     },
     {
       id: "commitment",
       title: vmvInfo.commitmentTitle || "Our Commitment",
       content: vmvInfo.commitmentDescription,
-      icon: getIcon(vmvInfo.commitmentIcon),
+      iconName: vmvInfo.commitmentIcon || "shield",
       color: "from-purple-500 to-pink-500",
     },
   ];
@@ -138,7 +95,7 @@ export default function VisionMissionValues({
     id: `value-${index}`,
     title: value.title,
     description: value.description,
-    icon: getSmallIcon(value.icon),
+    iconName: value.icon || "star",
     color: [
       "bg-red-500",
       "bg-yellow-500",
@@ -182,7 +139,10 @@ export default function VisionMissionValues({
                   <div
                     className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}
                   >
-                    {item.icon}
+                    {(() => {
+                      const Icon = getIcon(item.iconName);
+                      return Icon ? <Icon className="text-3xl" /> : null;
+                    })()}
                   </div>
 
                   {/* Title */}
@@ -218,7 +178,10 @@ export default function VisionMissionValues({
                 <div
                   className={`w-12 h-12 ${value.color} rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}
                 >
-                  {value.icon}
+                  {(() => {
+                    const Icon = getIcon(value.iconName);
+                    return Icon ? <Icon className="text-2xl" /> : null;
+                  })()}
                 </div>
 
                 <h4 className="text-lg font-bold text-charcoal mb-3 group-hover:text-accent transition-colors">
