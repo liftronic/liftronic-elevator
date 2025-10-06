@@ -21,6 +21,7 @@ interface ContactSectionProps {
 export default function ContactSection({ contactInfo }: ContactSectionProps) {
   const [formLoaded, setFormLoaded] = useState(false);
   const [formError, setFormError] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   // Fallback data in case Sanity data is not available
   const fallbackContactInfo = {
@@ -35,22 +36,42 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
   // Load Tally embed script and reinitialize on mount
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
+    let verifyTimeoutId: NodeJS.Timeout;
 
     const initializeTallyForm = () => {
       if (window.Tally && typeof window.Tally.loadEmbeds === "function") {
-        window.Tally.loadEmbeds();
-        setFormLoaded(true);
-
-        // Verify form loaded successfully
-        timeoutId = setTimeout(() => {
-          const iframe = document.querySelector("iframe[data-tally-src]");
-          if (!iframe || !(iframe as HTMLIFrameElement).src) {
-            setFormError(true);
-          }
-        }, 3000);
+        try {
+          window.Tally.loadEmbeds();
+          setScriptLoaded(true);
+          
+          // Give more time for the iframe to load - verify after 5 seconds
+          verifyTimeoutId = setTimeout(() => {
+            const iframe = document.querySelector("iframe[data-tally-src]");
+            const iframeSrc = iframe ? (iframe as HTMLIFrameElement).src : null;
+            
+            // Check if iframe has actually loaded content
+            if (!iframe || !iframeSrc || iframeSrc === 'about:blank') {
+              console.warn('Tally iframe failed to load properly');
+              setFormError(true);
+            } else {
+              // Iframe exists with valid src, consider it loaded
+              setFormLoaded(true);
+            }
+          }, 5000);
+        } catch (error) {
+          console.error('Error initializing Tally:', error);
+          setFormError(true);
+        }
       } else {
-        // Retry if Tally is not ready yet
-        timeoutId = setTimeout(initializeTallyForm, 500);
+        // Retry if Tally is not ready yet, but don't retry forever
+        const retryCount = (window as any).__tallyRetryCount || 0;
+        if (retryCount < 10) {
+          (window as any).__tallyRetryCount = retryCount + 1;
+          timeoutId = setTimeout(initializeTallyForm, 500);
+        } else {
+          console.error('Tally failed to load after multiple retries');
+          setFormError(true);
+        }
       }
     };
 
@@ -72,6 +93,7 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
       };
 
       script.onerror = () => {
+        console.error('Failed to load Tally script');
         setFormError(true);
       };
 
@@ -81,6 +103,9 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
+      }
+      if (verifyTimeoutId) {
+        clearTimeout(verifyTimeoutId);
       }
     };
   }, []);
@@ -259,7 +284,18 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
               height="794"
               style={{ border: 0, minHeight: "600px" }}
               title="Liftronic Elevator enquiry"
-              onLoad={() => setFormLoaded(true)}
+              onLoad={(e) => {
+                // Check if iframe actually has content loaded
+                const iframe = e.target as HTMLIFrameElement;
+                if (iframe && iframe.src && iframe.src !== 'about:blank') {
+                  setFormLoaded(true);
+                  setFormError(false);
+                }
+              }}
+              onError={() => {
+                console.error('Tally iframe failed to load');
+                setFormError(true);
+              }}
             />
           </div>
         </motion.div>
