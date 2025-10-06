@@ -21,7 +21,6 @@ interface ContactSectionProps {
 export default function ContactSection({ contactInfo }: ContactSectionProps) {
   const [formLoaded, setFormLoaded] = useState(false);
   const [formError, setFormError] = useState(false);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   // Fallback data in case Sanity data is not available
   const fallbackContactInfo = {
@@ -42,7 +41,6 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
       if (window.Tally && typeof window.Tally.loadEmbeds === "function") {
         try {
           window.Tally.loadEmbeds();
-          setScriptLoaded(true);
           
           // Give more time for the iframe to load - verify after 5 seconds
           verifyTimeoutId = setTimeout(() => {
@@ -64,9 +62,9 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
         }
       } else {
         // Retry if Tally is not ready yet, but don't retry forever
-        const retryCount = (window as any).__tallyRetryCount || 0;
+        const retryCount = (window as { __tallyRetryCount?: number }).__tallyRetryCount || 0;
         if (retryCount < 10) {
-          (window as any).__tallyRetryCount = retryCount + 1;
+          (window as { __tallyRetryCount?: number }).__tallyRetryCount = retryCount + 1;
           timeoutId = setTimeout(initializeTallyForm, 500);
         } else {
           console.error('Tally failed to load after multiple retries');
