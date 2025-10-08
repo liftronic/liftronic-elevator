@@ -21,17 +21,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const title = service.seoTitle || `${service.title} | Liftronic Services`;
+  const description = service.seoDescription || service.summary;
+  const keywords = service.seoKeywords || service.tags || [];
+
   return {
-    title: `${service.title} | Liftronic Services`,
-    description: service.summary,
-    keywords: service.tags?.join(", "),
-    openGraph: {
-      title: `${service.title} | Liftronic Services`,
-      description: service.summary,
-      images: service.image ? [service.image] : ["/liftronic.png"],
-    },
+    title,
+    description,
+    keywords: keywords.join(", "),
     alternates: {
-      canonical: `/services/${slug}`,
+      canonical: `${siteUrl}/services/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      images: service.image ? [service.image] : [`${siteUrl}/liftronic.png`],
+      type: "website",
+      url: `${siteUrl}/services/${slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: service.image ? [service.image] : [`${siteUrl}/liftronic.png`],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   };
 }
@@ -54,5 +74,84 @@ export default async function ServicePage({ params }: Props) {
     notFound();
   }
 
-  return <ServicePageClient service={service} />;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  // Service JSON-LD
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.description,
+    provider: {
+      "@type": "Organization",
+      name: "Liftronic Elevator",
+      url: siteUrl,
+    },
+    serviceType: service.title,
+    areaServed: {
+      "@type": "Country",
+      name: "India",
+    },
+    url: `${siteUrl}/services/${slug}`,
+  };
+
+  // BreadcrumbList JSON-LD
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Services",
+        item: `${siteUrl}/services`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: service.title,
+        item: `${siteUrl}/services/${slug}`,
+      },
+    ],
+  };
+
+  // FAQPage JSON-LD (if FAQs exist)
+  const faqJsonLd = service.faqs && service.faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: service.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  } : null;
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <ServicePageClient service={service} />
+    </>
+  );
 }

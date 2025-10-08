@@ -127,6 +127,42 @@ export const serviceType = defineType({
         },
       ],
     }),
+    defineField({
+      name: "seo",
+      title: "SEO Settings",
+      type: "object",
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fields: [
+        defineField({
+          name: "metaTitle",
+          title: "Meta Title",
+          type: "string",
+          validation: (Rule) => Rule.max(60),
+          description: "Override the default title for SEO (max 60 chars)",
+        }),
+        defineField({
+          name: "metaDescription",
+          title: "Meta Description",
+          type: "text",
+          rows: 3,
+          validation: (Rule) => Rule.max(160),
+          description: "Override the default description for SEO (max 160 chars)",
+        }),
+        defineField({
+          name: "keywords",
+          title: "Keywords",
+          type: "array",
+          of: [{ type: "string" }],
+          options: {
+            layout: "tags",
+          },
+          description: "SEO keywords for this service",
+        }),
+      ],
+    }),
   ],
   preview: {
     select: {

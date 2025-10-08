@@ -21,6 +21,7 @@ import { whyChooseUsType } from "./whyChooseUs";
 import { visionMissionValuesType } from "./visionMissionValues";
 import { certificateType } from "./certificateType";
 import mediaType from "./media";
+import { homePageSeoType } from "./homePageSeo";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -45,5 +46,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     visionMissionValuesType,
     certificateType,
     mediaType,
+    homePageSeoType,
   ],
 };

@@ -149,8 +149,8 @@ export default async function RootLayout({
             contactPoint: {
               "@type": "ContactPoint",
               contactType: "customer support",
-              email: "info@example.com",
-              telephone: "+91-00000-00000",
+              email: "info@liftronicelevator.com",
+              telephone: "+91-22-2567-8910",
               areaServed: "IN",
               availableLanguage: ["en", "hi"],
             },
