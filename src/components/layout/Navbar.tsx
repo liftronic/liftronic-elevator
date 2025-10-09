@@ -23,6 +23,18 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(!isHomePage);
   const [open, setOpen] = useState(false);
 
+  // Check if a link is active
+  const isLinkActive = (href: string) => {
+    // Exact match for homepage
+    if (href === "/" && pathname === "/") return true;
+
+    // For other routes, check if pathname starts with the href
+    // This handles both /products and /products/some-product
+    if (href !== "/" && pathname.startsWith(href)) return true;
+
+    return false;
+  };
+
   useEffect(() => {
     if (isHomePage) {
       const onScroll = () => {
@@ -124,20 +136,42 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            {navLinks.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={(e) => handleLinkClick(e, l.href)}
-                className={`nav-link-underline ${
-                  scrolled
-                    ? "text-gray-700 hover:text-brand"
-                    : "text-white/90 hover:text-white"
-                }`}
-              >
-                {l.label}
-              </Link>
-            ))}
+            {navLinks.map((l) => {
+              const isActive = isLinkActive(l.href);
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={(e) => handleLinkClick(e, l.href)}
+                  className={`nav-link-underline relative ${
+                    isActive
+                      ? scrolled
+                        ? "text-brand font-semibold"
+                        : "text-white font-semibold"
+                      : scrolled
+                      ? "text-gray-700 hover:text-brand"
+                      : "text-white/90 hover:text-white"
+                  }`}
+                >
+                  {l.label}
+                  {/* Active indicator */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="navbar-indicator"
+                      className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
+                        scrolled ? "bg-brand" : "bg-white"
+                      }`}
+                      initial={false}
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
             <Link
               href="#contact"
               onClick={(e) => handleLinkClick(e, "#contact")}
@@ -179,20 +213,35 @@ export default function Navbar() {
                 }`}
               >
                 <div className="flex flex-col gap-2 pt-4">
-                  {navLinks.map((l) => (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      onClick={(e) => handleLinkClick(e, l.href)}
-                      className={`py-3 px-4 rounded-lg transition-colors font-medium ${
-                        scrolled
-                          ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
-                          : "text-white/90 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      {l.label}
-                    </Link>
-                  ))}
+                  {navLinks.map((l) => {
+                    const isActive = isLinkActive(l.href);
+                    return (
+                      <Link
+                        key={l.href}
+                        href={l.href}
+                        onClick={(e) => handleLinkClick(e, l.href)}
+                        className={`py-3 px-4 rounded-lg transition-colors font-medium relative ${
+                          isActive
+                            ? scrolled
+                              ? "bg-brand/10 text-brand font-semibold"
+                              : "bg-white/20 text-white font-semibold"
+                            : scrolled
+                            ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
+                            : "text-white/90 hover:bg-white/10 hover:text-white"
+                        }`}
+                      >
+                        {l.label}
+                        {/* Active indicator for mobile */}
+                        {isActive && (
+                          <span
+                            className={`absolute left-0 top-0 bottom-0 w-1 rounded-r-full ${
+                              scrolled ? "bg-brand" : "bg-white"
+                            }`}
+                          />
+                        )}
+                      </Link>
+                    );
+                  })}
                   <button
                     onClick={(e) => handleLinkClick(e, "#contact")}
                     className="btn btn-primary w-full mt-2"

@@ -47,9 +47,9 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
                 key={`${client._id}-${i}`}
                 src={client.image}
                 alt={client.imageAlt || client.title}
-                width={140}
-                height={40}
-                className="inline-block h-10 w-auto mx-14 opacity-90 hover:opacity-100 transition-all duration-200"
+                width={280}
+                height={120}
+                className="inline-block h-24 w-auto mx-8 opacity-90 hover:opacity-100 transition-all duration-200"
               />
             ))}
           </div>
