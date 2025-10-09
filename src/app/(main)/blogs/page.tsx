@@ -7,7 +7,11 @@ import Breadcrumb from "~/components/Breadcrumb";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiEye, FiMessageSquare } from "react-icons/fi";
 import { client } from "~/sanity/lib/client";
-import { postsQuery, featuredPostsQuery, postsCountQuery } from "~/sanity/lib/queries";
+import {
+  postsQuery,
+  featuredPostsQuery,
+  postsCountQuery,
+} from "~/sanity/lib/queries";
 import type { BlogPost } from "~/sanity/lib/blogTypes";
 
 const POSTS_PER_PAGE = 12;
@@ -18,23 +22,31 @@ type Props = {
   }>;
 };
 
-export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: Props): Promise<Metadata> {
   const params = await searchParams;
   const page = Number(params.page) || 1;
 
   return {
-    title: page === 1 ? "Blog - Insights & Knowledge | Lift Solutions" : `Blog - Page ${page} | Lift Solutions`,
-    description: "Practical insights, technical guides, and industry perspectives on elevator technology, maintenance, and modernization from our expert team.",
+    title:
+      page === 1
+        ? "Blog - Insights & Knowledge | Lift Solutions"
+        : `Blog - Page ${page} | Lift Solutions`,
+    description:
+      "Practical insights, technical guides, and industry perspectives on elevator technology, maintenance, and modernization from our expert team.",
     openGraph: {
       title: "Elevating industry expertise - Blog",
-      description: "Practical insights, technical guides, and industry perspectives on elevator technology, maintenance, and modernization.",
+      description:
+        "Practical insights, technical guides, and industry perspectives on elevator technology, maintenance, and modernization.",
       type: "website",
       url: "/blogs",
     },
     twitter: {
       card: "summary_large_image",
       title: "Blog - Insights & Knowledge | Lift Solutions",
-      description: "Practical insights, technical guides, and industry perspectives on elevator technology, maintenance, and modernization.",
+      description:
+        "Practical insights, technical guides, and industry perspectives on elevator technology, maintenance, and modernization.",
     },
     alternates: {
       canonical: page === 1 ? "/blogs" : `/blogs?page=${page}`,
@@ -45,7 +57,11 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 async function getPaginatedPosts(page: number): Promise<BlogPost[]> {
   const start = (page - 1) * POSTS_PER_PAGE;
   const end = start + POSTS_PER_PAGE;
-  return client.fetch(postsQuery, { start, end }, { next: { revalidate: 3600 } });
+  return client.fetch(
+    postsQuery,
+    { start, end },
+    { next: { revalidate: 3600 } }
+  );
 }
 
 async function getTotalPostsCount(): Promise<number> {
@@ -109,21 +125,21 @@ export default async function BlogPage({ searchParams }: Props) {
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
                 <motion.button
-                  className="btn btn-primary px-8 py-3"
+                  className="btn btn-primary px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FiMessageSquare className="text-base" />
+                  <FiMessageSquare className="text-sm md:text-base" />
                   Get Expert Consultation
                 </motion.button>
               </Link>
               <Link href="/services">
                 <motion.button
-                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FiEye className="text-base" />
+                  <FiEye className="text-sm md:text-base" />
                   View Services
                 </motion.button>
               </Link>
@@ -135,7 +151,7 @@ export default async function BlogPage({ searchParams }: Props) {
       {/* Featured Posts */}
       <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
         <div className="container mx-auto px-4">
-          <div className="mb-8">
+          <div className="mb-2">
             <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-4">
               <span className="text-sm font-bold uppercase tracking-wider text-accent">
                 Featured Articles
@@ -210,7 +226,11 @@ export default async function BlogPage({ searchParams }: Props) {
             <div className="mt-12 flex items-center justify-center gap-2">
               {hasPrevPage && (
                 <Link
-                  href={currentPage === 2 ? "/blogs" : `/blogs?page=${currentPage - 1}`}
+                  href={
+                    currentPage === 2
+                      ? "/blogs"
+                      : `/blogs?page=${currentPage - 1}`
+                  }
                   className="btn border-2 border-gray-200 bg-white text-charcoal hover:bg-gray-50 hover:border-gray-300 px-6 py-2"
                 >
                   Previous

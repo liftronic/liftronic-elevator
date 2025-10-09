@@ -41,15 +41,15 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
       if (window.Tally && typeof window.Tally.loadEmbeds === "function") {
         try {
           window.Tally.loadEmbeds();
-          
+
           // Give more time for the iframe to load - verify after 5 seconds
           verifyTimeoutId = setTimeout(() => {
             const iframe = document.querySelector("iframe[data-tally-src]");
             const iframeSrc = iframe ? (iframe as HTMLIFrameElement).src : null;
-            
+
             // Check if iframe has actually loaded content
-            if (!iframe || !iframeSrc || iframeSrc === 'about:blank') {
-              console.warn('Tally iframe failed to load properly');
+            if (!iframe || !iframeSrc || iframeSrc === "about:blank") {
+              console.warn("Tally iframe failed to load properly");
               setFormError(true);
             } else {
               // Iframe exists with valid src, consider it loaded
@@ -57,17 +57,19 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
             }
           }, 5000);
         } catch (error) {
-          console.error('Error initializing Tally:', error);
+          console.error("Error initializing Tally:", error);
           setFormError(true);
         }
       } else {
         // Retry if Tally is not ready yet, but don't retry forever
-        const retryCount = (window as { __tallyRetryCount?: number }).__tallyRetryCount || 0;
+        const retryCount =
+          (window as { __tallyRetryCount?: number }).__tallyRetryCount || 0;
         if (retryCount < 10) {
-          (window as { __tallyRetryCount?: number }).__tallyRetryCount = retryCount + 1;
+          (window as { __tallyRetryCount?: number }).__tallyRetryCount =
+            retryCount + 1;
           timeoutId = setTimeout(initializeTallyForm, 500);
         } else {
-          console.error('Tally failed to load after multiple retries');
+          console.error("Tally failed to load after multiple retries");
           setFormError(true);
         }
       }
@@ -91,7 +93,7 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
       };
 
       script.onerror = () => {
-        console.error('Failed to load Tally script');
+        console.error("Failed to load Tally script");
         setFormError(true);
       };
 
@@ -118,8 +120,9 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
       <div className="absolute right-[-8%] bottom-10 -z-10 h-48 w-48 rounded-full bg-accent/6 blur-2xl" />
 
       <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-stretch">
+        {/* Contact Info & Map - appears first on desktop (order-1), second on mobile (order-2) */}
         <motion.div
-          className="flex flex-col h-full"
+          className="flex flex-col h-full order-2 lg:order-1"
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.4 }}
@@ -173,8 +176,9 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
           </div>
         </motion.div>
 
+        {/* Contact Form - appears second on desktop (order-2), first on mobile (order-1) */}
         <motion.div
-          className="min-w-0"
+          className="min-w-0 order-1 lg:order-2"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
@@ -285,13 +289,13 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
               onLoad={(e) => {
                 // Check if iframe actually has content loaded
                 const iframe = e.target as HTMLIFrameElement;
-                if (iframe && iframe.src && iframe.src !== 'about:blank') {
+                if (iframe && iframe.src && iframe.src !== "about:blank") {
                   setFormLoaded(true);
                   setFormError(false);
                 }
               }}
               onError={() => {
-                console.error('Tally iframe failed to load');
+                console.error("Tally iframe failed to load");
                 setFormError(true);
               }}
             />

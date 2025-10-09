@@ -2,9 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, MouseEvent } from "react";
+import { useEffect, useState, MouseEvent, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { HiXMark } from "react-icons/hi2";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
 const navLinks = [
@@ -22,6 +24,7 @@ export default function Navbar() {
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(!isHomePage);
   const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
 
   // Check if a link is active
   const isLinkActive = (href: string) => {
@@ -34,6 +37,29 @@ export default function Navbar() {
 
     return false;
   };
+
+  // Handle click outside to close mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        open &&
+        navRef.current &&
+        !navRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (isHomePage) {
@@ -106,6 +132,7 @@ export default function Navbar() {
   return (
     <div className="fixed top-4 inset-x-0 z-50 px-5">
       <div
+        ref={navRef}
         className={`mx-auto container transition-all duration-300 rounded-2xl ${
           scrolled || open ? "glass-solid shadow-elevate" : "glass-transparent"
         }`}
@@ -135,7 +162,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+          <div className="hidden md:flex items-center gap-8 text-sm font-semibold">
             {navLinks.map((l) => {
               const isActive = isLinkActive(l.href);
               return (
@@ -146,11 +173,11 @@ export default function Navbar() {
                   className={`nav-link-underline relative ${
                     isActive
                       ? scrolled
-                        ? "text-brand font-semibold"
-                        : "text-white font-semibold"
+                        ? "text-brand font-bold"
+                        : "text-white font-bold"
                       : scrolled
-                      ? "text-gray-700 hover:text-brand"
-                      : "text-white/90 hover:text-white"
+                        ? "text-gray-700 hover:text-brand"
+                        : "text-white/90 hover:text-white"
                   }`}
                 >
                   {l.label}
@@ -182,19 +209,19 @@ export default function Navbar() {
           </div>
 
           <button
-            aria-label="Open Menu"
+            aria-label={open ? "Close Menu" : "Open Menu"}
             className={`md:hidden inline-flex items-center justify-center size-10 rounded-xl transition-colors ${
               scrolled
                 ? "text-gray-700 hover:bg-accent/10"
                 : "text-white hover:bg-white/10"
-            } ${open ? "menu-icon-open" : ""}`}
+            }`}
             onClick={() => setOpen((v) => !v)}
           >
-            <div className="relative w-5 h-4 menu-icon-animate">
-              <span className="absolute inset-x-0 top-0 h-0.5 bg-current" />
-              <span className="absolute inset-x-0 top-1.5 h-0.5 bg-current" />
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-current" />
-            </div>
+            {open ? (
+              <HiXMark className="w-6 h-6" />
+            ) : (
+              <RxHamburgerMenu className="w-6 h-6" />
+            )}
           </button>
         </div>
 
@@ -220,14 +247,14 @@ export default function Navbar() {
                         key={l.href}
                         href={l.href}
                         onClick={(e) => handleLinkClick(e, l.href)}
-                        className={`py-3 px-4 rounded-lg transition-colors font-medium relative ${
+                        className={`py-3 px-4 rounded-lg transition-colors font-semibold relative ${
                           isActive
                             ? scrolled
-                              ? "bg-brand/10 text-brand font-semibold"
-                              : "bg-white/20 text-white font-semibold"
+                              ? "bg-brand/10 text-brand font-bold"
+                              : "bg-white/20 text-white font-bold"
                             : scrolled
-                            ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
-                            : "text-white/90 hover:bg-white/10 hover:text-white"
+                              ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
+                              : "text-white/90 hover:bg-white/10 hover:text-white"
                         }`}
                       >
                         {l.label}

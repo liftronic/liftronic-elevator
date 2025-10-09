@@ -27,11 +27,11 @@ export default async function Footer() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/50 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-[1400px] mx-auto px-8 md:px-12 lg:px-16 py-16 lg:py-20">
+      <div className="relative max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 py-10 md:py-16 lg:py-20">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-12 mb-10 md:mb-16">
           {/* Company Info - Takes more space */}
-          <div className="space-y-6 lg:col-span-4 md:col-span-2">
+          <div className="space-y-4 md:space-y-6 lg:col-span-4 md:col-span-2 text-center md:text-left flex flex-col items-center md:items-start">
             <Link href="/" className="inline-flex items-center gap-3 group">
               <div className="relative">
                 <div className="absolute inset-0 bg-accent/20 rounded-xl blur-md group-hover:blur-lg transition-all" />
@@ -53,145 +53,147 @@ export default async function Footer() {
                   establishedYear +
                   "."}
             </p>
-            {contactInfo?.serviceArea && (
+            {contactInfo?.headquarters && (
               <div className="flex items-start gap-3 text-sm">
                 <div className="p-2 bg-accent/10 rounded-lg">
                   <FiMapPin className="text-accent size-4" />
                 </div>
-                <div>
+                <div className="text-left">
                   <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                    Service Area
+                    Headquarters
                   </p>
                   <p className="text-white/80 font-medium">
-                    {contactInfo.serviceArea}
+                    {contactInfo.headquarters}
                   </p>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-2">
-            <h3 className="font-bold text-base mb-6 text-white uppercase tracking-wider relative inline-block">
-              Quick Links
-              <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-accent rounded-full" />
-            </h3>
-            <nav className="flex flex-col gap-3.5">
-              <Link
-                href="/products"
-                className="text-white/70 hover:text-accent transition-all duration-300 text-sm group w-fit relative"
-              >
-                Products
-                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link
-                href="/services"
-                className="text-white/70 hover:text-accent transition-all duration-300 text-sm group w-fit relative"
-              >
-                Services
-                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link
-                href="/aboutus"
-                className="text-white/70 hover:text-accent transition-all duration-300 text-sm group w-fit relative"
-              >
-                About Us
-                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link
-                href="/blogs"
-                className="text-white/70 hover:text-accent transition-all duration-300 text-sm group w-fit relative"
-              >
-                Blogs
-                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link
-                href="/media"
-                className="text-white/70 hover:text-accent transition-all duration-300 text-sm group w-fit relative"
-              >
-                Media
-                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
-              </Link>
-            </nav>
-          </div>
-
-          {/* Contact Info */}
-          <div className="lg:col-span-3">
-            <h3 className="font-bold text-base mb-6 text-white uppercase tracking-wider relative inline-block">
-              Get in Touch
-              <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-accent rounded-full" />
-            </h3>
-            <ul className="space-y-4 text-sm">
-              {contactInfo?.email && (
-                <li>
-                  <a
-                    href={`mailto:${contactInfo.email}`}
-                    className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
-                  >
-                    <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
-                      <FiMail className="text-accent size-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                        {contactInfo.emailLabel || "Email"}
+          {/* Contact Info and Quick Links - Side by side on mobile */}
+          <div className="col-span-1 md:col-span-2 lg:col-span-5 grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-10 justify-between">
+            {/* Quick Links */}
+            <div className="flex flex-col items-start">
+              <h3 className="font-bold text-base md:text-base mb-5 md:mb-6 text-white uppercase tracking-wider relative inline-block">
+                Quick Links
+                <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-accent rounded-full" />
+              </h3>
+              <nav className="flex flex-col gap-3 md:gap-3.5 items-start">
+                <Link
+                  href="/products"
+                  className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
+                >
+                  Products
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+                <Link
+                  href="/services"
+                  className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
+                >
+                  Services
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+                <Link
+                  href="/aboutus"
+                  className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
+                >
+                  About Us
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+                <Link
+                  href="/blogs"
+                  className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
+                >
+                  Blogs
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+                <Link
+                  href="/media"
+                  className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
+                >
+                  Media
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+              </nav>
+            </div>
+            {/* Contact Info */}
+            <div className="flex flex-col items-start">
+              <h3 className="font-bold text-base md:text-base mb-5 md:mb-6 text-white uppercase tracking-wider relative inline-block">
+                Get in Touch
+                <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-accent rounded-full" />
+              </h3>
+              <ul className="space-y-3 md:space-y-4 text-sm md:text-sm">
+                {contactInfo?.email && (
+                  <li>
+                    <a
+                      href={`mailto:${contactInfo.email}`}
+                      className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
+                    >
+                      <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                        <FiMail className="text-accent size-4" />
                       </div>
-                      <div className="text-white/90 group-hover:text-accent transition-colors font-medium">
-                        {contactInfo.email}
+                      <div>
+                        <div className="text-xs text-white/50 mb-1 uppercase tracking-wider">
+                          {contactInfo.emailLabel || "Email"}
+                        </div>
+                        <div className="text-white/90 group-hover:text-accent transition-colors font-medium">
+                          {contactInfo.email}
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
-              )}
-              {contactInfo?.supportPhone && (
-                <li>
-                  <a
-                    href={`tel:${contactInfo.supportPhone.replace(/\s/g, "")}`}
-                    className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
-                  >
-                    <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
-                      <FiPhone className="text-accent size-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                        {contactInfo.supportPhoneLabel || "Support"}
+                    </a>
+                  </li>
+                )}
+                {contactInfo?.supportPhone && (
+                  <li>
+                    <a
+                      href={`tel:${contactInfo.supportPhone.replace(/\s/g, "")}`}
+                      className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
+                    >
+                      <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                        <FiPhone className="text-accent size-4" />
                       </div>
-                      <div className="text-white/90 group-hover:text-accent transition-colors font-medium">
-                        {contactInfo.supportPhone}
+                      <div>
+                        <div className="text-xs text-white/50 mb-1 uppercase tracking-wider">
+                          {contactInfo.supportPhoneLabel || "Support"}
+                        </div>
+                        <div className="text-white/90 group-hover:text-accent transition-colors font-medium">
+                          {contactInfo.supportPhone}
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
-              )}
-              {contactInfo?.salesPhone && (
-                <li>
-                  <a
-                    href={`tel:${contactInfo.salesPhone.replace(/\s/g, "")}`}
-                    className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
-                  >
-                    <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
-                      <FiPhone className="text-accent size-4" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                        {contactInfo.salesPhoneLabel || "Sales"}
+                    </a>
+                  </li>
+                )}
+                {contactInfo?.salesPhone && (
+                  <li>
+                    <a
+                      href={`tel:${contactInfo.salesPhone.replace(/\s/g, "")}`}
+                      className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
+                    >
+                      <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                        <FiPhone className="text-accent size-4" />
                       </div>
-                      <div className="text-white/90 group-hover:text-accent transition-colors font-medium">
-                        {contactInfo.salesPhone}
+                      <div>
+                        <div className="text-xs text-white/50 mb-1 uppercase tracking-wider">
+                          {contactInfo.salesPhoneLabel || "Sales"}
+                        </div>
+                        <div className="text-white/90 group-hover:text-accent transition-colors font-medium">
+                          {contactInfo.salesPhone}
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
-              )}
-            </ul>
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
 
           {/* Social Links */}
-          <div className="lg:col-span-3">
-            <h3 className="font-bold text-base mb-6 text-white uppercase tracking-wider relative inline-block">
+          <div className="lg:col-span-3 flex flex-col items-center md:items-start">
+            <h3 className="font-bold text-base mb-4 md:mb-6 text-white uppercase tracking-wider relative inline-block">
               Follow Us
-              <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-accent rounded-full" />
+              <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 w-12 h-0.5 bg-accent rounded-full" />
             </h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 justify-center md:justify-start">
               {socials && socials.length > 0 ? (
                 socials.map((social) => {
                   const Icon = getIcon(social.icon);
@@ -214,7 +216,7 @@ export default async function Footer() {
             </div>
 
             {/* Additional Links */}
-            <div className="mt-8 space-y-3">
+            <div className="mt-6 md:mt-8 space-y-3 w-full flex justify-center md:justify-start">
               <Link
                 href="/#contact"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 text-charcoal font-semibold text-sm rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent/30 hover:scale-105 group"
@@ -239,11 +241,11 @@ export default async function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="relative border-t border-white/10 pt-8">
+        <div className="relative border-t border-white/10 pt-6 md:pt-8">
           {/* Decorative accent line */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent" />
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
             <div className="text-center md:text-left">
               <p className="text-sm text-white/70">
                 © {currentYear}{" "}
@@ -260,21 +262,45 @@ export default async function Footer() {
               )}
             </div>
             <div className="flex items-center gap-6 text-xs text-white/50">
-              <Link
-                href="/privacy-policy"
-                className="hover:text-accent transition-colors duration-300 relative group"
-              >
-                Privacy Policy
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
-              </Link>
+              {contactInfo?.privacyPolicyUrl ? (
+                <a
+                  href={contactInfo.privacyPolicyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent transition-colors duration-300 relative group"
+                >
+                  Privacy Policy
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </a>
+              ) : (
+                <Link
+                  href="/privacy-policy"
+                  className="hover:text-accent transition-colors duration-300 relative group"
+                >
+                  Privacy Policy
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+              )}
               <span className="text-white/20">•</span>
-              <Link
-                href="/terms"
-                className="hover:text-accent transition-colors duration-300 relative group"
-              >
-                Terms of Service
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
-              </Link>
+              {contactInfo?.termsOfServiceUrl ? (
+                <a
+                  href={contactInfo.termsOfServiceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent transition-colors duration-300 relative group"
+                >
+                  Terms of Service
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </a>
+              ) : (
+                <Link
+                  href="/terms"
+                  className="hover:text-accent transition-colors duration-300 relative group"
+                >
+                  Terms of Service
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+              )}
             </div>
           </div>
         </div>

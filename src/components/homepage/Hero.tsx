@@ -132,7 +132,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
         <div className="absolute inset-0 [background:radial-gradient(60%_60%_at_20%_30%,rgba(42,227,148,0.12),transparent_60%)]" />
       </div>
 
-      <div className="relative h-full container mx-auto px-4 flex items-center justify-center lg:justify-between gap-8">
+      <div className="relative h-full container mx-auto px-6 md:px-4 flex items-center justify-center lg:justify-between gap-8">
         {/* Decorative blobs */}
         <div
           className="pointer-events-none hidden lg:block absolute -top-12 -right-24 w-[380px] h-[380px] rounded-full bg-gradient-to-br from-accent/30 to-indigo-600/20 blur-3xl opacity-60 transform rotate-12"
@@ -145,12 +145,12 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
 
         {/* Left: Messaging */}
         <div className="max-w-2xl text-center lg:text-left">
-          <h1 className="mt-6 sm:mt-4 text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
+          <h1 className="mt-6 sm:mt-4 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
             <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
             Experience
           </h1>
 
-          <p className="mt-2 text-xs sm:text-sm md:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg animate-fade-in-delay-1">
+          <p className="mt-2 text-base sm:text-lg lg:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg animate-fade-in-delay-1">
             <span className="hidden sm:inline">
               Design, installation, and maintenance engineered for precision,
               safety, and seamless passenger experience.
@@ -167,9 +167,9 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
                 e.preventDefault();
                 scrollTo("#contact");
               }}
-              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto mx-auto sm:mx-0"
+              className="btn btn-primary shadow-xl hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base px-6 py-3 w-full sm:w-auto mx-auto sm:mx-0"
             >
-              <FiMessageSquare className="text-base" />
+              <FiMessageSquare className="text-lg" />
               Get a Quote
             </a>
             <a
@@ -178,9 +178,9 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
                 e.preventDefault();
                 scrollTo("#services");
               }}
-              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm w-full sm:w-auto mx-auto sm:mx-0"
+              className="btn btn-ghost border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-sm sm:text-base px-6 py-3 w-full sm:w-auto mx-auto sm:mx-0"
             >
-              <FiEye className="text-base" />
+              <FiEye className="text-lg" />
               View Services
             </a>
           </div>
@@ -236,7 +236,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
                 aria-hidden
               />
               <div className="space-y-1 leading-tight">
-                <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-white/60 text-left">
                   {contact.supportPhoneLabel}
                 </p>
                 <span className="block text-sm sm:text-base font-semibold text-white">
@@ -253,7 +253,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
                 aria-hidden
               />
               <div className="space-y-1 leading-tight">
-                <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-white/60 text-left">
                   {contact.emailLabel}
                 </p>
                 <span className="block text-sm sm:text-base font-semibold text-white">
@@ -267,7 +267,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
                 aria-hidden
               />
               <div className="space-y-1 leading-tight">
-                <p className="text-[11px] font-medium uppercase tracking-wide text-white/60">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-white/60 text-left">
                   {contact.salesPhoneLabel}
                 </p>
                 <a
@@ -306,32 +306,6 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
                 })}
               </div>
             </div>
-          </div>
-          {/* Inline centered scroll button for very small screens (below socials) */}
-          <div className="flex sm:hidden w-full justify-center mt-4 mb-2">
-            <button
-              type="button"
-              onClick={handleScroll}
-              className="text-white/80 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-md px-3 py-1 hover:text-white transition z-40 bg-black/30 backdrop-blur-sm"
-              aria-label="Scroll to content"
-            >
-              <div className="flex flex-col items-center">
-                <span>Scroll</span>
-                <svg
-                  className="mt-1 animate-bounce"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M6 9l6 6 6-6"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                </svg>
-              </div>
-            </button>
           </div>
         </div>
 
@@ -405,11 +379,11 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
           </div>
         </aside>
 
-        {/* Floating scroll cue for sm+ screens */}
+        {/* Floating scroll cue - positioned at bottom for both mobile and desktop */}
         <button
           type="button"
           onClick={handleScroll}
-          className="hidden sm:block absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-md px-2 py-1 hover:text-white transition z-40"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded-md px-3 sm:px-2 py-1 hover:text-white transition z-40 bg-black/30 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none"
           aria-label="Scroll to content"
         >
           <div className="flex flex-col items-center">

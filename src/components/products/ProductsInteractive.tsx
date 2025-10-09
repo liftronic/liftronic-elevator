@@ -14,11 +14,12 @@ export default function ProductsInteractive({
 }: ProductsInteractiveProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Auto-rotate products every 8 seconds
   useEffect(() => {
-    if (isAutoRotating && products.length > 0) {
+    if (isAutoRotating && products.length > 0 && !isDragging) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
       }, 8000);
@@ -33,7 +34,7 @@ export default function ProductsInteractive({
         clearInterval(intervalRef.current);
       }
     };
-  }, [isAutoRotating, products.length]);
+  }, [isAutoRotating, products.length, isDragging]);
 
   // Handle manual interaction
   const handleInteraction = () => {
@@ -42,6 +43,22 @@ export default function ProductsInteractive({
     setTimeout(() => {
       setIsAutoRotating(true);
     }, 20000);
+  };
+
+  // Handle swipe on mobile
+  const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
+    setIsDragging(false);
+    const swipeThreshold = 50;
+
+    if (info.offset.x > swipeThreshold) {
+      // Swiped right - go to previous
+      setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
+      handleInteraction();
+    } else if (info.offset.x < -swipeThreshold) {
+      // Swiped left - go to next
+      setCurrentIndex((prev) => (prev + 1) % products.length);
+      handleInteraction();
+    }
   };
 
   // Get up to 3 visible products starting from currentIndex
@@ -60,6 +77,8 @@ export default function ProductsInteractive({
   if (products.length === 0) {
     return null;
   }
+
+  const currentProduct = products[currentIndex];
 
   return (
     <section id="products" className="py-20 bg-white">
@@ -82,9 +101,36 @@ export default function ProductsInteractive({
           </p>
         </motion.div>
 
-        {/* Products Cards Grid - matching BlogSection layout */}
+        {/* Mobile - Single Product with Swipe */}
+        <div className="md:hidden mb-12">
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div
+              key={`${currentProduct._id}-${currentIndex}`}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.7}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDragEnd}
+              className="touch-pan-y"
+              onClick={handleInteraction}
+            >
+              <ProductCard
+                title={currentProduct.title}
+                summary={currentProduct.description}
+                tags={currentProduct.tags?.map((tag) => tag.title) || []}
+                productId={currentProduct.slug}
+                badge={currentProduct.featured ? "Featured" : undefined}
+                imageSrc={currentProduct.mainImage}
+                imageAlt={currentProduct.imageAlt}
+                blurDataURL={currentProduct.mainImageLqip}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Desktop - Products Cards Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12"
+          className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}

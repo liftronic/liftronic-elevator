@@ -12,9 +12,11 @@ export async function getContactInfo(): Promise<ContactInfo | null> {
     salesPhone,
     salesPhoneLabel,
     mapEmbedUrl,
-    serviceArea,
+    headquarters,
     whatsappNumber,
-    whatsappMessage
+    whatsappMessage,
+    privacyPolicyUrl,
+    termsOfServiceUrl
   }`;
   return client.fetch<ContactInfo | null>(query);
 }

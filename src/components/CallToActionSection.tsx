@@ -30,11 +30,16 @@ const getVariantClasses = (variant: CTAAction["variant"]) => {
 
 const renderAction = (action: CTAAction) => {
   const { label, href, onClick, variant = "primary" } = action;
-  const className = `${baseButtonClass} ${getVariantClasses(variant)} inline-flex items-center justify-center`;
+  const className = `${baseButtonClass} ${getVariantClasses(variant)} w-full sm:w-auto inline-flex items-center justify-center`;
 
   if (href) {
     return (
-      <motion.div key={label} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <motion.div
+        key={label}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="w-full sm:w-auto"
+      >
         <Link href={href} className={className}>
           {label}
         </Link>
@@ -58,8 +63,7 @@ const renderAction = (action: CTAAction) => {
 
 export default function CallToActionSection({
   title = "Ready to Work with Liftronic?",
-  description =
-    "Experience the difference that comes with choosing a partner committed to excellence, innovation, and your success. Let's elevate your building together.",
+  description = "Experience the difference that comes with choosing a partner committed to excellence, innovation, and your success. Let's elevate your building together.",
   primaryAction,
   secondaryAction,
 }: CallToActionSectionProps) {
@@ -97,7 +101,9 @@ export default function CallToActionSection({
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6">{title}</h2>
-          <p className="text-xl mb-8 opacity-95 max-w-3xl mx-auto">{description}</p>
+          <p className="text-xl mb-8 opacity-95 max-w-3xl mx-auto">
+            {description}
+          </p>
           {actions.length > 0 && (
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {actions.map((action) => renderAction(action))}

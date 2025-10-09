@@ -112,14 +112,14 @@ export default async function AboutPage() {
             </p>
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
-                <button className="btn btn-primary px-8 py-3">
-                  <FiMessageSquare className="text-base" />
+                <button className="btn btn-primary px-4 py-2 text-sm md:px-8 md:py-3 md:text-base">
+                  <FiMessageSquare className="text-sm md:text-base" />
                   Get Service Quote
                 </button>
               </Link>
               <Link href="/products">
-                <button className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3">
-                  <FiEye className="text-base" />
+                <button className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-4 py-2 text-sm md:px-8 md:py-3 md:text-base">
+                  <FiEye className="text-sm md:text-base" />
                   View Products
                 </button>
               </Link>

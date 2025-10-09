@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type ReactElement } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import {
   BiBrush,
@@ -106,20 +107,21 @@ const DESKTOP_VISIBLE = 3;
 
 export default function Services({ services: servicesProp }: ServicesProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Use provided services or fallback
   const services =
     servicesProp && servicesProp.length > 0 ? servicesProp : fallbackServices;
 
   useEffect(() => {
-    if (services.length <= 1) return;
+    if (services.length <= 1 || isDragging) return;
 
     const timer = window.setInterval(() => {
       setActiveIndex((index) => (index + 1) % services.length);
     }, AUTO_ROTATE_MS);
 
     return () => window.clearInterval(timer);
-  }, [services.length]);
+  }, [services.length, isDragging]);
 
   if (services.length === 0) {
     return null;
@@ -131,6 +133,19 @@ export default function Services({ services: servicesProp }: ServicesProps) {
   );
 
   const currentService = services[activeIndex];
+
+  const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
+    setIsDragging(false);
+    const swipeThreshold = 50;
+
+    if (info.offset.x > swipeThreshold) {
+      // Swiped right - go to previous
+      setActiveIndex((prev) => (prev - 1 + services.length) % services.length);
+    } else if (info.offset.x < -swipeThreshold) {
+      // Swiped left - go to next
+      setActiveIndex((prev) => (prev + 1) % services.length);
+    }
+  };
 
   return (
     <section
@@ -153,22 +168,29 @@ export default function Services({ services: servicesProp }: ServicesProps) {
 
         <div className="mt-12 md:hidden">
           <AnimatePresence initial={false} mode="wait">
-            <motion.article
+            <motion.div
               key={`${currentService.title}-${activeIndex}`}
-              initial={{ opacity: 0, x: 44 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -44 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="group relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 backdrop-blur-xl"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.7}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDragEnd}
+              className="touch-pan-y"
             >
-              <ImageBackdrop
-                alt={currentService.title}
-                sizes="100vw"
-                imageSrc={currentService.image}
-                imageLqip={currentService.imageLqip}
-              />
-              <CardContent service={currentService} />
-            </motion.article>
+              <Link href={`/services/${currentService.slug}`} className="block">
+                <article
+                  className="group relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 backdrop-blur-xl cursor-pointer"
+                >
+                  <ImageBackdrop
+                    alt={currentService.title}
+                    sizes="100vw"
+                    imageSrc={currentService.image}
+                    imageLqip={currentService.imageLqip}
+                  />
+                  <CardContent service={currentService} />
+                </article>
+              </Link>
+            </motion.div>
           </AnimatePresence>
           <CarouselDots
             activeIndex={activeIndex}
@@ -180,26 +202,29 @@ export default function Services({ services: servicesProp }: ServicesProps) {
         <div className="mt-12 hidden gap-6 md:grid md:grid-cols-3">
           <AnimatePresence initial={false} mode="popLayout">
             {visibleDesktop.map((service, offset) => (
-              <motion.article
-                layout
-                key={`${service.title}-${
-                  (activeIndex + offset) % services.length
-                }`}
-                initial={{ opacity: 0, x: 56 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -56 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                whileHover={{ y: -10 }}
-                className="group relative flex min-h-[460px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 transition-shadow duration-300 backdrop-blur-xl hover:shadow-2xl"
+              <Link
+                href={`/services/${service.slug}`}
+                key={`${service.title}-${(activeIndex + offset) % services.length}`}
+                className="block"
               >
-                <ImageBackdrop
-                  alt={service.title}
-                  sizes="(min-width: 768px) 33vw"
-                  imageSrc={service.image}
-                  imageLqip={service.imageLqip}
-                />
-                <CardContent service={service} />
-              </motion.article>
+                <motion.article
+                  layout
+                  initial={{ opacity: 0, x: 56 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -56 }}
+                  transition={{ duration: 0.45, ease: "easeOut" }}
+                  whileHover={{ y: -10 }}
+                  className="group relative flex min-h-[460px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 transition-shadow duration-300 backdrop-blur-xl hover:shadow-2xl cursor-pointer"
+                >
+                  <ImageBackdrop
+                    alt={service.title}
+                    sizes="(min-width: 768px) 33vw"
+                    imageSrc={service.image}
+                    imageLqip={service.imageLqip}
+                  />
+                  <CardContent service={service} />
+                </motion.article>
+              </Link>
             ))}
           </AnimatePresence>
         </div>

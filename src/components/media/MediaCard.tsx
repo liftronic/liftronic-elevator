@@ -84,7 +84,7 @@ export default function MediaCard({ item, onClick }: MediaCardProps) {
 
         {/* Category badge */}
         <div className="absolute top-3 right-3">
-          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent/90 text-white backdrop-blur-sm">
+          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-accent text-black backdrop-blur-sm">
             {item.category}
           </span>
         </div>

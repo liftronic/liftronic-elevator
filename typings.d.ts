@@ -17,10 +17,13 @@ export interface ContactInfo extends SanityDocument {
   emailLabel?: string;
   salesPhone: string;
   salesPhoneLabel?: string;
-  mapEmbedUrl?: string;
   serviceArea?: string;
+  mapEmbedUrl?: string;
+  headquarters?: string;
   whatsappNumber?: string;
   whatsappMessage?: string;
+  privacyPolicyUrl?: string;
+  termsOfServiceUrl?: string;
 }
 
 export interface Tag extends SanityDocument {
