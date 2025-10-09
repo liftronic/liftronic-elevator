@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import React, { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { HiArrowRight } from "react-icons/hi";
-import { useViewTransition } from "~/hooks/useViewTransition";
 
 type FeaturedBlogCardProps = {
   title: string;
@@ -35,41 +33,14 @@ export default function FeaturedBlogCard({
   blurDataURL,
 }: FeaturedBlogCardProps) {
   const blogHref = href || (blogId ? `/blogs/${blogId}` : "#");
-  const { transitionTo } = useViewTransition();
-  const router = useRouter();
-
-  const handleCardClick = (e: React.MouseEvent) => {
-    if (blogId) {
-      e.preventDefault();
-      transitionTo(blogHref);
-    }
-  };
-
-  const handleMouseEnter = useCallback(() => {
-    if (blogId) {
-      router.prefetch(blogHref);
-    }
-  }, [blogId, blogHref, router]);
-
-  const cardStyle = blogId
-    ? ({
-        "--transition-name": `blog-card-${blogId}`,
-        "--image-transition-name": `blog-image-${blogId}`,
-        "--title-transition-name": `blog-title-${blogId}`,
-      } as React.CSSProperties)
-    : {};
 
   // Use the specified blog image or fallback to placeholder
   const finalImageSrc = imageSrc || "/assets/service_banner.png";
 
   return (
+    <Link href={blogHref}>
     <article
-      className={`group relative overflow-hidden rounded-xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
-        blogId ? "blog-card cursor-pointer" : ""
-      } flex flex-col h-full`}
-      style={cardStyle}
-      onClick={handleCardClick}
-      onMouseEnter={handleMouseEnter}
+      className="group relative overflow-hidden rounded-xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full cursor-pointer"
     >
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
@@ -106,9 +77,7 @@ export default function FeaturedBlogCard({
           </div>
 
           <h3
-            className={`font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
-              blogId ? "blog-title" : ""
-            } text-xl lg:text-2xl`}
+            className="font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors text-xl lg:text-2xl"
           >
             {title}
           </h3>
@@ -119,47 +88,17 @@ export default function FeaturedBlogCard({
         </div>
 
         <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-100 flex-shrink-0">
-          {blogId ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                transitionTo(blogHref);
-              }}
-              className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-            >
-              Read Article
-            </button>
-          ) : (
-            <Link
-              href={blogHref}
-              className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-            >
-              Read Article
-            </Link>
-          )}
+          <span className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm">
+            Read Article
+          </span>
 
-          {blogId ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                transitionTo(blogHref);
-              }}
-              className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
-            >
-              Continue reading
-              <HiArrowRight className="ml-1 h-4 w-4" />
-            </button>
-          ) : (
-            <Link
-              href={blogHref}
-              className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
-            >
-              Continue reading
-              <HiArrowRight className="ml-1 h-4 w-4" />
-            </Link>
-          )}
+          <span className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1">
+            Continue reading
+            <HiArrowRight className="ml-1 h-4 w-4" />
+          </span>
         </div>
       </div>
     </article>
+    </Link>
   );
 }

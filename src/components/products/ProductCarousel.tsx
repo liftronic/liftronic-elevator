@@ -10,6 +10,7 @@ type ProductCarouselProps = {
   title?: string;
   description?: string;
   showAutoRotate?: boolean;
+  mobileGrid?: boolean; // Show grid layout on mobile instead of carousel
 };
 
 const AUTO_ROTATE_MS = 5000;
@@ -19,6 +20,7 @@ export default function ProductCarousel({
   title,
   description,
   showAutoRotate = false,
+  mobileGrid = false,
 }: ProductCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -61,47 +63,65 @@ export default function ProductCarousel({
               {title}
             </h2>
           )}
-          {description && (
-            <p className="mt-2 text-gray-600">{description}</p>
-          )}
+          {description && <p className="mt-2 text-gray-600">{description}</p>}
         </div>
       )}
 
-      {/* Mobile Carousel - Single Product */}
-      <div className="md:hidden">
-        <AnimatePresence initial={false} mode="wait">
-          <motion.div
-            key={`${currentProduct._id}-${activeIndex}`}
-            initial={{ opacity: 0, x: 44 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -44 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.7}
-            onDragStart={() => setIsDragging(true)}
-            onDragEnd={handleDragEnd}
-            className="touch-pan-y"
-          >
+      {/* Mobile View - Carousel or Grid based on mobileGrid prop */}
+      {mobileGrid ? (
+        /* Mobile Grid - All Products */
+        <div className="grid grid-cols-1 gap-6 md:hidden">
+          {products.map((product) => (
             <ProductCard
-              title={currentProduct.title}
-              summary={currentProduct.description}
-              tags={currentProduct.tags?.map((tag) => tag.title) || []}
-              productId={currentProduct.slug}
-              badge={currentProduct.featured ? "Featured" : undefined}
-              imageSrc={currentProduct.mainImage}
-              imageAlt={currentProduct.imageAlt}
-              blurDataURL={currentProduct.mainImageLqip}
+              key={product._id}
+              title={product.title}
+              summary={product.description}
+              tags={product.tags?.map((tag) => tag.title) || []}
+              productId={product.slug}
+              badge={product.featured ? "Featured" : undefined}
+              imageSrc={product.mainImage}
+              imageAlt={product.imageAlt}
+              blurDataURL={product.mainImageLqip}
             />
-          </motion.div>
-        </AnimatePresence>
+          ))}
+        </div>
+      ) : (
+        /* Mobile Carousel - Single Product */
+        <div className="md:hidden">
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div
+              key={`${currentProduct._id}-${activeIndex}`}
+              initial={{ opacity: 0, x: 44 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -44 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.7}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDragEnd}
+              className="touch-pan-y"
+            >
+              <ProductCard
+                title={currentProduct.title}
+                summary={currentProduct.description}
+                tags={currentProduct.tags?.map((tag) => tag.title) || []}
+                productId={currentProduct.slug}
+                badge={currentProduct.featured ? "Featured" : undefined}
+                imageSrc={currentProduct.mainImage}
+                imageAlt={currentProduct.imageAlt}
+                blurDataURL={currentProduct.mainImageLqip}
+              />
+            </motion.div>
+          </AnimatePresence>
 
-        <CarouselDots
-          activeIndex={activeIndex}
-          total={products.length}
-          onSelect={setActiveIndex}
-        />
-      </div>
+          <CarouselDots
+            activeIndex={activeIndex}
+            total={products.length}
+            onSelect={setActiveIndex}
+          />
+        </div>
+      )}
 
       {/* Desktop Grid - All Products */}
       <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">

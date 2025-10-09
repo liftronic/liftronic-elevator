@@ -129,8 +129,9 @@ export default async function ProductsPage() {
 
             <ProductCarousel
               products={featuredProducts}
-              title="Popular solutions"
+              title="Popular products"
               showAutoRotate={false}
+              mobileGrid={true}
             />
           </div>
         </section>
@@ -144,6 +145,7 @@ export default async function ProductsPage() {
             title="All products"
             description={`Browse our complete product lineup (${nonFeaturedProducts.length} products)`}
             showAutoRotate={false}
+            mobileGrid={true}
           />
         </div>
       </section>

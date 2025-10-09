@@ -183,17 +183,10 @@ export default function Navbar() {
                   {l.label}
                   {/* Active indicator */}
                   {isActive && (
-                    <motion.span
-                      layoutId="navbar-indicator"
+                    <span
                       className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
                         scrolled ? "bg-brand" : "bg-white"
                       }`}
-                      initial={false}
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 30,
-                      }}
                     />
                   )}
                 </Link>
