@@ -113,7 +113,7 @@ export default function ContactSection({ contactInfo }: ContactSectionProps) {
   return (
     <section
       id="contact"
-      className="py-20 scroll-mt-24 bg-soft border-y border-black/5 text-charcoal relative overflow-hidden"
+      className="py-20 scroll-mt-24 bg-white border-y border-black/5 text-charcoal relative overflow-hidden"
     >
       {/* decorative accent blobs */}
       <div className="absolute -left-16 top-10 -z-10 h-56 w-56 rounded-full bg-accent/10 blur-3xl animate-blob" />

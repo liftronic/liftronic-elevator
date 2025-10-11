@@ -62,7 +62,7 @@ export async function getServiceBySlug(
     "seoTitle": seo.metaTitle,
     "seoDescription": seo.metaDescription,
     "seoKeywords": seo.keywords,
-    "faqs": *[_type == "faq" && references(^._id)] | order(_createdAt asc) {
+    "faqs": faqs[]-> {
       question,
       answer
     },

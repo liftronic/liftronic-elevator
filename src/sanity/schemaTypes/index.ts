@@ -22,6 +22,7 @@ import { visionMissionValuesType } from "./visionMissionValues";
 import { certificateType } from "./certificateType";
 import mediaType from "./media";
 import { homePageSeoType } from "./homePageSeo";
+import { homePageSettingsType } from "./homePageSettings";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -47,5 +48,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     certificateType,
     mediaType,
     homePageSeoType,
+    homePageSettingsType,
   ],
 };

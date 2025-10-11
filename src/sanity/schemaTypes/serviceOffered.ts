@@ -97,6 +97,13 @@ export const serviceType = defineType({
       ],
     }),
     defineField({
+      name: "faqs",
+      title: "FAQs",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "faq" }] }],
+      description: "Frequently asked questions for this service",
+    }),
+    defineField({
       name: "specifications",
       title: "Service Specifications",
       type: "array",

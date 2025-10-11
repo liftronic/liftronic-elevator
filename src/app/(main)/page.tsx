@@ -7,6 +7,7 @@ import { homePageDataQuery } from "~/sanity/lib/queries";
 import type { HomePageData } from "~/sanity/lib/homePageTypes";
 import { getFeaturedServices } from "~/sanity/utils/getServices";
 import { getHomePageSeo, getOgImageUrl } from "~/sanity/utils/getHomePageSeo";
+import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
 import Hero from "~/components/homepage/Hero";
 import AboutUs from "~/components/homepage/AboutUs";
 import ProductsInteractive from "~/components/products/ProductsInteractive";
@@ -15,6 +16,7 @@ import ClientsMarquee from "~/components/homepage/ClientsMarquee";
 import MediaPreview from "~/components/homepage/MediaPreview";
 import BlogSection from "~/components/homepage/BlogSection";
 import Testimonials from "~/components/homepage/Testimonials";
+import FAQSection from "~/components/homepage/FAQSection";
 import ContactSection from "~/components/homepage/ContactSection";
 
 // ISR - revalidate every 60 minutes (3600 seconds)
@@ -25,7 +27,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   // Fallback defaults if no SEO data in Sanity
-  const title = seoData?.metaTitle || "Liftronic Elevator - Premium Elevator & Lift Solutions";
+  const title =
+    seoData?.metaTitle ||
+    "Liftronic Elevator - Premium Elevator & Lift Solutions";
   const description =
     seoData?.metaDescription ||
     "Leading elevator manufacturer in India. We provide design, installation, maintenance, and modernization services for passenger lifts, home elevators, and commercial lift systems.";
@@ -38,7 +42,9 @@ export async function generateMetadata(): Promise<Metadata> {
     "elevator modernization",
     "lift service India",
   ];
-  const ogImageUrl = seoData?.ogImage ? getOgImageUrl(seoData.ogImage) : `${siteUrl}/liftronic.png`;
+  const ogImageUrl = seoData?.ogImage
+    ? getOgImageUrl(seoData.ogImage)
+    : `${siteUrl}/liftronic.png`;
 
   return {
     title,
@@ -84,15 +90,23 @@ async function getHomePageData(): Promise<HomePageData> {
 }
 
 export default async function Home() {
-  const [socials, contactInfo, companyInfo, homeData, services, seoData] =
-    await Promise.all([
-      getSocial(),
-      getContactInfo(),
-      getCompanyInfo(),
-      getHomePageData(),
-      getFeaturedServices().catch(() => []),
-      getHomePageSeo(),
-    ]);
+  const [
+    socials,
+    contactInfo,
+    companyInfo,
+    homeData,
+    services,
+    seoData,
+    homePageSettings,
+  ] = await Promise.all([
+    getSocial(),
+    getContactInfo(),
+    getCompanyInfo(),
+    getHomePageData(),
+    getFeaturedServices().catch(() => []),
+    getHomePageSeo(),
+    getHomePageSettings(),
+  ]);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -150,20 +164,40 @@ export default async function Home() {
   };
 
   // ItemList JSON-LD for featured products
-  const productListJsonLd = homeData.featuredProducts.length > 0 ? {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    itemListElement: homeData.featuredProducts.map((product, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
-        "@type": "Product",
-        name: product.title,
-        description: product.description,
-        url: `${siteUrl}/products/${product.slug}`,
-      },
-    })),
-  } : null;
+  const productListJsonLd =
+    homeData.featuredProducts.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: homeData.featuredProducts.map((product, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+              "@type": "Product",
+              name: product.title,
+              description: product.description,
+              url: `${siteUrl}/products/${product.slug}`,
+            },
+          })),
+        }
+      : null;
+
+  // FAQPage JSON-LD for SEO
+  const faqPageJsonLd =
+    homePageSettings.showFaqSection && homePageSettings.featuredFaqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: homePageSettings.featuredFaqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
 
   return (
     <>
@@ -173,12 +207,22 @@ export default async function Home() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessJsonLd),
+        }}
       />
       {productListJsonLd && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(productListJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(productListJsonLd),
+          }}
+        />
+      )}
+      {faqPageJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd) }}
         />
       )}
       <main suppressHydrationWarning>
@@ -190,6 +234,10 @@ export default async function Home() {
         <MediaPreview mediaItems={homeData.featuredMedia} />
         <BlogSection blogs={homeData.featuredBlogs} />
         <Testimonials testimonials={homeData.testimonials} />
+        {homePageSettings.showFaqSection &&
+          homePageSettings.featuredFaqs.length > 0 && (
+            <FAQSection faqs={homePageSettings.featuredFaqs} />
+          )}
         <ContactSection contactInfo={contactInfo} />
       </main>
     </>
