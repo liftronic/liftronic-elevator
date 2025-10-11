@@ -1,9 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, MouseEvent, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { HiXMark } from "react-icons/hi2";
@@ -12,7 +11,7 @@ import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 const navLinks = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
-  { href: "/media", label: "Media" },
+  { href: "/products/stiltz-homelifts", label: "Stiltz", highlight: true },
   { href: "/blogs", label: "Blogs" },
   { href: "/aboutus", label: "About Us" },
 ];
@@ -165,24 +164,35 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8 text-sm font-semibold">
             {navLinks.map((l) => {
               const isActive = isLinkActive(l.href);
+              const isFeatured = Boolean(l.highlight);
+
+              const featuredClasses = scrolled
+                ? "relative inline-flex items-center gap-2 rounded-full bg-brand px-4 py-1.5 text-white shadow-brand/30 transition-all hover:shadow-brand/40 hover:-translate-y-0.5"
+                : "relative inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-white shadow-white/30 transition-all hover:bg-white/30 hover:-translate-y-0.5";
+
+              const standardClasses = isActive
+                ? scrolled
+                  ? "nav-link-underline relative text-brand font-bold"
+                  : "nav-link-underline relative text-white font-bold"
+                : scrolled
+                ? "nav-link-underline relative text-gray-700 hover:text-brand"
+                : "nav-link-underline relative text-white/90 hover:text-white";
+
               return (
                 <Link
                   key={l.href}
                   href={l.href}
                   onClick={(e) => handleLinkClick(e, l.href)}
-                  className={`nav-link-underline relative ${
-                    isActive
-                      ? scrolled
-                        ? "text-brand font-bold"
-                        : "text-white font-bold"
-                      : scrolled
-                        ? "text-gray-700 hover:text-brand"
-                        : "text-white/90 hover:text-white"
-                  }`}
+                  className={isFeatured ? featuredClasses : standardClasses}
                 >
-                  {l.label}
+                  <span>{l.label}</span>
+                  {isFeatured && (
+                    <span className="text-[10px] uppercase tracking-wide text-white/80">
+                      Featured
+                    </span>
+                  )}
                   {/* Active indicator */}
-                  {isActive && (
+                  {!isFeatured && isActive && (
                     <span
                       className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
                         scrolled ? "bg-brand" : "bg-white"
@@ -235,24 +245,37 @@ export default function Navbar() {
                 <div className="flex flex-col gap-2 pt-4">
                   {navLinks.map((l) => {
                     const isActive = isLinkActive(l.href);
+                    const isFeatured = Boolean(l.highlight);
+
+                    const featuredClasses = scrolled
+                      ? "relative flex items-center justify-between gap-2 rounded-lg bg-brand px-4 py-3 text-white shadow-brand/30"
+                      : "relative flex items-center justify-between gap-2 rounded-lg bg-white/20 px-4 py-3 text-white shadow-white/25";
+
+                    const standardClasses = isActive
+                      ? scrolled
+                        ? "py-3 px-4 rounded-lg bg-brand/10 text-brand font-bold"
+                        : "py-3 px-4 rounded-lg bg-white/20 text-white font-bold"
+                      : scrolled
+                      ? "py-3 px-4 rounded-lg text-gray-700 hover:bg-accent/10 hover:text-brand"
+                      : "py-3 px-4 rounded-lg text-white/90 hover:bg-white/10 hover:text-white";
+
                     return (
                       <Link
                         key={l.href}
                         href={l.href}
                         onClick={(e) => handleLinkClick(e, l.href)}
-                        className={`py-3 px-4 rounded-lg transition-colors font-semibold relative ${
-                          isActive
-                            ? scrolled
-                              ? "bg-brand/10 text-brand font-bold"
-                              : "bg-white/20 text-white font-bold"
-                            : scrolled
-                              ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
-                              : "text-white/90 hover:bg-white/10 hover:text-white"
+                        className={`transition-colors font-semibold relative ${
+                          isFeatured ? featuredClasses : standardClasses
                         }`}
                       >
-                        {l.label}
+                        <span>{l.label}</span>
+                        {isFeatured && (
+                          <span className="text-[10px] uppercase tracking-wide text-white/80">
+                            Featured
+                          </span>
+                        )}
                         {/* Active indicator for mobile */}
-                        {isActive && (
+                        {!isFeatured && isActive && (
                           <span
                             className={`absolute left-0 top-0 bottom-0 w-1 rounded-r-full ${
                               scrolled ? "bg-brand" : "bg-white"
