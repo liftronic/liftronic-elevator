@@ -255,6 +255,28 @@ export const testimonialsQuery = groq`*[_type == "testimonial"] | order(_created
 }`;
 
 // ============================================
+// Home Page Settings Query
+// ============================================
+
+// Query to get home page settings including FAQs and SEO content sections
+export const homePageSettingsQuery = groq`*[_type == "homePageSettings"][0] {
+  "featuredFaqs": featuredFaqs[]-> {
+    _id,
+    question,
+    answer
+  },
+  showFaqSection,
+  "seoContentSections": seoContentSections[] | order(order asc) {
+    title,
+    content,
+    keywords,
+    order,
+    defaultExpanded
+  },
+  showSeoContentSection
+}`;
+
+// ============================================
 // Home Page Combined Query
 // ============================================
 

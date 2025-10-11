@@ -1,20 +1,22 @@
-import { groq } from "next-sanity";
 import { client } from "../lib/client";
+import { homePageSettingsQuery } from "../lib/queries";
 import type { FAQ } from "../lib/homePageTypes";
+import type { PortableTextBlock } from "@portabletext/types";
+
+export interface SEOContentSection {
+  title: string;
+  content: PortableTextBlock[];
+  keywords?: string[];
+  order: number;
+  defaultExpanded: boolean;
+}
 
 export interface HomePageSettings {
   featuredFaqs: FAQ[];
   showFaqSection: boolean;
+  seoContentSections: SEOContentSection[];
+  showSeoContentSection: boolean;
 }
-
-const homePageSettingsQuery = groq`*[_type == "homePageSettings" && _id == "homePageSettings"][0] {
-  "featuredFaqs": featuredFaqs[]-> {
-    _id,
-    question,
-    answer
-  },
-  showFaqSection
-}`;
 
 export async function getHomePageSettings(): Promise<HomePageSettings> {
   const settings = await client.fetch(
@@ -28,6 +30,8 @@ export async function getHomePageSettings(): Promise<HomePageSettings> {
     settings || {
       featuredFaqs: [],
       showFaqSection: true,
+      seoContentSections: [],
+      showSeoContentSection: true,
     }
   );
 }

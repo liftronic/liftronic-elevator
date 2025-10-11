@@ -170,6 +170,29 @@ export const serviceType = defineType({
         }),
       ],
     }),
+    defineField({
+      name: "sitemapPriority",
+      title: "Sitemap Priority",
+      type: "number",
+      initialValue: 0.8,
+      validation: (Rule) => Rule.min(0.0).max(1.0).precision(1),
+      description: "SEO priority in sitemap (0.0-1.0, higher = more important). Default: 0.8",
+    }),
+    defineField({
+      name: "changeFrequency",
+      title: "Change Frequency",
+      type: "string",
+      options: {
+        list: [
+          { title: "Daily", value: "daily" },
+          { title: "Weekly", value: "weekly" },
+          { title: "Monthly", value: "monthly" },
+          { title: "Yearly", value: "yearly" },
+        ],
+      },
+      initialValue: "monthly",
+      description: "How often this service page typically updates",
+    }),
   ],
   preview: {
     select: {

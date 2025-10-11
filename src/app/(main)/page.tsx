@@ -17,7 +17,9 @@ import MediaPreview from "~/components/homepage/MediaPreview";
 import BlogSection from "~/components/homepage/BlogSection";
 import Testimonials from "~/components/homepage/Testimonials";
 import FAQSection from "~/components/homepage/FAQSection";
+import SEOContentSection from "~/components/homepage/SEOContentSection";
 import ContactSection from "~/components/homepage/ContactSection";
+import FooterSitemapLinks from "~/components/layout/FooterSitemapLinks";
 
 // ISR - revalidate every 60 minutes (3600 seconds)
 export const revalidate = 3600;
@@ -238,8 +240,13 @@ export default async function Home() {
           homePageSettings.featuredFaqs.length > 0 && (
             <FAQSection faqs={homePageSettings.featuredFaqs} />
           )}
+        {homePageSettings.showSeoContentSection &&
+          homePageSettings.seoContentSections.length > 0 && (
+            <SEOContentSection sections={homePageSettings.seoContentSections} />
+          )}
         <ContactSection contactInfo={contactInfo} />
       </main>
+      <FooterSitemapLinks />
     </>
   );
 }

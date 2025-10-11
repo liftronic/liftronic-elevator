@@ -84,7 +84,7 @@ export const productType = defineType({
           name: "alt",
           type: "string",
           title: "Alternative text",
-        })
+        }),
       ],
       description: "Featured image for the product",
     }),
@@ -103,9 +103,9 @@ export const productType = defineType({
               name: "alt",
               type: "string",
               title: "Alternative text",
-            }
+            },
           ],
-        }
+        },
       ],
       description: "Additional product images for gallery",
     }),
@@ -115,6 +115,135 @@ export const productType = defineType({
       type: "boolean",
       initialValue: false,
       description: "Display this product in the featured section",
+    }),
+    defineField({
+      name: "locationPages",
+      title: "Location-Specific Pages",
+      type: "array",
+      description:
+        "Create location-specific versions of this product page for SEO (e.g., Product | Mumbai)",
+      of: [
+        defineField({
+          name: "locationPage",
+          title: "Location Page",
+          type: "object",
+          fields: [
+            defineField({
+              name: "city",
+              title: "City Name",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+              description: "Display name (e.g., Mumbai, Pune)",
+            }),
+            defineField({
+              name: "citySlug",
+              title: "City Slug",
+              type: "slug",
+              options: {
+                source: "city",
+                maxLength: 96,
+              },
+              validation: (Rule) => Rule.required(),
+              description: "URL-friendly version (e.g., mumbai, pune)",
+            }),
+            defineField({
+              name: "uniqueContent",
+              title: "Unique Content",
+              type: "array",
+              of: [{ type: "block" }],
+              validation: (Rule) =>
+                Rule.required()
+                  .min(1)
+                  .custom((content: unknown) => {
+                    if (!content) return "Unique content is required for SEO";
+
+                    const contentArray = content as Array<{
+                      children?: Array<{ text?: string }>;
+                    }>;
+                    const text = contentArray
+                      .map((block) =>
+                        block.children
+                          ? block.children
+                              .map((child) => child.text || "")
+                              .join(" ")
+                          : ""
+                      )
+                      .join(" ");
+
+                    const wordCount = text.trim().split(/\s+/).length;
+
+                    if (wordCount < 1500) {
+                      return `Content must be at least 1500 words to avoid duplicate content penalties. Current: ${wordCount} words.`;
+                    }
+
+                    return true;
+                  }),
+              description:
+                "REQUIRED: Minimum 1500 words of unique, city-specific content",
+            }),
+            defineField({
+              name: "metaTitle",
+              title: "Meta Title",
+              type: "string",
+              validation: (Rule) => Rule.required().max(60),
+              description:
+                "REQUIRED: Unique meta title (e.g., Product Name | City)",
+            }),
+            defineField({
+              name: "metaDescription",
+              title: "Meta Description",
+              type: "text",
+              rows: 3,
+              validation: (Rule) => Rule.required().max(160),
+              description: "REQUIRED: Unique meta description for this city",
+            }),
+            defineField({
+              name: "keywords",
+              title: "Keywords",
+              type: "array",
+              of: [{ type: "string" }],
+              options: {
+                layout: "tags",
+              },
+              description:
+                "Location-based keywords (e.g., product name + city)",
+            }),
+            defineField({
+              name: "published",
+              title: "Published",
+              type: "boolean",
+              initialValue: false,
+              description:
+                "Publish this location page (ensure all content is complete first)",
+            }),
+            defineField({
+              name: "enableIndexing",
+              title: "Enable Search Engine Indexing",
+              type: "boolean",
+              initialValue: false,
+              description:
+                "⚠️ PHASE B: Enable after content quality is validated. Keep FALSE during Phase A testing.",
+            }),
+          ],
+          preview: {
+            select: {
+              city: "city",
+              published: "published",
+              enableIndexing: "enableIndexing",
+            },
+            prepare({ city, published, enableIndexing }) {
+              return {
+                title: city || "Unnamed Location",
+                subtitle: published
+                  ? enableIndexing
+                    ? "✅ Published & Indexed"
+                    : "🔒 Published (noindex)"
+                  : "📝 Draft",
+              };
+            },
+          },
+        }),
+      ],
     }),
     defineField({
       name: "seo",
@@ -138,13 +267,14 @@ export const productType = defineType({
           type: "text",
           rows: 3,
           validation: (Rule) => Rule.max(160),
-          description: "Override the default description for SEO (max 160 chars)",
+          description:
+            "Override the default description for SEO (max 160 chars)",
         }),
         defineField({
           name: "keywords",
           title: "Keywords",
           type: "array",
-          of: [{type: "string"}],
+          of: [{ type: "string" }],
           options: {
             layout: "tags",
           },
