@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
-import { PortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import ProductPageClient from "../ProductPageClient";
 import type { ProductFull } from "~/sanity/lib/productTypes";
@@ -277,26 +276,8 @@ export default async function LocationProductPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Location-Specific Content */}
-        <section className="py-16 bg-gradient-to-b from-white to-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl md:text-4xl font-extrabold text-charcoal mb-4">
-                {product.title} in {locationPage.city}
-              </h1>
-              <p className="text-lg text-gray-600">
-                Location-specific information and insights
-              </p>
-            </div>
-
-            <div className="prose prose-lg max-w-none bg-white p-8 rounded-lg shadow-sm">
-              <PortableText value={locationPage.uniqueContent} />
-            </div>
-          </div>
-        </section>
-
-        {/* Main Product Page (includes CTA at the end) */}
-        <ProductPageClient product={product} />
+        {/* Main Product Page with location content after FAQ */}
+        <ProductPageClient product={product} locationPage={locationPage} />
       </main>
     </>
   );
