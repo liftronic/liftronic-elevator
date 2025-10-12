@@ -146,17 +146,24 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
         {/* Left: Messaging */}
         <div className="max-w-2xl text-center lg:text-left">
           <h1 className="mt-6 sm:mt-4 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
-            <span className="text-accent drop-shadow-lg">Elevate</span>{" "}
-            Experience
+            <span className="text-accent drop-shadow-lg">
+              Redefining Vertical{" "}
+            </span>{" "}
+            Luxury
           </h1>
 
           <p className="mt-2 text-base sm:text-lg lg:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg animate-fade-in-delay-1">
             <span className="hidden sm:inline">
-              Design, installation, and maintenance engineered for precision,
-              safety, and seamless passenger experience.
+              “Redefining Vertical Luxury” reflects our commitment to
+              transforming every ride through engineering excellence — crafted
+              with precision, built for safety, and designed for luxury to
+              deliver a truly seamless passenger experience.
             </span>
             <span className="sm:hidden">
-              Design, install & maintain elevators with precision and care.
+              “Redefining Vertical Luxury” reflects our commitment to
+              transforming every ride through engineering excellence — crafted
+              with precision, built for safety, and designed for luxury to
+              deliver a truly seamless passenger experience.
             </span>
           </p>
 
@@ -186,7 +193,8 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
           </div>
           {/* Trust line */}
           <div className="hidden sm:block mt-4 sm:mt-6 text-sm text-white/70 animate-fade-in-delay-3">
-            Trusted by residential, commercial, and industrial projects.
+            Building Trust with Builders, Architects, Consultants, Technology
+            Partners, and Customers.
           </div>
 
           <div
