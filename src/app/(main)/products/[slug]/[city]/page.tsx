@@ -266,16 +266,6 @@ export default async function LocationProductPage({ params }: Props) {
       />
 
       <main>
-        {/* Location Badge */}
-        <div className="bg-accent/10 border-b border-accent/20 py-2">
-          <div className="container mx-auto px-4">
-            <p className="text-sm text-center text-charcoal">
-              📍 Now viewing: <strong>{product.title}</strong> in{" "}
-              <strong>{locationPage.city}</strong>
-            </p>
-          </div>
-        </div>
-
         {/* Main Product Page with location content after FAQ */}
         <ProductPageClient product={product} locationPage={locationPage} />
       </main>
