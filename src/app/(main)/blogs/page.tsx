@@ -57,18 +57,22 @@ export async function generateMetadata({
 async function getPaginatedPosts(page: number): Promise<BlogPost[]> {
   const start = (page - 1) * POSTS_PER_PAGE;
   const end = start + POSTS_PER_PAGE;
-  return client.fetch(postsQuery, { start, end }, { next: { revalidate: 60 } });
+  return client.fetch(
+    postsQuery,
+    { start, end },
+    { next: { revalidate: 3600 } }
+  );
 }
 
 async function getTotalPostsCount(): Promise<number> {
-  return client.fetch(postsCountQuery, {}, { next: { revalidate: 60 } });
+  return client.fetch(postsCountQuery, {}, { next: { revalidate: 3600 } });
 }
 
 async function getFeaturedPosts(): Promise<BlogPost[]> {
-  return client.fetch(featuredPostsQuery, {}, { next: { revalidate: 60 } });
+  return client.fetch(featuredPostsQuery, {}, { next: { revalidate: 3600 } });
 }
 
-export const revalidate = 60; // 60 minutes
+export const revalidate = 3600; // 3600 minutes
 export const dynamicParams = true;
 
 export default async function BlogPage({ searchParams }: Props) {
