@@ -10,7 +10,8 @@ export const certificateType = defineType({
       name: "title",
       title: "Certificate Title",
       type: "string",
-      description: "The name/title of the certificate (e.g., Certificate of Appreciation)",
+      description:
+        "The name/title of the certificate (e.g., Certificate of Appreciation)",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -24,24 +25,30 @@ export const certificateType = defineType({
       name: "issueDate",
       title: "Issue Date",
       type: "string",
-      description: "When the certificate was issued (e.g., October 2022 or 2022)",
+      description:
+        "When the certificate was issued (e.g., October 2022 or 2022)",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "certificateImage",
       title: "Certificate Image",
       type: "image",
-      description: "Upload the certificate image",
+      description: "Upload the certificate image. Max file size: 300KB.",
       options: {
         hotspot: true,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
     }),
     defineField({
       name: "imageAlt",
       title: "Image Alt Text",
       type: "string",
-      description: "Alternative text for the certificate image (for accessibility)",
+      description:
+        "Alternative text for the certificate image (for accessibility)",
     }),
     defineField({
       name: "description",
@@ -54,7 +61,8 @@ export const certificateType = defineType({
       name: "displayOrder",
       title: "Display Order",
       type: "number",
-      description: "Order in which this certificate should appear (lower numbers first)",
+      description:
+        "Order in which this certificate should appear (lower numbers first)",
       initialValue: 0,
       validation: (Rule) => Rule.required(),
     }),

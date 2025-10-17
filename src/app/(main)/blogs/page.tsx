@@ -57,22 +57,18 @@ export async function generateMetadata({
 async function getPaginatedPosts(page: number): Promise<BlogPost[]> {
   const start = (page - 1) * POSTS_PER_PAGE;
   const end = start + POSTS_PER_PAGE;
-  return client.fetch(
-    postsQuery,
-    { start, end },
-    { next: { revalidate: 3600 } }
-  );
+  return client.fetch(postsQuery, { start, end }, { next: { revalidate: 60 } });
 }
 
 async function getTotalPostsCount(): Promise<number> {
-  return client.fetch(postsCountQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(postsCountQuery, {}, { next: { revalidate: 60 } });
 }
 
 async function getFeaturedPosts(): Promise<BlogPost[]> {
-  return client.fetch(featuredPostsQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(featuredPostsQuery, {}, { next: { revalidate: 60 } });
 }
 
-export const revalidate = 3600; // 60 minutes
+export const revalidate = 60; // 60 minutes
 export const dynamicParams = true;
 
 export default async function BlogPage({ searchParams }: Props) {
@@ -102,7 +98,7 @@ export default async function BlogPage({ searchParams }: Props) {
         <div
           className="absolute inset-0 bg-cover opacity-10 sm:bg-cover bg-no-repeat bg-right md:opacity-60"
           style={{
-            backgroundImage: "url(/assets/service_banner.png)",
+            backgroundImage: "url(/illustrations/lift03.png)",
           }}
         />
 

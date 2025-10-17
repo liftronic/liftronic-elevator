@@ -28,6 +28,11 @@ export const testimonialType = defineType({
           description: "Important for accessibility and SEO",
         }),
       ],
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
     }),
     defineField({
       name: "testimonialDetail",

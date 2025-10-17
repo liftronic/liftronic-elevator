@@ -40,7 +40,7 @@ export const homePageSeoType = defineType({
       title: "Open Graph Image",
       type: "image",
       description:
-        "Image shown when sharing on social media (recommended: 1200x630px)",
+        "Image shown when sharing on social media (recommended: 1200x630px). Max file size: 300KB.",
       options: {
         hotspot: true,
       },
@@ -52,6 +52,11 @@ export const homePageSeoType = defineType({
           validation: (Rule) => Rule.required(),
         }),
       ],
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
     }),
     defineField({
       name: "canonicalUrl",

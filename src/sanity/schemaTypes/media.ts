@@ -39,13 +39,16 @@ export default defineType({
       },
       hidden: ({ document }) => document?.type !== "image",
       validation: (Rule) =>
-        Rule.custom((image, context) => {
+        Rule.custom(async (image, context) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const type = (context.document as any)?.type;
           if (type === "image" && !image) {
             return "Image is required for image type media";
           }
-          return true;
+
+          // Validate image size
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(image, context);
         }),
     }),
     defineField({
@@ -79,8 +82,13 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
       description:
-        "Thumbnail image for video (optional - YouTube thumbnail will be used if not provided)",
+        "Thumbnail image for video (optional - YouTube thumbnail will be used if not provided). Max file size: 300KB.",
       hidden: ({ document }) => document?.type !== "video",
     }),
     defineField({

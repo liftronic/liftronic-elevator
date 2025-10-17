@@ -61,7 +61,13 @@ export const serviceType = defineType({
       name: "image",
       title: "Service Image",
       type: "image",
-      description: "Main image for the service page and cards",
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
+      description:
+        "Main image for the service page and cards. Max file size: 300KB.",
       options: {
         hotspot: true,
       },
@@ -156,7 +162,8 @@ export const serviceType = defineType({
           type: "text",
           rows: 3,
           validation: (Rule) => Rule.max(160),
-          description: "Override the default description for SEO (max 160 chars)",
+          description:
+            "Override the default description for SEO (max 160 chars)",
         }),
         defineField({
           name: "keywords",
@@ -176,7 +183,8 @@ export const serviceType = defineType({
       type: "number",
       initialValue: 0.8,
       validation: (Rule) => Rule.min(0.0).max(1.0).precision(1),
-      description: "SEO priority in sitemap (0.0-1.0, higher = more important). Default: 0.8",
+      description:
+        "SEO priority in sitemap (0.0-1.0, higher = more important). Default: 0.8",
     }),
     defineField({
       name: "changeFrequency",

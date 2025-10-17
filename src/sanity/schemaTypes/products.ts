@@ -86,7 +86,12 @@ export const productType = defineType({
           title: "Alternative text",
         }),
       ],
-      description: "Featured image for the product",
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
+      description: "Featured image for the product. Max file size: 300KB.",
     }),
     defineField({
       name: "gallery",
@@ -107,7 +112,24 @@ export const productType = defineType({
           ],
         },
       ],
-      description: "Additional product images for gallery",
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          if (!Array.isArray(value)) return true;
+
+          const { validateImageSize } = await import("../lib/imageValidation");
+
+          // Validate each image in the gallery
+          for (const image of value) {
+            const result = await validateImageSize(image, context);
+            if (result !== true) {
+              return result; // Return error message if validation fails
+            }
+          }
+
+          return true;
+        }),
+      description:
+        "Additional product images for gallery. Max file size: 300KB per image.",
     }),
     defineField({
       name: "featured",

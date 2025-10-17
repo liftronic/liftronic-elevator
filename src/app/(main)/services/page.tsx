@@ -45,7 +45,7 @@ export default async function ServicesPage() {
         <div
           className="absolute inset-0 bg-cover opacity-10 sm:bg-cover bg-no-repeat bg-right md:opacity-60"
           style={{
-            backgroundImage: "url(/illustrations/lift02.png)",
+            backgroundImage: "url(/illustrations/lift04.png)",
           }}
         />
 
