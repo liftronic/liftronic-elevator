@@ -162,7 +162,7 @@ export default function Services({ services: servicesProp }: ServicesProps) {
           <p className="text-lg leading-relaxed text-white/75 md:text-xl">
             Liftronic delivers end-to-end elevator expertise, blending bespoke
             design, precise execution, and future-ready modernization for every
-            building we serve.
+            building we serve .
           </p>
         </div>
 
@@ -202,7 +202,9 @@ export default function Services({ services: servicesProp }: ServicesProps) {
             {visibleDesktop.map((service, offset) => (
               <Link
                 href={`/services/${service.slug}`}
-                key={`${service.title}-${(activeIndex + offset) % services.length}`}
+                key={`${service.title}-${
+                  (activeIndex + offset) % services.length
+                }`}
                 className="block"
               >
                 <motion.article
