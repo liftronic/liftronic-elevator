@@ -55,7 +55,7 @@ export default async function FooterSitemapLinks() {
 
   return (
     <section className="bg-soft py-8 border-t border-gray-200">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="space-y-4">
           {/* Main Pages */}
           <div className="flex items-center">

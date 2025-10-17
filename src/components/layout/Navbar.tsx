@@ -63,7 +63,7 @@ export default function Navbar() {
   useEffect(() => {
     if (isHomePage) {
       const onScroll = () => {
-        setScrolled(window.scrollY > 50);
+        setScrolled(window.scrollY > 300);
       };
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
@@ -175,8 +175,8 @@ export default function Navbar() {
                   ? "nav-link-underline relative text-brand font-bold"
                   : "nav-link-underline relative text-white font-bold"
                 : scrolled
-                ? "nav-link-underline relative text-gray-700 hover:text-brand"
-                : "nav-link-underline relative text-white/90 hover:text-white";
+                  ? "nav-link-underline relative text-gray-700 hover:text-brand"
+                  : "nav-link-underline relative text-white/90 hover:text-white";
 
               return (
                 <Link
@@ -256,8 +256,8 @@ export default function Navbar() {
                         ? "py-3 px-4 rounded-lg bg-brand/10 text-brand font-bold"
                         : "py-3 px-4 rounded-lg bg-white/20 text-white font-bold"
                       : scrolled
-                      ? "py-3 px-4 rounded-lg text-gray-700 hover:bg-accent/10 hover:text-brand"
-                      : "py-3 px-4 rounded-lg text-white/90 hover:bg-white/10 hover:text-white";
+                        ? "py-3 px-4 rounded-lg text-gray-700 hover:bg-accent/10 hover:text-brand"
+                        : "py-3 px-4 rounded-lg text-white/90 hover:bg-white/10 hover:text-white";
 
                     return (
                       <Link

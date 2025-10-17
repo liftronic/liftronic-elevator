@@ -145,7 +145,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
 
         {/* Left: Messaging */}
         <div className="max-w-2xl text-center lg:text-left">
-          <h1 className="mt-6 sm:mt-4 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
+          <h1 className="mt-6 sm:mt-4 lg:mt-8 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
             <span className="text-accent drop-shadow-lg">
               Redefining Vertical{" "}
             </span>{" "}
