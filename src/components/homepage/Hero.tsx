@@ -137,7 +137,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
         {/* === LEFT TEXT === */}
         <div className="relative z-10 max-w-2xl text-center lg:text-left">
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold leading-tight tracking-tight animate-fade-in">
-            <span className="bg-gradient-to-b from-accent to-white bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent">
               Redefining Vertical Luxury
             </span>
           </h1>
