@@ -95,7 +95,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
   return (
     <section
       id="hero-section"
-      className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden overflow-x-hidden"
+      className="relative h-[100svh] min-h-[420px] sm:min-h-[520px] md:min-h-[620px] w-full overflow-hidden overflow-x-hidden pt-12 sm:pt-16 lg:pt-28"
     >
       {/* hide native scrollbars for small horizontal scroll areas (mobile socials) */}
       <style>{`.hide-scrollbar::-webkit-scrollbar{display:none}.hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x;}`}</style>
@@ -132,7 +132,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
         <div className="absolute inset-0 [background:radial-gradient(60%_60%_at_20%_30%,rgba(42,227,148,0.12),transparent_60%)]" />
       </div>
 
-      <div className="relative h-full container mx-auto px-6 md:px-4 flex items-center justify-center lg:justify-between gap-8">
+      <div className="relative h-full container mx-auto px-6 md:px-4 flex items-center justify-center lg:justify-between lg:items-start gap-8">
         {/* Decorative blobs */}
         <div
           className="pointer-events-none hidden lg:block absolute -top-12 -right-24 w-[380px] h-[380px] rounded-full bg-gradient-to-br from-accent/30 to-indigo-600/20 blur-3xl opacity-60 transform rotate-12"
@@ -145,14 +145,14 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
 
         {/* Left: Messaging */}
         <div className="max-w-2xl text-center lg:text-left">
-          <h1 className="mt-6 sm:mt-4 lg:mt-8 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in">
+          <h1 className="mt-4 sm:mt-4 lg:mt-6 text-lg sm:text-xl lg:text-2xl xl:text-3xl leading-tight font-extrabold text-white tracking-tight drop-shadow-2xl animate-fade-in break-words">
             <span className="text-accent drop-shadow-lg">
               Redefining Vertical{" "}
             </span>{" "}
             Luxury
           </h1>
 
-          <p className="mt-2 text-base sm:text-lg lg:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg animate-fade-in-delay-1">
+          <p className="mt-2 text-lg sm:text-xl lg:text-2xl text-white font-medium max-w-[44ch] drop-shadow-lg animate-fade-in-delay-1">
             <span className="hidden sm:inline">
               “Redefining Vertical Luxury” reflects our commitment to
               transforming every ride through engineering excellence — crafted
