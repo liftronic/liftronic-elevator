@@ -194,14 +194,14 @@ export const productType = defineType({
 
                     const wordCount = text.trim().split(/\s+/).length;
 
-                    if (wordCount < 1500) {
-                      return `Content must be at least 1500 words to avoid duplicate content penalties. Current: ${wordCount} words.`;
+                    if (wordCount < 500) {
+                      return `Content must be at least 500 words to avoid duplicate content penalties. Current: ${wordCount} words.`;
                     }
 
                     return true;
                   }),
               description:
-                "REQUIRED: Minimum 1500 words of unique, city-specific content",
+                "REQUIRED: Minimum 500 words of unique, city-specific content",
             }),
             defineField({
               name: "metaTitle",

@@ -31,7 +31,10 @@ type ProductPageClientProps = {
   locationPage?: LocationPageData;
 };
 
-export default function ProductPageClient({ product, locationPage }: ProductPageClientProps) {
+export default function ProductPageClient({
+  product,
+  locationPage,
+}: ProductPageClientProps) {
   const { transitionTo } = useViewTransition();
   const router = useRouter();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
@@ -307,6 +310,43 @@ export default function ProductPageClient({ product, locationPage }: ProductPage
         </section>
       )}
 
+      {/* Location-Specific Content Section - After FAQ */}
+      {locationPage && (
+        <section className="py-20 md:py-28 bg-gradient-to-b from-white to-gray-50 border-t border-gray-200/60">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-12 lg:mb-16"
+            >
+              <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-6">
+                <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                  📍 {locationPage.city}
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal mb-4 leading-tight">
+                {product.title} in {locationPage.city}
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl leading-relaxed">
+                Location-specific information and insights about {product.title}{" "}
+                availability and services in {locationPage.city}
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <PortableText value={locationPage.uniqueContent} />
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {product.faqs && product.faqs.length > 0 && (
         <section className="py-20 md:py-28 bg-gradient-to-br from-gray-50/50 via-white to-gray-50/30 border-t border-gray-200/60">
           <div className="container mx-auto px-4">
@@ -331,43 +371,6 @@ export default function ProductPageClient({ product, locationPage }: ProductPage
               </p>
             </motion.div>
             <FAQ faqs={product.faqs} />
-          </div>
-        </section>
-      )}
-
-      {/* Location-Specific Content Section - After FAQ */}
-      {locationPage && (
-        <section className="py-20 md:py-28 bg-gradient-to-b from-white to-gray-50 border-t border-gray-200/60">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mb-12 lg:mb-16"
-            >
-              <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-6">
-                <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                  📍 {locationPage.city}
-                </span>
-              </div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal mb-4 leading-tight">
-                {product.title} in {locationPage.city}
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl leading-relaxed">
-                Location-specific information and insights about {product.title} availability and services in {locationPage.city}
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="prose prose-lg max-w-none bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-gray-200/60"
-            >
-              <PortableText value={locationPage.uniqueContent} />
-            </motion.div>
           </div>
         </section>
       )}
