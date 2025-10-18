@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getSocial } from "~/sanity/utils/getSocials";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getCompanyInfo } from "~/sanity/utils/getAboutUs";
@@ -5,6 +6,8 @@ import { client } from "~/sanity/lib/client";
 import { homePageDataQuery } from "~/sanity/lib/queries";
 import type { HomePageData } from "~/sanity/lib/homePageTypes";
 import { getFeaturedServices } from "~/sanity/utils/getServices";
+import { getHomePageSeo, getOgImageUrl } from "~/sanity/utils/getHomePageSeo";
+import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
 import Hero from "~/components/homepage/Hero";
 import AboutUs from "~/components/homepage/AboutUs";
 import ProductsInteractive from "~/components/products/ProductsInteractive";
@@ -13,36 +16,237 @@ import ClientsMarquee from "~/components/homepage/ClientsMarquee";
 import MediaPreview from "~/components/homepage/MediaPreview";
 import BlogSection from "~/components/homepage/BlogSection";
 import Testimonials from "~/components/homepage/Testimonials";
+import FAQSection from "~/components/homepage/FAQSection";
+import SEOContentSection from "~/components/homepage/SEOContentSection";
 import ContactSection from "~/components/homepage/ContactSection";
+import FooterSitemapLinks from "~/components/layout/FooterSitemapLinks";
 
 // ISR - revalidate every 60 minutes (3600 seconds)
 export const revalidate = 3600;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seoData = await getHomePageSeo();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  // Fallback defaults if no SEO data in Sanity
+  const title =
+    seoData?.metaTitle ||
+    "Liftronic Elevator - Premium Elevator & Lift Solutions";
+  const description =
+    seoData?.metaDescription ||
+    "Leading elevator manufacturer in India. We provide design, installation, maintenance, and modernization services for passenger lifts, home elevators, and commercial lift systems.";
+  const keywords = seoData?.keywords || [
+    "elevator manufacturer",
+    "lift installation",
+    "elevator maintenance",
+    "home elevator",
+    "commercial lift",
+    "elevator modernization",
+    "lift service India",
+  ];
+  const ogImageUrl = seoData?.ogImage
+    ? getOgImageUrl(seoData.ogImage)
+    : `${siteUrl}/liftronic.png`;
+
+  return {
+    title,
+    description,
+    keywords: keywords.join(", "),
+    alternates: {
+      canonical: seoData?.canonicalUrl || siteUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: siteUrl,
+      siteName: "Liftronic Elevator",
+      images: [
+        {
+          url: ogImageUrl || `${siteUrl}/liftronic.png`,
+          width: 1200,
+          height: 630,
+          alt: seoData?.ogImage?.alt || "Liftronic Elevator Solutions",
+        },
+      ],
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImageUrl || `${siteUrl}/liftronic.png`],
+    },
+    robots: {
+      index: seoData?.robotsIndex ?? true,
+      follow: seoData?.robotsFollow ?? true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  };
+}
 
 async function getHomePageData(): Promise<HomePageData> {
   return client.fetch(homePageDataQuery, {}, { next: { revalidate: 3600 } });
 }
 
 export default async function Home() {
-  const [socials, contactInfo, companyInfo, homeData, services] =
-    await Promise.all([
-      getSocial(),
-      getContactInfo(),
-      getCompanyInfo(),
-      getHomePageData(),
-      getFeaturedServices().catch(() => []),
-    ]);
+  const [
+    socials,
+    contactInfo,
+    companyInfo,
+    homeData,
+    services,
+    seoData,
+    homePageSettings,
+  ] = await Promise.all([
+    getSocial(),
+    getContactInfo(),
+    getCompanyInfo(),
+    getHomePageData(),
+    getFeaturedServices().catch(() => []),
+    getHomePageSeo(),
+    getHomePageSettings(),
+  ]);
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+  // Organization JSON-LD (enhanced from layout)
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: seoData?.structuredData?.organizationName || "Liftronic Elevator",
+    description:
+      seoData?.structuredData?.organizationDescription ||
+      "Leading elevator and lift solutions provider in India",
+    url: siteUrl,
+    logo: `${siteUrl}/liftronic.png`,
+    sameAs: socials.map((s) => s.url).filter(Boolean),
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: contactInfo?.email || "info@liftronicelevator.com",
+      telephone: contactInfo?.phone || "+91-22-2567-8910",
+      areaServed: "IN",
+      availableLanguage: ["en", "hi"],
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: homeData.testimonials.length.toString(),
+    },
+  };
+
+  // LocalBusiness JSON-LD
+  const localBusinessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    name: seoData?.structuredData?.organizationName || "Liftronic Elevator",
+    image: `${siteUrl}/liftronic.png`,
+    "@id": siteUrl,
+    url: siteUrl,
+    telephone: contactInfo?.phone || "+91-22-2567-8910",
+    email: contactInfo?.email || "info@liftronicelevator.com",
+    address: contactInfo?.address
+      ? {
+          "@type": "PostalAddress",
+          streetAddress: contactInfo.address,
+          addressLocality: "Mumbai",
+          addressRegion: "Maharashtra",
+          addressCountry: "IN",
+        }
+      : undefined,
+    priceRange: "₹₹₹",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: homeData.testimonials.length.toString(),
+    },
+  };
+
+  // ItemList JSON-LD for featured products
+  const productListJsonLd =
+    homeData.featuredProducts.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: homeData.featuredProducts.map((product, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+              "@type": "Product",
+              name: product.title,
+              description: product.description,
+              url: `${siteUrl}/products/${product.slug}`,
+            },
+          })),
+        }
+      : null;
+
+  // FAQPage JSON-LD for SEO
+  const faqPageJsonLd =
+    homePageSettings.showFaqSection && homePageSettings.featuredFaqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: homePageSettings.featuredFaqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
 
   return (
-    <main suppressHydrationWarning>
-      <Hero socials={socials} contactInfo={contactInfo} />
-      <AboutUs companyInfo={companyInfo} />
-      <Services services={services} />
-      <ProductsInteractive products={homeData.featuredProducts} />
-      <ClientsMarquee clients={homeData.clients} />
-      <MediaPreview mediaItems={homeData.featuredMedia} />
-      <BlogSection blogs={homeData.featuredBlogs} />
-      <Testimonials testimonials={homeData.testimonials} />
-      <ContactSection contactInfo={contactInfo} />
-    </main>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessJsonLd),
+        }}
+      />
+      {productListJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(productListJsonLd),
+          }}
+        />
+      )}
+      {faqPageJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd) }}
+        />
+      )}
+      <main suppressHydrationWarning>
+        <Hero socials={socials} contactInfo={contactInfo} />
+        <AboutUs companyInfo={companyInfo} />
+        <Services services={services} />
+        <ProductsInteractive products={homeData.featuredProducts} />
+        <ClientsMarquee clients={homeData.clients} />
+        <MediaPreview mediaItems={homeData.featuredMedia} />
+        <BlogSection blogs={homeData.featuredBlogs} />
+        <Testimonials testimonials={homeData.testimonials} />
+        {homePageSettings.showFaqSection &&
+          homePageSettings.featuredFaqs.length > 0 && (
+            <FAQSection faqs={homePageSettings.featuredFaqs} />
+          )}
+        {homePageSettings.showSeoContentSection &&
+          homePageSettings.seoContentSections.length > 0 && (
+            <SEOContentSection sections={homePageSettings.seoContentSections} />
+          )}
+        <ContactSection contactInfo={contactInfo} />
+      </main>
+      <FooterSitemapLinks />
+    </>
   );
 }

@@ -28,7 +28,7 @@ export default function Breadcrumb({ title, items }: BreadcrumbProps) {
   const breadcrumbItems = items || defaultItems;
 
   return (
-    <div>
+    <div className="mt-20 md:mt-0">
       <div className="container">
         <nav
           className="flex items-center gap-2 text-sm"

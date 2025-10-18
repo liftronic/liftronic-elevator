@@ -57,16 +57,16 @@ export default function Features({ features }: FeaturesProps) {
 
                 <div className="relative z-10 space-y-6">
                   {/* Icon Container */}
-                  <div className="relative inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 shadow-md transition-all duration-300 group-hover:rotate-1 group-hover:scale-105 group-hover:shadow-accent/15">
+                  <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/20 to-accent/10 shadow-md transition-all duration-300 group-hover:rotate-1 group-hover:scale-105 group-hover:shadow-accent/15">
                     {/* Background glow effect */}
                     <div className="absolute inset-0 rounded-2xl bg-accent/5 blur-xl transition-all duration-300 group-hover:bg-accent/5" />
 
                     {/* Icon */}
                     <div className="relative z-10">
                       {IconComponent ? (
-                        <IconComponent className="h-8 w-8 text-accent drop-shadow-sm transition-all duration-200" />
+                        <IconComponent className="h-6 w-6 text-accent drop-shadow-sm transition-all duration-200" />
                       ) : (
-                        <span className="text-3xl filter drop-shadow-sm">
+                        <span className="text-2xl filter drop-shadow-sm">
                           {feature.icon}
                         </span>
                       )}

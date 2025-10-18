@@ -80,13 +80,13 @@ export default function TeamSection({ members }: TeamSectionProps) {
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
               {/* Image Section */}
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-80 overflow-hidden bg-gray-100">
                 {member.image ? (
                   <Image
                     src={member.image}
                     alt={member.name}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-contain object-top group-hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     placeholder={member.imageLqip ? "blur" : undefined}
                     blurDataURL={member.imageLqip || undefined}
@@ -98,7 +98,7 @@ export default function TeamSection({ members }: TeamSectionProps) {
                     </span>
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 {/* Contact Icons Overlay */}
                 <div className="absolute bottom-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

@@ -1,6 +1,9 @@
+import Script from "next/script";
+import NextTopLoader from "nextjs-toploader";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
 import WhatsAppButton from "~/components/WhatsAppButton";
+import DownloadCatalogButton from "~/components/DownloadCatalogButton";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -9,6 +12,17 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
+      <NextTopLoader
+        color="#2ae394"
+        initialPosition={0.08}
+        crawlSpeed={200}
+        height={3}
+        crawl={true}
+        showSpinner={false}
+        easing="ease"
+        speed={200}
+        shadow="0 0 10px #2ae394,0 0 5px #2ae394"
+      />
       <Navbar />
       {children}
       <Footer />
@@ -16,6 +30,9 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         whatsappNumber={contactInfo?.whatsappNumber}
         whatsappMessage={contactInfo?.whatsappMessage}
       />
+      <DownloadCatalogButton />
+      {/* Tally embed script */}
+      <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
     </div>
   );
 };

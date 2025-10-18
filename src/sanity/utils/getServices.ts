@@ -59,7 +59,10 @@ export async function getServiceBySlug(
     featured,
     features,
     specifications,
-    "faqs": *[_type == "faq" && references(^._id)] | order(_createdAt asc) {
+    "seoTitle": seo.metaTitle,
+    "seoDescription": seo.metaDescription,
+    "seoKeywords": seo.keywords,
+    "faqs": faqs[]-> {
       question,
       answer
     },

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Features from "~/components/Features";
-import ProductFAQ from "~/components/products/ProductFAQ";
+import FAQ from "~/components/FAQ";
 import Breadcrumb from "~/components/Breadcrumb";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
@@ -180,7 +180,31 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
       )}
 
       {service.faqs && service.faqs.length > 0 && (
-        <ProductFAQ faqs={service.faqs} />
+        <section className="py-20 md:py-28 bg-gradient-to-br from-gray-50/50 via-white to-gray-50/30 border-t border-gray-200/60">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-12 lg:mb-16"
+            >
+              <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-6">
+                <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                  FAQ
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal mb-4 leading-tight">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl leading-relaxed">
+                Everything you need to know about {service.title}. Can&apos;t
+                find what you&apos;re looking for? Contact our support team.
+              </p>
+            </motion.div>
+            <FAQ faqs={service.faqs} />
+          </div>
+        </section>
       )}
 
       <CallToActionSection

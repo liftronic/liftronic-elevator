@@ -1,9 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import React, { useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { useViewTransition } from "~/hooks/useViewTransition";
+import React from "react";
 
 type ServiceCardProps = {
   title: string;
@@ -32,46 +30,17 @@ export default function ServiceCard({
 }: ServiceCardProps) {
   const serviceHref =
     href || (serviceId ? `/services/${serviceId}` : "/#contact");
-  const { transitionTo } = useViewTransition();
-  const router = useRouter();
 
   // Determine the badge to display
   const displayBadge = featured ? "Featured" : badge;
-
-  const handleCardClick = (e: React.MouseEvent) => {
-    // Only trigger view transition for service pages, not contact links
-    if (serviceId) {
-      e.preventDefault();
-      transitionTo(serviceHref);
-    }
-  };
-
-  const handleMouseEnter = useCallback(() => {
-    // Prefetch the service page on hover for faster navigation
-    if (serviceId) {
-      router.prefetch(serviceHref);
-    }
-  }, [serviceId, serviceHref, router]);
-
-  const cardStyle = serviceId
-    ? ({
-        "--transition-name": `service-card-${serviceId}`,
-        "--image-transition-name": `service-image-${serviceId}`,
-        "--title-transition-name": `service-title-${serviceId}`,
-      } as React.CSSProperties)
-    : {};
 
   // Use the specified service image or fallback to placeholder
   const finalImageSrc = imageSrc || "/illustrations/lift02.png";
 
   return (
+    <Link href={serviceHref}>
     <div
-      className={`group relative overflow-hidden rounded-xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
-        serviceId ? "service-card cursor-pointer" : ""
-      } flex flex-col h-full`}
-      style={cardStyle}
-      onClick={handleCardClick}
-      onMouseEnter={handleMouseEnter}
+      className="group relative overflow-hidden rounded-xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full cursor-pointer"
     >
       {!!displayBadge && (
         <div className="absolute right-3 top-3 z-10">
@@ -87,9 +56,7 @@ export default function ServiceCard({
 
       {/* Image Container with better aspect ratio and styling */}
       <div
-        className={`relative aspect-[5/3] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 ${
-          serviceId ? "service-image" : ""
-        }`}
+        className="relative aspect-[5/3] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100"
       >
         <Image
           src={finalImageSrc}
@@ -108,9 +75,7 @@ export default function ServiceCard({
       <div className="p-6 flex flex-col flex-1">
         <div className="flex-grow">
           <h3
-            className={`text-xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
-              serviceId ? "service-title" : ""
-            }`}
+            className="text-xl font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors"
           >
             {title}
           </h3>
@@ -135,71 +100,29 @@ export default function ServiceCard({
 
         {/* Action area with better alignment */}
         <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-100 flex-shrink-0">
-          {serviceId ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                transitionTo(serviceHref);
-              }}
-              className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-            >
-              Learn More
-            </button>
-          ) : (
-            <Link
-              href={serviceHref}
-              className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
-            >
-              Get Quote
-            </Link>
-          )}
+          <span className="inline-flex items-center rounded-lg bg-accent px-4 py-2 text-sm font-medium text-black transition-all hover:bg-accent/90 hover:shadow-sm">
+            {serviceId ? "Learn More" : "Get Quote"}
+          </span>
 
-          {serviceId ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                transitionTo(serviceHref);
-              }}
-              className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
+          <span className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1">
+            {serviceId ? "View Details" : "Learn more"}
+            <svg
+              className="ml-1 h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
             >
-              View Details
-              <svg
-                className="ml-1 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                />
-              </svg>
-            </button>
-          ) : (
-            <Link
-              href={serviceHref}
-              className="inline-flex items-center text-sm font-medium text-gray-500 transition-all hover:text-accent group-hover:translate-x-1"
-            >
-              Learn more
-              <svg
-                className="ml-1 h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                />
-              </svg>
-            </Link>
-          )}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+              />
+            </svg>
+          </span>
         </div>
       </div>
     </div>
+    </Link>
   );
 }

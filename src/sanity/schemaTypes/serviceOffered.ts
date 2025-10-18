@@ -61,7 +61,13 @@ export const serviceType = defineType({
       name: "image",
       title: "Service Image",
       type: "image",
-      description: "Main image for the service page and cards",
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
+      description:
+        "Main image for the service page and cards. Max file size: 300KB.",
       options: {
         hotspot: true,
       },
@@ -97,6 +103,13 @@ export const serviceType = defineType({
       ],
     }),
     defineField({
+      name: "faqs",
+      title: "FAQs",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "faq" }] }],
+      description: "Frequently asked questions for this service",
+    }),
+    defineField({
       name: "specifications",
       title: "Service Specifications",
       type: "array",
@@ -126,6 +139,67 @@ export const serviceType = defineType({
           },
         },
       ],
+    }),
+    defineField({
+      name: "seo",
+      title: "SEO Settings",
+      type: "object",
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
+      fields: [
+        defineField({
+          name: "metaTitle",
+          title: "Meta Title",
+          type: "string",
+          validation: (Rule) => Rule.max(60),
+          description: "Override the default title for SEO (max 60 chars)",
+        }),
+        defineField({
+          name: "metaDescription",
+          title: "Meta Description",
+          type: "text",
+          rows: 3,
+          validation: (Rule) => Rule.max(160),
+          description:
+            "Override the default description for SEO (max 160 chars)",
+        }),
+        defineField({
+          name: "keywords",
+          title: "Keywords",
+          type: "array",
+          of: [{ type: "string" }],
+          options: {
+            layout: "tags",
+          },
+          description: "SEO keywords for this service",
+        }),
+      ],
+    }),
+    defineField({
+      name: "sitemapPriority",
+      title: "Sitemap Priority",
+      type: "number",
+      initialValue: 0.8,
+      validation: (Rule) => Rule.min(0.0).max(1.0).precision(1),
+      description:
+        "SEO priority in sitemap (0.0-1.0, higher = more important). Default: 0.8",
+    }),
+    defineField({
+      name: "changeFrequency",
+      title: "Change Frequency",
+      type: "string",
+      options: {
+        list: [
+          { title: "Daily", value: "daily" },
+          { title: "Weekly", value: "weekly" },
+          { title: "Monthly", value: "monthly" },
+          { title: "Yearly", value: "yearly" },
+        ],
+      },
+      initialValue: "monthly",
+      description: "How often this service page typically updates",
     }),
   ],
   preview: {

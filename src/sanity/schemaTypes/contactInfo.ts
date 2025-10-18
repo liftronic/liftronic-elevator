@@ -57,12 +57,12 @@ export const contactInfoType = defineType({
       validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
     }),
     defineField({
-      name: "serviceArea",
-      title: "Service Area",
+      name: "headquarters",
+      title: "Headquarters",
       description:
-        "Text describing service coverage (e.g., Serving Mumbai, Pune & major metros)",
+        "Company headquarters address (e.g., Mumbai, Maharashtra, India)",
       type: "string",
-      initialValue: "Serving Mumbai, Pune & major metros",
+      initialValue: "Mumbai, Maharashtra, India",
     }),
     defineField({
       name: "whatsappNumber",
@@ -83,6 +83,20 @@ export const contactInfoType = defineType({
         "Default message that appears when user clicks WhatsApp button",
       type: "text",
       initialValue: "Hello! I'm interested in Liftronic Elevator services.",
+    }),
+    defineField({
+      name: "privacyPolicyUrl",
+      title: "Privacy Policy URL",
+      description: "Link to the privacy policy page",
+      type: "url",
+      validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
+    }),
+    defineField({
+      name: "termsOfServiceUrl",
+      title: "Terms of Service URL",
+      description: "Link to the terms of service page",
+      type: "url",
+      validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
     }),
   ],
   preview: {

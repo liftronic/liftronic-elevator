@@ -20,7 +20,11 @@ type MediaFiltersProps = {
   onFilteredItemsChange: (items: MediaItem[]) => void;
 };
 
-export default function MediaFilters({ items, onPreview, onFilteredItemsChange }: MediaFiltersProps) {
+export default function MediaFilters({
+  items,
+  onPreview,
+  onFilteredItemsChange,
+}: MediaFiltersProps) {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const filteredItems =
@@ -47,7 +51,7 @@ export default function MediaFilters({ items, onPreview, onFilteredItemsChange }
                   onClick={() => setSelectedCategory(category.key)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     selectedCategory === category.key
-                      ? "bg-accent text-white shadow-lg"
+                      ? "bg-accent text-black shadow-lg"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
                   whileHover={{ scale: 1.05 }}

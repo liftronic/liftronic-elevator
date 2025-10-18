@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import ProductCard from "~/components/products/ProductCard";
+import ProductCarousel from "~/components/products/ProductCarousel";
 import Breadcrumb from "~/components/Breadcrumb";
 import * as motion from "motion/react-client";
 import CallToActionSection from "~/components/CallToActionSection";
@@ -11,17 +11,20 @@ import type { Product } from "~/sanity/lib/productTypes";
 
 export const metadata: Metadata = {
   title: "Products - Elevator Solutions | Lift Solutions",
-  description: "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+  description:
+    "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
   openGraph: {
     title: "Elevate every building with precision - Products",
-    description: "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+    description:
+      "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
     type: "website",
     url: "/products",
   },
   twitter: {
     card: "summary_large_image",
     title: "Products - Elevator Solutions | Lift Solutions",
-    description: "A curated lineup spanning residential, commercial and industrial needs.",
+    description:
+      "A curated lineup spanning residential, commercial and industrial needs.",
   },
   alternates: {
     canonical: "/products",
@@ -33,7 +36,11 @@ async function getAllProducts(): Promise<Product[]> {
 }
 
 async function getFeaturedProducts(): Promise<Product[]> {
-  return client.fetch(featuredProductsQuery, {}, { next: { revalidate: 3600 } });
+  return client.fetch(
+    featuredProductsQuery,
+    {},
+    { next: { revalidate: 3600 } }
+  );
 }
 
 export const revalidate = 3600; // 60 minutes
@@ -43,6 +50,13 @@ export default async function ProductsPage() {
     getAllProducts(),
     getFeaturedProducts(),
   ]);
+
+  // Filter out featured products from all products
+  const featuredProductIds = new Set(featuredProducts.map((p) => p._id));
+  const nonFeaturedProducts = allProducts.filter(
+    (p) => !featuredProductIds.has(p._id)
+  );
+
   return (
     <main>
       {/* Page hero */}
@@ -78,21 +92,21 @@ export default async function ProductsPage() {
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
                 <motion.button
-                  className="btn btn-primary px-8 py-3"
+                  className="btn btn-primary px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FiMessageSquare className="text-base" />
+                  <FiMessageSquare className="text-sm md:text-base" />
                   Request a Quote
                 </motion.button>
               </Link>
               <Link href="/services">
                 <motion.button
-                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FiEye className="text-base" />
+                  <FiEye className="text-sm md:text-base" />
                   View Services
                 </motion.button>
               </Link>
@@ -105,32 +119,20 @@ export default async function ProductsPage() {
       {featuredProducts.length > 0 && (
         <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
           <div className="container mx-auto px-4">
-            <div className="mb-8">
+            <div className="mb-2">
               <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-4">
                 <span className="text-sm font-bold uppercase tracking-wider text-accent">
                   Featured Products
                 </span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                Popular solutions
-              </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {featuredProducts.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  title={product.title}
-                  summary={product.description}
-                  tags={product.tags?.map((tag) => tag.title) || []}
-                  productId={product.slug}
-                  badge="Featured"
-                  imageSrc={product.mainImage}
-                  imageAlt={product.imageAlt}
-                  blurDataURL={product.mainImageLqip}
-                />
-              ))}
-            </div>
+            <ProductCarousel
+              products={featuredProducts}
+              title="Popular products"
+              showAutoRotate={false}
+              mobileGrid={true}
+            />
           </div>
         </section>
       )}
@@ -138,30 +140,13 @@ export default async function ProductsPage() {
       {/* All Products Grid */}
       <section className="py-12 md:py-16 shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              All products
-            </h2>
-            <p className="mt-2 text-gray-600">
-              Browse our complete product lineup ({allProducts.length} products)
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {allProducts.map((product) => (
-              <ProductCard
-                key={product._id}
-                title={product.title}
-                summary={product.description}
-                tags={product.tags?.map((tag) => tag.title) || []}
-                productId={product.slug}
-                badge={product.featured ? "Featured" : undefined}
-                imageSrc={product.mainImage}
-                imageAlt={product.imageAlt}
-                blurDataURL={product.mainImageLqip}
-              />
-            ))}
-          </div>
+          <ProductCarousel
+            products={nonFeaturedProducts}
+            title="All products"
+            description={`Browse our complete product lineup (${nonFeaturedProducts.length} products)`}
+            showAutoRotate={false}
+            mobileGrid={true}
+          />
         </div>
       </section>
 

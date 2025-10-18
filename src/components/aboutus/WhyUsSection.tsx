@@ -1,37 +1,5 @@
-import type { ReactNode } from "react";
-import {
-  BiShield,
-  BiCog,
-  BiStar,
-  BiSupport,
-  BiCheckCircle,
-  BiGlobe,
-  BiWrench,
-  BiRocket,
-  BiTrendingUp,
-  BiHeart,
-} from "react-icons/bi";
+import { getIcon } from "~/sanity/utils/iconMapper";
 import type { WhyChooseUs } from "~/sanity/lib/aboutTypes";
-
-// Icon mapping function
-const getIcon = (iconName: string | undefined): ReactNode => {
-  if (!iconName) return <BiStar className="text-3xl" />;
-
-  const iconMap: Record<string, ReactNode> = {
-    star: <BiStar className="text-3xl" />,
-    shield: <BiShield className="text-3xl" />,
-    support: <BiSupport className="text-3xl" />,
-    cog: <BiCog className="text-3xl" />,
-    check: <BiCheckCircle className="text-3xl" />,
-    globe: <BiGlobe className="text-3xl" />,
-    wrench: <BiWrench className="text-3xl" />,
-    rocket: <BiRocket className="text-3xl" />,
-    trending: <BiTrendingUp className="text-3xl" />,
-    heart: <BiHeart className="text-3xl" />,
-  };
-
-  return iconMap[iconName.toLowerCase()] || <BiStar className="text-3xl" />;
-};
 
 // Fallback data
 const fallbackReasons: WhyChooseUs[] = [
@@ -161,7 +129,10 @@ export default function WhyUsSection({ reasons }: WhyUsSectionProps) {
                 {/* Icon */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-16 h-16 bg-accent/20 rounded-2xl flex items-center justify-center text-accent group-hover:scale-110 transition-transform duration-300">
-                    {getIcon(reason.icon)}
+                    {(() => {
+                      const Icon = getIcon(reason.icon || "star");
+                      return Icon ? <Icon className="text-3xl" /> : null;
+                    })()}
                   </div>
                 </div>
 

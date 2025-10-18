@@ -73,6 +73,11 @@ export const companyInfoType = defineType({
           type: "string",
         }),
       ],
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
     }),
     defineField({
       name: "stats",

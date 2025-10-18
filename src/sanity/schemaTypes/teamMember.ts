@@ -39,7 +39,11 @@ export const teamMemberType = defineType({
           type: "string",
         }),
       ],
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom(async (value, context) => {
+          const { validateImageSize } = await import("../lib/imageValidation");
+          return validateImageSize(value, context);
+        }),
     }),
     defineField({
       name: "email",

@@ -4,6 +4,12 @@ import type { MediaItem } from "./mediaTypes";
 import type { BlogPost } from "./blogTypes";
 import type { Testimonial } from "./testimonialTypes";
 
+export interface FAQ {
+  _id: string;
+  question: string;
+  answer: string;
+}
+
 export interface HomePageData {
   featuredProducts: Product[];
   clients: Client[];

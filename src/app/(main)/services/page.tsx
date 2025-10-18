@@ -37,10 +37,6 @@ export default async function ServicesPage() {
   // Fetch services from Sanity backend
   const services: ServiceOffered[] = await getServices();
 
-  // Separate featured and non-featured services
-  const featuredServices = services.filter((service) => service.featured);
-  const allServices = services;
-
   return (
     <main>
       {/* Page hero */}
@@ -49,7 +45,7 @@ export default async function ServicesPage() {
         <div
           className="absolute inset-0 bg-cover opacity-10 sm:bg-cover bg-no-repeat bg-right md:opacity-60"
           style={{
-            backgroundImage: "url(/illustrations/lift02.png)",
+            backgroundImage: "url(/illustrations/lift04.png)",
           }}
         />
 
@@ -77,21 +73,21 @@ export default async function ServicesPage() {
             <div className="mt-6 flex gap-3">
               <Link href="/#contact">
                 <motion.button
-                  className="btn btn-primary px-8 py-3"
+                  className="btn btn-primary px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FiMessageSquare className="text-base" />
+                  <FiMessageSquare className="text-sm md:text-base" />
                   Get Service Quote
                 </motion.button>
               </Link>
               <Link href="/products">
                 <motion.button
-                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-8 py-3"
+                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <FiEye className="text-base" />
+                  <FiEye className="text-sm md:text-base" />
                   View Products
                 </motion.button>
               </Link>
@@ -99,40 +95,6 @@ export default async function ServicesPage() {
           </div>
         </div>
       </section>
-
-      {/* Featured Services */}
-      {featuredServices.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
-          <div className="container mx-auto px-4">
-            <div className="mb-8">
-              <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-4">
-                <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                  Featured Services
-                </span>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                Popular solutions
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {featuredServices.map((service) => (
-                <ServiceCard
-                  key={service._id}
-                  title={service.title}
-                  summary={service.summary}
-                  tags={service.tags}
-                  serviceId={service.slug}
-                  badge="Featured"
-                  imageSrc={service.image}
-                  imageAlt={service.imageAlt}
-                  blurDataURL={service.imageLqip}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* All Services Grid */}
       <section className="py-12 md:py-16 shadow-sm">
@@ -142,12 +104,12 @@ export default async function ServicesPage() {
               All services
             </h2>
             <p className="mt-2 text-gray-600">
-              Browse our complete service lineup ({allServices.length} services)
+              Browse our complete service lineup ({services.length} services)
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {allServices.map((service) => (
+            {services.map((service) => (
               <ServiceCard
                 key={service._id}
                 title={service.title}

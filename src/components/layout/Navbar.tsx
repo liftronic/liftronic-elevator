@@ -1,16 +1,17 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState, MouseEvent } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState, MouseEvent, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { HiXMark } from "react-icons/hi2";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
 const navLinks = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
-  { href: "/media", label: "Media" },
+  { href: "/products/stiltz-homelifts", label: "Stiltz", highlight: true },
   { href: "/blogs", label: "Blogs" },
   { href: "/aboutus", label: "About Us" },
 ];
@@ -22,11 +23,47 @@ export default function Navbar() {
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(!isHomePage);
   const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  // Check if a link is active
+  const isLinkActive = (href: string) => {
+    // Exact match for homepage
+    if (href === "/" && pathname === "/") return true;
+
+    // For other routes, check if pathname starts with the href
+    // This handles both /products and /products/some-product
+    if (href !== "/" && pathname.startsWith(href)) return true;
+
+    return false;
+  };
+
+  // Handle click outside to close mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        open &&
+        navRef.current &&
+        !navRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (isHomePage) {
       const onScroll = () => {
-        setScrolled(window.scrollY > 50);
+        setScrolled(window.scrollY > 300);
       };
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
@@ -36,7 +73,7 @@ export default function Navbar() {
     }
   }, [isHomePage]);
 
-  const handleLinkClick = async (
+  const handleLinkClick = (
     e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
     href: string
   ) => {
@@ -49,7 +86,7 @@ export default function Navbar() {
 
       if (!isHomePage) {
         // navigate to home with hash, then scroll after navigation completes
-        await router.push(`/${href}`);
+        router.push(`/${href}`);
         // give browser a tick to render / mount elements, then smooth-scroll
         setTimeout(() => scrollTo(href), 80);
         return;
@@ -64,7 +101,7 @@ export default function Navbar() {
     setOpen(false);
   };
 
-  const handleLogoClick = async (e: MouseEvent<HTMLAnchorElement>) => {
+  const handleLogoClick = (e: MouseEvent<HTMLAnchorElement>) => {
     // Prevent full page reload. Smooth-scroll to top on homepage,
     // otherwise navigate to homepage then scroll.
     e.preventDefault();
@@ -81,7 +118,7 @@ export default function Navbar() {
     }
 
     // navigate to home and then scroll a tick later
-    await router.push("/");
+    router.push("/");
     setTimeout(() => {
       try {
         scrollTo("body");
@@ -94,6 +131,7 @@ export default function Navbar() {
   return (
     <div className="fixed top-4 inset-x-0 z-50 px-5">
       <div
+        ref={navRef}
         className={`mx-auto container transition-all duration-300 rounded-2xl ${
           scrolled || open ? "glass-solid shadow-elevate" : "glass-transparent"
         }`}
@@ -123,21 +161,47 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium">
-            {navLinks.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={(e) => handleLinkClick(e, l.href)}
-                className={`nav-link-underline ${
-                  scrolled
-                    ? "text-gray-700 hover:text-brand"
-                    : "text-white/90 hover:text-white"
-                }`}
-              >
-                {l.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-8 text-sm font-semibold">
+            {navLinks.map((l) => {
+              const isActive = isLinkActive(l.href);
+              const isFeatured = Boolean(l.highlight);
+
+              const featuredClasses = scrolled
+                ? "relative inline-flex items-center gap-2 rounded-full bg-brand px-4 py-1.5 text-white shadow-brand/30 transition-all hover:shadow-brand/40 hover:-translate-y-0.5"
+                : "relative inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-white shadow-white/30 transition-all hover:bg-white/30 hover:-translate-y-0.5";
+
+              const standardClasses = isActive
+                ? scrolled
+                  ? "nav-link-underline relative text-brand font-bold"
+                  : "nav-link-underline relative text-white font-bold"
+                : scrolled
+                  ? "nav-link-underline relative text-gray-700 hover:text-brand"
+                  : "nav-link-underline relative text-white/90 hover:text-white";
+
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={(e) => handleLinkClick(e, l.href)}
+                  className={isFeatured ? featuredClasses : standardClasses}
+                >
+                  <span>{l.label}</span>
+                  {isFeatured && (
+                    <span className="text-[10px] uppercase tracking-wide text-white/80">
+                      Featured
+                    </span>
+                  )}
+                  {/* Active indicator */}
+                  {!isFeatured && isActive && (
+                    <span
+                      className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
+                        scrolled ? "bg-brand" : "bg-white"
+                      }`}
+                    />
+                  )}
+                </Link>
+              );
+            })}
             <Link
               href="#contact"
               onClick={(e) => handleLinkClick(e, "#contact")}
@@ -148,19 +212,19 @@ export default function Navbar() {
           </div>
 
           <button
-            aria-label="Open Menu"
+            aria-label={open ? "Close Menu" : "Open Menu"}
             className={`md:hidden inline-flex items-center justify-center size-10 rounded-xl transition-colors ${
               scrolled
                 ? "text-gray-700 hover:bg-accent/10"
                 : "text-white hover:bg-white/10"
-            } ${open ? "menu-icon-open" : ""}`}
+            }`}
             onClick={() => setOpen((v) => !v)}
           >
-            <div className="relative w-5 h-4 menu-icon-animate">
-              <span className="absolute inset-x-0 top-0 h-0.5 bg-current" />
-              <span className="absolute inset-x-0 top-1.5 h-0.5 bg-current" />
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-current" />
-            </div>
+            {open ? (
+              <HiXMark className="w-6 h-6" />
+            ) : (
+              <RxHamburgerMenu className="w-6 h-6" />
+            )}
           </button>
         </div>
 
@@ -179,20 +243,48 @@ export default function Navbar() {
                 }`}
               >
                 <div className="flex flex-col gap-2 pt-4">
-                  {navLinks.map((l) => (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      onClick={(e) => handleLinkClick(e, l.href)}
-                      className={`py-3 px-4 rounded-lg transition-colors font-medium ${
-                        scrolled
-                          ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
-                          : "text-white/90 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      {l.label}
-                    </Link>
-                  ))}
+                  {navLinks.map((l) => {
+                    const isActive = isLinkActive(l.href);
+                    const isFeatured = Boolean(l.highlight);
+
+                    const featuredClasses = scrolled
+                      ? "relative flex items-center justify-between gap-2 rounded-lg bg-brand px-4 py-3 text-white shadow-brand/30"
+                      : "relative flex items-center justify-between gap-2 rounded-lg bg-white/20 px-4 py-3 text-white shadow-white/25";
+
+                    const standardClasses = isActive
+                      ? scrolled
+                        ? "py-3 px-4 rounded-lg bg-brand/10 text-brand font-bold"
+                        : "py-3 px-4 rounded-lg bg-white/20 text-white font-bold"
+                      : scrolled
+                        ? "py-3 px-4 rounded-lg text-gray-700 hover:bg-accent/10 hover:text-brand"
+                        : "py-3 px-4 rounded-lg text-white/90 hover:bg-white/10 hover:text-white";
+
+                    return (
+                      <Link
+                        key={l.href}
+                        href={l.href}
+                        onClick={(e) => handleLinkClick(e, l.href)}
+                        className={`transition-colors font-semibold relative ${
+                          isFeatured ? featuredClasses : standardClasses
+                        }`}
+                      >
+                        <span>{l.label}</span>
+                        {isFeatured && (
+                          <span className="text-[10px] uppercase tracking-wide text-white/80">
+                            Featured
+                          </span>
+                        )}
+                        {/* Active indicator for mobile */}
+                        {!isFeatured && isActive && (
+                          <span
+                            className={`absolute left-0 top-0 bottom-0 w-1 rounded-r-full ${
+                              scrolled ? "bg-brand" : "bg-white"
+                            }`}
+                          />
+                        )}
+                      </Link>
+                    );
+                  })}
                   <button
                     onClick={(e) => handleLinkClick(e, "#contact")}
                     className="btn btn-primary w-full mt-2"
