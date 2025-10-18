@@ -172,6 +172,115 @@ export const homePageSettingsType = defineType({
       initialValue: true,
       description: "Toggle to show/hide the SEO content section on the home page",
     }),
+    // Contact Form Configuration
+    defineField({
+      name: "productOptions",
+      title: "Product Options for Contact Form",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "List of products to show in the contact form dropdown",
+      initialValue: [
+        "Passenger Elevator",
+        "Freight Elevator",
+        "Home Elevator",
+        "Hospital Elevator",
+        "Capsule Elevator",
+        "Escalator",
+        "Moving Walkway",
+        "Other",
+      ],
+      validation: (Rule) => Rule.min(1).required(),
+    }),
+    // Google Sheets Configuration
+    defineField({
+      name: "contactFormGoogleSheetUrl",
+      title: "Contact Form Google Sheet URL",
+      type: "url",
+      description: "Google Sheets webhook URL for contact form submissions",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["https"],
+        }),
+    }),
+    defineField({
+      name: "catalogFormGoogleSheetUrl",
+      title: "Catalog Form Google Sheet URL",
+      type: "url",
+      description: "Google Sheets webhook URL for catalog download form submissions",
+      validation: (Rule) =>
+        Rule.uri({
+          scheme: ["https"],
+        }),
+    }),
+    // Email Configuration
+    defineField({
+      name: "emailConfig",
+      title: "Email Configuration (Nodemailer)",
+      type: "object",
+      description: "SMTP settings for sending form notification emails",
+      fields: [
+        defineField({
+          name: "host",
+          title: "SMTP Host",
+          type: "string",
+          description: "e.g., smtp.gmail.com",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "port",
+          title: "SMTP Port",
+          type: "number",
+          description: "Common ports: 587 (TLS), 465 (SSL), 25 (non-secure)",
+          initialValue: 587,
+          validation: (Rule) => Rule.required().integer().positive(),
+        }),
+        defineField({
+          name: "secure",
+          title: "Use SSL/TLS",
+          type: "boolean",
+          description: "Enable for port 465, disable for port 587",
+          initialValue: false,
+        }),
+        defineField({
+          name: "user",
+          title: "SMTP Username",
+          type: "string",
+          description: "Email address to send from",
+          validation: (Rule) => Rule.required().email(),
+        }),
+        defineField({
+          name: "password",
+          title: "SMTP Password",
+          type: "string",
+          description: "App password or SMTP password (stored securely in Sanity)",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "recipientEmail",
+          title: "Recipient Email",
+          type: "string",
+          description: "Email address to receive form submissions",
+          validation: (Rule) => Rule.required().email(),
+        }),
+        defineField({
+          name: "fromName",
+          title: "From Name",
+          type: "string",
+          description: "Display name for outgoing emails (e.g., 'Liftronic Elevators')",
+          initialValue: "Liftronic Elevators",
+        }),
+      ],
+    }),
+    // Catalog PDF
+    defineField({
+      name: "catalogPdf",
+      title: "Catalog PDF File",
+      type: "file",
+      description: "Upload the catalog PDF file to be downloaded",
+      options: {
+        accept: ".pdf",
+      },
+    }),
   ],
   preview: {
     prepare() {

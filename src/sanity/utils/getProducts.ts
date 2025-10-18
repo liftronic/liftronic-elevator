@@ -18,7 +18,7 @@ export async function getProducts(): Promise<Product[]> {
       question,
       answer
     },
-    keyFeatures[]->{
+    keyFeatures[0...6]->{
       _id,
       title,
       description,

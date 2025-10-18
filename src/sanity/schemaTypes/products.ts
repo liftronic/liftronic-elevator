@@ -53,6 +53,8 @@ export const productType = defineType({
       title: "Key Features",
       type: "array",
       of: [{ type: "reference", to: [{ type: "keyFeature" }] }],
+      validation: (Rule) => Rule.max(6).error("Maximum 6 key features allowed"),
+      description: "Select up to 6 key features for this product",
     }),
     defineField({
       name: "specifications",

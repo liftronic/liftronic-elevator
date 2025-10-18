@@ -1,17 +1,8 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FiX } from "react-icons/fi";
-
-// Extend Window interface for Tally
-declare global {
-  interface Window {
-    Tally?: {
-      loadEmbeds: () => void;
-      config?: Record<string, unknown>;
-    };
-  }
-}
+import CatalogForm from "~/components/CatalogForm";
 
 interface CatalogModalProps {
   isOpen: boolean;
@@ -19,65 +10,6 @@ interface CatalogModalProps {
 }
 
 export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
-  const [formLoaded, setFormLoaded] = useState(false);
-  const [formError, setFormError] = useState(false);
-
-  // Load Tally embed script and reinitialize on mount
-  useEffect(() => {
-    if (!isOpen) return;
-
-    let timeoutId: NodeJS.Timeout;
-
-    const initializeTallyForm = () => {
-      if (window.Tally && typeof window.Tally.loadEmbeds === "function") {
-        window.Tally.loadEmbeds();
-        setFormLoaded(true);
-
-        // Verify form loaded successfully
-        timeoutId = setTimeout(() => {
-          const iframe = document.querySelector(
-            'iframe[data-tally-src*="mV2Vz6"]'
-          );
-          if (!iframe || !(iframe as HTMLIFrameElement).src) {
-            setFormError(true);
-          }
-        }, 3000);
-      } else {
-        // Retry if Tally is not ready yet
-        timeoutId = setTimeout(initializeTallyForm, 500);
-      }
-    };
-
-    const existingScript = document.querySelector(
-      'script[src*="tally.so/widgets/embed.js"]'
-    );
-
-    if (existingScript) {
-      // Script already loaded, reinitialize the form
-      initializeTallyForm();
-    } else {
-      // Load script for the first time
-      const script = document.createElement("script");
-      script.src = "https://tally.so/widgets/embed.js";
-      script.async = true;
-
-      script.onload = () => {
-        setTimeout(initializeTallyForm, 300);
-      };
-
-      script.onerror = () => {
-        setFormError(true);
-      };
-
-      document.body.appendChild(script);
-    }
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [isOpen]);
 
 
   // Prevent body scroll when modal is open
@@ -152,46 +84,11 @@ export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
             </div>
 
             {/* Form Container */}
-            <div className="relative bg-white p-6 flex-1 overflow-y-auto">
-              {/* Loading State */}
-              {!formLoaded && !formError && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-10">
-                  <div className="text-center">
-                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-accent border-r-transparent mb-4"></div>
-                    <p className="text-gray-600">Loading form...</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Error State */}
-              {formError && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-                  <div className="text-center px-6">
-                    <p className="text-gray-600 mb-4">
-                      Having trouble loading the form?
-                    </p>
-                    <a
-                      href="https://tally.so/r/mV2Vz6"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-white rounded-lg font-medium hover:bg-accent/90 transition-colors"
-                    >
-                      Open Form in New Tab
-                    </a>
-                  </div>
-                </div>
-              )}
-
-              {/* Tally Form Iframe */}
-              <iframe
-                data-tally-src="https://tally.so/embed/mV2Vz6?alignLeft=1&transparentBackground=1&dynamicHeight=1"
-                loading="eager"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                title="Download Catalog Form"
-                onLoad={() => setFormLoaded(true)}
-              />
+            <div className="bg-white p-6 flex-1 overflow-y-auto">
+              <p className="text-gray-600 mb-6 text-sm">
+                Fill in your details below to download our comprehensive product catalog.
+              </p>
+              <CatalogForm onSuccess={onClose} />
             </div>
           </motion.div>
         </motion.div>

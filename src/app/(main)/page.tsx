@@ -186,7 +186,9 @@ export default async function Home() {
 
   // FAQPage JSON-LD for SEO
   const faqPageJsonLd =
-    homePageSettings.showFaqSection && homePageSettings.featuredFaqs.length > 0
+    homePageSettings &&
+    homePageSettings.showFaqSection &&
+    homePageSettings.featuredFaqs.length > 0
       ? {
           "@context": "https://schema.org",
           "@type": "FAQPage",
@@ -236,15 +238,20 @@ export default async function Home() {
         <MediaPreview mediaItems={homeData.featuredMedia} />
         <BlogSection blogs={homeData.featuredBlogs} />
         <Testimonials testimonials={homeData.testimonials} />
-        {homePageSettings.showFaqSection &&
+        {homePageSettings &&
+          homePageSettings.showFaqSection &&
           homePageSettings.featuredFaqs.length > 0 && (
             <FAQSection faqs={homePageSettings.featuredFaqs} />
           )}
-        {homePageSettings.showSeoContentSection &&
+        {homePageSettings &&
+          homePageSettings.showSeoContentSection &&
           homePageSettings.seoContentSections.length > 0 && (
             <SEOContentSection sections={homePageSettings.seoContentSections} />
           )}
-        <ContactSection contactInfo={contactInfo} />
+        <ContactSection
+          contactInfo={contactInfo}
+          productOptions={homePageSettings?.productOptions}
+        />
       </main>
       <FooterSitemapLinks />
     </>
