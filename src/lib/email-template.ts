@@ -1,10 +1,11 @@
 import { ContactFormData, CatalogFormData } from "./validation-schemas";
 
-// Convert logo to base64 or use hosted URL
-// For production, upload logo to a CDN and use that URL
-const LOGO_URL = process.env.NEXT_PUBLIC_SITE_URL
-  ? `${process.env.NEXT_PUBLIC_SITE_URL}/liftronic.png`
-  : "https://liftronic.com/liftronic.png";
+// Use absolute URL for logo in emails
+// Note: Email clients require absolute URLs, not relative paths
+const LOGO_URL =
+  "https://liftronic-elevator.vercel.app/_next/image?url=%2Fliftronic.png&w=96&q=75"; // Fallback hosted image
+// If you have your own domain, replace with: `${process.env.NEXT_PUBLIC_SITE_URL}/liftronic.png`
+// Make sure NEXT_PUBLIC_SITE_URL is set to your live domain (not localhost)
 
 const ACCENT_COLOR = "#2ae394";
 const CHARCOAL_COLOR = "#1a1a1a";
