@@ -16,6 +16,7 @@ export interface HomePageSettings {
   showFaqSection: boolean;
   seoContentSections: SEOContentSection[];
   showSeoContentSection: boolean;
+  productOptions?: string[];
 }
 
 export async function getHomePageSettings(): Promise<HomePageSettings> {
@@ -25,13 +26,34 @@ export async function getHomePageSettings(): Promise<HomePageSettings> {
     { next: { revalidate: 3600 } } // Cache for 1 hour
   );
 
-  // Provide defaults if no settings document exists
-  return (
-    settings || {
-      featuredFaqs: [],
-      showFaqSection: true,
-      seoContentSections: [],
-      showSeoContentSection: true,
-    }
-  );
+  // Default values
+  const defaults: HomePageSettings = {
+    featuredFaqs: [],
+    showFaqSection: true,
+    seoContentSections: [],
+    showSeoContentSection: true,
+    productOptions: [
+      "Passenger Elevator",
+      "Freight Elevator",
+      "Home Elevator",
+      "Hospital Elevator",
+      "Capsule Elevator",
+      "Escalator",
+      "Moving Walkway",
+      "Other",
+    ],
+  };
+
+  // Provide defaults if no settings document exists or if fields are missing
+  if (!settings) {
+    return defaults;
+  }
+
+  return {
+    featuredFaqs: settings.featuredFaqs || defaults.featuredFaqs,
+    showFaqSection: settings.showFaqSection ?? defaults.showFaqSection,
+    seoContentSections: settings.seoContentSections || defaults.seoContentSections,
+    showSeoContentSection: settings.showSeoContentSection ?? defaults.showSeoContentSection,
+    productOptions: settings.productOptions || defaults.productOptions,
+  };
 }

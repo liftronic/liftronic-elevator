@@ -38,7 +38,7 @@ async function getProductWithLocation(
       title,
       "slug": slug.current
     },
-    "keyFeatures": keyFeatures[]->{
+    "keyFeatures": keyFeatures[0...6]->{
       _id,
       title,
       description,

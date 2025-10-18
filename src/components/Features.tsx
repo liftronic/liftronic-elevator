@@ -12,8 +12,8 @@ type FeaturesProps = {
 };
 
 export default function Features({ features }: FeaturesProps) {
-  // Only show the first 3 entries to preserve layout balance
-  const displayedFeatures = features.slice(0, 3);
+  // Display up to 6 features for better product presentation
+  const displayedFeatures = features.slice(0, 6);
 
   return (
     <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
@@ -36,8 +36,8 @@ export default function Features({ features }: FeaturesProps) {
           </h2>
         </motion.div>
 
-        {/* Feature Grid */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {/* Feature Grid - 2 columns on mobile, 3 on desktop */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {displayedFeatures.map((feature, index) => {
             const IconComponent = getIcon(feature.icon);
 

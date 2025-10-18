@@ -12,7 +12,7 @@ interface NumberStat {
 interface AnimatedNumbersProps {
   stats: NumberStat[];
 }
-
+ 
 function AnimatedNumber({
   number,
   suffix = "",

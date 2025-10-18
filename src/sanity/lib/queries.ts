@@ -152,7 +152,7 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
     title,
     "slug": slug.current
   },
-  "keyFeatures": keyFeatures[]->{
+  "keyFeatures": keyFeatures[0...6]->{
     _id,
     title,
     description,
@@ -273,7 +273,8 @@ export const homePageSettingsQuery = groq`*[_type == "homePageSettings"][0] {
     order,
     defaultExpanded
   },
-  showSeoContentSection
+  showSeoContentSection,
+  productOptions
 }`;
 
 // ============================================
