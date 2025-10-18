@@ -21,8 +21,8 @@ import SEOContentSection from "~/components/homepage/SEOContentSection";
 import ContactSection from "~/components/homepage/ContactSection";
 import FooterSitemapLinks from "~/components/layout/FooterSitemapLinks";
 
-// ISR - revalidate every 60 minutes (60 seconds)
-export const revalidate = 60;
+// ISR - revalidate every 60 minutes (3600 seconds)
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getHomePageSeo();
@@ -88,7 +88,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function getHomePageData(): Promise<HomePageData> {
-  return client.fetch(homePageDataQuery, {}, { next: { revalidate: 60 } });
+  return client.fetch(homePageDataQuery, {}, { next: { revalidate: 3600 } });
 }
 
 export default async function Home() {
