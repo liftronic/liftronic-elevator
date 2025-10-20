@@ -10,8 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/`,
       lastModified: now,
-      changeFrequency: "weekly",
-      priority: 1,
+      changeFrequency: "daily",
+      priority: 1.0,
     },
     {
       url: `${siteUrl}/aboutus`,

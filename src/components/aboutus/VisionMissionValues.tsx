@@ -127,7 +127,7 @@ export default function VisionMissionValues({
         {/* Vision, Mission, Values Cards */}
         <div className="grid lg:grid-cols-3 gap-8 mb-20">
           {vmvData.map((item) => (
-            <div key={item.id} className="group cursor-pointer">
+            <article key={item.id} className="group cursor-pointer">
               <div className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden h-full hover:ring-2 hover:ring-accent">
                 {/* Gradient Background */}
                 <div
@@ -138,6 +138,7 @@ export default function VisionMissionValues({
                   {/* Icon */}
                   <div
                     className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    aria-hidden="true"
                   >
                     {(() => {
                       const Icon = getIcon(item.iconName);
@@ -159,7 +160,7 @@ export default function VisionMissionValues({
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
 
@@ -171,12 +172,13 @@ export default function VisionMissionValues({
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {coreValues.map((value) => (
-              <div
+              <article
                 key={value.id}
                 className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 group hover:-translate-y-2"
               >
                 <div
                   className={`w-12 h-12 ${value.color} rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300`}
+                  aria-hidden="true"
                 >
                   {(() => {
                     const Icon = getIcon(value.iconName);
@@ -191,7 +193,7 @@ export default function VisionMissionValues({
                 <p className="text-gray-600 text-sm leading-relaxed">
                   {value.description}
                 </p>
-              </div>
+              </article>
             ))}
           </div>
         </div>

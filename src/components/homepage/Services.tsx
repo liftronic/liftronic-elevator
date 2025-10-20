@@ -178,9 +178,7 @@ export default function Services({ services: servicesProp }: ServicesProps) {
               className="touch-pan-y"
             >
               <Link href={`/services/${currentService.slug}`} className="block">
-                <article
-                  className="group relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 backdrop-blur-xl cursor-pointer"
-                >
+                <article className="group relative flex min-h-[420px] flex-col overflow-hidden rounded-3xl border border-white/15 bg-white/15 p-8 shadow-xl shadow-black/15 backdrop-blur-xl cursor-pointer">
                   <ImageBackdrop
                     alt={currentService.title}
                     sizes="100vw"
@@ -320,11 +318,12 @@ function CarouselDots({
   onSelect: (index: number) => void;
 }) {
   return (
-    <div className="mx-auto flex gap-2" aria-hidden>
-      <div
-        className="mx-auto mt-6 flex w-full justify-center gap-2 md:mt-0 md:w-auto"
-        aria-hidden
-      >
+    <div
+      className="mx-auto flex gap-2"
+      role="group"
+      aria-label="Service carousel navigation"
+    >
+      <div className="mx-auto mt-6 flex w-full justify-center gap-2 md:mt-0 md:w-auto">
         {Array.from({ length: total }).map((_, index) => (
           <button
             key={`dot-${index}`}
@@ -335,8 +334,8 @@ function CarouselDots({
                 ? "bg-white scale-110"
                 : "bg-white/30 hover:bg-white/55"
             }`}
-            aria-label={`Show service ${index + 1}`}
-            aria-pressed={index === activeIndex}
+            aria-label={`Go to service ${index + 1}`}
+            aria-current={index === activeIndex ? "true" : "false"}
           />
         ))}
       </div>
