@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 import {
   FiHeadphones,
@@ -186,18 +187,18 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
 
           {/* Description */}
           <p className="mt-6 text-base sm:text-lg lg:text-xl text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0">
-            "Redefining Vertical Luxury" reflects our commitment to transforming every ride through engineering excellence — crafted with precision, built for safety, and designed for luxury to deliver a truly seamless passenger experience.
+            &quot;Redefining Vertical Luxury&quot; reflects our commitment to transforming every ride through engineering excellence — crafted with precision, built for safety, and designed for luxury to deliver a truly seamless passenger experience.
           </p>
 
           {/* Buttons */}
           <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-            <a
+            <Link
               href="/products"
               className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-8 py-3 text-sm sm:text-base font-medium hover:bg-accent hover:text-black hover:shadow-[0_0_30px_rgba(0,255,163,0.4)] transition-all duration-300"
             >
               <FiEye className="text-lg group-hover:scale-110 transition-transform" />
               <span>View Lifts</span>
-            </a>
+            </Link>
 
             <a
               href="#services"
@@ -211,10 +212,6 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
               <span>Our Services</span>
             </a>
           </div>
-
-          <p className="hidden sm:block mt-8 text-sm text-white/60">
-            Building Trust with Builders, Architects, Consultants, Technology Partners, and Customers.
-          </p>
 
           {/* Social Icons - Desktop only */}
           <div className="hidden sm:block mt-10">
