@@ -21,8 +21,6 @@ interface HeroProps {
 export default function Hero({ socials, contactInfo }: HeroProps) {
   const { scrollTo } = useSmoothScroll();
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [isMounted, setIsMounted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -88,17 +86,6 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
     };
   }, [videoLoaded]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-    };
-
-    // Set mounted state
-    setIsMounted(true);
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
   const handleScroll = () => {
     const el = document.getElementById("about");
     if (el) {
@@ -107,7 +94,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
       window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
     }
   };
-   return (
+  return (
     <section
       id="hero-section"
       className="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-gradient-to-b from-[#010101] via-[#050505] to-[#0e0e0e] text-white pt-20"
@@ -142,12 +129,18 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
 
         {/* Floating elevator light strips */}
         <div className="absolute left-1/2 top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/20 to-accent/0 animate-pulse" />
-        <div className="absolute left-[25%] top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/15 to-accent/0 animate-pulse" style={{ animationDelay: "0.8s" }} />
-        <div className="absolute right-[25%] top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/15 to-accent/0 animate-pulse" style={{ animationDelay: "1.2s" }} />
+        <div
+          className="absolute left-[25%] top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/15 to-accent/0 animate-pulse"
+          style={{ animationDelay: "0.8s" }}
+        />
+        <div
+          className="absolute right-[25%] top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/15 to-accent/0 animate-pulse"
+          style={{ animationDelay: "1.2s" }}
+        />
       </div>
 
       {/* === MAIN CONTENT === */}
-  <div className="relative container mx-auto h-full px-5 sm:px-8 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-10 lg:gap-20">
+      <div className="relative container mx-auto h-full px-5 sm:px-8 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-10 lg:gap-20">
         {/* Left content with floating parallax effect */}
         <div
           className="relative z-10 max-w-2xl text-center lg:text-left"
@@ -157,7 +150,6 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             opacity: 1,
           }}
         >
-     
           {/* Heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
             <span className="bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent">
@@ -165,10 +157,12 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             </span>
           </h1>
 
-       
           {/* Description */}
           <p className="mt-6 text-base sm:text-lg lg:text-xl text-white leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
-            &quot;Redefining Vertical Luxury&quot; reflects our commitment to transforming every ride through engineering excellence — crafted with precision, built for safety, and designed for luxury to deliver a truly seamless passenger experience.
+            &quot;Redefining Vertical Luxury&quot; reflects our commitment to
+            transforming every ride through engineering excellence — crafted
+            with precision, built for safety, and designed for luxury to deliver
+            a truly seamless passenger experience.
           </p>
           <div className="mt-8 flex flex-col items-center lg:items-start gap-6">
             {/* Buttons */}
@@ -197,7 +191,8 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             {/* Subline */}
             <div className="order-1 lg:order-2 flex justify-center lg:justify-start">
               <span className="text-xs uppercase tracking-widest text-accent font-semibold">
-                Building Trust with Builders, Architects, Consultants, Technology Partners, and Customers.
+                Building Trust with Builders, Architects, Consultants,
+                Technology Partners, and Customers.
               </span>
             </div>
           </div>
@@ -247,7 +242,9 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
               className="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/15 transition-all"
             >
               <div>
-                <p className="text-xs text-white/70">{contact.supportPhoneLabel}</p>
+                <p className="text-xs text-white/70">
+                  {contact.supportPhoneLabel}
+                </p>
                 <p className="font-medium">{contact.supportPhone}</p>
               </div>
               <FiPhoneCall className="text-accent text-xl" />
@@ -269,7 +266,9 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
               className="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/15 transition-all"
             >
               <div>
-                <p className="text-xs text-white/70">{contact.salesPhoneLabel}</p>
+                <p className="text-xs text-white/70">
+                  {contact.salesPhoneLabel}
+                </p>
                 <p className="font-medium">{contact.salesPhone}</p>
               </div>
               <FiPhoneCall className="text-accent text-xl" />
@@ -288,7 +287,9 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             </a>
           </div>
 
-          <div className="mt-5 text-xs text-white/60">{contact.serviceArea}</div>
+          <div className="mt-5 text-xs text-white/60">
+            {contact.serviceArea}
+          </div>
         </aside>
 
         {/* Scroll Indicator */}
@@ -311,5 +312,4 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
       </div>
     </section>
   );
-
 }

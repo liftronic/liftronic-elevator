@@ -181,6 +181,79 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
 export const productSlugsQuery = groq`*[_type == "product" && defined(slug.current)][].slug.current`;
 
 // ============================================
+// Product Range Queries
+// ============================================
+
+// Query to get all product ranges with full product details for carousel display
+export const productRangesQuery = groq`*[_type == "productRange"] | order(featured desc, order asc, title asc) {
+  _id,
+  title,
+  "slug": slug.current,
+  description,
+  "image": image.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+  "imageLqip": image.asset->metadata.lqip,
+  "imageAlt": image.alt,
+  featured,
+  order,
+  "productCount": count(products),
+  "products": products[]->{
+    _id,
+    title,
+    "slug": slug.current,
+    subtitle,
+    description,
+    "tags": tags[]->{
+      _id,
+      title,
+      "slug": slug.current
+    },
+    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImageLqip": mainImage.asset->metadata.lqip,
+    "imageAlt": mainImage.alt,
+    featured
+  },
+  _createdAt,
+  _updatedAt
+}`;
+
+// Query to get a single product range by slug with all products
+export const productRangeBySlugQuery = groq`*[_type == "productRange" && slug.current == $slug][0] {
+  _id,
+  title,
+  "slug": slug.current,
+  description,
+  "image": image.asset->url + "?w=1200&h=800&fit=crop&auto=format&fm=webp&q=90",
+  "imageLqip": image.asset->metadata.lqip,
+  "imageAlt": image.alt,
+  featured,
+  order,
+  "products": products[]->{
+    _id,
+    title,
+    "slug": slug.current,
+    subtitle,
+    description,
+    "tags": tags[]->{
+      _id,
+      title,
+      "slug": slug.current
+    },
+    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImageLqip": mainImage.asset->metadata.lqip,
+    "imageAlt": mainImage.alt,
+    featured
+  },
+  "seoTitle": seo.metaTitle,
+  "seoDescription": seo.metaDescription,
+  "seoKeywords": seo.keywords,
+  _createdAt,
+  _updatedAt
+}`;
+
+// Query to get all product range slugs (for static path generation)
+export const productRangeSlugsQuery = groq`*[_type == "productRange" && defined(slug.current)][].slug.current`;
+
+// ============================================
 // Media Queries
 // ============================================
 

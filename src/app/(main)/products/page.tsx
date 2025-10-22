@@ -1,152 +1,64 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import ProductCarousel from "~/components/products/ProductCarousel";
-import Breadcrumb from "~/components/Breadcrumb";
-import * as motion from "motion/react-client";
+import ProductRangeCarouselCard from "~/components/products/ProductRangeCarouselCard";
+import ProductsHero from "~/components/products/ProductsHero";
 import CallToActionSection from "~/components/CallToActionSection";
-import { FiEye, FiMessageSquare } from "react-icons/fi";
-import { client } from "~/sanity/lib/client";
-import { productsQuery, featuredProductsQuery } from "~/sanity/lib/queries";
-import type { Product } from "~/sanity/lib/productTypes";
+import { getProductRanges } from "~/sanity/utils/getProductRanges";
 
 export const metadata: Metadata = {
-  title: "Products - Elevator Solutions | Lift Solutions",
+  title: "Product Ranges - Elevator Solutions | Lift Solutions",
   description:
-    "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+    "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
   openGraph: {
-    title: "Elevate every building with precision - Products",
+    title: "Elevate every building with precision - Product Ranges",
     description:
-      "A curated lineup spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+      "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
     type: "website",
     url: "/products",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Products - Elevator Solutions | Lift Solutions",
+    title: "Product Ranges - Elevator Solutions | Lift Solutions",
     description:
-      "A curated lineup spanning residential, commercial and industrial needs.",
+      "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs.",
   },
   alternates: {
     canonical: "/products",
   },
 };
 
-async function getAllProducts(): Promise<Product[]> {
-  return client.fetch(productsQuery, {}, { next: { revalidate: 3600 } });
-}
-
-async function getFeaturedProducts(): Promise<Product[]> {
-  return client.fetch(
-    featuredProductsQuery,
-    {},
-    { next: { revalidate: 3600 } }
-  );
-}
-
 export const revalidate = 3600; // 60 minutes
 
 export default async function ProductsPage() {
-  const [allProducts, featuredProducts] = await Promise.all([
-    getAllProducts(),
-    getFeaturedProducts(),
-  ]);
-
-  // Filter out featured products from all products
-  const featuredProductIds = new Set(featuredProducts.map((p) => p._id));
-  const nonFeaturedProducts = allProducts.filter(
-    (p) => !featuredProductIds.has(p._id)
-  );
+  const productRanges = await getProductRanges();
 
   return (
     <main>
       {/* Page hero */}
-      <section className="relative">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover opacity-10 sm:bg-cover bg-no-repeat bg-right md:opacity-60"
-          style={{
-            backgroundImage: "url(/illustrations/lift01.png)",
-          }}
-        />
+      <ProductsHero />
 
-        {/* Content overlay */}
-        <div className="relative z-10 container mx-auto px-6 py-16 md:pt-28 md:pb-20">
-          <Breadcrumb
-            items={[
-              { label: "Home", href: "/" },
-              { label: "Products", isCurrentPage: true },
-            ]}
-          />
-
-          <div className="max-w-3xl mt-10">
-            <p className="text-sm font-semibold tracking-wide text-gray-500">
-              Our Products
-            </p>
-            <h1 className="mt-2 text-4xl md:text-5xl font-extrabold tracking-tight">
-              Elevate every building with precision
-            </h1>
-            <p className="mt-4 text-lg text-gray-600">
-              A curated lineup spanning residential, commercial and industrial
-              needs. Designed for safety, efficiency and seamless ride quality.
-            </p>
-            <div className="mt-6 flex gap-3">
-              <Link href="/#contact">
-                <motion.button
-                  className="btn btn-primary px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FiMessageSquare className="text-sm md:text-base" />
-                  Request a Quote
-                </motion.button>
-              </Link>
-              <Link href="/services">
-                <motion.button
-                  className="btn border-2 border-gray-200 bg-white/80 text-charcoal hover:bg-gray-50 hover:border-gray-300 backdrop-blur-sm transition-all duration-300 px-4 py-2 text-sm md:px-8 md:py-3 md:text-base"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FiEye className="text-sm md:text-base" />
-                  View Services
-                </motion.button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      {featuredProducts.length > 0 && (
-        <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
-          <div className="container mx-auto px-4">
-            <div className="mb-2">
-              <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-4">
-                <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                  Featured Products
-                </span>
+      {/* Product Ranges with Carousels */}
+      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {productRanges.map((range) => (
+              <div
+                key={range._id}
+                className={
+                  range.products.length === 1
+                    ? "md:col-span-1"
+                    : "md:col-span-2 lg:col-span-3"
+                }
+              >
+                <ProductRangeCarouselCard
+                  title={range.title}
+                  description={range.description}
+                  slug={range.slug}
+                  featured={range.featured}
+                  products={range.products}
+                />
               </div>
-            </div>
-
-            <ProductCarousel
-              products={featuredProducts}
-              title="Popular products"
-              showAutoRotate={false}
-              mobileGrid={true}
-            />
+            ))}
           </div>
-        </section>
-      )}
-
-      {/* All Products Grid */}
-      <section className="py-12 md:py-16 shadow-sm">
-        <div className="container mx-auto px-4">
-          <ProductCarousel
-            products={nonFeaturedProducts}
-            title="All products"
-            description={`Browse our complete product lineup (${nonFeaturedProducts.length} products)`}
-            showAutoRotate={false}
-            mobileGrid={true}
-          />
         </div>
       </section>
 
