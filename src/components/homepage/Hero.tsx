@@ -147,28 +147,17 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
       </div>
 
       {/* === MAIN CONTENT === */}
-      <div className="relative container mx-auto h-full px-5 sm:px-8 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-20">
+  <div className="relative container mx-auto h-full px-5 sm:px-8 flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-10 lg:gap-20">
         {/* Left content with floating parallax effect */}
         <div
           className="relative z-10 max-w-2xl text-center lg:text-left"
           style={{
-            transform: isMounted && typeof window !== 'undefined' && window.innerWidth < 768 
-              ? `translateY(${Math.max(-200, 300 - scrollPosition * 1)}px)`
-              : `translateY(0px)`,
+            transform: `translateY(0px)`,
             transition: "transform 0.1s ease-out",
-            opacity: isMounted && typeof window !== 'undefined' && window.innerWidth < 768 
-              ? Math.min(1, scrollPosition / 150 + 0.6)
-              : 1,
+            opacity: 1,
           }}
         >
-          {/* Accent tag */}
-          <div className="inline-block mb-5 animate-fade-in">
-            <span className="inline-flex items-center gap-2 rounded-full bg-accent/20 border border-accent/30 px-4 py-2 text-sm font-semibold text-accent backdrop-blur-lg">
-              <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
-              Smart Lift Technology
-            </span>
-          </div>
-
+     
           {/* Heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
             <span className="bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent">
@@ -176,41 +165,43 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             </span>
           </h1>
 
-          {/* Subline */}
-          <div className="mt-3 flex items-center justify-center lg:justify-start gap-3 opacity-80">
-            <div className="h-1 w-10 bg-accent/60 rounded-full" />
-            <span className="text-xs uppercase tracking-widest text-accent">
-              Building Trust with Builders, Architects, Consultants, Technology Partners, and Customers.
-            </span>
-            <div className="h-1 w-10 bg-accent/60 rounded-full" />
-          </div>
-
+       
           {/* Description */}
-          <p className="mt-6 text-base sm:text-lg lg:text-xl text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0">
+          <p className="mt-6 text-base sm:text-lg lg:text-xl text-white leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
             &quot;Redefining Vertical Luxury&quot; reflects our commitment to transforming every ride through engineering excellence — crafted with precision, built for safety, and designed for luxury to deliver a truly seamless passenger experience.
           </p>
+          <div className="mt-8 flex flex-col items-center lg:items-start gap-6">
+            {/* Buttons */}
+            <div className="order-2 lg:order-1 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+              <Link
+                href="/products"
+                className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-8 py-3 text-sm sm:text-base font-medium hover:bg-accent hover:text-black hover:shadow-[0_0_30px_rgba(0,255,163,0.4)] transition-all duration-300"
+              >
+                <FiEye className="text-lg group-hover:scale-110 transition-transform" />
+                <span>View Lifts</span>
+              </Link>
 
-          {/* Buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-            <Link
-              href="/products"
-              className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-8 py-3 text-sm sm:text-base font-medium hover:bg-accent hover:text-black hover:shadow-[0_0_30px_rgba(0,255,163,0.4)] transition-all duration-300"
-            >
-              <FiEye className="text-lg group-hover:scale-110 transition-transform" />
-              <span>View Lifts</span>
-            </Link>
+              <a
+                href="#services"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo("#services");
+                }}
+                className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-accent/40 bg-accent/10 text-accent px-8 py-3 text-sm sm:text-base hover:bg-accent hover:text-black font-medium hover:shadow-[0_0_25px_rgba(0,255,163,0.5)] transition-all duration-300"
+              >
+                <FiHeadphones className="text-lg group-hover:scale-110 transition-transform" />
+                <span>Our Services</span>
+              </a>
+            </div>
 
-            <a
-              href="#services"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo("#services");
-              }}
-              className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-accent/40 bg-accent/10 text-accent px-8 py-3 text-sm sm:text-base hover:bg-accent hover:text-black font-medium hover:shadow-[0_0_25px_rgba(0,255,163,0.5)] transition-all duration-300"
-            >
-              <FiHeadphones className="text-lg group-hover:scale-110 transition-transform" />
-              <span>Our Services</span>
-            </a>
+            {/* Subline */}
+            <div className="order-1 lg:order-2 flex items-center justify-center lg:justify-start gap-3">
+              <div className="h-1 w-10 bg-accent rounded-full" />
+              <span className="text-xs uppercase tracking-widest text-accent font-semibold">
+                Building Trust with Builders, Architects, Consultants, Technology Partners, and Customers.
+              </span>
+              <div className="h-1 w-10 bg-accent rounded-full" />
+            </div>
           </div>
 
           {/* Social Icons - Desktop only */}
