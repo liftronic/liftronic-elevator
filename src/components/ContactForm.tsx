@@ -121,16 +121,18 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
             htmlFor="phone"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Phone Number
+            Phone Number <span className="text-accent">*</span>
           </label>
           <input
             id="phone"
             type="tel"
-            {...register("phone")}
+            {...register("phone", {
+              required: "Phone number is required",
+            })}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.phone ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all`}
-            placeholder="+91 1234567890"
+            placeholder="+91 98765 43210 or 98765 43210"
           />
           {errors.phone && (
             <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
