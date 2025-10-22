@@ -195,12 +195,10 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             </div>
 
             {/* Subline */}
-            <div className="order-1 lg:order-2 flex items-center justify-center lg:justify-start gap-3">
-              <div className="h-1 w-10 bg-accent rounded-full" />
+            <div className="order-1 lg:order-2 flex justify-center lg:justify-start">
               <span className="text-xs uppercase tracking-widest text-accent font-semibold">
                 Building Trust with Builders, Architects, Consultants, Technology Partners, and Customers.
               </span>
-              <div className="h-1 w-10 bg-accent rounded-full" />
             </div>
           </div>
 
