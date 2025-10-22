@@ -3,19 +3,29 @@ import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
 
 type ProductSitemap = {
-  slug: string;
+  productSlug: string;
   _updatedAt?: string;
   mainImage?: string;
   gallery?: string[];
+  locationPages?: {
+    citySlug: string;
+    published: boolean;
+    enableIndexing: boolean;
+  }[];
 };
 
 async function getProductsForSitemap(): Promise<ProductSitemap[]> {
   return client.fetch(
     groq`*[_type == "product" && defined(slug.current)] | order(_updatedAt desc) {
-      "slug": slug.current,
+      "productSlug": slug.current,
       _updatedAt,
       "mainImage": mainImage.asset->url,
-      "gallery": gallery[].asset->url
+      "gallery": gallery[].asset->url,
+      "locationPages": locationPages[]{
+        "citySlug": citySlug.current,
+        published,
+        enableIndexing
+      }
     }`,
     {},
     { next: { revalidate: 3600 } }
@@ -26,29 +36,44 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const products = await getProductsForSitemap();
 
-  const productUrls: MetadataRoute.Sitemap = products.map((product) => {
+  const urls: MetadataRoute.Sitemap = [];
+
+  // Add products list page
+  urls.push({
+    url: `${siteUrl}/products`,
+    lastModified: new Date().toISOString(),
+    changeFrequency: "weekly" as const,
+    priority: 0.9,
+  });
+
+  // Add each product and its location pages
+  for (const product of products) {
     const images: string[] = [];
     if (product.mainImage) images.push(product.mainImage);
     if (product.gallery) images.push(...product.gallery);
 
-    return {
-      url: `${siteUrl}/products/${product.slug}`,
+    // Add product details page
+    urls.push({
+      url: `${siteUrl}/products/${product.productSlug}`,
       lastModified: product._updatedAt || new Date().toISOString(),
       changeFrequency: "monthly" as const,
-      priority: 0.8,
-      images: images.length > 0 ? images : undefined,
-    };
-  });
-
-  // Add products list page
-  const productListPage: MetadataRoute.Sitemap = [
-    {
-      url: `${siteUrl}/products`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: "weekly" as const,
       priority: 0.9,
-    },
-  ];
+      images: images.length > 0 ? images : undefined,
+    });
 
-  return [...productListPage, ...productUrls];
+    // Add location-specific pages (only if published and indexing enabled)
+    for (const locationPage of product.locationPages || []) {
+      if (locationPage.published && locationPage.enableIndexing) {
+        urls.push({
+          url: `${siteUrl}/products/${product.productSlug}/${locationPage.citySlug}`,
+          lastModified: product._updatedAt || new Date().toISOString(),
+          changeFrequency: "monthly" as const,
+          priority: 0.7,
+          images: images.length > 0 ? images : undefined,
+        });
+      }
+    }
+  }
+
+  return urls;
 }

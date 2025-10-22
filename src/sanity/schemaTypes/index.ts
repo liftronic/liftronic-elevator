@@ -13,6 +13,7 @@ import { clientType } from "./clients";
 import { faqType } from "./faq";
 import { keyFeatureType } from "./keyFeatures";
 import { productType } from "./products";
+import { productRangeType } from "./productRangeType";
 import { serviceType } from "./serviceOffered";
 import { companyInfoType } from "./companyInfo";
 import { timelineType } from "./timeline";
@@ -39,6 +40,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     faqType,
     keyFeatureType,
     productType,
+    productRangeType,
     serviceType,
     companyInfoType,
     timelineType,

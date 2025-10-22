@@ -71,7 +71,7 @@ Sanity Studio is your content management dashboard where you can:
 
 - **Auto-save**: Changes are automatically saved as drafts
 - **Publishing**: Click "Publish" button to make changes live on the website
-- **Preview**: Changes appear on the website within 1-2 minutes after publishing
+- **Content Updates**: After publishing, changes can take up to **1 hour** to reflect on the live website due to caching and build processes
 
 ---
 
@@ -471,9 +471,16 @@ Add impressive numbers like:
 
 **Available Icons:**
 - star
-- buildings
 - globe
 - wrench
+- shield
+- cog
+- support
+- check
+- rocket
+- trending
+- heart
+- user
 
 ---
 
@@ -495,7 +502,7 @@ Add impressive numbers like:
 | **Core Values** | Array of values | Add multiple value items |
 
 #### Available Icons
-- trending, star, globe, shield, check, heart
+- trending, star, globe, shield, check, heart, cog, support, wrench, rocket, user
 
 #### How to Update
 
@@ -524,7 +531,7 @@ Add impressive numbers like:
 |-------|-------------|------|
 | **Title** | Reason title | E.g., "Expert Team" |
 | **Description** | Detailed explanation | 20-500 characters |
-| **Icon** | Visual icon | star, shield, support, cog, check, globe |
+| **Icon** | Visual icon | star, shield, support, cog, check, globe, wrench, rocket, trending, heart, user |
 | **Key Features** | Bullet points | Additional features |
 | **Display Order** | Sorting order | Lower numbers appear first |
 | **Active** | Show/hide toggle | Uncheck to hide |
@@ -773,8 +780,12 @@ FAQs can be linked to:
 2. Click "Create new Product Key Feature"
 3. Enter feature title
 4. Write description
-5. Enter icon name (ask developer for available icons)
+5. Enter icon name from react-icons (e.g., "FiCheckCircle", "BiRocket", "FiStar")
+   - Common options: FiCheckCircle, FiStar, FiShield, FiZap, BiRocket, FiLock, FiGlobe
+   - For complete list, consult your developer or check the iconMapper file
 6. Click "Publish"
+
+**Note:** Product Key Features use React component names (e.g., "FiCheckCircle"), while other sections use simple names (e.g., "star", "shield").
 
 #### Using Key Features
 
@@ -906,12 +917,23 @@ When editing a product:
 5. Paste full URL to your social profile
 6. Click "Publish"
 
-**Common Icons:**
+**Common Social Media Icons:**
 - fiInstagram (Instagram)
 - fiFacebook (Facebook)
 - fiLinkedin (LinkedIn)
 - fiTwitter (Twitter/X)
 - fiYoutube (YouTube)
+
+**Other Available Icons:**
+You can use any icon from the iconMapper. Common ones include:
+- fiShield, fiSettings, fiZap, fiTool, fiCheckCircle
+- fiCpu, fiTrendingUp, fiLock, fiStar, fiGlobe
+- fiActivity, fiThumbsUp, fiAward, fiHome, fiUsers
+- fiTarget, fiTruck, fiHeart, fiPackage, fiClock
+- fiPhone, fiMail, fiMapPin, fiCalendar
+- And many more from react-icons/fi, react-icons/bi, react-icons/hi
+
+For the complete list, ask your developer or refer to the iconMapper file.
 
 ---
 

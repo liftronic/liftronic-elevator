@@ -207,7 +207,7 @@ export default async function LocationProductPage({ params }: Props) {
       : undefined,
     brand: {
       "@type": "Organization",
-      name: "Liftronic Elevator",
+      name: "Lift Solutions",
     },
     offers: {
       "@type": "Offer",

@@ -8,9 +8,9 @@ interface SitemapItem {
 }
 
 async function getAllSitemapLinks() {
-  const [products, services, blogs] = await Promise.all([
+  const [productRanges, services, blogs] = await Promise.all([
     client.fetch<SitemapItem[]>(
-      groq`*[_type == "product" && defined(slug.current)] | order(title asc) {
+      groq`*[_type == "productRange" && defined(slug.current)] | order(featured desc, order asc, title asc) {
         title,
         "slug": slug.current
       }`,
@@ -44,7 +44,7 @@ async function getAllSitemapLinks() {
       { title: "Blog", slug: "/blogs" },
       { title: "Media", slug: "/media" },
     ],
-    products,
+    productRanges,
     services,
     blogs,
   };
@@ -76,17 +76,17 @@ export default async function FooterSitemapLinks() {
             </ul>
           </div>
 
-          {/* Products */}
+          {/* Product Ranges */}
           <div className="flex items-center">
             <h3 className="text-accent font-semibold text-sm w-24 flex-shrink-0 mr-4">
-              Products
+              Product Ranges
             </h3>
             <ul className="flex flex-wrap gap-x-4 gap-y-1">
-              {links.products.length > 0 ? (
-                links.products.map((link) => (
+              {links.productRanges.length > 0 ? (
+                links.productRanges.map((link) => (
                   <li key={link.slug}>
                     <Link
-                      href={`/products/${link.slug}`}
+                      href={`/products#${link.slug}`}
                       className="text-gray-700 hover:text-accent transition-colors text-xs"
                     >
                       {link.title}
@@ -94,7 +94,7 @@ export default async function FooterSitemapLinks() {
                   </li>
                 ))
               ) : (
-                <li className="text-gray-500 text-xs">No products available</li>
+                <li className="text-gray-500 text-xs">No product ranges available</li>
               )}
             </ul>
           </div>
