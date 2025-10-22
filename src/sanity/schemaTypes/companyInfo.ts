@@ -143,8 +143,7 @@ export const companyInfoType = defineType({
       name: "homepageFeatures",
       title: "Homepage Features",
       type: "array",
-      description: "Feature cards shown on homepage (limit: 3)",
-      validation: (Rule) => Rule.max(3),
+      description: "Feature cards shown on homepage",
       of: [
         {
           type: "object",
