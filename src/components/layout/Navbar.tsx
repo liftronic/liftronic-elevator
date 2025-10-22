@@ -12,7 +12,7 @@ const navLinks = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
   { href: "/products/stiltz-homelifts", label: "Stiltz", highlight: true },
-  { href: "/blogs", label: "Blogs" },
+  { href: "/media", label: "Success Stories" },
   { href: "/aboutus", label: "About Us" },
 ];
 
