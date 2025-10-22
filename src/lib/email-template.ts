@@ -63,9 +63,6 @@ export function generateContactFormEmail(data: ContactFormData): string {
                     : ""
                 }
 
-                ${
-                  data.phone
-                    ? `
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</p>
@@ -74,9 +71,6 @@ export function generateContactFormEmail(data: ContactFormData): string {
                     </p>
                   </td>
                 </tr>
-                `
-                    : ""
-                }
 
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
