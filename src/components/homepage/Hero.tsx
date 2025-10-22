@@ -151,15 +151,11 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
 
           <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4 animate-fade-in-delay-2">
             <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo("#contact");
-              }}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent font-semibold shadow-lg shadow-accent/20 hover:shadow-accent/40 hover:scale-105 transition-all duration-300 px-8 py-3 text-sm sm:text-base"
+              href="/products"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/15 hover:border-white/40 hover:text-accent transition-all duration-300 px-8 py-3 text-sm sm:text-base backdrop-blur-md"
             >
-              <FiMessageSquare className="text-lg" />
-              Get a Quote
+              <FiEye className="text-lg" />
+              View Products
             </a>
 
             <a
