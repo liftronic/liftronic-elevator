@@ -170,7 +170,7 @@ export default function WhyUsSection({ reasons }: WhyUsSectionProps) {
               Ready to Experience the Liftronic Difference?
             </h3>
             <p className="text-gray-300 mb-6 text-lg">
-              Join thousands of satisfied customers who trust us with their
+              Join our committee of satisfied customers who trust us with their
               elevator needs.
             </p>
             <button className="btn bg-accent text-black hover:bg-accent/90 text-lg px-8 py-3">
