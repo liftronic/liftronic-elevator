@@ -9,6 +9,7 @@ import {
 } from "react-icons/bi";
 import { useState, useRef } from "react";
 import { motion } from "motion/react";
+import { PortableText } from "@portabletext/react";
 import type { CompanyInfo } from "~/sanity/lib/aboutTypes";
 
 interface AboutUsProps {
@@ -257,6 +258,50 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
   const description =
     companyInfo?.homepageAboutDescription || defaultDescription;
 
+  // Check if description is block content or plain text
+  // Block content is an array with objects that have _type property
+  const isBlockContent =
+    Array.isArray(description) &&
+    description.length > 0 &&
+    typeof description[0] === "object" &&
+    description[0] !== null &&
+    "_type" in description[0];
+
+  // Portable Text components for custom styling
+  const portableTextComponents = {
+    block: {
+      normal: ({ children }: { children?: React.ReactNode }) => (
+        <p className="text-sm sm:text-base md:text-lg leading-relaxed mb-3">
+          {children}
+        </p>
+      ),
+    },
+    marks: {
+      strong: ({ children }: { children?: React.ReactNode }) => (
+        <strong className="font-semibold text-gray-900">{children}</strong>
+      ),
+      em: ({ children }: { children?: React.ReactNode }) => (
+        <em className="italic">{children}</em>
+      ),
+      link: ({
+        children,
+        value,
+      }: {
+        children?: React.ReactNode;
+        value?: { href: string };
+      }) => (
+        <a
+          href={value?.href}
+          className="text-brand hover:text-accent underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      ),
+    },
+  };
+
   return (
     <section
       id="about"
@@ -314,9 +359,18 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
               <strong className="block text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-gray-900 mb-2">
                 {subtitle}
               </strong>
-              <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                {description}
-              </p>
+              {isBlockContent ? (
+                <div className="prose prose-lg max-w-none text-gray-600">
+                  <PortableText
+                    value={description as []}
+                    components={portableTextComponents}
+                  />
+                </div>
+              ) : (
+                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {String(description)}
+                </p>
+              )}
             </div>
           </motion.div>
         </motion.div>

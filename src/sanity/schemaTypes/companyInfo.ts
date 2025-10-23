@@ -135,9 +135,10 @@ export const companyInfoType = defineType({
     defineField({
       name: "homepageAboutDescription",
       title: "Homepage About Description",
-      type: "text",
-      rows: 10,
-      description: "Full description text for homepage about section",
+      type: "array",
+      of: [{ type: "block" }],
+      description:
+        "Rich text description for homepage about section (supports formatting, links, etc.)",
     }),
     defineField({
       name: "homepageFeatures",

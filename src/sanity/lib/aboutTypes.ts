@@ -16,7 +16,7 @@ export type CompanyInfo = {
   // Homepage About Section
   homepageAboutTitle?: string;
   homepageAboutSubtitle?: string;
-  homepageAboutDescription?: string;
+  homepageAboutDescription?: unknown; // PortableText block content
   homepageFeatures?: HomepageFeature[];
   _createdAt: string;
   _updatedAt?: string;

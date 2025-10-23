@@ -86,15 +86,23 @@ export default function CertificateModal({
             </div>
 
             {/* Full certificate image */}
-            <div className="relative bg-gray-50 overflow-auto max-h-[calc(90vh-180px)]">
-              <div className="relative min-h-[400px] w-full">
+            <div className="relative bg-gray-100 overflow-auto max-h-[calc(90vh-180px)] flex items-center justify-center p-4">
+              <div className="relative">
                 <Image
                   src={certificate.certificateImage}
                   alt={certificate.imageAlt || certificate.title}
-                  width={1200}
-                  height={900}
-                  className="w-full h-auto object-contain"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    maxWidth: "100%",
+                    maxHeight: "calc(90vh - 220px)",
+                  }}
+                  className="object-contain"
                   priority
+                  unoptimized
                 />
               </div>
             </div>

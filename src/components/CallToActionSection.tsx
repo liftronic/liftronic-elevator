@@ -30,7 +30,9 @@ const getVariantClasses = (variant: CTAAction["variant"]) => {
 
 const renderAction = (action: CTAAction) => {
   const { label, href, onClick, variant = "primary" } = action;
-  const className = `${baseButtonClass} ${getVariantClasses(variant)} w-full sm:w-auto inline-flex items-center justify-center`;
+  const className = `${baseButtonClass} ${getVariantClasses(
+    variant
+  )} w-full sm:w-auto inline-flex items-center justify-center`;
 
   if (href) {
     return (
@@ -82,7 +84,8 @@ export default function CallToActionSection({
     secondaryAction === null
       ? null
       : {
-          label: "View Our Projects",
+          label: "View Our Products",
+          href: "/products",
           variant: "secondary",
           ...secondaryAction,
         };
