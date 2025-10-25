@@ -1,4 +1,3 @@
-import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
@@ -38,8 +37,6 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         whatsappMessage={contactInfo?.whatsappMessage}
       />
       <DownloadCatalogButton />
-      {/* Tally embed script */}
-      <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
     </div>
   );
 };

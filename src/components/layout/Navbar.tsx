@@ -129,14 +129,14 @@ export default function Navbar() {
   };
 
   return (
-    <div className="fixed top-4 inset-x-0 z-50 px-5">
+    <div className="fixed top-2 md:top-4 inset-x-0 z-50 px-4 md:px-5">
       <div
         ref={navRef}
         className={`mx-auto container transition-all duration-300 rounded-2xl ${
           scrolled || open ? "glass-solid shadow-elevate" : "glass-transparent"
         }`}
       >
-        <div className="flex items-center justify-between h-16 px-5">
+        <div className="flex items-center justify-between h-16 md:h-18 px-4 md:px-5">
           <Link
             href="/"
             onClick={(e) =>
@@ -150,10 +150,10 @@ export default function Navbar() {
               width={40}
               height={40}
               priority
-              className="size-10 transition-all"
+              className="size-9 md:size-10 transition-all"
             />
             <span
-              className={`transition-colors ${
+              className={`text-base md:text-lg transition-colors ${
                 scrolled || open ? "text-gray-800" : "text-white drop-shadow-lg"
               }`}
             >
@@ -161,7 +161,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-semibold">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-semibold">
             {navLinks.map((l) => {
               const isActive = isLinkActive(l.href);
               const isFeatured = Boolean(l.highlight);

@@ -20,7 +20,7 @@
 
   --font-sans: var(--font-dm-sans);
 
-  --container: 1200px;
+  --container: min(1200px, 100vw - 2rem);
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -38,6 +38,7 @@ body {
   color: var(--charcoal);
   font-family:
     var(--font-dm-sans),
+    "Musk",
     ui-sans-serif,
     system-ui,
     -apple-system,
@@ -45,6 +46,7 @@ body {
     Roboto,
     Helvetica,
     Arial,
+    sans-serif,
     "Apple Color Emoji",
     "Segoe UI Emoji";
 }
