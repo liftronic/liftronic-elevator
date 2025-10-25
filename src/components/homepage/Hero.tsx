@@ -126,17 +126,6 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90" />
         <div className="absolute inset-0 [background:radial-gradient(40%_60%_at_50%_30%,rgba(0,255,163,0.1),transparent_70%)]" />
         <div className="absolute inset-0 [background:radial-gradient(40%_60%_at_60%_80%,rgba(0,200,255,0.1),transparent_70%)]" />
-
-        {/* Floating elevator light strips */}
-        <div className="absolute left-1/2 top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/20 to-accent/0 animate-pulse" />
-        <div
-          className="absolute left-[25%] top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/15 to-accent/0 animate-pulse"
-          style={{ animationDelay: "0.8s" }}
-        />
-        <div
-          className="absolute right-[25%] top-0 w-px h-full bg-gradient-to-b from-accent/0 via-accent/15 to-accent/0 animate-pulse"
-          style={{ animationDelay: "1.2s" }}
-        />
       </div>
 
       {/* === MAIN CONTENT === */}

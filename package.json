@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@portabletext/react": "^4.0.3",
     "@portabletext/types": "^2.0.15",
     "@sanity/cli": "^4.9.0",

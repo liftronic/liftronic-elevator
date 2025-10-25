@@ -41,9 +41,9 @@ export default async function ServicesPage() {
     <main>
       {/* Page hero */}
       <section className="relative">
-        {/* Background image */}
+        {/* Background image - hidden on mobile, shown on desktop */}
         <div
-          className="absolute inset-0 bg-cover opacity-10 sm:bg-cover bg-no-repeat bg-right md:opacity-60"
+          className="absolute inset-0 hidden md:block bg-cover opacity-60 bg-no-repeat bg-right"
           style={{
             backgroundImage: "url(/illustrations/lift04.png)",
           }}

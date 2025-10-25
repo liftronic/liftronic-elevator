@@ -163,21 +163,6 @@ export default function WhyUsSection({ reasons }: WhyUsSectionProps) {
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <div className="bg-accent/10 border border-accent/20 rounded-2xl p-8 backdrop-blur-sm">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Ready to Experience the Liftronic Difference?
-            </h3>
-            <p className="text-gray-300 mb-6 text-lg">
-              Join our committee of satisfied customers who trust us with their
-              elevator needs.
-            </p>
-            <button className="btn bg-accent text-black hover:bg-accent/90 text-lg px-8 py-3">
-              Get Started Today
-            </button>
-          </div>
-        </div>
       </div>
     </section>
   );

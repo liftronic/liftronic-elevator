@@ -31,7 +31,16 @@ export type ContactFormData = z.infer<typeof contactFormSchema>;
 // Catalog Form Validation Schema
 export const catalogFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  phone: z.string().min(10, "Please enter a valid phone number").max(20),
+  phone: z.string()
+    .refine(
+      (val) => {
+        // Remove all non-digit characters
+        const digits = val.replace(/\D/g, "");
+        // Must be exactly 10 digits
+        return digits.length === 10 && /^[6-9]/.test(digits);
+      },
+      "Please enter a valid 10-digit phone number starting with 6-9"
+    ),
   location: z.string().optional(),
 });
 
