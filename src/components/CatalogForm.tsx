@@ -106,6 +106,7 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
           <input
             id="catalog-name"
             type="text"
+            autoComplete="off"
             {...register("name", { required: "Name is required" })}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.name ? "border-red-500" : "border-gray-300"
@@ -128,6 +129,7 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
           <input
             id="catalog-phone"
             type="tel"
+            autoComplete="off"
             {...register("phone", { required: "Phone number is required" })}
             onInput={(e) => {
               const input = e.target as HTMLInputElement;
@@ -155,6 +157,7 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
           <input
             id="catalog-location"
             type="text"
+            autoComplete="off"
             {...register("location")}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.location ? "border-red-500" : "border-gray-300"

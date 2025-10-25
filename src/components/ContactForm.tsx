@@ -83,6 +83,7 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
           <input
             id="name"
             type="text"
+            autoComplete="off"
             {...register("name", { required: "Name is required" })}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.name ? "border-red-500" : "border-gray-300"
@@ -105,6 +106,7 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
           <input
             id="email"
             type="email"
+            autoComplete="off"
             {...register("email")}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.email ? "border-red-500" : "border-gray-300"
@@ -127,6 +129,7 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
           <input
             id="phone"
             type="tel"
+            autoComplete="off"
             {...register("phone", {
               required: "Phone number is required",
             })}
@@ -155,6 +158,7 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
           </label>
           <select
             id="productInterest"
+            autoComplete="off"
             {...register("productInterest", {
               required: "Please select a product",
             })}
@@ -187,6 +191,7 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
           <input
             id="location"
             type="text"
+            autoComplete="off"
             {...register("location")}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.location ? "border-red-500" : "border-gray-300"
@@ -210,6 +215,7 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
           </label>
           <textarea
             id="requirements"
+            autoComplete="off"
             {...register("requirements")}
             rows={4}
             className={`w-full px-4 py-3 rounded-lg border ${
