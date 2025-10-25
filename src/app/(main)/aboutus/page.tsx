@@ -82,9 +82,9 @@ export default async function AboutPage() {
   return (
     <main>
       <section className="relative">
-        {/* Background image */}
+        {/* Background image - hidden on mobile, shown on desktop */}
         <div
-          className="absolute inset-0 bg-cover md:bg-contain bg-center bg-no-repeat opacity-80"
+          className="absolute inset-0 hidden md:block bg-contain bg-center bg-no-repeat opacity-80"
           style={{
             backgroundImage: "url(/illustrations/lift02.png)",
           }}

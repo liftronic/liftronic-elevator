@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "motion/react";
 import { FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import {
@@ -25,22 +26,22 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ContactFormData>();
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    mode: "onBlur", // Validate on blur for better UX
+  });
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      // Validate data with Zod
-      const validatedData = contactFormSchema.parse(data);
-
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(validatedData),
+        body: JSON.stringify(data),
       });
 
       const result = await response.json();
@@ -129,10 +130,15 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
             {...register("phone", {
               required: "Phone number is required",
             })}
+            onInput={(e) => {
+              const input = e.target as HTMLInputElement;
+              input.value = input.value.replace(/\D/g, "");
+            }}
+            maxLength={10}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.phone ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all`}
-            placeholder="+91 98765 43210 or 98765 43210"
+            placeholder="Enter the Phone Number"
           />
           {errors.phone && (
             <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>

@@ -59,6 +59,8 @@ export default async function RootLayout({
           href="https://cdn.sanity.io"
           crossOrigin="anonymous"
         />
+        {/* Musk Font from CDN Fonts */}
+        <link href="https://fonts.cdnfonts.com/css/musk" rel="stylesheet" />
       </head>
       <body
         className={`${dmSans.variable} antialiased bg-soft text-charcoal`}

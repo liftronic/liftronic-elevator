@@ -375,21 +375,41 @@ export default function AboutUs({ companyInfo }: AboutUsProps) {
           </motion.div>
         </motion.div>
 
-        {/* FEATURE CARDS - Responsive grid */}
-        <div className="mt-10 md:mt-14 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 max-w-7xl mx-auto">
-          {features.map((feature, index) => {
-            const Icon = getFeatureIcon(feature.icon);
-            return (
-              <FeatureCard
-                key={index}
-                title={feature.title}
-                icon={Icon}
-                index={index}
-              >
-                {feature.description}
-              </FeatureCard>
-            );
-          })}
+        {/* FEATURE CARDS - Responsive grid with centered last row */}
+        <div className="mt-10 md:mt-14 lg:mt-16 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10">
+            {features.slice(0, 3).map((feature, index) => {
+              const Icon = getFeatureIcon(feature.icon);
+              return (
+                <FeatureCard
+                  key={index}
+                  title={feature.title}
+                  icon={Icon}
+                  index={index}
+                >
+                  {feature.description}
+                </FeatureCard>
+              );
+            })}
+          </div>
+          {/* Center remaining cards if more than 3 */}
+          {features.length > 3 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-10 mt-4 sm:mt-6 md:mt-8 lg:mt-10 max-w-3xl mx-auto">
+              {features.slice(3).map((feature, index) => {
+                const Icon = getFeatureIcon(feature.icon);
+                return (
+                  <FeatureCard
+                    key={index + 3}
+                    title={feature.title}
+                    icon={Icon}
+                    index={index + 3}
+                  >
+                    {feature.description}
+                  </FeatureCard>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* STATS CARDS SECTION - Enhanced responsive grid */}

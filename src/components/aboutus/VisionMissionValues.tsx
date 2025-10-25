@@ -198,25 +198,6 @@ export default function VisionMissionValues({
           </div>
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center">
-          <div className="bg-gradient-to-r from-accent to-green-500 rounded-3xl p-8 md:p-12">
-            <h3 className="text-3xl font-bold mb-4">Join Us in Our Mission</h3>
-            <p className="text-xl mb-8 opacity-95 max-w-2xl mx-auto">
-              Be part of our journey to revolutionize vertical transportation.
-              Together, we can build a safer, more connected world.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn bg-white hover:bg-gray-100 text-lg px-8 py-3">
-                Explore Careers
-              </button>
-
-              <button className="btn border-2 border-white text-white hover:bg-white hover:text-black text-lg px-8 py-3">
-                Partner With Us
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

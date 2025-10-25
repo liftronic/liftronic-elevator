@@ -264,7 +264,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 - **DO NOT use View Transition API** - This project doesn't utilize view transitions
 - Navbar uses glass morphism effect that changes on scroll
 - WhatsApp and catalog download buttons are persistent across pages
-- Tally.so embed for form integration
+- Custom forms built with react-hook-form and Zod validation
 
 ## Coding Standards
 
