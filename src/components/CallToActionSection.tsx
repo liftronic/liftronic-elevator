@@ -22,7 +22,7 @@ const baseButtonClass = "btn text-lg px-8 py-4";
 
 const getVariantClasses = (variant: CTAAction["variant"]) => {
   if (variant === "secondary") {
-    return "border-2 border-white text-white hover:bg-white hover:text-black";
+    return "bg-brand text-white font-medium hover:bg-[#00965e] hover:shadow-lg transition-all duration-300";
   }
 
   return "bg-white hover:bg-gray-100 text-black";
@@ -84,8 +84,8 @@ export default function CallToActionSection({
     secondaryAction === null
       ? null
       : {
-          label: "View Our Products",
-          href: "/products",
+          label: "View Our Services",
+          href: "/services",
           variant: "secondary",
           ...secondaryAction,
         };
