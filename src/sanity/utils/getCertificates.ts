@@ -27,7 +27,7 @@ export async function getAllCertificates(): Promise<Certificate[]> {
     return certificates.map((cert) => ({
       ...cert,
       certificateImage: cert.certificateImage
-        ? urlFor(cert.certificateImage).width(1200).height(900).url()
+        ? urlFor(cert.certificateImage).url()
         : "",
     }));
   } catch (error) {
@@ -59,7 +59,7 @@ export async function getFeaturedCertificates(): Promise<Certificate[]> {
     return certificates.map((cert) => ({
       ...cert,
       certificateImage: cert.certificateImage
-        ? urlFor(cert.certificateImage).width(1200).height(900).url()
+        ? urlFor(cert.certificateImage).url()
         : "",
     }));
   } catch (error) {
@@ -93,7 +93,7 @@ export async function getCertificates(limit?: number): Promise<Certificate[]> {
     return certificates.map((cert) => ({
       ...cert,
       certificateImage: cert.certificateImage
-        ? urlFor(cert.certificateImage).width(1200).height(900).url()
+        ? urlFor(cert.certificateImage).url()
         : "",
     }));
   } catch (error) {
@@ -127,7 +127,7 @@ export async function getCertificateById(id: string): Promise<Certificate | null
     return {
       ...certificate,
       certificateImage: certificate.certificateImage
-        ? urlFor(certificate.certificateImage).width(1200).height(900).url()
+        ? urlFor(certificate.certificateImage).url()
         : "",
     };
   } catch (error) {

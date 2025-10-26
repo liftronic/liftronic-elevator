@@ -44,7 +44,7 @@ export default function CertificateModal({
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+            className="relative w-[90vw] max-w-6xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -71,7 +71,7 @@ export default function CertificateModal({
             </button>
 
             {/* Certificate details */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 flex-shrink-0">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 {certificate.title}
               </h2>
@@ -86,21 +86,14 @@ export default function CertificateModal({
             </div>
 
             {/* Full certificate image */}
-            <div className="relative bg-gray-100 overflow-auto max-h-[calc(90vh-180px)] flex items-center justify-center p-4">
-              <div className="relative">
+            <div className="relative bg-gray-100 flex-1 overflow-y-auto p-4">
+              <div className="flex items-start justify-center min-h-full">
                 <Image
                   src={certificate.certificateImage}
                   alt={certificate.imageAlt || certificate.title}
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  style={{
-                    width: "auto",
-                    height: "auto",
-                    maxWidth: "100%",
-                    maxHeight: "calc(90vh - 220px)",
-                  }}
-                  className="object-contain"
+                  width={1200}
+                  height={1600}
+                  className="h-auto w-auto max-w-full object-contain"
                   priority
                   unoptimized
                 />
