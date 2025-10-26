@@ -129,19 +129,14 @@ export default function ContactForm({ productOptions }: ContactFormProps) {
           <input
             id="phone"
             type="tel"
-            autoComplete="off"
+            autoComplete="tel"
             {...register("phone", {
               required: "Phone number is required",
             })}
-            onInput={(e) => {
-              const input = e.target as HTMLInputElement;
-              input.value = input.value.replace(/\D/g, "");
-            }}
-            maxLength={10}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.phone ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all`}
-            placeholder="Enter the Phone Number"
+            placeholder="Enter phone number with country code"
           />
           {errors.phone && (
             <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
