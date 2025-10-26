@@ -64,8 +64,8 @@ const renderAction = (action: CTAAction) => {
 };
 
 export default function CallToActionSection({
-  title = "Ready to Work with Liftronic?",
-  description = "Experience the difference that comes with choosing a partner committed to excellence, innovation, and your success. Let's elevate your building together.",
+  title = "Get in Touch with Us Today",
+  description = "Fill out our contact form and let our team get back to you with tailored solutions for your elevator needs. We're here to help you elevate your building.",
   primaryAction,
   secondaryAction,
 }: CallToActionSectionProps) {

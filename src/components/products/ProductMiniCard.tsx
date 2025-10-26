@@ -28,9 +28,9 @@ export default function ProductMiniCard({
   return (
     <Link href={`/products/${slug}`} className="block h-full">
       <motion.article
-        className="group relative h-full flex flex-col overflow-hidden rounded-2xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-xl"
-        whileHover={{ y: -4 }}
-        transition={{ duration: 0.2 }}
+        className="group relative h-full flex flex-col overflow-hidden rounded-2xl bg-white border border-gray-100 hover:border-gray-200 transition-all duration-300 hover:shadow-md"
+        whileHover={{ y: -2 }}
+        transition={{ duration: 0.3 }}
       >
         {featured && (
           <div className="absolute right-3 top-3 z-10">
@@ -46,13 +46,13 @@ export default function ProductMiniCard({
             src={finalImageSrc}
             alt={finalImageAlt}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
             sizes="(min-width: 1280px) 400px, (min-width: 768px) 350px, 100vw"
             placeholder={blurDataURL ? "blur" : "empty"}
             blurDataURL={blurDataURL}
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-300" />
         </div>
 
         {/* Content */}
@@ -66,7 +66,7 @@ export default function ProductMiniCard({
 
           {/* View Details Button */}
           <div className="mt-4 pt-4 border-t border-gray-100">
-            <span className="inline-flex items-center text-sm font-medium text-accent group-hover:translate-x-1 transition-transform">
+            <span className="inline-flex items-center text-sm font-medium text-accent group-hover:translate-x-0.5 transition-transform duration-300">
               View Details
               <svg
                 className="ml-1.5 h-4 w-4"

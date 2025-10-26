@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
+import { TiStar } from "react-icons/ti";
 import ProductMiniCard from "./ProductMiniCard";
 import type { Product } from "~/sanity/lib/productTypes";
 
@@ -25,6 +26,9 @@ export default function ProductRangeCarouselCard({
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleProducts, setVisibleProducts] = useState(1);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const shouldTruncate = description.length > 150;
 
   // Check scroll position to enable/disable arrows
   const checkScrollPosition = () => {
@@ -85,24 +89,71 @@ export default function ProductRangeCarouselCard({
   const totalDots = products.length;
 
   return (
-    <section id={slug} className="relative">
+    <section id={slug} className="relative h-full flex flex-col">
       {/* Content */}
-      <div className="relative bg-white rounded-2xl border border-gray-200/80 shadow-lg shadow-gray-200/50 p-6 md:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-gray-300/50">
+      <div className="relative flex-1 flex flex-col bg-gradient-to-br from-white via-white to-gray-50/30 rounded-2xl border-2 border-gray-200/60 shadow-xl shadow-gray-200/40 p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300/50 hover:border-accent/20">
         {/* Header */}
         <div className="mb-8">
           {featured && (
-            <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent/15 to-accent/5 px-4 py-2 mb-4 border border-accent/20">
+              <TiStar className="w-4 h-4 text-accent" />
               <span className="text-sm font-bold uppercase tracking-wider text-accent">
                 Featured Range
               </span>
             </div>
           )}
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
             {title}
           </h2>
-          <p className="mt-3 text-lg text-gray-600 leading-relaxed max-w-3xl">
-            {description}
-          </p>
+          <div className="mt-3">
+            <p
+              className={`text-base text-gray-600 leading-relaxed max-w-3xl ${!isExpanded && shouldTruncate ? "line-clamp-2" : ""}`}
+            >
+              {description}
+            </p>
+            {shouldTruncate && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="mt-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-1"
+              >
+                {isExpanded ? (
+                  <>
+                    See less
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 15l7-7 7 7"
+                      />
+                    </svg>
+                  </>
+                ) : (
+                  <>
+                    See more
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </>
+                )}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Carousel Container */}
