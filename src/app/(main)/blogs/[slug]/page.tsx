@@ -37,26 +37,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: post.seoTitle || post.title,
     description: post.seoDescription || post.excerpt,
     keywords: post.seoKeywords?.join(", "),
-    authors: [{ name: post.author.name }],
+    ...(post.author && { authors: [{ name: post.author.name }] }),
     alternates: {
       canonical: `/blogs/${slug}`,
     },
     openGraph: {
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.excerpt,
-      images: [
-        {
-          url: post.mainImage,
-          alt: post.imageAlt,
-          width: 1200,
-          height: 800,
-        },
-      ],
+      ...(post.mainImage && {
+        images: [
+          {
+            url: post.mainImage,
+            alt: post.imageAlt,
+            width: 1200,
+            height: 800,
+          },
+        ],
+      }),
       type: "article",
       publishedTime: post.publishedAt,
       modifiedTime: post._updatedAt || post.publishedAt,
-      authors: [post.author.name],
-      section: post.tag,
+      ...(post.author && { authors: [post.author.name] }),
+      ...(post.tag && { section: post.tag }),
       tags: post.seoKeywords || [],
       url: `${siteUrl}/blogs/${slug}`,
     },
@@ -64,8 +66,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.excerpt,
-      images: [post.mainImage],
-      creator: `@${post.author.slug}`,
+      ...(post.mainImage && { images: [post.mainImage] }),
+      ...(post.author && { creator: `@${post.author.slug}` }),
     },
     robots: {
       index: true,
@@ -102,18 +104,22 @@ export default async function BlogPostPage({ params }: Props) {
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
-    image: {
-      "@type": "ImageObject",
-      url: post.mainImage,
-      width: 1200,
-      height: 800,
-      caption: post.imageAlt,
-    },
-    author: {
-      "@type": "Person",
-      name: post.author.name,
-      url: `${siteUrl}/blogs?author=${post.author.slug}`,
-    },
+    ...(post.mainImage && {
+      image: {
+        "@type": "ImageObject",
+        url: post.mainImage,
+        width: 1200,
+        height: 800,
+        caption: post.imageAlt,
+      },
+    }),
+    ...(post.author && {
+      author: {
+        "@type": "Person",
+        name: post.author.name,
+        url: `${siteUrl}/blogs?author=${post.author.slug}`,
+      },
+    }),
     publisher: {
       "@type": "Organization",
       name: "Lift Solutions",
@@ -124,7 +130,7 @@ export default async function BlogPostPage({ params }: Props) {
     },
     datePublished: post.publishedAt,
     dateModified: post._updatedAt || post.publishedAt,
-    articleSection: post.tag,
+    ...(post.tag && { articleSection: post.tag }),
     keywords: post.seoKeywords?.join(", "),
     wordCount,
     url: `${siteUrl}/blogs/${slug}`,

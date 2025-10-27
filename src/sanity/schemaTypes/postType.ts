@@ -39,7 +39,7 @@ export const postType = defineType({
       title: "Author",
       type: "reference",
       to: { type: "author" },
-      validation: (Rule) => Rule.required(),
+      description: "Optional: Select the author of this blog post",
     }),
     defineField({
       name: "mainImage",
@@ -81,9 +81,8 @@ export const postType = defineType({
       name: "readTime",
       title: "Read Time",
       type: "string",
-      validation: (Rule) => Rule.required(),
       placeholder: "5 min read",
-      description: 'Estimated reading time (e.g., "5 min read")',
+      description: 'Optional: Estimated reading time (e.g., "5 min read")',
     }),
     defineField({
       name: "body",
@@ -106,6 +105,14 @@ export const postType = defineType({
       of: [defineArrayMember({ type: "reference", to: { type: "post" } })],
       validation: (Rule) => Rule.max(3),
       description: "Select up to 3 related posts",
+    }),
+    defineField({
+      name: "relatedProducts",
+      title: "Related Products",
+      type: "array",
+      of: [defineArrayMember({ type: "reference", to: { type: "product" } })],
+      validation: (Rule) => Rule.max(3),
+      description: "Select up to 3 related products to showcase",
     }),
     defineField({
       name: "seo",

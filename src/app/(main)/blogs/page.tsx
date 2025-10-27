@@ -151,7 +151,7 @@ export default async function BlogPage({ searchParams }: Props) {
       {/* Featured Posts */}
       <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
         <div className="container mx-auto px-4">
-          <div className="mb-2">
+          <div className="mb-4">
             <div className="inline-block rounded-full bg-accent/10 px-4 py-2 mb-4">
               <span className="text-sm font-bold uppercase tracking-wider text-accent">
                 Featured Articles

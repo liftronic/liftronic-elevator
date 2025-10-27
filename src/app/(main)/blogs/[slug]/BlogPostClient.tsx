@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Breadcrumb from "~/components/Breadcrumb";
 import BlogCard from "~/components/blog/BlogCard";
+import ProductCard from "~/components/products/ProductCard";
 import CallToActionSection from "~/components/CallToActionSection";
 import { useViewTransition } from "~/hooks/useViewTransition";
 import PortableTextRenderer from "~/components/blog/PortableTextRenderer";
@@ -35,15 +36,15 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
     router.prefetch("/blogs");
   }, [router]);
 
-  const heroImage = post.mainImage || "/assets/service_banner.png";
   const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
 
-  // Get related posts from the post data
+  // Get related posts and products from the post data
   const relatedPosts = post.relatedPosts || [];
+  const relatedProducts = post.relatedProducts || [];
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -65,20 +66,34 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
         <div className="container mx-auto px-6 py-16 md:py-28">
           <Breadcrumb items={breadcrumbItems} />
 
-          <div className="grid items-start gap-16 lg:grid-cols-[1fr_0.85fr] lg:items-center mt-6">
+          <div
+            className={`grid items-start gap-16 ${post.mainImage ? "lg:grid-cols-[1fr_0.85fr]" : ""} lg:items-center mt-6`}
+          >
             {/* Content */}
             <div className="space-y-8">
               {/* Meta information */}
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-accent font-semibold">
-                  {post.tag}
-                </span>
-                <time dateTime={post.publishedAt}>{formattedDate}</time>
-                <span>•</span>
-                <span>{post.readTime}</span>
-                <span>•</span>
-                <span>{post.author.name}</span>
-              </div>
+              {(post.tag || post.readTime || post.author?.name) && (
+                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                  {post.tag && (
+                    <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-accent font-semibold">
+                      {post.tag}
+                    </span>
+                  )}
+                  <time dateTime={post.publishedAt}>{formattedDate}</time>
+                  {post.readTime && (
+                    <>
+                      <span>•</span>
+                      <span>{post.readTime}</span>
+                    </>
+                  )}
+                  {post.author?.name && (
+                    <>
+                      <span>•</span>
+                      <span>{post.author.name}</span>
+                    </>
+                  )}
+                </div>
+              )}
 
               {/* Title and Summary */}
               <div className="space-y-4">
@@ -108,25 +123,27 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             </div>
 
             {/* Blog Image */}
-            <div className="order-first lg:order-last">
-              <div className="relative mx-auto aspect-[4/3] w-full overflow-hidden rounded-3xl border border-gray-200/60 bg-white shadow-2xl blog-image">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-gray-900/5" />
-                <Image
-                  src={heroImage}
-                  alt={post.imageAlt || `${post.title} cover image`}
-                  fill
-                  sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw"
-                  className="object-cover"
-                  priority
-                />
+            {post.mainImage && (
+              <div className="order-first lg:order-last">
+                <div className="relative mx-auto aspect-[4/3] w-full overflow-hidden rounded-3xl border border-gray-200/60 bg-white shadow-2xl blog-image">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-gray-900/5" />
+                  <Image
+                    src={post.mainImage}
+                    alt={post.imageAlt || `${post.title} cover image`}
+                    fill
+                    sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                    priority
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
       {/* Article Content */}
-      <section className="border-t border-gray-200/60 bg-white py-20 md:py-28">
+      <section className="border-t border-gray-200/60 bg-white py-10 md:py-14">
         <div className="container mx-auto px-4">
           <div className="prose prose-lg max-w-none">
             <Suspense
@@ -146,6 +163,59 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
         </div>
       </section>
 
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <Suspense
+          fallback={
+            <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
+              <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-pulse">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="bg-gray-200 rounded-xl h-96"></div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          }
+        >
+          <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
+            <div className="container mx-auto px-4">
+              {/* Section Header */}
+              <div className="mx-auto space-y-3 mb-12">
+                <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
+                  <span className="text-sm font-bold uppercase tracking-wider text-accent">
+                    Related Products
+                  </span>
+                </div>
+                <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
+                  Explore our products
+                </h2>
+                <p className="text-lg text-gray-700 leading-relaxed max-w-2xl">
+                  Discover the elevator and escalator solutions mentioned in
+                  this article
+                </p>
+              </div>
+
+              {/* Related Products Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {relatedProducts.slice(0, 3).map((product) => (
+                  <ProductCard
+                    key={product._id}
+                    title={product.title}
+                    summary={product.description}
+                    tags={product.tags?.map((tag) => tag.title) || []}
+                    productId={product.slug}
+                    imageSrc={product.mainImage}
+                    imageAlt={product.imageAlt}
+                    blurDataURL={product.mainImageLqip}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        </Suspense>
+      )}
+
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
         <Suspense
@@ -164,7 +234,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
           <section className="border-t border-gray-200/60 bg-gradient-to-br from-gray-50/30 to-white py-20 md:py-28">
             <div className="container mx-auto px-4">
               {/* Section Header */}
-              <div className="mx-auto space-y-6 mb-16">
+              <div className="mx-auto space-y-3 mb-12">
                 <div className="inline-block rounded-full bg-accent/10 px-4 py-2">
                   <span className="text-sm font-bold uppercase tracking-wider text-accent">
                     Continue Reading
@@ -173,7 +243,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                 <h2 className="text-3xl font-bold leading-tight text-charcoal md:text-4xl lg:text-5xl">
                   Related articles
                 </h2>
-                <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
+                <p className="text-lg text-gray-700 leading-relaxed max-w-2xl">
                   Explore more insights and expertise from our technical team
                 </p>
               </div>

@@ -66,6 +66,19 @@ export const postBySlugQuery = groq`*[_type == "post" && slug.current == $slug][
     "author": author->name,
     publishedAt
   },
+  "relatedProducts": relatedProducts[0..2]->{
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImageLqip": mainImage.asset->metadata.lqip,
+    "imageAlt": mainImage.alt,
+    "tags": tags[]->{
+      _id,
+      title
+    }
+  },
   "seoTitle": seo.metaTitle,
   "seoDescription": seo.metaDescription,
   "seoKeywords": seo.keywords
@@ -171,6 +184,10 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
     "url": asset->url + "?w=1200&h=900&fit=crop&auto=format&fm=webp&q=85",
     "lqip": asset->metadata.lqip,
     "alt": alt
+  },
+  "locationPages": locationPages[published == true]{
+    city,
+    "citySlug": citySlug.current
   },
   "seoTitle": seo.metaTitle,
   "seoDescription": seo.metaDescription,

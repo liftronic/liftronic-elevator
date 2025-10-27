@@ -343,14 +343,15 @@ Location Pages allow you to create city-specific versions of product pages for b
 | **Title** | Blog post title | Yes | 10-200 characters, make it engaging |
 | **Slug** | URL-friendly version | Yes | Auto-generated |
 | **Excerpt** | Brief summary | No | 50-300 chars, shows on blog listing |
-| **Author** | Select author | Yes | Choose from Authors collection |
+| **Author** | Select author | No | Choose from Authors collection |
 | **Main Image** | Featured image | No | Max 300KB, recommended for social sharing |
 | **Tag** | Primary category | No | E.g., "Industry News", "Tips" |
 | **Published At** | Publication date/time | No | Defaults to current date |
-| **Read Time** | Estimated reading time | Yes | E.g., "5 min read" |
+| **Read Time** | Estimated reading time | No | E.g., "5 min read" |
 | **Body** | Main content (rich text) | Yes | Use formatting tools for headings, lists |
 | **Featured Post** | Mark as featured | No | Featured posts appear larger on blog page |
 | **Related Posts** | Related articles | No | Select up to 3 related posts |
+| **Related Products** | Related products | No | Select up to 3 related products |
 | **SEO Settings** | Meta tags | No | Override for custom SEO |
 
 #### How to Create a Blog Post
@@ -360,18 +361,20 @@ Location Pages allow you to create city-specific versions of product pages for b
 3. Enter a compelling title
 4. Generate slug
 5. Write excerpt (summary)
-6. Select author
+6. Select author (optional)
 7. Upload featured image (recommended)
 8. Select a tag/category
-9. Enter read time (e.g., "5 min read")
+9. Enter read time (optional, e.g., "5 min read")
 10. Write your content in the Body field using the rich text editor:
     - Use headings (H2, H3) for structure
     - Add bullet points and numbered lists
     - Bold important text
     - Add links where relevant
 11. Mark as "Featured" if it's a key article
-12. Add related posts (optional)
-13. Click "Publish"
+12. Add related posts (optional) - these will appear at the bottom of the article
+13. Add related products (optional) - products mentioned in the article will be showcased
+14. Click "Publish"
+
 
 #### Rich Text Editor Tips
 

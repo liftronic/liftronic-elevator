@@ -38,6 +38,7 @@ export type BlogPostFull = {
   authorBio?: PortableTextBlock[];
   body: PortableTextBlock[];
   relatedPosts?: RelatedPost[];
+  relatedProducts?: RelatedProduct[];
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];
@@ -56,6 +57,21 @@ export type RelatedPost = {
   readTime: string;
   author: string;
   publishedAt: string;
+};
+
+// Related product type (simplified)
+export type RelatedProduct = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  mainImage: string;
+  mainImageLqip?: string;
+  imageAlt: string;
+  tags?: {
+    _id: string;
+    title: string;
+  }[];
 };
 
 // Tag type

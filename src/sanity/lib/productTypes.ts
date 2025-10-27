@@ -28,6 +28,7 @@ export type ProductFull = {
   mainImage?: string;
   imageAlt?: string;
   gallery?: GalleryImage[];
+  locationPages?: LocationPage[];
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string[];
@@ -67,4 +68,10 @@ export type GalleryImage = {
   url: string;
   lqip?: string;
   alt?: string;
+};
+
+// Location page type
+export type LocationPage = {
+  city: string;
+  citySlug: string;
 };

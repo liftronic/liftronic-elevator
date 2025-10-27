@@ -371,6 +371,33 @@ export default function ProductPageClient({
               </p>
             </motion.div>
             <FAQ faqs={product.faqs} />
+
+            {/* Location Page Links */}
+            {product.locationPages && product.locationPages.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="mt-8 text-center"
+              >
+                <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-500">
+                  {product.locationPages.map((location, index) => (
+                    <span key={location.citySlug}>
+                      <Link
+                        href={`/products/${product.slug}/${location.citySlug}`}
+                        className="hover:text-accent transition-colors duration-200 underline"
+                      >
+                        {product.title} in {location.city}
+                      </Link>
+                      {index < product.locationPages!.length - 1 && (
+                        <span className="mx-1">•</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </div>
         </section>
       )}
