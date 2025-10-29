@@ -334,7 +334,7 @@ export default function ProductPageClient({
         </section>
       )}
 
-      {product.faqs && product.faqs.length > 0 && (
+      {!locationPage && product.faqs && product.faqs.length > 0 && (
         <section className="py-20 md:py-28 bg-gradient-to-br from-gray-50/50 via-white to-gray-50/30 border-t border-gray-200/60">
           <div className="container mx-auto px-4">
             <motion.div

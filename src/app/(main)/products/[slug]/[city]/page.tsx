@@ -45,11 +45,6 @@ async function getProductWithLocation(
       icon
     },
     specifications,
-    "faqs": faqs[]->{
-      _id,
-      question,
-      answer
-    },
     "mainImage": mainImage.asset->url + "?w=1200&h=800&fit=crop&auto=format&fm=webp&q=90",
     "imageAlt": mainImage.alt,
     "gallery": gallery[]{
