@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import Features from "~/components/Features";
 import FAQ from "~/components/FAQ";
 import Breadcrumb from "~/components/Breadcrumb";
-import { useViewTransition } from "~/hooks/useViewTransition";
 import { motion } from "motion/react";
 import CallToActionSection from "~/components/CallToActionSection";
 import { FiMessageSquare, FiEye } from "react-icons/fi";
@@ -17,19 +16,7 @@ type ServicePageClientProps = {
 };
 
 export default function ServicePageClient({ service }: ServicePageClientProps) {
-  const { transitionTo } = useViewTransition();
   const router = useRouter();
-
-  const pageStyle = {
-    "--transition-name": `service-card-${service.slug}`,
-    "--image-transition-name": `service-image-${service.slug}`,
-    "--title-transition-name": `service-title-${service.slug}`,
-  } as React.CSSProperties;
-
-  const handleBackClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    transitionTo("/services");
-  };
 
   // Prefetch the services page immediately when this page loads
   useEffect(() => {
@@ -41,7 +28,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
     Array.isArray(service.specifications) && service.specifications.length > 0;
 
   return (
-    <main className="min-h-screen" style={pageStyle}>
+    <main className="min-h-screen">
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-white via-white/80 to-gray-50/50">
         {/* Background Elements */}
@@ -210,7 +197,7 @@ export default function ServicePageClient({ service }: ServicePageClientProps) {
       <CallToActionSection
         secondaryAction={{
           label: "View All Services",
-          onClick: handleBackClick,
+          href: "/services",
         }}
       />
     </main>

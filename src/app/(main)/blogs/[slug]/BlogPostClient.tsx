@@ -8,7 +8,6 @@ import Breadcrumb from "~/components/Breadcrumb";
 import BlogCard from "~/components/blog/BlogCard";
 import ProductCard from "~/components/products/ProductCard";
 import CallToActionSection from "~/components/CallToActionSection";
-import { useViewTransition } from "~/hooks/useViewTransition";
 import PortableTextRenderer from "~/components/blog/PortableTextRenderer";
 import type { BlogPostFull } from "~/sanity/lib/blogTypes";
 
@@ -17,18 +16,11 @@ type BlogPostClientProps = {
 };
 
 export default function BlogPostClient({ post }: BlogPostClientProps) {
-  const { transitionTo } = useViewTransition();
   const router = useRouter();
-
-  const pageStyle = {
-    "--transition-name": `blog-card-${post.slug}`,
-    "--image-transition-name": `blog-image-${post.slug}`,
-    "--title-transition-name": `blog-title-${post.slug}`,
-  } as React.CSSProperties;
 
   const handleBackClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    transitionTo("/blogs");
+    router.push("/blogs");
   };
 
   // Prefetch the blog page immediately when this page loads
@@ -53,7 +45,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
   ];
 
   return (
-    <main className="min-h-screen" style={pageStyle}>
+    <main className="min-h-screen">
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-white via-white/80 to-gray-50/50">
         {/* Background Elements */}
