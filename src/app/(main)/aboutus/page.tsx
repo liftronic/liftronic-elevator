@@ -6,6 +6,7 @@ import WhyUsSection from "~/components/aboutus/WhyUsSection";
 import VisionMissionValues from "~/components/aboutus/VisionMissionValues";
 import TeamSection from "~/components/aboutus/TeamSection";
 import CertificatesSection from "~/components/aboutus/CertificatesSection";
+import TimelineSection from "~/components/aboutus/TimelineSection";
 import Breadcrumb from "~/components/Breadcrumb";
 import Link from "next/link";
 import CallToActionSection from "~/components/CallToActionSection";
@@ -50,7 +51,7 @@ export default async function AboutPage() {
       certificates,
     ] = await Promise.all([
       getCompanyInfo().catch(() => null),
-      getFeaturedTimeline(3).catch(() => []),
+      getFeaturedTimeline().catch(() => []),
       getWhyChooseUs().catch(() => []),
       getVisionMissionValues().catch(() => null),
       getTeamMembers().catch(() => []),
@@ -213,38 +214,7 @@ export default async function AboutPage() {
               </div>
 
               {/* Company Timeline */}
-              {featuredTimeline.length > 0 && (
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6">
-                  <h3 className="text-xl font-bold text-charcoal mb-6 text-center">
-                    Our Journey
-                  </h3>
-                  <div className="space-y-4">
-                    {featuredTimeline.map((milestone) => (
-                      <div
-                        key={milestone._id}
-                        className="flex items-start space-x-4"
-                      >
-                        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-                          {milestone.year}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-charcoal">
-                            {milestone.title}
-                          </div>
-                          <div className="text-gray-600 text-sm">
-                            {milestone.description}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="text-center pt-4">
-                      <span className="text-accent font-medium text-sm">
-                        ...and many more milestones
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <TimelineSection timelines={featuredTimeline} />
             </div>
           </div>
         </div>

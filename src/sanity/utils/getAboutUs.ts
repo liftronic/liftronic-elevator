@@ -49,9 +49,9 @@ export async function getTimeline(): Promise<Timeline[]> {
   return client.fetch<Timeline[]>(query);
 }
 
-// Get featured timeline milestones only
-export async function getFeaturedTimeline(limit = 3): Promise<Timeline[]> {
-  const query = groq`*[_type == "timeline" && featured == true] | order(order asc) [0...${limit}] {
+// Get featured timeline milestones only (all featured timelines, no limit)
+export async function getFeaturedTimeline(): Promise<Timeline[]> {
+  const query = groq`*[_type == "timeline" && featured == true] | order(order asc) {
     _id,
     _createdAt,
     year,
