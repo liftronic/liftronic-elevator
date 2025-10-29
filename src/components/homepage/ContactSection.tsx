@@ -26,7 +26,7 @@ export default function ContactSection({
     supportPhone: "+91 1231231233",
     email: "contact@liftronic.com",
     mapEmbedUrl:
-      "https://maps.google.com/maps?q=Mumbai,Maharashtra,India&output=embed",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6055.296953768451!2d72.98504085482219!3d19.2636486625117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7bb966bcb6509%3A0x113927aa64c635b4!2sLiftronic%20India%20Private%20Limited!5e0!3m2!1sen!2sin!4v1761726182478!5m2!1sen!2sin",
   };
 
   const contact = contactInfo || fallbackContactInfo;
