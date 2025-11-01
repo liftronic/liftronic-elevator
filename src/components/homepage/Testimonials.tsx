@@ -10,10 +10,27 @@ interface TestimonialsProps {
 }
 
 function Stars({ count }: { count: number }) {
+  const fullStars = Math.floor(count);
+  const hasHalfStar = count % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
   return (
-    <div className="text-accent flex gap-1">
-      {Array.from({ length: count }).map((_, i) => (
-        <span key={i} aria-hidden>
+    <div
+      className="text-accent flex gap-1"
+      aria-label={`${count} out of 5 stars`}
+    >
+      {Array.from({ length: fullStars }).map((_, i) => (
+        <span key={`full-${i}`} aria-hidden="true">
+          ★
+        </span>
+      ))}
+      {hasHalfStar && (
+        <span key="half" aria-hidden="true">
+          ⯨
+        </span>
+      )}
+      {Array.from({ length: emptyStars }).map((_, i) => (
+        <span key={`empty-${i}`} aria-hidden="true" className="text-gray-300">
           ★
         </span>
       ))}
@@ -91,7 +108,7 @@ function TestimonialCard({
             <div className="font-semibold text-black">
               {testimonial.testimonialFrom}
             </div>
-            <Stars count={5} />
+            <Stars count={testimonial.rating || 5} />
           </div>
         </div>
 

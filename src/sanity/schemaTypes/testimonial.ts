@@ -40,16 +40,30 @@ export const testimonialType = defineType({
       type: "text",
       validation: (Rule) => Rule.required().min(10),
     }),
+    defineField({
+      name: "rating",
+      title: "Rating",
+      type: "number",
+      description: "Rating out of 5 stars",
+      validation: (Rule) =>
+        Rule.required()
+          .min(1)
+          .max(5)
+          .precision(1)
+          .error("Rating must be between 1 and 5"),
+      initialValue: 5,
+    }),
   ],
   preview: {
     select: {
       title: "testimonialFrom",
       subtitle: "testimonialDetail",
       media: "companyImage",
+      rating: "rating",
     },
-    prepare({ title, subtitle, media }) {
+    prepare({ title, subtitle, media, rating }) {
       return {
-        title,
+        title: `${title}${rating ? ` (⭐ ${rating})` : ""}`,
         subtitle: subtitle
           ? subtitle.slice(0, 50) + (subtitle.length > 50 ? "…" : "")
           : "",

@@ -4,4 +4,5 @@ export interface Testimonial {
   testimonialDetail: string;
   companyImage: string;
   imageAlt: string;
+  rating: number;
 }

@@ -1,7 +1,7 @@
 # Liftronic Elevator Website - Client Handover Guide
 
-**Version:** 1.0
-**Date:** October 2025
+**Version:** 1.1
+**Date:** November 2025
 **Website URL:** https://liftronic-elevator.vercel.app/ (Staging)
 **Production URL:** https://liftronicelevator.com/ (To be launched)
 
@@ -656,7 +656,7 @@ Add impressive numbers like:
 
 **Location in Sanity:** Click "Testimonials" in the left sidebar
 
-**Purpose:** Display customer reviews and feedback
+**Purpose:** Display customer reviews and feedback with ratings
 
 #### Fields Explained
 
@@ -665,6 +665,7 @@ Add impressive numbers like:
 | **Testimonial From (Name)** | Customer/company name | Yes | E.g., "ABC Corporation" |
 | **Company Image** | Logo or photo | No | Max 300KB |
 | **Testimonial Detail** | The review text | Yes | Minimum 10 characters |
+| **Rating** | Star rating (1-5) | Yes | Decimal values allowed (e.g., 4.5) |
 
 #### How to Add a Testimonial
 
@@ -673,7 +674,20 @@ Add impressive numbers like:
 3. Enter customer/company name
 4. Upload company logo (optional, max 300KB)
 5. Write the testimonial (minimum 10 chars)
-6. Click "Publish"
+6. Set the rating (1-5 stars)
+   - Default is 5 stars
+   - You can use decimals (e.g., 4.5 for 4.5 stars)
+   - This rating appears visually as stars on the website
+   - Used to calculate average rating for SEO
+7. Click "Publish"
+
+#### Important Notes About Ratings
+
+- **SEO Impact**: Testimonial ratings are used to calculate the average rating shown in search results (Google Rich Snippets)
+- **Visual Display**: Ratings appear as stars on the testimonials section (★★★★★)
+- **Half Stars**: Ratings like 4.5 will show 4 full stars and 1 half star
+- **Accuracy**: Use honest ratings - manipulated ratings can harm SEO
+- **Preview**: The Sanity Studio preview will show the rating next to the customer name
 
 ---
 
@@ -1329,6 +1343,37 @@ The About page pulls content from multiple collections:
 **Good:** `/products/passenger-elevator`
 **Bad:** `/product?id=12345`
 
+### Review Schema & Ratings (SEO)
+
+The website automatically implements **Review Schema** and **Aggregate Rating** markup for better search engine visibility.
+
+#### How It Works
+
+1. **Individual Reviews**: Each testimonial with a rating is marked up as a `Review` schema
+2. **Aggregate Rating**: The average of all testimonial ratings is calculated and displayed
+3. **Search Results**: Google may show star ratings in search results (Rich Snippets)
+
+#### Best Practices for Testimonials
+
+- **Be Honest**: Only use real testimonials with accurate ratings
+- **Collect Regularly**: Add new testimonials monthly to keep ratings fresh
+- **Variety**: Include a range of ratings (not all 5 stars looks suspicious)
+- **Quality Over Quantity**: 10-20 quality reviews are better than 100 generic ones
+- **Context**: Testimonials with detailed feedback perform better than short quotes
+
+#### Rating Guidelines
+
+- **5 Stars**: Exceptional, exceeded expectations
+- **4-4.5 Stars**: Very good, met expectations well
+- **3-3.5 Stars**: Good, met basic expectations
+- **Below 3**: Use sparingly, only if constructive
+
+**SEO Impact:**
+- ✅ Star ratings can appear in Google search results
+- ✅ Higher average ratings improve click-through rates
+- ✅ Review schema helps Google understand your reputation
+- ⚠️ Fake or manipulated ratings can result in penalties
+
 ---
 
 ## Troubleshooting
@@ -1431,6 +1476,32 @@ The About page pulls content from multiple collections:
 
 ---
 
+### Rating Not Showing on Testimonial
+
+**Problem**: Star rating not appearing on testimonial card.
+
+**Solutions:**
+1. Verify rating field is filled (1-5 scale)
+2. Check that rating is a valid number (1.0 to 5.0)
+3. Re-publish the testimonial
+4. Hard refresh browser (Ctrl+F5 or Cmd+Shift+R)
+5. Check that testimonial is published (not just saved as draft)
+
+---
+
+### Average Rating Not Updating
+
+**Problem**: Average rating in search results not changing after updating testimonials.
+
+**Solutions:**
+1. Wait 1-2 hours for changes to propagate
+2. Ensure all testimonials have ratings assigned
+3. Verify testimonials are published (not drafts)
+4. Check Google Search Console for indexing status
+5. Note: Google may take days/weeks to update rich snippets in search results
+
+---
+
 ## Support & Resources
 
 ### Getting Help
@@ -1464,6 +1535,8 @@ If you encounter issues not covered in this guide:
 6. **Quality Over Quantity**: Better to have fewer high-quality items than many low-quality ones
 7. **Preview Before Publishing**: Review changes before clicking publish
 8. **Backup Important Content**: Copy important text to a document before making major changes
+9. **Honest Ratings**: Use accurate ratings for testimonials - impacts SEO and trust
+10. **Review Schema**: All testimonials automatically generate SEO-friendly review markup
 
 ### Maintenance Checklist
 
@@ -1478,6 +1551,8 @@ If you encounter issues not covered in this guide:
 - [ ] Check analytics and adjust content strategy
 - [ ] Update client logos if new clients added
 - [ ] Review and update FAQs
+- [ ] Add new testimonials with accurate ratings
+- [ ] Review average rating and testimonial quality
 
 **Quarterly:**
 - [ ] Review all product descriptions for accuracy
@@ -1486,6 +1561,7 @@ If you encounter issues not covered in this guide:
 - [ ] Update team member information
 - [ ] Add new certificates and accreditations
 - [ ] Refresh homepage content
+- [ ] Audit testimonials - ensure all have ratings and are authentic
 
 **Annually:**
 - [ ] Complete content audit
@@ -1500,18 +1576,25 @@ If you encounter issues not covered in this guide:
 
 This guide covers all aspects of managing your Liftronic Elevator website through Sanity CMS. The system is designed to be user-friendly and doesn't require any coding knowledge.
 
+**Recent Enhancements:**
+- ⭐ **Testimonial Rating System**: Collect and display star ratings for better SEO
+- 📊 **Dynamic Review Schema**: Automatic calculation of average ratings
+- 🎯 **Rich Snippets**: Potential for star ratings in Google search results
+
 **Remember:**
 - Take your time learning the system
 - Start with small changes to build confidence
 - Always preview before publishing
 - Don't hesitate to ask for help
+- **NEW**: Assign ratings to all testimonials for maximum SEO benefit
 
-Your website is a powerful marketing tool. By keeping content fresh, optimized, and engaging, you'll attract more customers and grow your business.
+Your website is a powerful marketing tool. By keeping content fresh, optimized, and engaging, you'll attract more customers and grow your business. The new rating system helps build trust and improve your search engine visibility.
 
 **Welcome to your new website management system!**
 
 ---
 
-*Document Version: 1.0*
-*Last Updated: October 2025*
+*Document Version: 1.1*
+*Last Updated: November 2025*
+*Changelog: Added testimonial rating system and review schema documentation*
 *For questions or support, contact your development team*

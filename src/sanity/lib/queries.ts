@@ -335,13 +335,14 @@ export const clientsQuery = groq`*[_type == "client"] | order(_createdAt desc) {
 // Testimonial Queries
 // ============================================
 
-// Query to get all testimonials
+// Query to get testimonials
 export const testimonialsQuery = groq`*[_type == "testimonial"] | order(_createdAt desc) {
   _id,
   testimonialFrom,
   testimonialDetail,
   "companyImage": companyImage.asset->url + "?w=100&h=100&fit=crop&auto=format&fm=webp&q=85",
-  "imageAlt": companyImage.alt
+  "imageAlt": companyImage.alt,
+  rating
 }`;
 
 // ============================================

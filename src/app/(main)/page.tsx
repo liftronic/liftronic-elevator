@@ -112,6 +112,21 @@ export default async function Home() {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+  // Calculate average rating from testimonials
+  const testimonialRatings = homeData.testimonials
+    .map((t) => t.rating)
+    .filter((rating): rating is number => typeof rating === "number");
+
+  const averageRating =
+    testimonialRatings.length > 0
+      ? (
+          testimonialRatings.reduce((sum, rating) => sum + rating, 0) /
+          testimonialRatings.length
+        ).toFixed(1)
+      : null;
+
+  const reviewCount = homeData.testimonials.length;
+
   // Organization JSON-LD (enhanced from layout)
   const organizationJsonLd = {
     "@context": "https://schema.org",
@@ -131,11 +146,16 @@ export default async function Home() {
       areaServed: "IN",
       availableLanguage: ["en", "hi"],
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: homeData.testimonials.length.toString(),
-    },
+    ...(averageRating &&
+      reviewCount > 0 && {
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: averageRating,
+          reviewCount: reviewCount.toString(),
+          bestRating: "5",
+          worstRating: "1",
+        },
+      }),
   };
 
   // LocalBusiness JSON-LD
@@ -158,11 +178,16 @@ export default async function Home() {
         }
       : undefined,
     priceRange: "₹₹₹",
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: homeData.testimonials.length.toString(),
-    },
+    ...(averageRating &&
+      reviewCount > 0 && {
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: averageRating,
+          reviewCount: reviewCount.toString(),
+          bestRating: "5",
+          worstRating: "1",
+        },
+      }),
   };
 
   // ItemList JSON-LD for featured products
@@ -203,6 +228,31 @@ export default async function Home() {
         }
       : null;
 
+  // Review schema for testimonials
+  const reviewSchemas =
+    homeData.testimonials.length > 0
+      ? homeData.testimonials.slice(0, 10).map((testimonial) => ({
+          "@context": "https://schema.org",
+          "@type": "Review",
+          author: {
+            "@type": "Person",
+            name: testimonial.testimonialFrom,
+          },
+          reviewRating: {
+            "@type": "Rating",
+            ratingValue: testimonial.rating || 5,
+            bestRating: 5,
+            worstRating: 1,
+          },
+          reviewBody: testimonial.testimonialDetail,
+          itemReviewed: {
+            "@type": "Organization",
+            name: "Liftronic Elevator",
+            url: siteUrl,
+          },
+        }))
+      : [];
+
   return (
     <>
       <script
@@ -229,6 +279,13 @@ export default async function Home() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd) }}
         />
       )}
+      {reviewSchemas.map((reviewSchema, index) => (
+        <script
+          key={`review-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        />
+      ))}
       <main suppressHydrationWarning>
         <Hero socials={socials} contactInfo={contactInfo} />
         <AboutUs companyInfo={companyInfo} />
