@@ -427,6 +427,7 @@ export const homePageDataQuery = groq`{
     testimonialFrom,
     testimonialDetail,
     "companyImage": companyImage.asset->url + "?w=100&h=100&fit=crop&auto=format&fm=webp&q=85",
-    "imageAlt": companyImage.alt
+    "imageAlt": companyImage.alt,
+    rating
   }
 }`;
