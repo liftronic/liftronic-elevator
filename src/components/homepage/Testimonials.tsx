@@ -16,21 +16,38 @@ function Stars({ count }: { count: number }) {
 
   return (
     <div
-      className="text-accent flex gap-1"
+      className="text-accent flex gap-1 items-center"
       aria-label={`${count} out of 5 stars`}
     >
+      {/* Full stars */}
       {Array.from({ length: fullStars }).map((_, i) => (
-        <span key={`full-${i}`} aria-hidden="true">
+        <span key={`full-${i}`} aria-hidden="true" className="leading-none">
           ★
         </span>
       ))}
+      {/* Half star - using CSS clip to show half */}
       {hasHalfStar && (
-        <span key="half" aria-hidden="true">
-          ⯨
+        <span
+          key="half"
+          aria-hidden="true"
+          className="relative inline-block leading-none"
+        >
+          <span className="text-gray-300">★</span>
+          <span
+            className="absolute top-0 left-0 overflow-hidden text-accent"
+            style={{ width: "50%" }}
+          >
+            ★
+          </span>
         </span>
       )}
+      {/* Empty stars */}
       {Array.from({ length: emptyStars }).map((_, i) => (
-        <span key={`empty-${i}`} aria-hidden="true" className="text-gray-300">
+        <span
+          key={`empty-${i}`}
+          aria-hidden="true"
+          className="text-gray-300 leading-none"
+        >
           ★
         </span>
       ))}
