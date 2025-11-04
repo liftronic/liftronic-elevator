@@ -68,12 +68,14 @@ export default function BlogCard({
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
 
-          {/* Tag overlay */}
-          <div className="absolute top-3 left-3">
-            <span className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-semibold text-gray-700 shadow-sm border border-white/20">
-              {tag}
-            </span>
-          </div>
+          {/* Tag overlay - only show if tag exists */}
+          {tag && (
+            <div className="absolute top-3 left-3">
+              <span className="inline-flex items-center rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-semibold text-gray-700 shadow-sm border border-white/20">
+                {tag}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Content */}
@@ -88,12 +90,22 @@ export default function BlogCard({
               >
                 {date}
               </time>
-              <span className="flex-shrink-0">•</span>
-              <span className="whitespace-nowrap flex-shrink-0">
-                {readTime}
-              </span>
-              <span className="flex-shrink-0">•</span>
-              <span className="truncate min-w-0">{author}</span>
+              
+              {readTime && (
+                <>
+                  <span className="flex-shrink-0">•</span>
+                  <span className="whitespace-nowrap flex-shrink-0">
+                    {readTime}
+                  </span>
+                </>
+              )}
+              
+              {author && (
+                <>
+                  <span className="flex-shrink-0">•</span>
+                  <span className="truncate min-w-0">{author}</span>
+                </>
+              )}
             </div>
 
             {/* Title */}
