@@ -65,6 +65,13 @@ export const contactInfoType = defineType({
       initialValue: "Mumbai, Maharashtra, India",
     }),
     defineField({
+      name: "secondaryAddress",
+      title: "Secondary Address",
+      description:
+        "Secondary office or branch address (e.g., Pune, Maharashtra, India)",
+      type: "string",
+    }),
+    defineField({
       name: "whatsappNumber",
       title: "WhatsApp Number",
       description:

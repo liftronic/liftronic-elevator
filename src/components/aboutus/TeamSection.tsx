@@ -79,58 +79,6 @@ export default function TeamSection({ members }: TeamSectionProps) {
               key={member._id}
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
-              {/* Image Section */}
-              <div className="relative h-80 overflow-hidden bg-gray-100">
-                {member.image ? (
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-contain object-top group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    placeholder={member.imageLqip ? "blur" : undefined}
-                    blurDataURL={member.imageLqip || undefined}
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-accent/20 to-gray-200 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-gray-400">
-                      {member.name.charAt(0)}
-                    </span>
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                {/* Contact Icons Overlay */}
-                <div className="absolute bottom-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {member.email && (
-                    <a
-                      href={`mailto:${member.email}`}
-                      className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
-                    >
-                      <FiMail className="text-sm" />
-                    </a>
-                  )}
-                  {member.phone && (
-                    <a
-                      href={`tel:${member.phone}`}
-                      className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
-                    >
-                      <FiPhone className="text-sm" />
-                    </a>
-                  )}
-                  {member.linkedin && (
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-accent hover:text-white transition-colors"
-                    >
-                      <FiLinkedin className="text-sm" />
-                    </a>
-                  )}
-                </div>
-              </div>
-
               {/* Content Section */}
               <div className="p-6">
                 <div className="mb-4">
@@ -145,14 +93,6 @@ export default function TeamSection({ members }: TeamSectionProps) {
                 <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
                   {member.bio}
                 </p>
-
-                {/* Contact Button */}
-                <button
-                  onClick={() => setSelectedMember(member)}
-                  className="w-full btn bg-gray-100 text-charcoal hover:bg-accent hover:text-black text-sm transition-all duration-300"
-                >
-                  View Profile
-                </button>
               </div>
             </div>
           ))}

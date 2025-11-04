@@ -105,7 +105,7 @@ export default function ProductRangeCarouselCard({
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
             {title}
           </h2>
-          <div className="mt-3">
+          <div className="mt-1">
             <p
               className={`text-base text-gray-600 leading-relaxed max-w-3xl ${!isExpanded && shouldTruncate ? "line-clamp-2" : ""}`}
             >

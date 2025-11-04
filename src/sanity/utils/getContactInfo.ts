@@ -13,6 +13,7 @@ export async function getContactInfo(): Promise<ContactInfo | null> {
     salesPhoneLabel,
     mapEmbedUrl,
     headquarters,
+    secondaryAddress,
     whatsappNumber,
     whatsappMessage,
     privacyPolicyUrl,

@@ -29,7 +29,7 @@ export default async function Footer() {
 
       <div className="relative max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 py-10 md:py-16 lg:py-20">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-12 mb-10 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-12 mb-8 md:mb-8">
           {/* Company Info - Takes more space */}
           <div className="space-y-4 md:space-y-6 lg:col-span-4 md:col-span-2 text-center md:text-left flex flex-col items-center md:items-start">
             <Link href="/" className="inline-flex items-center gap-3 group">
@@ -60,10 +60,25 @@ export default async function Footer() {
                 </div>
                 <div className="text-left">
                   <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                    Headquarters
+                    Main Branch
                   </p>
                   <p className="text-white/80 font-medium">
                     {contactInfo.headquarters}
+                  </p>
+                </div>
+              </div>
+            )}
+            {contactInfo?.secondaryAddress && (
+              <div className="flex items-start gap-3 text-sm">
+                <div className="p-2 bg-accent/10 rounded-lg">
+                  <FiMapPin className="text-accent size-4" />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
+                    Goa Branch
+                  </p>
+                  <p className="text-white/80 font-medium">
+                    {contactInfo.secondaryAddress}
                   </p>
                 </div>
               </div>

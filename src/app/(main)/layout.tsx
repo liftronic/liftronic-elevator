@@ -2,7 +2,6 @@ import NextTopLoader from "nextjs-toploader";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
 import WhatsAppButton from "~/components/WhatsAppButton";
-import DownloadCatalogButton from "~/components/DownloadCatalogButton";
 import RequestQuoteButton from "~/components/RequestQuoteButton";
 import ContactModalAutoOpen from "~/components/ContactModalAutoOpen";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
@@ -38,7 +37,6 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         whatsappNumber={contactInfo?.whatsappNumber}
         whatsappMessage={contactInfo?.whatsappMessage}
       />
-      <DownloadCatalogButton />
       <RequestQuoteButton />
       <ContactModalAutoOpen />
     </div>

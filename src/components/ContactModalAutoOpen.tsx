@@ -14,12 +14,12 @@ export default function ContactModalAutoOpen() {
       return;
     }
 
-    // Auto-open after 2 minutes (120000ms)
+    // Auto-open after 30 seconds (30000ms)
     const timer = setTimeout(() => {
       setIsContactModalOpen(true);
       setHasAutoOpened(true);
       sessionStorage.setItem("contactModalAutoOpened", "true");
-    }, 120000);
+    }, 30000);
 
     return () => clearTimeout(timer);
   }, [hasAutoOpened]);
@@ -28,10 +28,5 @@ export default function ContactModalAutoOpen() {
     setIsContactModalOpen(false);
   };
 
-  return (
-    <ContactModal
-      isOpen={isContactModalOpen}
-      onClose={handleClose}
-    />
-  );
+  return <ContactModal isOpen={isContactModalOpen} onClose={handleClose} />;
 }
