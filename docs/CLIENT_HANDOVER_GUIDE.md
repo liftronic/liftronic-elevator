@@ -884,6 +884,7 @@ When editing a product:
 | **Sales Phone Label** | Label for sales phone | E.g., "Sales Enquiry" |
 | **Map Embed URL** | Google Maps embed URL | Get from Google Maps |
 | **Headquarters** | Company HQ location | E.g., "Mumbai, Maharashtra, India" |
+| **Secondary Address** | Secondary location | E.g., "Goa Branch, India" |
 | **WhatsApp Number** | WhatsApp business number | Format: 919876543210 (no + or spaces) |
 | **WhatsApp Default Message** | Pre-filled message | E.g., "Hello! I'm interested in..." |
 | **Privacy Policy URL** | Link to privacy policy | Full URL |
