@@ -2,7 +2,13 @@
 import { useState, useEffect } from "react";
 import ContactModal from "~/components/ContactModal";
 
-export default function ContactModalAutoOpen() {
+interface ContactModalAutoOpenProps {
+  productOptions?: string[];
+}
+
+export default function ContactModalAutoOpen({
+  productOptions,
+}: ContactModalAutoOpenProps) {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [hasAutoOpened, setHasAutoOpened] = useState(false);
 
@@ -28,5 +34,11 @@ export default function ContactModalAutoOpen() {
     setIsContactModalOpen(false);
   };
 
-  return <ContactModal isOpen={isContactModalOpen} onClose={handleClose} />;
+  return (
+    <ContactModal
+      isOpen={isContactModalOpen}
+      onClose={handleClose}
+      productOptions={productOptions}
+    />
+  );
 }

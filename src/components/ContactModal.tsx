@@ -13,16 +13,7 @@ interface ContactModalProps {
 export default function ContactModal({
   isOpen,
   onClose,
-  productOptions = [
-    "Passenger Elevator",
-    "Freight Elevator",
-    "Home Elevator",
-    "Hospital Elevator",
-    "Capsule Elevator",
-    "Escalator",
-    "Moving Walkway",
-    "Other",
-  ],
+  productOptions,
 }: ContactModalProps) {
   // Prevent body scroll when modal is open
   useEffect(() => {

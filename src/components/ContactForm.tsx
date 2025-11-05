@@ -11,10 +11,10 @@ import {
 } from "~/lib/validation-schemas";
 
 interface ContactFormProps {
-  productOptions: string[];
+  productOptions?: string[];
 }
 
-export default function ContactForm({ productOptions }: ContactFormProps) {
+export default function ContactForm({ productOptions = [] }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
     type: "success" | "error";

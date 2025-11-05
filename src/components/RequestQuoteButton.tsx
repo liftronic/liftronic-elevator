@@ -2,7 +2,13 @@
 import { useState } from "react";
 import ContactModal from "./ContactModal";
 
-export default function RequestQuoteButton() {
+interface RequestQuoteButtonProps {
+  productOptions?: string[];
+}
+
+export default function RequestQuoteButton({
+  productOptions,
+}: RequestQuoteButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -19,6 +25,7 @@ export default function RequestQuoteButton() {
       <ContactModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        productOptions={productOptions}
       />
     </>
   );

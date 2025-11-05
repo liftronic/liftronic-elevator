@@ -5,10 +5,12 @@ import WhatsAppButton from "~/components/WhatsAppButton";
 import RequestQuoteButton from "~/components/RequestQuoteButton";
 import ContactModalAutoOpen from "~/components/ContactModalAutoOpen";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
+import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
-  // Fetch contact info for WhatsApp button
+  // Fetch contact info for WhatsApp button and product options for quote modal
   const contactInfo = await getContactInfo();
+  const homePageSettings = await getHomePageSettings();
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -37,8 +39,8 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         whatsappNumber={contactInfo?.whatsappNumber}
         whatsappMessage={contactInfo?.whatsappMessage}
       />
-      <RequestQuoteButton />
-      <ContactModalAutoOpen />
+      <RequestQuoteButton productOptions={homePageSettings?.productOptions} />
+      <ContactModalAutoOpen productOptions={homePageSettings?.productOptions} />
     </div>
   );
 };
