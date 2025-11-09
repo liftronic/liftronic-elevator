@@ -257,10 +257,26 @@ export const homePageSettingsType = defineType({
         }),
         defineField({
           name: "recipientEmail",
-          title: "Recipient Email",
-          type: "string",
-          description: "Email address to receive form submissions",
-          validation: (Rule) => Rule.required().email(),
+          title: "Recipient Emails",
+          type: "array",
+          of: [{ type: "string" }],
+          description: "Email addresses to receive form submissions (multiple emails supported)",
+          validation: (Rule) => 
+            Rule.required()
+              .min(1)
+              .custom((emails: unknown) => {
+                if (!emails || !Array.isArray(emails)) {
+                  return "At least one recipient email is required";
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const invalidEmails = emails.filter(
+                  (email): email is string => typeof email === "string" && !emailRegex.test(email)
+                );
+                if (invalidEmails.length > 0) {
+                  return `Invalid email(s): ${invalidEmails.join(", ")}`;
+                }
+                return true;
+              }),
         }),
         defineField({
           name: "fromName",

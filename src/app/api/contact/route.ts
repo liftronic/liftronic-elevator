@@ -23,12 +23,18 @@ async function getHomePageSettings() {
   return await client.fetch(query);
 }
 
-function parseRecipientEmails(primary?: string | null) {
-  if (!primary) {
+function parseRecipientEmails(emails?: string[] | string | null) {
+  if (!emails) {
     return [];
   }
 
-  return primary
+  // Handle array of emails (new format)
+  if (Array.isArray(emails)) {
+    return emails.map((email) => email.trim()).filter(Boolean);
+  }
+
+  // Handle legacy string format (comma/semicolon/newline separated)
+  return emails
     .split(/[;,\n]/)
     .map((email) => email.trim())
     .filter(Boolean);
