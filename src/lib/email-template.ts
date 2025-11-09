@@ -54,8 +54,8 @@ export function generateContactFormEmail(data: ContactFormData): string {
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">
-                      <a href="mailto:${data.email}" style="color: ${ACCENT_COLOR}; text-decoration: none;">${data.email}</a>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 600;">
+                      <a href="mailto:${data.email}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${data.email}</a>
                     </p>
                   </td>
                 </tr>
@@ -66,8 +66,8 @@ export function generateContactFormEmail(data: ContactFormData): string {
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">
-                      <a href="tel:${data.phone}" style="color: ${ACCENT_COLOR}; text-decoration: none;">${data.phone}</a>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 600;">
+                      <a href="tel:${data.phone}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${data.phone}</a>
                     </p>
                   </td>
                 </tr>
@@ -109,9 +109,10 @@ export function generateContactFormEmail(data: ContactFormData): string {
               <!-- CTA Button -->
               <div style="margin-top: 32px; text-align: center;">
                 <p style="margin: 0; color: #999999; font-size: 14px;">
-                  Submitted on ${new Date().toLocaleString("en-US", {
+                  Submitted on ${new Date().toLocaleString("en-IN", {
                     dateStyle: "full",
                     timeStyle: "short",
+                    timeZone: "Asia/Kolkata",
                   })}
                 </p>
               </div>
@@ -177,8 +178,8 @@ export function generateCatalogFormEmail(data: CatalogFormData): string {
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">
-                      <a href="tel:${data.phone}" style="color: ${ACCENT_COLOR}; text-decoration: none;">${data.phone}</a>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 600;">
+                      <a href="tel:${data.phone}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${data.phone}</a>
                     </p>
                   </td>
                 </tr>
@@ -200,9 +201,10 @@ export function generateCatalogFormEmail(data: CatalogFormData): string {
               <!-- CTA Button -->
               <div style="margin-top: 32px; text-align: center;">
                 <p style="margin: 0; color: #999999; font-size: 14px;">
-                  Downloaded on ${new Date().toLocaleString("en-US", {
+                  Downloaded on ${new Date().toLocaleString("en-IN", {
                     dateStyle: "full",
                     timeStyle: "short",
+                    timeZone: "Asia/Kolkata",
                   })}
                 </p>
               </div>
