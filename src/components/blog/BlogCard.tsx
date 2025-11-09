@@ -81,45 +81,18 @@ export default function BlogCard({
         {/* Content */}
         <div className="p-6 flex flex-col flex-1">
           <div className="flex-grow">
-            {/* Meta information */}
-            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3 overflow-hidden">
-              <time
-                dateTime={date}
-                className="whitespace-nowrap flex-shrink-0"
-                itemProp="datePublished"
-              >
-                {date}
-              </time>
-              
-              {readTime && (
-                <>
-                  <span className="flex-shrink-0">•</span>
-                  <span className="whitespace-nowrap flex-shrink-0">
-                    {readTime}
-                  </span>
-                </>
-              )}
-              
-              {author && (
-                <>
-                  <span className="flex-shrink-0">•</span>
-                  <span className="truncate min-w-0">{author}</span>
-                </>
-              )}
-            </div>
-
             {/* Title */}
             <h3
               itemProp="headline"
               className={`font-semibold text-gray-900 tracking-tight leading-tight group-hover:text-gray-800 transition-colors ${
                 blogId ? "blog-title" : ""
-              } text-lg`}
+              } text-lg mb-2`}
             >
               {title}
             </h3>
 
             {/* Excerpt */}
-            <p className="mt-2 text-gray-600 leading-relaxed text-sm line-clamp-3">
+            <p className="text-gray-600 leading-relaxed text-sm line-clamp-3">
               {excerpt}
             </p>
           </div>

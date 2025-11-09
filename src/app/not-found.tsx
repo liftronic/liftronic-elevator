@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
+import { getContactInfo } from "~/sanity/utils/getContactInfo";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const contactInfo = await getContactInfo();
   return (
     <div className="flex min-h-[100dvh] flex-col bg-soft text-charcoal">
       <Navbar />
@@ -61,18 +63,22 @@ export default function NotFound() {
               <p className="text-xs uppercase tracking-[0.25em] text-charcoal/40">
                 Contact
               </p>
-              <p className="font-semibold text-charcoal">+91-00000-00000</p>
+              <p className="font-semibold text-charcoal">
+                {contactInfo?.supportPhone || "+91 1231231233"}
+              </p>
               <p className="text-sm text-charcoal/60">
-                Call us for elevator consultations
+                {contactInfo?.supportPhoneLabel || "Call us for elevator consultations"}
               </p>
             </div>
             <div className="space-y-1">
               <p className="text-xs uppercase tracking-[0.25em] text-charcoal/40">
                 Email
               </p>
-              <p className="font-semibold text-charcoal">info@example.com</p>
+              <p className="font-semibold text-charcoal">
+                {contactInfo?.email || "contact@liftronic.com"}
+              </p>
               <p className="text-sm text-charcoal/60">
-                We respond within one business day
+                {contactInfo?.emailLabel || "We respond within one business day"}
               </p>
             </div>
             <div className="space-y-1">

@@ -46,13 +46,9 @@ export default function BlogSection({ blogs }: BlogSectionProps) {
               title={blog.title}
               excerpt={blog.excerpt}
               tag={blog.tag}
-              date={new Date(blog.publishedAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              })}
-              readTime={blog.readTime}
-              author={blog.author}
+              date=""
+              readTime=""
+              author=""
               blogId={blog.slug}
               imageSrc={blog.mainImage}
               imageAlt={blog.imageAlt}

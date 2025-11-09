@@ -140,21 +140,7 @@ export default function MediaPreview({ item, onClose, onNext, onPrevious, hasMul
             <h2 className="text-2xl font-bold text-charcoal mb-2">
               {item.title}
             </h2>
-            <p className="text-gray-600 mb-4">{item.description}</p>
-
-            {/* Tags */}
-            {item.tags && item.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {item.tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-block px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-md"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            )}
+            <p className="text-gray-600">{item.description}</p>
           </div>
         </motion.div>
       </motion.div>
