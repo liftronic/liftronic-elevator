@@ -8,8 +8,6 @@ type BlogCardProps = {
   title: string;
   excerpt: string;
   tag: string;
-  date: string;
-  readTime: string;
   author: string;
   blogId?: string;
   href?: string;
@@ -22,8 +20,6 @@ export default function BlogCard({
   title,
   excerpt,
   tag,
-  date,
-  readTime,
   author,
   blogId,
   href,

@@ -248,15 +248,6 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                     title={relatedPost.title}
                     excerpt={relatedPost.excerpt}
                     tag={relatedPost.tag}
-                    date={new Date(relatedPost.publishedAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      }
-                    )}
-                    readTime={relatedPost.readTime}
                     author={relatedPost.author}
                     blogId={relatedPost.slug}
                     imageSrc={relatedPost.mainImage}

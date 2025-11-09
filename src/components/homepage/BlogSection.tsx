@@ -46,8 +46,6 @@ export default function BlogSection({ blogs }: BlogSectionProps) {
               title={blog.title}
               excerpt={blog.excerpt}
               tag={blog.tag}
-              date=""
-              readTime=""
               author=""
               blogId={blog.slug}
               imageSrc={blog.mainImage}

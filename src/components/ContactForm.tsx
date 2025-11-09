@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "motion/react";
@@ -9,6 +9,7 @@ import {
   contactFormSchema,
   type ContactFormData,
 } from "~/lib/validation-schemas";
+import { useModal } from "~/contexts/ModalContext";
 
 interface ContactFormProps {
   productOptions?: string[];
@@ -20,16 +21,29 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const { setUserTyping } = useModal();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     mode: "onBlur", // Validate on blur for better UX
   });
+
+  // Watch all form fields to detect user interaction
+  const watchedFields = watch();
+
+  // Track when user is actively typing in any field
+  useEffect(() => {
+    const hasAnyInput = Object.values(watchedFields).some(
+      (value) => value && String(value).trim().length > 0
+    );
+    setUserTyping(hasAnyInput);
+  }, [watchedFields, setUserTyping]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);

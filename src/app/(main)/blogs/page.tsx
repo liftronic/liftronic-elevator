@@ -206,12 +206,6 @@ export default async function BlogPage({ searchParams }: Props) {
                 title={post.title}
                 excerpt={post.excerpt}
                 tag={post.tag}
-                date={new Date(post.publishedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-                readTime={post.readTime}
                 author={post.author}
                 blogId={post.slug}
                 imageSrc={post.mainImage}

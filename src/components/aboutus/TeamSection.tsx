@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { FiLinkedin, FiMail, FiPhone } from "react-icons/fi";
 import type { TeamMember as TeamMemberType } from "~/sanity/lib/aboutTypes";
 import TeamMemberModal from "./TeamMemberModal";
 

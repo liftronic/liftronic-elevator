@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ProductRangeCarouselCard from "~/components/products/ProductRangeCarouselCard";
-import ProductsHero from "~/components/products/ProductsHero";
 import CallToActionSection from "~/components/CallToActionSection";
 import { getProductRanges } from "~/sanity/utils/getProductRanges";
 

@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ContactModal from "./ContactModal";
+import { useModal } from "~/contexts/ModalContext";
 
 interface RequestQuoteButtonProps {
   productOptions?: string[];
@@ -10,6 +11,12 @@ export default function RequestQuoteButton({
   productOptions,
 }: RequestQuoteButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setModalOpen } = useModal();
+
+  // Notify context when modal state changes
+  useEffect(() => {
+    setModalOpen(isModalOpen);
+  }, [isModalOpen, setModalOpen]);
 
   return (
     <>
