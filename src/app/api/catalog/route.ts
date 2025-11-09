@@ -24,6 +24,17 @@ async function getHomePageSettings() {
   return await client.fetch(query);
 }
 
+function parseRecipientEmails(primary?: string | null) {
+  if (!primary) {
+    return [];
+  }
+
+  return primary
+    .split(/[;,\n]/)
+    .map((email) => email.trim())
+    .filter(Boolean);
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Parse and validate request body
@@ -63,6 +74,16 @@ export async function POST(request: NextRequest) {
       const { host, port, secure, user, password, recipientEmail, fromName } =
         settings.emailConfig;
 
+      const recipients = parseRecipientEmails(recipientEmail);
+
+      if (!recipients.length) {
+        console.error("No recipient emails configured for catalog form.");
+        return NextResponse.json(
+          { error: "Email configuration missing. Please contact the administrator." },
+          { status: 500 }
+        );
+      }
+
       // Create email transporter
       const transporter = nodemailer.createTransport({
         host,
@@ -81,7 +102,7 @@ export async function POST(request: NextRequest) {
       try {
         await transporter.sendMail({
           from: `"${fromName || "Liftronic Elevators"}" <${user}>`,
-          to: recipientEmail,
+          to: recipients,
           subject: "New Catalog Download Request",
           html: emailHtml,
         });
