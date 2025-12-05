@@ -12,8 +12,11 @@ export async function getContactInfo(): Promise<ContactInfo | null> {
     salesPhone,
     salesPhoneLabel,
     mapEmbedUrl,
-    headquarters,
-    secondaryAddress,
+    addresses[]{
+      _key,
+      label,
+      address
+    },
     whatsappNumber,
     whatsappMessage,
     privacyPolicyUrl,

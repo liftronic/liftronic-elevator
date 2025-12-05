@@ -53,36 +53,27 @@ export default async function Footer() {
                   establishedYear +
                   "."}
             </p>
-            {contactInfo?.headquarters && (
-              <div className="flex items-start gap-3 text-sm">
-                <div className="p-2 bg-accent/10 rounded-lg">
-                  <FiMapPin className="text-accent size-4" />
+            {/* Multiple Addresses */}
+            {contactInfo?.addresses &&
+              contactInfo.addresses.length > 0 &&
+              contactInfo.addresses.map((address) => (
+                <div
+                  key={address._key}
+                  className="flex items-start gap-3 text-sm"
+                >
+                  <div className="p-2 bg-accent/10 rounded-lg">
+                    <FiMapPin className="text-accent size-4" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
+                      {address.label}
+                    </p>
+                    <p className="text-white/80 font-medium whitespace-pre-line">
+                      {address.address}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                    Main Branch
-                  </p>
-                  <p className="text-white/80 font-medium">
-                    {contactInfo.headquarters}
-                  </p>
-                </div>
-              </div>
-            )}
-            {contactInfo?.secondaryAddress && (
-              <div className="flex items-start gap-3 text-sm">
-                <div className="p-2 bg-accent/10 rounded-lg">
-                  <FiMapPin className="text-accent size-4" />
-                </div>
-                <div className="text-left">
-                  <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                    Goa Branch
-                  </p>
-                  <p className="text-white/80 font-medium">
-                    {contactInfo.secondaryAddress}
-                  </p>
-                </div>
-              </div>
-            )}
+              ))}
           </div>
 
           {/* Contact Info and Quick Links - Side by side on mobile */}
@@ -161,7 +152,10 @@ export default async function Footer() {
                 {contactInfo?.supportPhone && (
                   <li>
                     <a
-                      href={`tel:${contactInfo.supportPhone.replace(/\s/g, "")}`}
+                      href={`tel:${contactInfo.supportPhone.replace(
+                        /\s/g,
+                        ""
+                      )}`}
                       className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
                     >
                       <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">

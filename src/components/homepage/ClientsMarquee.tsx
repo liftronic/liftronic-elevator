@@ -8,11 +8,22 @@ interface ClientsMarqueeProps {
 }
 
 export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
-  const row = clients.length > 0 ? [...clients, ...clients] : [];
-
   if (clients.length === 0) {
     return null;
   }
+
+  // Ensure we have enough items for a smooth loop and consistent speed
+  // Minimum 15 items ensures the track is wide enough for large screens
+  // and increases the speed (since duration is fixed)
+  let content = [...clients];
+  const minItems = 15;
+
+  while (content.length < minItems) {
+    content = [...content, ...clients];
+  }
+
+  // Create the seamless loop by duplicating the content set
+  const row = [...content, ...content];
 
   return (
     <section id="clients" className="py-20 scroll-mt-24">
@@ -41,7 +52,14 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           {/* track */}
-          <div className="whitespace-nowrap marquee-track py-10">
+          <div
+            className="whitespace-nowrap marquee-track py-10"
+            style={
+              {
+                "--marquee-items": 1,
+              } as React.CSSProperties
+            }
+          >
             {row.map((client, i) => (
               <Image
                 key={`${client._id}-${i}`}
@@ -49,7 +67,7 @@ export default function ClientsMarquee({ clients }: ClientsMarqueeProps) {
                 alt={client.imageAlt || client.title}
                 width={280}
                 height={120}
-                className="inline-block h-24 w-auto mx-8 opacity-90 hover:opacity-100 transition-all duration-200"
+                className="inline-block h-16 md:h-24 w-auto mx-4 md:mx-8 opacity-90 hover:opacity-100 transition-all duration-200"
               />
             ))}
           </div>

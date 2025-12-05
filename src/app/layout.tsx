@@ -52,6 +52,21 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Google tag (gtag.js) */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-BVRF2JE0RD"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-BVRF2JE0RD');
+            `,
+          }}
+        />
         {/* Resource hints for Sanity CDN */}
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link

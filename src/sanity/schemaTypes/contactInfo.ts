@@ -57,19 +57,38 @@ export const contactInfoType = defineType({
       validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
     }),
     defineField({
-      name: "headquarters",
-      title: "Headquarters",
-      description:
-        "Company headquarters address (e.g., Mumbai, Maharashtra, India)",
-      type: "string",
-      initialValue: "Mumbai, Maharashtra, India",
-    }),
-    defineField({
-      name: "secondaryAddress",
-      title: "Secondary Address",
-      description:
-        "Secondary office or branch address (e.g., Pune, Maharashtra, India)",
-      type: "string",
+      name: "addresses",
+      title: "Office Addresses",
+      description: "List of all office addresses with custom labels.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "label",
+              title: "Address Label",
+              description:
+                "Label for this address (e.g., Main Branch, Goa Branch)",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "address",
+              title: "Address",
+              description: "Full address text",
+              type: "text",
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          preview: {
+            select: {
+              title: "label",
+              subtitle: "address",
+            },
+          },
+        },
+      ],
     }),
     defineField({
       name: "whatsappNumber",

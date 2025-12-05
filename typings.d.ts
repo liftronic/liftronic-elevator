@@ -19,8 +19,11 @@ export interface ContactInfo extends SanityDocument {
   salesPhoneLabel?: string;
   serviceArea?: string;
   mapEmbedUrl?: string;
-  headquarters?: string;
-  secondaryAddress?: string;
+  addresses?: Array<{
+    _key: string;
+    label: string;
+    address: string;
+  }>;
   whatsappNumber?: string;
   whatsappMessage?: string;
   privacyPolicyUrl?: string;
