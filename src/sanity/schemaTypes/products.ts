@@ -141,6 +141,15 @@ export const productType = defineType({
       description: "Display this product in the featured section",
     }),
     defineField({
+      name: "order",
+      title: "Display Order",
+      type: "number",
+      initialValue: 0,
+      validation: (Rule) => Rule.required().min(0),
+      description:
+        "Lower numbers appear first (e.g., 1 for Home Elevator to show at top, 2 for next, etc.)",
+    }),
+    defineField({
       name: "locationPages",
       title: "Location-Specific Pages",
       type: "array",

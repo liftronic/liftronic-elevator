@@ -7,6 +7,7 @@ export type Product = {
   description: string;
   tags?: ProductTag[];
   featured?: boolean;
+  order?: number;
   mainImage?: string;
   mainImageLqip?: string;
   imageAlt?: string;
@@ -22,6 +23,8 @@ export type ProductFull = {
   subtitle?: string;
   description: string;
   tags?: ProductTag[];
+  featured?: boolean;
+  order?: number;
   keyFeatures?: KeyFeature[];
   specifications?: Specification[];
   faqs?: FAQ[];

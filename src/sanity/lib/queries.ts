@@ -116,7 +116,7 @@ export const postsByTagQuery = groq`*[_type == "post" && tag->slug.current == $t
 // ============================================
 
 // Query to get all products for listing page
-export const productsQuery = groq`*[_type == "product"] | order(featured desc, title asc) {
+export const productsQuery = groq`*[_type == "product"] | order(order asc, featured desc, title asc) {
   _id,
   title,
   "slug": slug.current,
@@ -130,11 +130,12 @@ export const productsQuery = groq`*[_type == "product"] | order(featured desc, t
   "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=85",
   "mainImageLqip": mainImage.asset->metadata.lqip,
   "imageAlt": mainImage.alt,
-  featured
+  featured,
+  order
 }`;
 
 // Query to get featured products only
-export const featuredProductsQuery = groq`*[_type == "product" && featured == true] | order(title asc) [0...6] {
+export const featuredProductsQuery = groq`*[_type == "product" && featured == true] | order(order asc, title asc) [0...6] {
   _id,
   title,
   "slug": slug.current,
@@ -148,7 +149,8 @@ export const featuredProductsQuery = groq`*[_type == "product" && featured == tr
   "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=90",
   "mainImageLqip": mainImage.asset->metadata.lqip,
   "imageAlt": mainImage.alt,
-  featured
+  featured,
+  order
 }`;
 
 // Query to get a single product by slug with all details
@@ -227,8 +229,9 @@ export const productRangesQuery = groq`*[_type == "productRange"] | order(featur
     "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=85",
     "mainImageLqip": mainImage.asset->metadata.lqip,
     "imageAlt": mainImage.alt,
-    featured
-  },
+    featured,
+    order
+  } | order(order asc, featured desc, title asc),
   _createdAt,
   _updatedAt
 }`;
@@ -258,8 +261,9 @@ export const productRangeBySlugQuery = groq`*[_type == "productRange" && slug.cu
     "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=85",
     "mainImageLqip": mainImage.asset->metadata.lqip,
     "imageAlt": mainImage.alt,
-    featured
-  },
+    featured,
+    order
+  } | order(order asc, featured desc, title asc),
   "seoTitle": seo.metaTitle,
   "seoDescription": seo.metaDescription,
   "seoKeywords": seo.keywords,
