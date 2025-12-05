@@ -71,7 +71,7 @@ export const postBySlugQuery = groq`*[_type == "post" && slug.current == $slug][
     title,
     "slug": slug.current,
     description,
-    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=85",
     "mainImageLqip": mainImage.asset->metadata.lqip,
     "imageAlt": mainImage.alt,
     "tags": tags[]->{
@@ -127,7 +127,7 @@ export const productsQuery = groq`*[_type == "product"] | order(featured desc, t
     title,
     "slug": slug.current
   },
-  "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+  "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=85",
   "mainImageLqip": mainImage.asset->metadata.lqip,
   "imageAlt": mainImage.alt,
   featured
@@ -145,7 +145,7 @@ export const featuredProductsQuery = groq`*[_type == "product" && featured == tr
     title,
     "slug": slug.current
   },
-  "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=90",
+  "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=90",
   "mainImageLqip": mainImage.asset->metadata.lqip,
   "imageAlt": mainImage.alt,
   featured
@@ -177,11 +177,11 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
     question,
     answer
   },
-  "mainImage": mainImage.asset->url + "?w=1200&h=800&fit=crop&auto=format&fm=webp&q=90",
+  "mainImage": mainImage.asset->url + "?w=1200&auto=format&fm=webp&q=90",
   "imageAlt": mainImage.alt,
   "gallery": gallery[]{
     _key,
-    "url": asset->url + "?w=1200&h=900&fit=crop&auto=format&fm=webp&q=85",
+    "url": asset->url + "?w=1200&auto=format&fm=webp&q=85",
     "lqip": asset->metadata.lqip,
     "alt": alt
   },
@@ -207,7 +207,7 @@ export const productRangesQuery = groq`*[_type == "productRange"] | order(featur
   title,
   "slug": slug.current,
   description,
-  "image": image.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+  "image": image.asset->url + "?w=800&auto=format&fm=webp&q=85",
   "imageLqip": image.asset->metadata.lqip,
   "imageAlt": image.alt,
   featured,
@@ -224,7 +224,7 @@ export const productRangesQuery = groq`*[_type == "productRange"] | order(featur
       title,
       "slug": slug.current
     },
-    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=85",
     "mainImageLqip": mainImage.asset->metadata.lqip,
     "imageAlt": mainImage.alt,
     featured
@@ -239,7 +239,7 @@ export const productRangeBySlugQuery = groq`*[_type == "productRange" && slug.cu
   title,
   "slug": slug.current,
   description,
-  "image": image.asset->url + "?w=1200&h=800&fit=crop&auto=format&fm=webp&q=90",
+  "image": image.asset->url + "?w=1200&auto=format&fm=webp&q=90",
   "imageLqip": image.asset->metadata.lqip,
   "imageAlt": image.alt,
   featured,
@@ -255,7 +255,7 @@ export const productRangeBySlugQuery = groq`*[_type == "productRange" && slug.cu
       title,
       "slug": slug.current
     },
-    "mainImage": mainImage.asset->url + "?w=800&h=600&fit=crop&auto=format&fm=webp&q=85",
+    "mainImage": mainImage.asset->url + "?w=800&auto=format&fm=webp&q=85",
     "mainImageLqip": mainImage.asset->metadata.lqip,
     "imageAlt": mainImage.alt,
     featured

@@ -160,7 +160,7 @@ export default function ProductPageClient({
                   alt={product.imageAlt || `${product.title} render`}
                   fill
                   sizes="(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 100vw"
-                  className="object-cover"
+                  className="object-contain p-4"
                   priority
                 />
               </div>
@@ -259,7 +259,9 @@ export default function ProductPageClient({
                     onClick={() => setSelectedImageIndex(index)}
                     role="button"
                     tabIndex={0}
-                    aria-label={`View ${image.alt || `image ${index + 1}`} in fullscreen`}
+                    aria-label={`View ${
+                      image.alt || `image ${index + 1}`
+                    } in fullscreen`}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();

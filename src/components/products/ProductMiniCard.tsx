@@ -40,19 +40,20 @@ export default function ProductMiniCard({
           </div>
         )}
 
-        {/* Image Container */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+        {/* Image Container preserving original aspect ratio */}
+        <div className="relative w-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <Image
             src={finalImageSrc}
             alt={finalImageAlt}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            width={800}
+            height={600}
+            className="w-full h-auto object-contain p-4 transition-transform duration-700 group-hover:scale-[1.02]"
             sizes="(min-width: 1280px) 400px, (min-width: 768px) 350px, 100vw"
             placeholder={blurDataURL ? "blur" : "empty"}
             blurDataURL={blurDataURL}
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-300" />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/[0.02] transition-colors duration-300 pointer-events-none" />
         </div>
 
         {/* Content */}

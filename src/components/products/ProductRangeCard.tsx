@@ -50,20 +50,21 @@ export default function ProductRangeCard({
           </div>
         )}
 
-        {/* Image Container with better aspect ratio and styling */}
-        <div className="relative aspect-[5/3] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+        {/* Image Container preserving original aspect ratio */}
+        <div className="relative w-full overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <Image
             src={finalImageSrc}
             alt={finalImageAlt}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            width={800}
+            height={600}
+            className="w-full h-auto object-contain p-4 transition-transform duration-500 group-hover:scale-105"
             sizes="(min-width: 1280px) 600px, (min-width: 768px) 50vw, 100vw"
             placeholder={blurDataURL ? "blur" : "empty"}
             blurDataURL={blurDataURL}
             loading="lazy"
             itemProp="image"
           />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
         </div>
 
         {/* Content with better spacing and typography */}
