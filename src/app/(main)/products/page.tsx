@@ -33,7 +33,7 @@ export default async function ProductsPage() {
 
   return (
     <main>
-      {/* Page hero */}
+      {/* Page hero * /}
       <ProductsHero />
 
       {/* Product Ranges with Carousels */}
