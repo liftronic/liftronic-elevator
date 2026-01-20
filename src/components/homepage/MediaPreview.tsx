@@ -19,7 +19,7 @@ export default function MediaPreviewSection({
   const handleNext = () => {
     if (!selectedMedia || mediaItems.length <= 1) return;
     const currentIndex = mediaItems.findIndex(
-      (item) => item._id === selectedMedia._id
+      (item) => item._id === selectedMedia._id,
     );
     const nextIndex = (currentIndex + 1) % mediaItems.length;
     setSelectedMedia(mediaItems[nextIndex]);
@@ -28,7 +28,7 @@ export default function MediaPreviewSection({
   const handlePrevious = () => {
     if (!selectedMedia || mediaItems.length <= 1) return;
     const currentIndex = mediaItems.findIndex(
-      (item) => item._id === selectedMedia._id
+      (item) => item._id === selectedMedia._id,
     );
     const previousIndex =
       (currentIndex - 1 + mediaItems.length) % mediaItems.length;

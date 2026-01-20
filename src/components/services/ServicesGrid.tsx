@@ -9,7 +9,7 @@ import ServiceCard from "./ServiceCard";
 function useIntersectionObserver(
   elementRef: React.RefObject<HTMLDivElement | null>,
   threshold = 0.1,
-  triggerOnce = false
+  triggerOnce = false,
 ) {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasIntersected, setHasIntersected] = useState(false);
@@ -27,7 +27,7 @@ function useIntersectionObserver(
           setHasIntersected(true);
         }
       },
-      { threshold }
+      { threshold },
     );
 
     observer.observe(element);
