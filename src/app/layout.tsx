@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -53,7 +54,9 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Google Tag Manager */}
-        <script
+        <Script
+          id="gtm-init"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -65,11 +68,14 @@ export default async function RootLayout({
           }}
         />
         {/* Google tag (gtag.js) */}
-        <script
-          async
+        <Script
+          id="gtag-src"
+          strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-WF2TMYB5NY"
         />
-        <script
+        <Script
+          id="gtag-config"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
