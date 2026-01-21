@@ -6,11 +6,17 @@ type RedirectConfig = {
   source: string;
   destination: string;
   permanent: boolean;
-  has?: Array<{
-    type: "query";
-    key: string;
-    value?: string;
-  }>;
+  has?: Array<
+    | {
+        type: "query";
+        key: string;
+        value?: string;
+      }
+    | {
+        type: "host";
+        value: string;
+      }
+  >;
 };
 
 type RedirectMapping = {
@@ -18,6 +24,13 @@ type RedirectMapping = {
   destination: string;
   query?: Record<string, string>;
 };
+
+type ParsedDestination = {
+  href: string;
+  pathname: string;
+  searchParams: URLSearchParams;
+  hostname: string;
+} | null;
 
 const normalizeSource = (
   source: string,
@@ -50,6 +63,27 @@ const expandSources = (source: string): string[] => {
   }
 
   return [source, `${source}/`];
+};
+
+const parseDestination = (destination: string): ParsedDestination => {
+  if (
+    !destination.startsWith("http://") &&
+    !destination.startsWith("https://")
+  ) {
+    return null;
+  }
+
+  try {
+    const parsed = new URL(destination);
+    return {
+      href: parsed.toString(),
+      pathname: parsed.pathname || "/",
+      searchParams: parsed.searchParams,
+      hostname: parsed.hostname,
+    };
+  } catch {
+    return null;
+  }
 };
 
 const redirectsFromJson = (): RedirectConfig[] => {
@@ -91,8 +125,34 @@ const redirectsFromJson = (): RedirectConfig[] => {
         }))
       : undefined;
 
+    const parsedDestination = parseDestination(mapping.destination);
+    const destinationPath = parsedDestination?.pathname ?? mapping.destination;
+    const destinationQuery = parsedDestination?.searchParams;
+
+    const isSamePath = destinationPath === pathname;
+    const destinationHasQuery = destinationQuery
+      ? Array.from(destinationQuery.entries()).length > 0
+      : false;
+    const sourceHasQuery = queryEntries.length > 0;
+
+    if (isSamePath && !sourceHasQuery && !destinationHasQuery) {
+      continue;
+    }
+
+    const additionalHas =
+      parsedDestination?.hostname === "www.liftronicelevator.com" && isSamePath
+        ? [
+            {
+              type: "host" as const,
+              value: "liftronicelevator.com",
+            },
+          ]
+        : [];
+
+    const combinedHas = [...(has ?? []), ...additionalHas];
+
     for (const source of expandSources(pathname)) {
-      const dedupeKey = `${source}|${has ? JSON.stringify(has) : ""}`;
+      const dedupeKey = `${source}|${combinedHas.length ? JSON.stringify(combinedHas) : ""}`;
       if (seen.has(dedupeKey)) {
         continue;
       }
@@ -102,7 +162,7 @@ const redirectsFromJson = (): RedirectConfig[] => {
         source,
         destination: mapping.destination,
         permanent: true,
-        ...(has ? { has } : {}),
+        ...(combinedHas.length ? { has: combinedHas } : {}),
       });
     }
   }

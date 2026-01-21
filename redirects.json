@@ -52,13 +52,6 @@
     "destination": "https://www.liftronicelevator.com/blogs/home-elevators-manufacturer-in-maharashtra"
   },
   {
-    "source": "/services/",
-    "destination": "https://www.liftronicelevator.com/services",
-    "query": {
-      "tab": "three"
-    }
-  },
-  {
     "source": "/are-home-elevators-safe-for-seniors/page/4/",
     "destination": "https://www.liftronicelevator.com/products/mrl-home-elevator"
   },
@@ -77,10 +70,6 @@
   {
     "source": "/2-person-home-elevator/",
     "destination": "https://www.liftronicelevator.com/products/hydraulic-home-elevator"
-  },
-  {
-    "source": "/products/stiltz-homelifts/",
-    "destination": "https://www.liftronicelevator.com/products/stiltz-homelifts"
   },
   {
     "source": "/commercial-lift-sizes-dimensions-importance/page/3/",
@@ -103,22 +92,8 @@
     "destination": "https://www.liftronicelevator.com/products/hydraulic-home-elevator"
   },
   {
-    "source": "/",
-    "destination": "https://www.liftronicelevator.com/",
-    "query": {
-      "trk": "public_post_main-feed-card_reshare-text"
-    }
-  },
-  {
     "source": "/clients/",
     "destination": "https://www.liftronicelevator.com/"
-  },
-  {
-    "source": "/services/",
-    "destination": "https://www.liftronicelevator.com/services",
-    "query": {
-      "tab": "four"
-    }
   },
   {
     "source": "/product-luxuria/",
@@ -195,13 +170,6 @@
   {
     "source": "/product-genius-series/",
     "destination": "https://www.liftronicelevator.com/products"
-  },
-  {
-    "source": "/services/",
-    "destination": "https://www.liftronicelevator.com/services",
-    "query": {
-      "tab": "two"
-    }
   },
   {
     "source": "/benefits-of-passenger-lifts-in-buildings/page/4/",
@@ -308,10 +276,6 @@
     "destination": "https://www.liftronicelevator.com/products/stiltz-homelifts"
   },
   {
-    "source": "/products/",
-    "destination": "https://www.liftronicelevator.com/products"
-  },
-  {
     "source": "/product-goods-elevators/",
     "destination": "https://www.liftronicelevator.com/products/goods-and-freight-elevators"
   },
@@ -358,13 +322,6 @@
   {
     "source": "/benefits-of-commercial-lift-installation/page/2/",
     "destination": "https://www.liftronicelevator.com/products/passenger-elevator-comfort-series"
-  },
-  {
-    "source": "/services/",
-    "destination": "https://www.liftronicelevator.com/services",
-    "query": {
-      "tab": "one"
-    }
   },
   {
     "source": "/benefits-of-passenger-lifts-in-buildings/page/2/",
@@ -564,9 +521,5 @@
   {
     "source": "/passenger-elevator/cabin-design-series/",
     "destination": "https://www.liftronicelevator.com/products/passenger-elevator-comfort-series"
-  },
-  {
-    "source": "/products",
-    "destination": "https://www.liftronicelevator.com/products"
   }
 ]
