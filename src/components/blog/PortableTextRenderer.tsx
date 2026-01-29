@@ -59,12 +59,11 @@ const components: PortableTextComponents = {
     ),
     em: ({ children }) => <em className="italic">{children}</em>,
     link: ({ children, value }) => {
-      const rel = !value.href.startsWith("/")
-        ? "noreferrer noopener"
-        : undefined;
+      const href = value?.href || "#";
+      const rel = !href.startsWith("/") ? "noreferrer noopener" : undefined;
       return (
         <a
-          href={value.href}
+          href={href}
           rel={rel}
           className="text-accent hover:underline font-medium"
         >
