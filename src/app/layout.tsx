@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import TeaserPopupProvider from "~/components/TeaserPopupProvider";
+import { getTeaserPopup } from "~/sanity/utils/getTeaserPopup";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -50,6 +52,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const teaserPopup = await getTeaserPopup();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -109,6 +113,8 @@ export default async function RootLayout({
           ></iframe>
         </noscript>
         {children}
+        {/* Teaser Popup */}
+        <TeaserPopupProvider popup={teaserPopup} />
       </body>
     </html>
   );

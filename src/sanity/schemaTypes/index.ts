@@ -24,6 +24,7 @@ import { certificateType } from "./certificateType";
 import mediaType from "./media";
 import { homePageSeoType } from "./homePageSeo";
 import { homePageSettingsType } from "./homePageSettings";
+import { teaserPopupType } from "./teaserPopup";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -51,5 +52,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     mediaType,
     homePageSeoType,
     homePageSettingsType,
+    teaserPopupType,
   ],
 };
