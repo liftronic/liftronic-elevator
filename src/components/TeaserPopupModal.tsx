@@ -152,10 +152,7 @@ export default function TeaserPopupModal({ popup }: TeaserPopupModalProps) {
 
             {/* Footer */}
             <div className="px-6 py-4 bg-gray-50 flex justify-end">
-              <button
-                onClick={handleClose}
-                className="btn btn-primary"
-              >
+              <button onClick={handleClose} className="btn btn-primary">
                 Continue Browsing
               </button>
             </div>

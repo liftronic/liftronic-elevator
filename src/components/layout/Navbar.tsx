@@ -86,7 +86,7 @@ export default function Navbar() {
 
   const handleLinkClick = (
     e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
-    href: string
+    href: string,
   ) => {
     // Handle hash links specially: if we're not on the home page,
     // navigate to the home page with the hash so the target exists.

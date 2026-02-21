@@ -15,7 +15,7 @@ export async function getTeaserPopup(): Promise<TeaserPopup | null> {
   const popup = await client.fetch<TeaserPopup | null>(
     teaserPopupQuery,
     {},
-    { next: { revalidate: 60 } } // Cache for 1 minute for quick toggle updates
+    { next: { revalidate: 60 } }, // Cache for 1 minute for quick toggle updates
   );
 
   return popup;
