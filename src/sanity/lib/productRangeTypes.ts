@@ -11,7 +11,7 @@ export type ProductRange = {
   imageLqip?: string;
   imageAlt?: string;
   productCount?: number;
-  products: Product[]; // Full product details for carousel display
+  products: Product[]; //  Full product details for carousel display
   order: number;
   _createdAt: string;
   _updatedAt?: string;
