@@ -86,7 +86,7 @@ export default function Navbar() {
 
   const handleLinkClick = (
     e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
-    href: string
+    href: string,
   ) => {
     // Handle hash links specially: if we're not on the home page,
     // navigate to the home page with the hash so the target exists.
@@ -161,15 +161,8 @@ export default function Navbar() {
               width={40}
               height={40}
               priority
-              className="size-9 md:size-10 transition-all"
+              className="size-9 md:size-12 transition-all"
             />
-            <span
-              className={`text-base md:text-lg transition-colors ${
-                scrolled || open ? "text-gray-800" : "text-white drop-shadow-lg"
-              }`}
-            >
-              Liftronic
-            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-semibold">
@@ -339,36 +332,37 @@ export default function Navbar() {
                           />
                         )}
                       </Link>
-                    })}
+                    );
+                  })}
 
-                    {/* Mobile Branches Section */}
+                  {/* Mobile Branches Section */}
+                  <div
+                    className={`pt-2 border-t mt-2 ${
+                      scrolled ? "border-accent/20" : "border-white/20"
+                    }`}
+                  >
                     <div
-                      className={`pt-2 border-t mt-2 ${
-                        scrolled ? "border-accent/20" : "border-white/20"
+                      className={`py-2 px-4 text-xs uppercase tracking-wide font-semibold ${
+                        scrolled ? "text-gray-500" : "text-white/70"
                       }`}
                     >
-                      <div
-                        className={`py-2 px-4 text-xs uppercase tracking-wide font-semibold ${
-                          scrolled ? "text-gray-500" : "text-white/70"
+                      Our Branches
+                    </div>
+                    {branchLocations.map((branch, index) => (
+                      <Link
+                        key={index}
+                        href={branch.href}
+                        onClick={() => setOpen(false)}
+                        className={`block py-3 px-4 rounded-lg transition-colors font-semibold text-sm ${
+                          scrolled
+                            ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
+                            : "text-white/90 hover:bg-white/10 hover:text-white"
                         }`}
                       >
-                        Our Branches
-                      </div>
-                      {branchLocations.map((branch, index) => (
-                        <Link
-                          key={index}
-                          href={branch.href}
-                          onClick={() => setOpen(false)}
-                          className={`block py-3 px-4 rounded-lg transition-colors font-semibold text-sm ${
-                            scrolled
-                              ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
-                              : "text-white/90 hover:bg-white/10 hover:text-white"
-                          }`}
-                        >
-                          {branch.name}
-                        </Link>
-                      ))}
-                    </div>
+                        {branch.name}
+                      </Link>
+                    ))}
+                  </div>
                   <button
                     onClick={(e) => handleLinkClick(e, "#contact")}
                     className="btn btn-primary w-full mt-2"

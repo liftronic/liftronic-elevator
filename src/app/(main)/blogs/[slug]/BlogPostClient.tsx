@@ -42,6 +42,10 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
     day: "numeric",
   });
 
+  const authorName = post.author?.name || "Liftronic Team";
+  const tagLabel = post.tag || "Insights";
+  const readTimeLabel = post.readTime || "";
+
   // Get related posts from the post data
   const relatedPosts = post.relatedPosts || [];
 
@@ -71,13 +75,13 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
               {/* Meta information */}
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                 <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-accent font-semibold">
-                  {post.tag}
+                  {tagLabel}
                 </span>
                 <time dateTime={post.publishedAt}>{formattedDate}</time>
                 <span>•</span>
-                <span>{post.readTime}</span>
+                <span>{readTimeLabel}</span>
                 <span>•</span>
-                <span>{post.author.name}</span>
+                <span>{authorName}</span>
               </div>
 
               {/* Title and Summary */}
@@ -192,7 +196,7 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
-                      }
+                      },
                     )}
                     readTime={relatedPost.readTime}
                     author={relatedPost.author}
