@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import QuoteCTA from "~/components/QuoteCTA";
 import MediaCard from "~/components/media/MediaCard";
@@ -14,17 +14,12 @@ interface MediaPreviewSectionProps {
 export default function MediaPreviewSection({
   mediaItems,
 }: MediaPreviewSectionProps) {
-  const [mounted, setMounted] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleNext = () => {
     if (!selectedMedia || mediaItems.length <= 1) return;
     const currentIndex = mediaItems.findIndex(
-      (item) => item._id === selectedMedia._id
+      (item) => item._id === selectedMedia._id,
     );
     const nextIndex = (currentIndex + 1) % mediaItems.length;
     setSelectedMedia(mediaItems[nextIndex]);
@@ -33,14 +28,14 @@ export default function MediaPreviewSection({
   const handlePrevious = () => {
     if (!selectedMedia || mediaItems.length <= 1) return;
     const currentIndex = mediaItems.findIndex(
-      (item) => item._id === selectedMedia._id
+      (item) => item._id === selectedMedia._id,
     );
     const previousIndex =
       (currentIndex - 1 + mediaItems.length) % mediaItems.length;
     setSelectedMedia(mediaItems[previousIndex]);
   };
 
-  if (!mounted || mediaItems.length === 0) return null;
+  if (mediaItems.length === 0) return null;
 
   return (
     <section id="media" className="py-20 bg-white">

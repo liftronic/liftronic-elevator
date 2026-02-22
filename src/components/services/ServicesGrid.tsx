@@ -8,7 +8,7 @@ import ServiceCard from "./ServiceCard";
 // Lazy loading hook
 function useIntersectionObserver(
   elementRef: React.RefObject<HTMLDivElement | null>,
-  threshold = 0.1
+  threshold = 0.1,
 ) {
   const [isIntersecting, setIsIntersecting] = useState(false);
 
@@ -20,7 +20,7 @@ function useIntersectionObserver(
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting);
       },
-      { threshold }
+      { threshold },
     );
 
     observer.observe(element);
@@ -40,13 +40,7 @@ function LazyServiceCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isVisible = useIntersectionObserver(cardRef, 0.1);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    if (isVisible && !isLoaded) {
-      setIsLoaded(true);
-    }
-  }, [isVisible, isLoaded]);
+  const isLoaded = isVisible;
 
   return (
     <motion.div
@@ -91,14 +85,6 @@ interface ServicesGridProps {
 }
 
 export default function ServicesGrid({ services }: ServicesGridProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <section className="py-12 md:py-16 shadow-sm">
       <div className="container mx-auto px-4">

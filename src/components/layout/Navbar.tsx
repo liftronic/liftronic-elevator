@@ -72,16 +72,14 @@ export default function Navbar() {
   }, [open]);
 
   useEffect(() => {
-    if (isHomePage) {
-      const onScroll = () => {
-        setScrolled(window.scrollY > 300);
-      };
-      onScroll();
-      window.addEventListener("scroll", onScroll, { passive: true });
-      return () => window.removeEventListener("scroll", onScroll);
-    } else {
-      setScrolled(true);
-    }
+    if (!isHomePage) return undefined;
+
+    const onScroll = () => {
+      setScrolled(window.scrollY > 300);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, [isHomePage]);
 
   const handleLinkClick = (
