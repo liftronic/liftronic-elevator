@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, MouseEvent, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { HiXMark } from "react-icons/hi2";
+import { HiXMark, HiChevronDown } from "react-icons/hi2";
 import { useSmoothScroll } from "../../hooks/useSmoothScroll";
 
 const navLinks = [
@@ -16,6 +16,16 @@ const navLinks = [
   { href: "/aboutus", label: "About Us" },
 ];
 
+const branchLocations = [
+  {
+    name: "Goa Branch",
+    href: "/branches/goa",
+  },
+  {
+    name: "Hyderabad Branch",
+    href: "/branches/hyderabad",
+  },
+];
 export default function Navbar() {
   const pathname = usePathname();
   const { scrollTo } = useSmoothScroll();
@@ -23,6 +33,7 @@ export default function Navbar() {
   const isHomePage = pathname === "/";
   const [scrolled, setScrolled] = useState(!isHomePage);
   const [open, setOpen] = useState(false);
+  const [branchesOpen, setBranchesOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
   // Check if a link is active
@@ -191,7 +202,6 @@ export default function Navbar() {
                       Featured
                     </span>
                   )}
-                  {/* Active indicator */}
                   {!isFeatured && isActive && (
                     <span
                       className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
@@ -202,6 +212,52 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            <div
+              className="relative"
+              onMouseEnter={() => setBranchesOpen(true)}
+              onMouseLeave={() => setBranchesOpen(false)}
+            >
+              <button
+                className={`nav-link-underline relative inline-flex items-center gap-1 ${
+                  scrolled
+                    ? "text-gray-700 hover:text-brand"
+                    : "text-white/90 hover:text-white"
+                }`}
+              >
+                <span>Branches</span>
+                <HiChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    branchesOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              <AnimatePresence>
+                {branchesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="absolute top-full right-0 mt-2 w-72 rounded-xl glass-solid shadow-elevate overflow-hidden z-50"
+                  >
+                    <div className="p-2">
+                      {branchLocations.map((branch, index) => (
+                        <Link
+                          key={index}
+                          href={branch.href}
+                          onClick={() => setBranchesOpen(false)}
+                          className="block px-4 py-3 rounded-lg hover:bg-accent/10 transition-colors font-semibold text-gray-800 text-sm"
+                        >
+                          {branch.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <Link
               href="#contact"
               onClick={(e) => handleLinkClick(e, "#contact")}
@@ -283,8 +339,36 @@ export default function Navbar() {
                           />
                         )}
                       </Link>
-                    );
-                  })}
+                    })}
+
+                    {/* Mobile Branches Section */}
+                    <div
+                      className={`pt-2 border-t mt-2 ${
+                        scrolled ? "border-accent/20" : "border-white/20"
+                      }`}
+                    >
+                      <div
+                        className={`py-2 px-4 text-xs uppercase tracking-wide font-semibold ${
+                          scrolled ? "text-gray-500" : "text-white/70"
+                        }`}
+                      >
+                        Our Branches
+                      </div>
+                      {branchLocations.map((branch, index) => (
+                        <Link
+                          key={index}
+                          href={branch.href}
+                          onClick={() => setOpen(false)}
+                          className={`block py-3 px-4 rounded-lg transition-colors font-semibold text-sm ${
+                            scrolled
+                              ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
+                              : "text-white/90 hover:bg-white/10 hover:text-white"
+                          }`}
+                        >
+                          {branch.name}
+                        </Link>
+                      ))}
+                    </div>
                   <button
                     onClick={(e) => handleLinkClick(e, "#contact")}
                     className="btn btn-primary w-full mt-2"

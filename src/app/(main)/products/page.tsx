@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ProductRangeCarouselCard from "~/components/products/ProductRangeCarouselCard";
-import ProductsHero from "~/components/products/ProductsHero";
 import CallToActionSection from "~/components/CallToActionSection";
 import { getProductRanges } from "~/sanity/utils/getProductRanges";
 
@@ -33,12 +32,9 @@ export default async function ProductsPage() {
 
   return (
     <main>
-      {/* Page hero */}
-      <ProductsHero />
-
       {/* Product Ranges with Carousels */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white">
-        <div className="container mx-auto px-4 md:px-6">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white pt-24 md:pt-28">
+        <div className="container mx-auto md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
             {productRanges.map((range) => (
               <div
