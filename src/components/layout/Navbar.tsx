@@ -158,10 +158,10 @@ export default function Navbar() {
             <Image
               src={scrolled ? "/liftronic.png" : "/liftronic-white.png"}
               alt="Liftronic logo"
-              width={40}
-              height={40}
+              width={160}
+              height={48}
               priority
-              className="size-9 md:size-12 transition-all"
+              className="h-10 md:h-12 w-auto transition-all"
             />
           </Link>
 
