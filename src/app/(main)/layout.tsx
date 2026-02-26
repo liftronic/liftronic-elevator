@@ -3,11 +3,16 @@ import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
 import WhatsAppButton from "~/components/WhatsAppButton";
 import DownloadCatalogButton from "~/components/DownloadCatalogButton";
+import TeaserPopupModal from "~/components/TeaserPopupModal";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
+import { getTeaserPopup } from "~/sanity/utils/getTeaserPopup";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
-  // Fetch contact info for WhatsApp button
-  const contactInfo = await getContactInfo();
+  // Fetch contact info for WhatsApp button and active teaser popup in parallel
+  const [contactInfo, teaserPopup] = await Promise.all([
+    getContactInfo(),
+    getTeaserPopup(),
+  ]);
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -37,6 +42,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         whatsappMessage={contactInfo?.whatsappMessage}
       />
       <DownloadCatalogButton />
+      {teaserPopup && <TeaserPopupModal popup={teaserPopup} />}
     </div>
   );
 };
