@@ -69,6 +69,46 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
   email,
   mapUrl,
   description,
+  heroTitle,
+  tagline,
+  legacySection {
+    title,
+    body
+  },
+  whyChooseReasons[] {
+    title,
+    description
+  },
+  stiltzExperience {
+    intro,
+    experiences[] {
+      title,
+      description
+    }
+  },
+  bookingSection {
+    description,
+    conciergePhone,
+    visitAddress,
+    gpsLink
+  },
+  specializedEngineering[] {
+    title,
+    subtitle,
+    description,
+    features[] {
+      title,
+      description
+    }
+  },
+  consultant {
+    name,
+    position,
+    phone,
+    email
+  },
+  quoteEmail,
+  closingQuote,
   heroImage {
     asset -> { url, metadata { dimensions } },
     alt,

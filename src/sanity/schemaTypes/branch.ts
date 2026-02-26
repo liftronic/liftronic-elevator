@@ -63,6 +63,253 @@ export const branchType = defineType({
       description: "Overview of the branch and its services",
     }),
     defineField({
+      name: "heroTitle",
+      title: "Hero Title",
+      type: "string",
+      description:
+        "Custom hero heading (e.g., 'Crafting the future of Vertical Living')",
+    }),
+    defineField({
+      name: "tagline",
+      title: "Tagline",
+      type: "string",
+      description:
+        'Short inspirational quote (e.g., "Preserving the soul of historic Goa…")',
+    }),
+
+    /* Legacy Section */
+    defineField({
+      name: "legacySection",
+      title: "Our Legacy Section",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Section Title",
+          type: "string",
+          initialValue: "Our Legacy in Motion",
+        }),
+        defineField({
+          name: "body",
+          title: "Body Text",
+          type: "text",
+          description: "Main paragraph for the legacy section",
+        }),
+      ],
+    }),
+
+    /* Why Choose Section */
+    defineField({
+      name: "whyChooseReasons",
+      title: "Why Choose Us Reasons",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
+              title: "Reason Title",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "description",
+              title: "Reason Description",
+              type: "text",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: { title: "title" },
+          },
+        },
+      ],
+      description: 'Reasons displayed under "Why Choose Liftronic [city]?"',
+    }),
+
+    /* Stiltz Experience Section */
+    defineField({
+      name: "stiltzExperience",
+      title: "Stiltz Experience Section",
+      type: "object",
+      fields: [
+        defineField({
+          name: "intro",
+          title: "Introduction Text",
+          type: "text",
+          description:
+            "Paragraph inviting visitors to experience the product in person",
+        }),
+        defineField({
+          name: "experiences",
+          title: "Experience Items",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                defineField({
+                  name: "title",
+                  title: "Title",
+                  type: "string",
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: "description",
+                  title: "Description",
+                  type: "text",
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+              preview: {
+                select: { title: "title" },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+
+    /* Booking Section */
+    defineField({
+      name: "bookingSection",
+      title: "Book Your Visit Section",
+      type: "object",
+      fields: [
+        defineField({
+          name: "description",
+          title: "Booking Description",
+          type: "text",
+        }),
+        defineField({
+          name: "conciergePhone",
+          title: "Concierge Phone",
+          type: "string",
+        }),
+        defineField({
+          name: "visitAddress",
+          title: "Visit Address",
+          type: "text",
+        }),
+        defineField({
+          name: "gpsLink",
+          title: "GPS / Google Maps Link",
+          type: "url",
+        }),
+      ],
+    }),
+
+    /* Specialized Engineering */
+    defineField({
+      name: "specializedEngineering",
+      title: "Specialized Engineering Sections",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
+              title: "Section Title",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "subtitle",
+              title: "Subtitle",
+              type: "string",
+            }),
+            defineField({
+              name: "description",
+              title: "Description",
+              type: "text",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "features",
+              title: "Key Features",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    defineField({
+                      name: "title",
+                      title: "Feature Title",
+                      type: "string",
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: "description",
+                      title: "Feature Description",
+                      type: "text",
+                      validation: (Rule) => Rule.required(),
+                    }),
+                  ],
+                  preview: {
+                    select: { title: "title" },
+                  },
+                },
+              ],
+            }),
+          ],
+          preview: {
+            select: { title: "title" },
+          },
+        },
+      ],
+      description:
+        "Advanced engineering solution sections (e.g., Inclined Elevators, ATEX solutions)",
+    }),
+
+    /* Consultant Info */
+    defineField({
+      name: "consultant",
+      title: "Branch Consultant",
+      type: "object",
+      fields: [
+        defineField({
+          name: "name",
+          title: "Full Name",
+          type: "string",
+        }),
+        defineField({
+          name: "position",
+          title: "Position / Title",
+          type: "string",
+        }),
+        defineField({
+          name: "phone",
+          title: "Phone",
+          type: "string",
+        }),
+        defineField({
+          name: "email",
+          title: "Email",
+          type: "string",
+        }),
+      ],
+    }),
+
+    /* Quote Email */
+    defineField({
+      name: "quoteEmail",
+      title: "Quote Request Email",
+      type: "string",
+      description:
+        "Email for quote requests (e.g., info@liftronicelevator.com)",
+    }),
+
+    /* Closing Quote */
+    defineField({
+      name: "closingQuote",
+      title: "Closing Quote",
+      type: "string",
+      description: "Inspirational closing quote at the bottom of the page",
+    }),
+
+    defineField({
       name: "heroImage",
       title: "Hero Image",
       type: "image",

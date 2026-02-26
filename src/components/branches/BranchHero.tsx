@@ -5,12 +5,20 @@ import { motion } from "motion/react";
 import { HiEnvelope, HiPhone } from "react-icons/hi2";
 import type { Branch } from "~/sanity/lib/branchTypes";
 import Breadcrumb from "~/components/Breadcrumb";
+import {
+  GOA_HERO_TITLE,
+  GOA_TAGLINE,
+} from "~/components/branches/goaFallbackData";
 
 interface BranchHeroProps {
   branch: Branch;
 }
 
 export default function BranchHero({ branch }: BranchHeroProps) {
+  const isGoa = branch.slug === "goa";
+  const heroTitle = branch.heroTitle ?? (isGoa ? GOA_HERO_TITLE : undefined);
+  const tagline = branch.tagline ?? (isGoa ? GOA_TAGLINE : undefined);
+
   return (
     <section className="relative">
       {/* Background image */}
@@ -41,6 +49,14 @@ export default function BranchHero({ branch }: BranchHeroProps) {
             <h1 className="mt-2 text-4xl md:text-5xl font-extrabold tracking-tight">
               {branch.name}
             </h1>
+            {heroTitle && (
+              <p className="mt-3 text-xl md:text-2xl font-semibold text-brand leading-snug">
+                {heroTitle}
+              </p>
+            )}
+            {tagline && (
+              <p className="mt-4 text-lg text-gray-500 italic">{tagline}</p>
+            )}
             {branch.description && (
               <p className="mt-4 text-lg text-gray-600 leading-relaxed">
                 {branch.description}
