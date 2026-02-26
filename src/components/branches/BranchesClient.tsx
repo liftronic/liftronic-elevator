@@ -41,9 +41,15 @@ export default function BranchesClient({ branches }: BranchesClientProps) {
             href={`/branches/${branch.slug}`}
             className="group block h-full overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_12px_34px_rgba(17,24,39,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/35 hover:shadow-[0_18px_42px_rgba(17,24,39,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
           >
-            <article className="flex h-full flex-col">
-              <div className="relative h-48 overflow-hidden border-b border-black/10 bg-soft md:h-52">
-                {branch.heroImage ? (
+            <article className={`flex h-full ${isSingle && branch.heroImage ? "flex-col md:flex-row" : "flex-col"}`}>
+              {branch.heroImage && (
+                <div
+                  className={`relative overflow-hidden border-black/10 bg-soft ${
+                    isSingle
+                      ? "h-52 w-full border-b md:h-auto md:w-72 md:shrink-0 md:border-b-0 md:border-r lg:w-96"
+                      : "h-48 w-full border-b md:h-52"
+                  }`}
+                >
                   <Image
                     src={branch.heroImage.asset.url}
                     alt={branch.heroImage.alt || branch.name}
@@ -51,18 +57,21 @@ export default function BranchesClient({ branches }: BranchesClientProps) {
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
                   />
-                ) : (
-                  <div className="h-full w-full bg-gradient-to-br from-soft to-white" />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
-                <span className="absolute left-4 top-4 text-4xl font-extrabold leading-none text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
+                  <span className="absolute left-4 top-4 text-4xl font-extrabold leading-none text-white/80 drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+              )}
 
               <div className="flex flex-1 flex-col p-5 md:p-6">
                 <div className="mb-2 flex items-center justify-between">
                   <div className="inline-flex items-center gap-1.5">
+                    {!branch.heroImage && (
+                      <span className="mr-2 text-2xl font-extrabold leading-none text-black/10">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    )}
                     <HiMapPin className="h-3.5 w-3.5 text-brand" />
                     <span className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
                       {branch.city}
@@ -83,7 +92,7 @@ export default function BranchesClient({ branches }: BranchesClientProps) {
                   </p>
                 )}
 
-                <div className="mt-6 flex items-center justify-between border-t border-black/10 pt-4">
+                <div className="mt-auto flex items-center justify-between border-t border-black/10 pt-5">
                   <span className="text-sm font-semibold text-charcoal transition-colors duration-300 group-hover:text-brand">
                     Explore branch
                   </span>

@@ -8,6 +8,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { HiXMark, HiChevronDown } from "react-icons/hi2";
 import { HiMapPin } from "react-icons/hi2";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
+import { useOptionalPopupManager } from "~/contexts/PopupManagerContext";
 
 const navLinks = [
   { href: "/products", label: "Products" },
@@ -31,6 +32,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const { scrollTo } = useSmoothScroll();
   const router = useRouter();
+  const popupManager = useOptionalPopupManager();
   const isHomePage = pathname === "/";
   const isBranchesRoute = pathname.startsWith("/branches");
 
@@ -239,29 +241,45 @@ export default function Navbar() {
               onMouseEnter={() => setBranchesOpen(true)}
               onMouseLeave={() => setBranchesOpen(false)}
             >
-              <button
-                type="button"
-                aria-haspopup="menu"
-                aria-expanded={branchesOpen}
-                aria-controls="branches-menu"
-                onClick={() => setBranchesOpen((value) => !value)}
-                className={`nav-link-underline relative inline-flex items-center gap-1 rounded-sm px-1 py-1 transition-all focus-visible:outline-none focus-visible:ring-2 ${
-                  isBranchesRoute
-                    ? isTransparent
-                      ? "text-white font-bold focus-visible:ring-white/80"
-                      : "text-brand font-bold focus-visible:ring-brand/60"
-                    : isTransparent
-                      ? "text-white/90 hover:text-white focus-visible:ring-white/80"
-                      : "text-gray-700 hover:text-brand focus-visible:ring-brand/60"
-                }`}
-              >
-                <span>Branches</span>
-                <HiChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    branchesOpen ? "rotate-180" : ""
+              <div className="inline-flex items-center gap-0">
+                <Link
+                  href="/branches"
+                  onClick={() => setBranchesOpen(false)}
+                  className={`nav-link-underline relative inline-flex items-center rounded-sm px-1 py-1 transition-all focus-visible:outline-none focus-visible:ring-2 ${
+                    isBranchesRoute
+                      ? isTransparent
+                        ? "text-white font-bold focus-visible:ring-white/80"
+                        : "text-brand font-bold focus-visible:ring-brand/60"
+                      : isTransparent
+                        ? "text-white/90 hover:text-white focus-visible:ring-white/80"
+                        : "text-gray-700 hover:text-brand focus-visible:ring-brand/60"
                   }`}
-                />
-              </button>
+                >
+                  <span>Branches</span>
+                </Link>
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={branchesOpen}
+                  aria-controls="branches-menu"
+                  onClick={() => setBranchesOpen((value) => !value)}
+                  className={`inline-flex items-center rounded-sm px-0.5 py-1 transition-all focus-visible:outline-none focus-visible:ring-2 ${
+                    isBranchesRoute
+                      ? isTransparent
+                        ? "text-white font-bold focus-visible:ring-white/80"
+                        : "text-brand font-bold focus-visible:ring-brand/60"
+                      : isTransparent
+                        ? "text-white/90 hover:text-white focus-visible:ring-white/80"
+                        : "text-gray-700 hover:text-brand focus-visible:ring-brand/60"
+                  }`}
+                >
+                  <HiChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      branchesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              </div>
               <AnimatePresence>
                 {branchesOpen && (
                   <motion.div
@@ -301,13 +319,17 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            <Link
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, "#contact")}
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                setBranchesOpen(false);
+                popupManager?.triggerPopupByType("requestQuote");
+              }}
               className="btn btn-primary"
             >
               Request a Quote
-            </Link>
+            </button>
           </div>
 
           <button
@@ -391,13 +413,20 @@ export default function Navbar() {
                       isTransparent ? "border-white/20" : "border-accent/20"
                     }`}
                   >
-                    <div
-                      className={`py-2 px-4 text-xs uppercase tracking-wide font-semibold ${
-                        isTransparent ? "text-white/70" : "text-gray-500"
+                    <Link
+                      href="/branches"
+                      onClick={() => {
+                        setOpen(false);
+                        setBranchesOpen(false);
+                      }}
+                      className={`block py-2 px-4 text-xs uppercase tracking-wide font-semibold transition-colors ${
+                        isTransparent
+                          ? "text-white/70 hover:text-white"
+                          : "text-gray-500 hover:text-brand"
                       }`}
                     >
                       Our Branches
-                    </div>
+                    </Link>
                     {branchLocations.map((branch) => (
                       <Link
                         key={branch.href}
@@ -417,7 +446,11 @@ export default function Navbar() {
                     ))}
                   </div>
                   <button
-                    onClick={(e) => handleLinkClick(e, "#contact")}
+                    onClick={() => {
+                      setOpen(false);
+                      setBranchesOpen(false);
+                      popupManager?.triggerPopupByType("requestQuote");
+                    }}
                     className="btn btn-primary w-full mt-2"
                   >
                     Request a Quote

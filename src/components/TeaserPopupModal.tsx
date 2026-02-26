@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { HiXMark } from "react-icons/hi2";
-import type { TeaserPopup } from "~/sanity/lib/teaserPopupTypes";
+import type { TeaserPopupConfig } from "~/sanity/lib/popupTypes";
 
 interface TeaserPopupModalProps {
-  popup: TeaserPopup;
+  popup: TeaserPopupConfig;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 // Extract YouTube video ID from various URL formats
@@ -26,62 +28,28 @@ function extractYouTubeId(url: string): string | null {
   return null;
 }
 
-const SESSION_STORAGE_KEY = "liftronic_teaser_popup_shown";
-
-export default function TeaserPopupModal({ popup }: TeaserPopupModalProps) {
-  const [isVisible, setIsVisible] = useState(false);
-
+export default function TeaserPopupModal({
+  popup,
+  isOpen,
+  onClose,
+}: TeaserPopupModalProps) {
   const videoId = extractYouTubeId(popup.videoUrl);
 
-  const handleClose = useCallback(() => {
-    setIsVisible(false);
-    // Mark as shown in session storage
-    if (popup.showOncePerSession) {
-      try {
-        sessionStorage.setItem(SESSION_STORAGE_KEY, "true");
-      } catch {
-        // Ignore storage errors
-      }
-    }
-  }, [popup.showOncePerSession]);
-
   useEffect(() => {
-    // Check if already shown this session
-    if (popup.showOncePerSession) {
-      try {
-        const alreadyShown = sessionStorage.getItem(SESSION_STORAGE_KEY);
-        if (alreadyShown === "true") {
-          return;
-        }
-      } catch {
-        // Ignore storage errors
-      }
-    }
+    if (!isOpen) return;
 
-    // Set timer to show popup
-    const delayMs = (popup.delaySeconds || 10) * 1000;
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, delayMs);
-
-    return () => clearTimeout(timer);
-  }, [popup.delaySeconds, popup.showOncePerSession]);
-
-  // Handle escape key
-  useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isVisible) {
-        handleClose();
+      if (e.key === "Escape") {
+        onClose();
       }
     };
 
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isVisible, handleClose]);
+  }, [isOpen, onClose]);
 
-  // Prevent body scroll when modal is open
   useEffect(() => {
-    if (isVisible) {
+    if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -89,7 +57,7 @@ export default function TeaserPopupModal({ popup }: TeaserPopupModalProps) {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isVisible]);
+  }, [isOpen]);
 
   if (!videoId) {
     return null;
@@ -97,14 +65,14 @@ export default function TeaserPopupModal({ popup }: TeaserPopupModalProps) {
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          onClick={handleClose}
+          onClick={onClose}
         >
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
@@ -120,7 +88,7 @@ export default function TeaserPopupModal({ popup }: TeaserPopupModalProps) {
           >
             {/* Close Button */}
             <button
-              onClick={handleClose}
+              onClick={onClose}
               className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
               aria-label="Close popup"
             >
@@ -149,7 +117,6 @@ export default function TeaserPopupModal({ popup }: TeaserPopupModalProps) {
                 className="absolute inset-0 w-full h-full"
               />
             </div>
-
           </motion.div>
         </motion.div>
       )}

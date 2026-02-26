@@ -272,18 +272,6 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
               </div>
               <FiPhoneCall className="text-accent text-lg lg:text-xl" />
             </a>
-
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo("#contact");
-              }}
-              className="mt-2 lg:mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-accent text-black font-semibold shadow-lg shadow-accent/20 hover:shadow-accent/40 hover:scale-105 transition-all duration-300 px-5 lg:px-6 py-2.5 lg:py-3 text-xs lg:text-sm"
-            >
-              <FiMessageSquare className="text-sm lg:text-base" />
-              Get a Quote
-            </a>
           </div>
 
           <div className="mt-4 lg:mt-5 text-[10px] lg:text-xs text-white/60">
