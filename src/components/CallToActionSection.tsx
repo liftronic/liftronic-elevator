@@ -18,28 +18,20 @@ type CallToActionSectionProps = {
   secondaryAction?: CTAAction | null;
 };
 
-const baseButtonClass = "btn text-lg px-8 py-4";
-
-const getVariantClasses = (variant: CTAAction["variant"]) => {
-  if (variant === "secondary") {
-    return "border-2 border-white text-white hover:bg-white hover:text-black";
-  }
-
-  return "bg-white hover:bg-gray-100 text-black";
-};
-
 const renderAction = (action: CTAAction) => {
   const { label, href, onClick, variant = "primary" } = action;
-  const className = `${baseButtonClass} ${getVariantClasses(
-    variant
-  )} w-full sm:w-auto inline-flex items-center justify-center`;
+
+  const isPrimary = variant === "primary";
+  const className = isPrimary
+    ? "inline-flex items-center justify-center h-11 px-7 rounded-lg bg-white text-gray-900 text-sm font-semibold transition-all duration-200 hover:bg-gray-100 w-full sm:w-auto"
+    : "inline-flex items-center justify-center h-11 px-7 rounded-lg border border-white/30 text-white text-sm font-semibold transition-all duration-200 hover:bg-white/10 w-full sm:w-auto";
 
   if (href) {
     return (
       <motion.div
         key={label}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         className="w-full sm:w-auto"
       >
         <Link href={href} className={className}>
@@ -54,8 +46,8 @@ const renderAction = (action: CTAAction) => {
       key={label}
       type="button"
       className={className}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
     >
       {label}
@@ -95,20 +87,25 @@ export default function CallToActionSection({
   }
 
   return (
-    <section className="py-20 bg-gradient-to-r from-accent to-green-500">
+    <section className="py-16 bg-gradient-to-r from-accent to-green-500 ">
       <div className="container mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">{title}</h2>
-          <p className="text-xl mb-8 opacity-95 max-w-3xl mx-auto">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] mb-4">
+            Let&apos;s Build Together
+          </p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">
+            {title}
+          </h2>
+          <p className="text-sm md:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
             {description}
           </p>
           {actions.length > 0 && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               {actions.map((action) => renderAction(action))}
             </div>
           )}

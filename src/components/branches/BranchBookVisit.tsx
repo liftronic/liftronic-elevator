@@ -2,9 +2,8 @@
 
 import { motion } from "motion/react";
 import {
-  HiOutlinePhone,
   HiOutlineMapPin,
-  HiOutlineCalendarDays,
+  HiOutlinePhone,
 } from "react-icons/hi2";
 import type { BookingSection } from "~/sanity/lib/branchTypes";
 import { GOA_BOOKING_SECTION } from "~/components/branches/goaFallbackData";
@@ -24,67 +23,61 @@ export default function BranchBookVisit({
   if (!data) return null;
 
   return (
-    <section className="py-16 md:py-24 bg-brand text-white">
-      <div className="container mx-auto px-4">
+    <section className="bg-soft py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.45 }}
           viewport={{ once: true, margin: "-80px" }}
-          className="text-center mb-12"
+          className="mb-8"
         >
-          <HiOutlineCalendarDays className="h-12 w-12 mx-auto mb-4 text-accent" />
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Book Your Visit Today
+          <h2 className="text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl xl:whitespace-nowrap">
+            Book your visit to the experience center
           </h2>
-          <div className="inline-block h-1 w-16 bg-accent rounded-full mb-6" />
           {data.description && (
-            <p className="text-lg text-white/80 max-w-2xl mx-auto">
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 md:text-lg">
               {data.description}
             </p>
           )}
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-          {/* Concierge Phone */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid grid-cols-1 gap-4 md:grid-cols-2"
+        >
           {data.conciergePhone && (
-            <motion.a
+            <a
               href={`tel:${data.conciergePhone.replace(/\s/g, "")}`}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="flex items-center gap-4 bg-white/10 rounded-2xl p-6 hover:bg-white/20 transition-colors"
+              className="group flex items-center gap-4 rounded-2xl border border-black/10 bg-white px-5 py-5 shadow-[0_10px_30px_rgba(17,24,39,0.04)] transition-all hover:-translate-y-0.5 hover:border-brand/35"
             >
-              <div className="flex-shrink-0 flex items-center justify-center h-14 w-14 rounded-xl bg-accent/20">
-                <HiOutlinePhone className="h-7 w-7 text-accent" />
-              </div>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brand/20 bg-brand/5 transition-colors group-hover:border-brand/40 group-hover:bg-brand/10">
+                <HiOutlinePhone className="h-5 w-5 text-brand" />
+              </span>
               <div>
-                <p className="text-sm text-white/60 font-medium mb-1">
-                  Call our concierge
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+                  Concierge Phone
                 </p>
-                <p className="text-lg font-bold">{data.conciergePhone}</p>
+                <p className="mt-0.5 text-lg font-bold text-charcoal transition-colors group-hover:text-brand">
+                  {data.conciergePhone}
+                </p>
               </div>
-            </motion.a>
+            </a>
           )}
 
-          {/* Visit Address */}
           {data.visitAddress && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="flex items-start gap-4 bg-white/10 rounded-2xl p-6"
-            >
-              <div className="flex-shrink-0 flex items-center justify-center h-14 w-14 rounded-xl bg-accent/20">
-                <HiOutlineMapPin className="h-7 w-7 text-accent" />
-              </div>
+            <div className="flex items-start gap-4 rounded-2xl border border-black/10 bg-white px-5 py-5 shadow-[0_10px_30px_rgba(17,24,39,0.04)] transition-all hover:-translate-y-0.5 hover:border-brand/35">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-brand/20 bg-brand/5">
+                <HiOutlineMapPin className="h-5 w-5 text-brand" />
+              </span>
               <div>
-                <p className="text-sm text-white/60 font-medium mb-1">
-                  Location
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+                  Visit Address
                 </p>
-                <p className="text-sm leading-relaxed whitespace-pre-line">
+                <p className="mt-1 whitespace-pre-line text-sm leading-relaxed text-gray-600">
                   {data.visitAddress}
                 </p>
                 {data.gpsLink && (
@@ -92,16 +85,16 @@ export default function BranchBookVisit({
                     href={data.gpsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-accent hover:text-white text-sm font-semibold mt-2 transition-colors"
+                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-charcoal"
                   >
-                    <span>Open in Maps</span>
-                    <span>→</span>
+                    Open in Maps
+                    <span aria-hidden>→</span>
                   </a>
                 )}
               </div>
-            </motion.div>
+            </div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

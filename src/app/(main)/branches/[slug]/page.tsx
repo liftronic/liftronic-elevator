@@ -5,7 +5,6 @@ import BranchHero from "~/components/branches/BranchHero";
 import BranchLegacySection from "~/components/branches/BranchLegacySection";
 import BranchWhyChoose from "~/components/branches/BranchWhyChoose";
 import BranchStiltzExperience from "~/components/branches/BranchStiltzExperience";
-import BranchBookVisit from "~/components/branches/BranchBookVisit";
 import BranchSpecializedEngineering from "~/components/branches/BranchSpecializedEngineering";
 import BranchConsultantSection from "~/components/branches/BranchConsultantSection";
 import BranchInfoSection from "~/components/branches/BranchInfoSection";
@@ -62,18 +61,30 @@ export default async function BranchPage({ params }: BranchPageProps) {
     notFound();
   }
 
+  const hasTeam = !!(branch.teamMembers && branch.teamMembers.length > 0);
+  const hasMedia = !!(branch.mediaGallery && branch.mediaGallery.length > 0);
+  const toggleBg = (bg: "white" | "soft"): "white" | "soft" =>
+    bg === "white" ? "soft" : "white";
+
+  let nextBg: "white" | "soft" = "white";
+  const teamBg = nextBg;
+  if (hasTeam) nextBg = toggleBg(nextBg);
+  const mediaBg = nextBg;
+  if (hasMedia) nextBg = toggleBg(nextBg);
+  const infoBg = nextBg;
+
   return (
     <main>
       <BranchHero branch={branch} />
 
-      <BranchLegacySection
-        legacy={branch.legacySection}
-        branchSlug={branch.slug}
-      />
-
       <BranchWhyChoose
         reasons={branch.whyChooseReasons}
         city={branch.city}
+        branchSlug={branch.slug}
+      />
+
+      <BranchLegacySection
+        legacy={branch.legacySection}
         branchSlug={branch.slug}
       />
 
@@ -83,11 +94,6 @@ export default async function BranchPage({ params }: BranchPageProps) {
 
       <BranchStiltzExperience
         experience={branch.stiltzExperience}
-        branchSlug={branch.slug}
-      />
-
-      <BranchBookVisit
-        booking={branch.bookingSection}
         branchSlug={branch.slug}
       />
 
@@ -104,14 +110,17 @@ export default async function BranchPage({ params }: BranchPageProps) {
       />
 
       {branch.teamMembers && branch.teamMembers.length > 0 && (
-        <BranchTeamSection teamMembers={branch.teamMembers} />
+        <BranchTeamSection teamMembers={branch.teamMembers} bgVariant={teamBg} />
       )}
 
       {branch.mediaGallery && branch.mediaGallery.length > 0 && (
-        <BranchMediaGallery mediaItems={branch.mediaGallery} />
+        <BranchMediaGallery
+          mediaItems={branch.mediaGallery}
+          bgVariant={mediaBg}
+        />
       )}
 
-      <BranchInfoSection branch={branch} />
+      <BranchInfoSection branch={branch} bgVariant={infoBg} />
     </main>
   );
 }

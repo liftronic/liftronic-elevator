@@ -21,9 +21,10 @@ import { teamMemberType } from "./teamMember";
 import { whyChooseUsType } from "./whyChooseUs";
 import { visionMissionValuesType } from "./visionMissionValues";
 import { certificateType } from "./certificateType";
-import mediaType from "./media";
+import { mediaType } from "./media";
 import { homePageSeoType } from "./homePageSeo";
 import { homePageSettingsType } from "./homePageSettings";
+import { branchType } from "./branch";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -51,5 +52,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     mediaType,
     homePageSeoType,
     homePageSettingsType,
+    branchType,
   ],
 };

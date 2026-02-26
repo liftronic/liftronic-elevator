@@ -10,8 +10,6 @@ interface CatalogModalProps {
 }
 
 export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
-
-
   // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -63,7 +61,7 @@ export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
 
           {/* Modal Content */}
           <motion.div
-            className="relative w-full max-w-2xl h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            className="relative w-full max-w-2xl h-auto max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
@@ -86,7 +84,8 @@ export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
             {/* Form Container */}
             <div className="bg-white p-6 flex-1 overflow-y-auto">
               <p className="text-gray-600 mb-6 text-sm">
-                Fill in your details below to download our comprehensive product catalog.
+                Fill in your details below to download our comprehensive product
+                catalog.
               </p>
               <CatalogForm onSuccess={onClose} />
             </div>

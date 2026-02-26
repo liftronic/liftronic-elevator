@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ProductRangeCarouselCard from "~/components/products/ProductRangeCarouselCard";
+import ProductRangeSection from "~/components/products/ProductRangeCarouselCard";
 import CallToActionSection from "~/components/CallToActionSection";
 import { getProductRanges } from "~/sanity/utils/getProductRanges";
 
@@ -31,26 +31,28 @@ export default async function ProductsPage() {
   const productRanges = await getProductRanges();
 
   return (
-    <main>
-      {/* Product Ranges with Carousels */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50/30 to-white pt-24 md:pt-28">
-        <div className="container mx-auto md:px-6">
+    <main className="bg-white">
+      {/* Product Ranges — grid layout: single-product ranges sit 3 per row,
+          multi-product ranges span full width for the carousel */}
+      <section className="pb-16 md:pb-24 pt-24 md:pt-28">
+        <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            {productRanges.map((range) => (
+            {productRanges.map((range, idx) => (
               <div
                 key={range._id}
                 className={
                   range.products.length === 1
-                    ? "md:col-span-1"
-                    : "md:col-span-2 lg:col-span-3"
+                    ? "col-span-1"
+                    : "col-span-1 md:col-span-2 lg:col-span-3"
                 }
               >
-                <ProductRangeCarouselCard
+                <ProductRangeSection
                   title={range.title}
                   description={range.description}
                   slug={range.slug}
                   featured={range.featured}
                   products={range.products}
+                  index={idx}
                 />
               </div>
             ))}

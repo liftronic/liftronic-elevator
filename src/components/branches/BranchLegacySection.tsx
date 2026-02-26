@@ -19,22 +19,28 @@ export default function BranchLegacySection({
   if (!data?.body) return null;
 
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="bg-white py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-80px" }}
-          className="max-w-4xl mx-auto text-center"
+          className="relative"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
-            {data.title ?? "Our Legacy in Motion"}
-          </h2>
-          <div className="inline-block h-1 w-16 bg-accent rounded-full mb-8" />
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            {data.body}
-          </p>
+          <div>
+            <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-charcoal md:text-4xl">
+              {data.title ?? "Our Legacy in Motion"}
+            </h2>
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 md:text-lg">
+              Crafted with local insight, elevated by precision engineering,
+              and delivered with long-term support.
+            </p>
+
+            <p className="mt-8 text-lg leading-relaxed text-gray-600 md:text-xl">
+              {data.body}
+            </p>
+          </div>
         </motion.div>
       </div>
     </section>

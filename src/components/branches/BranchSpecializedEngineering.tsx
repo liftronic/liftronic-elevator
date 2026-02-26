@@ -1,13 +1,20 @@
 "use client";
 
 import { motion } from "motion/react";
-import { HiOutlineCheckCircle } from "react-icons/hi2";
+import { HiCheckCircle } from "react-icons/hi2";
 import type { SpecializedEngineeringSection } from "~/sanity/lib/branchTypes";
 import { GOA_SPECIALIZED_ENGINEERING } from "~/components/branches/goaFallbackData";
 
 interface BranchSpecializedEngineeringProps {
   sections?: SpecializedEngineeringSection[];
   branchSlug?: string;
+}
+
+function getGridColumnsClass(count: number): string {
+  if (count === 2) return "md:grid-cols-2";
+  if (count === 3) return "md:grid-cols-3";
+  if (count === 4) return "md:grid-cols-2";
+  return "md:grid-cols-2";
 }
 
 export default function BranchSpecializedEngineering({
@@ -20,73 +27,82 @@ export default function BranchSpecializedEngineering({
 
   if (!data || data.length === 0) return null;
 
+  const gridColumnsClass = getGridColumnsClass(data.length);
+
   return (
-    <section className="py-16 md:py-24 bg-soft">
-      <div className="container mx-auto px-4">
+    <section className="bg-soft py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.45 }}
           viewport={{ once: true, margin: "-80px" }}
-          className="text-center mb-14"
+          className="mb-10 md:mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
-            Specialized Engineering: Beyond the Standard
+          <h2 className="text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl">
+            Built for complex environments
           </h2>
-          <div className="inline-block h-1 w-16 bg-accent rounded-full mb-6" />
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            While we specialize in home luxury, Liftronic Homelifts Pvt. Ltd.
-            provides advanced vertical engineering solutions which are not just
-            industrial products – they are problem solvers for unique landscapes
-            and safety requirements.
+          <p className="mt-4 max-w-4xl text-base leading-relaxed text-gray-600 md:text-lg">
+            We support specialized vertical mobility projects where terrain,
+            regulations, or safety conditions require custom engineering.
           </p>
         </motion.div>
 
-        <div className="space-y-12 max-w-5xl mx-auto">
-          {data.map((section, sIndex) => (
-            <motion.div
+        <div className={`grid gap-5 ${gridColumnsClass}`}>
+          {data.map((section, index) => (
+            <motion.article
               key={section.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: sIndex * 0.15 }}
+              transition={{ duration: 0.45, delay: index * 0.08 }}
               viewport={{ once: true, margin: "-60px" }}
-              className="bg-white rounded-2xl shadow-md overflow-hidden"
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-white p-6 shadow-[0_10px_30px_rgba(17,24,39,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-[0_14px_32px_rgba(17,24,39,0.1)] md:p-7"
             >
-              <div className="p-8 md:p-10">
-                <h3 className="text-2xl font-bold text-charcoal mb-2">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand/80 to-brand/20" />
+
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <span className="text-4xl font-extrabold leading-none text-black/12 transition-colors duration-300 group-hover:text-brand/35 md:text-5xl">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="rounded-full border border-black/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+                  Specialist
+                </span>
+              </div>
+
+              <div className="flex-1 md:min-h-[170px]">
+                <h3 className="text-xl font-bold leading-snug tracking-tight text-charcoal md:text-2xl">
                   {section.title}
                 </h3>
                 {section.subtitle && (
-                  <p className="text-brand font-semibold mb-4">
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-gray-500">
                     {section.subtitle}
                   </p>
                 )}
-                <p className="text-gray-600 leading-relaxed mb-6">
+                <p className="mt-4 text-sm leading-relaxed text-gray-600 md:text-base">
                   {section.description}
                 </p>
+              </div>
 
-                {section.features && section.features.length > 0 && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {section.features.map((feature) => (
-                      <div
-                        key={feature.title}
-                        className="flex items-start gap-3 bg-soft rounded-xl p-5"
-                      >
-                        <HiOutlineCheckCircle className="h-6 w-6 text-accent flex-shrink-0 mt-0.5" />
-                        <div>
-                          <h4 className="font-bold text-charcoal mb-1">
-                            {feature.title}
-                          </h4>
-                          <p className="text-gray-600 text-sm leading-relaxed">
+              {section.features && section.features.length > 0 && (
+                <ul className="mt-4 space-y-3 border-t border-black/8 pt-4">
+                  {section.features.map((feature) => (
+                    <li key={feature.title} className="flex items-start gap-3">
+                      <HiCheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+                      <div>
+                        <h4 className="text-sm font-bold text-charcoal">
+                          {feature.title}
+                        </h4>
+                        {feature.description && (
+                          <p className="mt-1 text-xs leading-relaxed text-gray-500">
                             {feature.description}
                           </p>
-                        </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </motion.div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </motion.article>
           ))}
         </div>
       </div>

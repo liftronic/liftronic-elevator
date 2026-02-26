@@ -6,7 +6,8 @@ import { useEffect, useState, MouseEvent, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { HiXMark, HiChevronDown } from "react-icons/hi2";
-import { useSmoothScroll } from "../../hooks/useSmoothScroll";
+import { HiMapPin } from "react-icons/hi2";
+import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 
 const navLinks = [
   { href: "/products", label: "Products" },
@@ -31,10 +32,17 @@ export default function Navbar() {
   const { scrollTo } = useSmoothScroll();
   const router = useRouter();
   const isHomePage = pathname === "/";
-  const [scrolled, setScrolled] = useState(!isHomePage);
+  const isBranchesRoute = pathname.startsWith("/branches");
+
+  // scrolled tracks whether the user has scrolled >300px (only meaningful on homepage)
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [branchesOpen, setBranchesOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+
+  // isTransparent: ONLY true when we're on the home page and haven't scrolled yet.
+  // On every other page this is always false → solid background, dark text.
+  const isTransparent = isHomePage && !scrolled && !open;
 
   // Check if a link is active
   const isLinkActive = (href: string) => {
@@ -48,19 +56,23 @@ export default function Navbar() {
     return false;
   };
 
+  const isBranchLocationActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+
   // Handle click outside to close mobile menu
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
       if (
-        open &&
+        (open || branchesOpen) &&
         navRef.current &&
         !navRef.current.contains(event.target as Node)
       ) {
         setOpen(false);
+        setBranchesOpen(false);
       }
     };
 
-    if (open) {
+    if (open || branchesOpen) {
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("touchstart", handleClickOutside);
     }
@@ -69,18 +81,34 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, [open]);
+  }, [open, branchesOpen]);
 
   useEffect(() => {
-    if (!isHomePage) return undefined;
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        setBranchesOpen(false);
+      }
+    };
 
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  // Scroll listener — resets when pathname changes so navigating back to home works correctly
+  useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 300);
     };
-    onScroll();
+
+    // Sync once after mount/route change without calling setState directly in effect body.
+    const frameId = window.requestAnimationFrame(onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isHomePage]);
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [pathname]);
 
   const handleLinkClick = (
     e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
@@ -108,6 +136,7 @@ export default function Navbar() {
 
     // For normal links, just close the mobile menu (no-op on desktop)
     setOpen(false);
+    setBranchesOpen(false);
   };
 
   const handleLogoClick = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -116,6 +145,7 @@ export default function Navbar() {
     e.preventDefault();
     // close mobile menu if open
     setOpen(false);
+    setBranchesOpen(false);
     if (isHomePage) {
       // scroll to top element
       try {
@@ -142,7 +172,7 @@ export default function Navbar() {
       <div
         ref={navRef}
         className={`mx-auto container transition-all duration-300 rounded-2xl ${
-          scrolled || open ? "glass-solid shadow-elevate" : "glass-transparent"
+          isTransparent ? "glass-transparent" : "glass-solid shadow-elevate"
         }`}
       >
         <div className="flex items-center justify-between h-16 md:h-18 px-4 md:px-5">
@@ -154,7 +184,7 @@ export default function Navbar() {
             className="flex items-center gap-3 font-bold text-lg tracking-tight"
           >
             <Image
-              src={scrolled ? "/liftronic.png" : "/liftronic-white.png"}
+              src={isTransparent ? "/liftronic-white.png" : "/liftronic.png"}
               alt="Liftronic logo"
               width={160}
               height={48}
@@ -168,17 +198,17 @@ export default function Navbar() {
               const isActive = isLinkActive(l.href);
               const isFeatured = Boolean(l.highlight);
 
-              const featuredClasses = scrolled
-                ? "relative inline-flex items-center gap-2 rounded-full bg-brand px-4 py-1.5 text-white shadow-brand/30 transition-all hover:shadow-brand/40 hover:-translate-y-0.5"
-                : "relative inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-white shadow-white/30 transition-all hover:bg-white/30 hover:-translate-y-0.5";
+              const featuredClasses = isTransparent
+                ? "relative inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-white font-semibold shadow-white/30 transition-all hover:bg-white/30 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                : "relative inline-flex items-center gap-2 rounded-full bg-brand px-4 py-1.5 text-white font-semibold shadow-brand/30 transition-all hover:shadow-brand/40 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50";
 
               const standardClasses = isActive
-                ? scrolled
-                  ? "nav-link-underline relative text-brand font-bold"
-                  : "nav-link-underline relative text-white font-bold"
-                : scrolled
-                  ? "nav-link-underline relative text-gray-700 hover:text-brand"
-                  : "nav-link-underline relative text-white/90 hover:text-white";
+                ? isTransparent
+                  ? "nav-link-underline relative text-white font-bold"
+                  : "nav-link-underline relative text-brand font-bold"
+                : isTransparent
+                  ? "nav-link-underline relative text-white/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-sm"
+                  : "nav-link-underline relative text-gray-700 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 rounded-sm";
 
               return (
                 <Link
@@ -196,7 +226,7 @@ export default function Navbar() {
                   {!isFeatured && isActive && (
                     <span
                       className={`absolute -bottom-1 left-0 right-0 h-0.5 rounded-full ${
-                        scrolled ? "bg-brand" : "bg-white"
+                        isTransparent ? "bg-white" : "bg-brand"
                       }`}
                     />
                   )}
@@ -210,10 +240,19 @@ export default function Navbar() {
               onMouseLeave={() => setBranchesOpen(false)}
             >
               <button
-                className={`nav-link-underline relative inline-flex items-center gap-1 ${
-                  scrolled
-                    ? "text-gray-700 hover:text-brand"
-                    : "text-white/90 hover:text-white"
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded={branchesOpen}
+                aria-controls="branches-menu"
+                onClick={() => setBranchesOpen((value) => !value)}
+                className={`nav-link-underline relative inline-flex items-center gap-1 rounded-sm px-1 py-1 transition-all focus-visible:outline-none focus-visible:ring-2 ${
+                  isBranchesRoute
+                    ? isTransparent
+                      ? "text-white font-bold focus-visible:ring-white/80"
+                      : "text-brand font-bold focus-visible:ring-brand/60"
+                    : isTransparent
+                      ? "text-white/90 hover:text-white focus-visible:ring-white/80"
+                      : "text-gray-700 hover:text-brand focus-visible:ring-brand/60"
                 }`}
               >
                 <span>Branches</span>
@@ -230,17 +269,30 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute top-full right-0 mt-2 w-72 rounded-xl glass-solid shadow-elevate overflow-hidden z-50"
+                    id="branches-menu"
+                    role="menu"
+                    aria-label="Branch locations"
+                    className="absolute top-full right-0 mt-3 w-72 rounded-2xl border border-brand/20 bg-white/95 shadow-[0_22px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-xl overflow-hidden z-50"
                   >
                     <div className="p-2">
-                      {branchLocations.map((branch, index) => (
+                      {branchLocations.map((branch) => (
                         <Link
-                          key={index}
+                          key={branch.href}
                           href={branch.href}
+                          role="menuitem"
                           onClick={() => setBranchesOpen(false)}
-                          className="block px-4 py-3 rounded-lg hover:bg-accent/10 transition-colors font-semibold text-gray-800 text-sm"
+                          className={`mb-1 group block rounded-xl px-4 py-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 ${
+                            isBranchLocationActive(branch.href)
+                              ? "bg-brand/10 text-brand"
+                              : "text-gray-800 hover:bg-accent/15 hover:text-brand"
+                          }`}
                         >
-                          {branch.name}
+                          <div className="flex items-center gap-2.5">
+                            <HiMapPin className="h-4 w-4 shrink-0 opacity-80" />
+                            <p className="truncate text-sm font-semibold">
+                              {branch.name}
+                            </p>
+                          </div>
                         </Link>
                       ))}
                     </div>
@@ -261,9 +313,9 @@ export default function Navbar() {
           <button
             aria-label={open ? "Close Menu" : "Open Menu"}
             className={`md:hidden inline-flex items-center justify-center size-10 rounded-xl transition-colors ${
-              scrolled
-                ? "text-gray-700 hover:bg-accent/10"
-                : "text-white hover:bg-white/10"
+              isTransparent
+                ? "text-white hover:bg-white/10"
+                : "text-gray-700 hover:bg-accent/10"
             }`}
             onClick={() => setOpen((v) => !v)}
           >
@@ -286,7 +338,7 @@ export default function Navbar() {
             >
               <div
                 className={`px-6 pb-6 border-t ${
-                  scrolled ? "border-accent/20" : "border-white/20"
+                  isTransparent ? "border-white/20" : "border-accent/20"
                 }`}
               >
                 <div className="flex flex-col gap-2 pt-4">
@@ -294,17 +346,17 @@ export default function Navbar() {
                     const isActive = isLinkActive(l.href);
                     const isFeatured = Boolean(l.highlight);
 
-                    const featuredClasses = scrolled
-                      ? "relative flex items-center justify-between gap-2 rounded-lg bg-brand px-4 py-3 text-white shadow-brand/30"
-                      : "relative flex items-center justify-between gap-2 rounded-lg bg-white/20 px-4 py-3 text-white shadow-white/25";
+                    const featuredClasses = isTransparent
+                      ? "relative flex items-center justify-between gap-2 rounded-lg bg-white/20 px-4 py-3 text-white shadow-white/25"
+                      : "relative flex items-center justify-between gap-2 rounded-lg bg-brand px-4 py-3 text-white shadow-brand/30";
 
                     const standardClasses = isActive
-                      ? scrolled
-                        ? "py-3 px-4 rounded-lg bg-brand/10 text-brand font-bold"
-                        : "py-3 px-4 rounded-lg bg-white/20 text-white font-bold"
-                      : scrolled
-                        ? "py-3 px-4 rounded-lg text-gray-700 hover:bg-accent/10 hover:text-brand"
-                        : "py-3 px-4 rounded-lg text-white/90 hover:bg-white/10 hover:text-white";
+                      ? isTransparent
+                        ? "py-3 px-4 rounded-lg bg-white/20 text-white font-bold"
+                        : "py-3 px-4 rounded-lg bg-brand/10 text-brand font-bold"
+                      : isTransparent
+                        ? "py-3 px-4 rounded-lg text-white/90 hover:bg-white/10 hover:text-white"
+                        : "py-3 px-4 rounded-lg text-gray-700 hover:bg-accent/10 hover:text-brand";
 
                     return (
                       <Link
@@ -325,7 +377,7 @@ export default function Navbar() {
                         {!isFeatured && isActive && (
                           <span
                             className={`absolute left-0 top-0 bottom-0 w-1 rounded-r-full ${
-                              scrolled ? "bg-brand" : "bg-white"
+                              isTransparent ? "bg-white" : "bg-brand"
                             }`}
                           />
                         )}
@@ -336,25 +388,28 @@ export default function Navbar() {
                   {/* Mobile Branches Section */}
                   <div
                     className={`pt-2 border-t mt-2 ${
-                      scrolled ? "border-accent/20" : "border-white/20"
+                      isTransparent ? "border-white/20" : "border-accent/20"
                     }`}
                   >
                     <div
                       className={`py-2 px-4 text-xs uppercase tracking-wide font-semibold ${
-                        scrolled ? "text-gray-500" : "text-white/70"
+                        isTransparent ? "text-white/70" : "text-gray-500"
                       }`}
                     >
                       Our Branches
                     </div>
-                    {branchLocations.map((branch, index) => (
+                    {branchLocations.map((branch) => (
                       <Link
-                        key={index}
+                        key={branch.href}
                         href={branch.href}
-                        onClick={() => setOpen(false)}
+                        onClick={() => {
+                          setOpen(false);
+                          setBranchesOpen(false);
+                        }}
                         className={`block py-3 px-4 rounded-lg transition-colors font-semibold text-sm ${
-                          scrolled
-                            ? "text-gray-700 hover:bg-accent/10 hover:text-brand"
-                            : "text-white/90 hover:bg-white/10 hover:text-white"
+                          isTransparent
+                            ? "text-white/90 hover:bg-white/10 hover:text-white"
+                            : "text-gray-700 hover:bg-accent/10 hover:text-brand"
                         }`}
                       >
                         {branch.name}

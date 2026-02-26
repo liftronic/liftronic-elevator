@@ -41,6 +41,11 @@ export interface BranchProduct {
   _id: string;
   title: string;
   slug: string;
+  subtitle?: string;
+  description?: string;
+  mainImage?: string;
+  mainImageLqip?: string;
+  imageAlt?: string;
 }
 
 export interface WhyChooseReason {

@@ -53,7 +53,12 @@ const branchQuery = `*[_type == "branch" && isActive == true] | order(order asc)
   "stiltzProducts": stiltzProducts[] -> {
     _id,
     title,
-    "slug": slug.current
+    "slug": slug.current,
+    subtitle,
+    description,
+    "mainImage": mainImage.asset->url + "?w=1200&h=900&fit=crop&auto=format&fm=webp&q=85",
+    "mainImageLqip": mainImage.asset->metadata.lqip,
+    "imageAlt": mainImage.alt
   },
   isActive,
   order
@@ -151,7 +156,12 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
   "stiltzProducts": stiltzProducts[] -> {
     _id,
     title,
-    "slug": slug.current
+    "slug": slug.current,
+    subtitle,
+    description,
+    "mainImage": mainImage.asset->url + "?w=1200&h=900&fit=crop&auto=format&fm=webp&q=85",
+    "mainImageLqip": mainImage.asset->metadata.lqip,
+    "imageAlt": mainImage.alt
   },
   isActive,
   order

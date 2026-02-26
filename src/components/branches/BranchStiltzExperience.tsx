@@ -1,15 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import {
-  HiOutlineEye,
-  HiOutlinePaintBrush,
-  HiOutlineCog8Tooth,
-} from "react-icons/hi2";
 import type { StiltzExperience } from "~/sanity/lib/branchTypes";
 import { GOA_STILTZ_EXPERIENCE } from "~/components/branches/goaFallbackData";
-
-const experienceIcons = [HiOutlineEye, HiOutlinePaintBrush, HiOutlineCog8Tooth];
 
 interface BranchStiltzExperienceProps {
   experience?: StiltzExperience;
@@ -23,70 +16,60 @@ export default function BranchStiltzExperience({
   const fallback = branchSlug === "goa" ? GOA_STILTZ_EXPERIENCE : undefined;
   const data = experience ?? fallback;
 
-  if (!data?.intro && (!data?.experiences || data.experiences.length === 0))
+  if (!data?.intro && (!data?.experiences || data.experiences.length === 0)) {
     return null;
+  }
 
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="bg-white py-16 md:py-24">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.45 }}
           viewport={{ once: true, margin: "-80px" }}
-          className="text-center mb-14 max-w-3xl mx-auto"
+          className="mb-10 md:mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
-            Experience the Lift of Luxury –{" "}
-            <span className="text-brand">Stiltz</span>
+          <h2 className="text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl">
+            Stiltz Experience
           </h2>
-          <div className="inline-block h-1 w-16 bg-accent rounded-full mb-6" />
-          {data.intro && (
-            <p className="text-lg text-gray-600 leading-relaxed">
-              {data.intro}
-            </p>
-          )}
+          <p className="mt-4 max-w-4xl text-base leading-relaxed text-gray-600 md:text-lg">
+            {data.intro ||
+              "Experience a premium home lift in person through live demos, design consultation, and technical walkthroughs with our branch experts."}
+          </p>
         </motion.div>
 
-        {/* Request a Private Experience */}
         {data.experiences && data.experiences.length > 0 && (
-          <>
-            <motion.h3
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-              viewport={{ once: true }}
-              className="text-2xl font-bold text-charcoal text-center mb-10"
-            >
-              Request a Private Experience
-            </motion.h3>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {data.experiences.map((item, index) => (
+              <motion.article
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                viewport={{ once: true, margin: "-60px" }}
+                className="group relative overflow-hidden rounded-2xl border border-black/10 bg-white p-6 shadow-[0_10px_30px_rgba(17,24,39,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-[0_14px_32px_rgba(17,24,39,0.1)] md:p-7"
+              >
+                <div className="absolute bottom-0 left-0 top-0 w-1 bg-gradient-to-b from-brand/85 to-brand/20" />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {data.experiences.map((item, index) => {
-                const Icon = experienceIcons[index % experienceIcons.length];
-                return (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.15 }}
-                    viewport={{ once: true, margin: "-60px" }}
-                    className="bg-soft rounded-2xl p-8 text-center"
-                  >
-                    <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-accent/10 mx-auto mb-5">
-                      <Icon className="h-7 w-7 text-brand" />
-                    </div>
-                    <h4 className="text-lg font-bold text-charcoal mb-2">
-                      {item.title}
-                    </h4>
-                    <p className="text-gray-600 leading-relaxed text-sm">
-                      {item.description}
-                    </p>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </>
+                <div className="mb-5 flex items-start justify-between">
+                  <span className="text-4xl font-extrabold leading-none text-black/12 transition-colors duration-300 group-hover:text-brand/35 md:text-5xl">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="rounded-full border border-black/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+                    Step
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold leading-snug tracking-tight text-charcoal md:text-2xl">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600 md:text-base">
+                  {item.description}
+                </p>
+              </motion.article>
+            ))}
+          </div>
         )}
       </div>
     </section>
