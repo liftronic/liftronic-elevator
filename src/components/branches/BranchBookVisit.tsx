@@ -6,19 +6,15 @@ import {
   HiOutlinePhone,
 } from "react-icons/hi2";
 import type { BookingSection } from "~/sanity/lib/branchTypes";
-import { GOA_BOOKING_SECTION } from "~/components/branches/goaFallbackData";
 
 interface BranchBookVisitProps {
   booking?: BookingSection;
-  branchSlug?: string;
 }
 
 export default function BranchBookVisit({
   booking,
-  branchSlug,
 }: BranchBookVisitProps) {
-  const fallback = branchSlug === "goa" ? GOA_BOOKING_SECTION : undefined;
-  const data = booking ?? fallback;
+  const data = booking;
 
   if (!data) return null;
 

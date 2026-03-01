@@ -7,11 +7,6 @@ import {
   HiOutlinePhone,
 } from "react-icons/hi2";
 import type { BranchConsultant } from "~/sanity/lib/branchTypes";
-import {
-  GOA_CLOSING_QUOTE,
-  GOA_CONSULTANT,
-  GOA_QUOTE_EMAIL,
-} from "~/components/branches/goaFallbackData";
 
 interface BranchConsultantSectionProps {
   consultant?: BranchConsultant;
@@ -42,9 +37,9 @@ export default function BranchConsultantSection({
   contactEmail,
 }: BranchConsultantSectionProps) {
   const isGoa = branchSlug === "goa";
-  const person = consultant ?? (isGoa ? GOA_CONSULTANT : undefined);
-  const email = quoteEmail ?? (isGoa ? GOA_QUOTE_EMAIL : undefined);
-  const quote = closingQuote ?? (isGoa ? GOA_CLOSING_QUOTE : undefined);
+  const person = consultant;
+  const email = quoteEmail;
+  const quote = closingQuote;
   const quoteContact = email ?? person?.email;
 
   if (!person && !email && !quote) return null;

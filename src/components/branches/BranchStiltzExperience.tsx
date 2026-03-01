@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 import { HiPhone } from "react-icons/hi2";
 import type { BookingSection, StiltzExperience } from "~/sanity/lib/branchTypes";
-import { GOA_STILTZ_EXPERIENCE } from "~/components/branches/goaFallbackData";
 
 interface BranchStiltzExperienceProps {
   experience?: StiltzExperience;
@@ -16,8 +15,7 @@ export default function BranchStiltzExperience({
   bookingSection,
   branchSlug,
 }: BranchStiltzExperienceProps) {
-  const fallback = branchSlug === "goa" ? GOA_STILTZ_EXPERIENCE : undefined;
-  const data = experience ?? fallback;
+  const data = experience;
 
   if (!data?.intro && (!data?.experiences || data.experiences.length === 0)) {
     return null;
@@ -35,11 +33,6 @@ export default function BranchStiltzExperience({
           viewport={{ once: true, margin: "-80px" }}
           className="mb-10 md:mb-12"
         >
-          {isGoa && (
-            <span className="mb-4 inline-block rounded-full bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-brand">
-              Request a Private Experience
-            </span>
-          )}
           <h2 className="text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl">
             {isGoa ? "Experience the Lift of Luxury – Stiltz" : "Stiltz Experience"}
           </h2>

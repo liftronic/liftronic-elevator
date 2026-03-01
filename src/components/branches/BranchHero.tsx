@@ -4,10 +4,6 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { HiEnvelope, HiMapPin, HiPhone } from "react-icons/hi2";
 import type { Branch } from "~/sanity/lib/branchTypes";
-import {
-  GOA_HERO_TITLE,
-  GOA_TAGLINE,
-} from "~/components/branches/goaFallbackData";
 
 interface BranchHeroProps {
   branch: Branch;
@@ -15,8 +11,8 @@ interface BranchHeroProps {
 
 export default function BranchHero({ branch }: BranchHeroProps) {
   const isGoa = branch.slug === "goa";
-  const heroTitle = branch.heroTitle ?? (isGoa ? GOA_HERO_TITLE : undefined);
-  const tagline = branch.tagline ?? (isGoa ? GOA_TAGLINE : undefined);
+  const heroTitle = branch.heroTitle;
+  const tagline = branch.tagline;
 
   return (
     <section className="relative overflow-hidden bg-white">

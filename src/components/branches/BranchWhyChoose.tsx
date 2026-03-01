@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import type { WhyChooseReason } from "~/sanity/lib/branchTypes";
-import { GOA_WHY_CHOOSE_REASONS } from "~/components/branches/goaFallbackData";
 
 interface BranchWhyChooseProps {
   reasons?: WhyChooseReason[];
@@ -15,8 +14,7 @@ export default function BranchWhyChoose({
   city,
   branchSlug,
 }: BranchWhyChooseProps) {
-  const fallback = branchSlug === "goa" ? GOA_WHY_CHOOSE_REASONS : undefined;
-  const data = reasons && reasons.length > 0 ? reasons : fallback;
+  const data = reasons;
 
   if (!data || data.length === 0) return null;
 

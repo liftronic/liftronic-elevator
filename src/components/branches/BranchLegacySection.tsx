@@ -2,19 +2,15 @@
 
 import { motion } from "motion/react";
 import type { LegacySection } from "~/sanity/lib/branchTypes";
-import { GOA_LEGACY_SECTION } from "~/components/branches/goaFallbackData";
 
 interface BranchLegacySectionProps {
   legacy?: LegacySection;
-  branchSlug?: string;
 }
 
 export default function BranchLegacySection({
   legacy,
-  branchSlug,
 }: BranchLegacySectionProps) {
-  const fallback = branchSlug === "goa" ? GOA_LEGACY_SECTION : undefined;
-  const data = legacy ?? fallback;
+  const data = legacy;
 
   if (!data?.body) return null;
 

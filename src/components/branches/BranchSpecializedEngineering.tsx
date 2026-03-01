@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 import { HiCheckCircle } from "react-icons/hi2";
 import type { SpecializedEngineeringSection } from "~/sanity/lib/branchTypes";
-import { GOA_SPECIALIZED_ENGINEERING } from "~/components/branches/goaFallbackData";
 
 interface BranchSpecializedEngineeringProps {
   sections?: SpecializedEngineeringSection[];
@@ -21,9 +20,7 @@ export default function BranchSpecializedEngineering({
   sections,
   branchSlug,
 }: BranchSpecializedEngineeringProps) {
-  const fallback =
-    branchSlug === "goa" ? GOA_SPECIALIZED_ENGINEERING : undefined;
-  const data = sections && sections.length > 0 ? sections : fallback;
+  const data = sections;
 
   if (!data || data.length === 0) return null;
 

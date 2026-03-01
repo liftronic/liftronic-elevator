@@ -80,10 +80,7 @@ export default async function BranchPage({ params }: BranchPageProps) {
     <main>
       <BranchHero branch={branch} />
 
-      <BranchLegacySection
-        legacy={branch.legacySection}
-        branchSlug={branch.slug}
-      />
+      <BranchLegacySection legacy={branch.legacySection} />
 
       <BranchWhyChoose
         reasons={branch.whyChooseReasons}
