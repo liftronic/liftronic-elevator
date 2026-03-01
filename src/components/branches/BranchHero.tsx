@@ -77,7 +77,7 @@ export default function BranchHero({ branch }: BranchHeroProps) {
         </motion.nav>
 
         {/* Main headline block */}
-        <div className="mt-4 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_auto] lg:items-stretch">
+        <div className={`mt-4 grid grid-cols-1 gap-12 ${!isGoa && branch.contactPerson ? "lg:grid-cols-[1fr_auto] lg:items-stretch" : ""}`}>
           <div className="max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -88,22 +88,37 @@ export default function BranchHero({ branch }: BranchHeroProps) {
                 {branch.name}
               </h1>
 
-              {heroTitle && (
-                <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
-                  {heroTitle}
-                </p>
-              )}
-
-              {tagline && !heroTitle && (
-                <p className="mt-6 text-lg leading-relaxed text-gray-500 md:text-xl">
-                  {tagline}
-                </p>
-              )}
-
-              {branch.description && (
-                <p className="mt-5 max-w-2xl text-base leading-relaxed text-gray-600 md:text-lg">
-                  {branch.description}
-                </p>
+              {isGoa ? (
+                <>
+                  {heroTitle && (
+                    <h2 className="mt-6 text-xl font-semibold leading-relaxed text-gray-700 md:text-2xl">
+                      {heroTitle}
+                    </h2>
+                  )}
+                  {tagline && (
+                    <p className="mt-4 text-lg italic leading-relaxed text-gray-500 md:text-xl">
+                      {tagline}
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  {heroTitle && (
+                    <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
+                      {heroTitle}
+                    </p>
+                  )}
+                  {tagline && !heroTitle && (
+                    <p className="mt-6 text-lg leading-relaxed text-gray-500 md:text-xl">
+                      {tagline}
+                    </p>
+                  )}
+                  {branch.description && (
+                    <p className="mt-5 max-w-2xl text-base leading-relaxed text-gray-600 md:text-lg">
+                      {branch.description}
+                    </p>
+                  )}
+                </>
               )}
             </motion.div>
 
@@ -121,29 +136,40 @@ export default function BranchHero({ branch }: BranchHeroProps) {
                 <HiPhone className="h-4 w-4 text-brand" />
                 Call Branch
               </a>
-              <a
-                href={`mailto:${branch.email}`}
-                className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
-              >
-                <HiEnvelope className="h-4 w-4 text-brand" />
-                Email Team
-              </a>
-              {branch.mapUrl && (
+              {isGoa ? (
                 <a
-                  href={branch.mapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#goa-contact"
                   className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
                 >
-                  <HiMapPin className="h-4 w-4 text-brand" />
-                  View on Map
+                  Book Your Visit
                 </a>
+              ) : (
+                <>
+                  <a
+                    href={`mailto:${branch.email}`}
+                    className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
+                  >
+                    <HiEnvelope className="h-4 w-4 text-brand" />
+                    Email Team
+                  </a>
+                  {branch.mapUrl && (
+                    <a
+                      href={branch.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
+                    >
+                      <HiMapPin className="h-4 w-4 text-brand" />
+                      View on Map
+                    </a>
+                  )}
+                </>
               )}
             </motion.div>
           </div>
 
-          {/* Branch lead contact card */}
-          {branch.contactPerson && (
+          {/* Branch lead contact card — hidden for Goa */}
+          {!isGoa && branch.contactPerson && (
             <motion.aside
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

@@ -40,11 +40,14 @@ export default function BranchSpecializedEngineering({
           className="mb-10 md:mb-12"
         >
           <h2 className="text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl">
-            Built for complex environments
+            {branchSlug === "goa"
+              ? "Specialized Engineering: Beyond the Standard"
+              : "Built for complex environments"}
           </h2>
           <p className="mt-4 max-w-4xl text-base leading-relaxed text-gray-600 md:text-lg">
-            We support specialized vertical mobility projects where terrain,
-            regulations, or safety conditions require custom engineering.
+            {branchSlug === "goa"
+              ? "While we specialize in home luxury, Liftronic Homelifts Pvt. Ltd., provides advanced vertical engineering solutions which are not just industrial products – they are problem solvers for unique landscapes and safety requirements."
+              : "We support specialized vertical mobility projects where terrain, regulations, or safety conditions require custom engineering."}
           </p>
         </motion.div>
 

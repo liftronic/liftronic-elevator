@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 import {
   HiOutlineEnvelope,
@@ -17,6 +18,16 @@ interface BranchConsultantSectionProps {
   quoteEmail?: string;
   closingQuote?: string;
   branchSlug?: string;
+  /** Photo URL from contactPerson.photo.asset.url (used for Goa card) */
+  photoUrl?: string;
+  /** Branch description / consultant bio */
+  bio?: string;
+  /** Branch city name */
+  city?: string;
+  /** Contact person phone (used for Goa card) */
+  contactPhone?: string;
+  /** Contact person email (used for Goa card) */
+  contactEmail?: string;
 }
 
 export default function BranchConsultantSection({
@@ -24,6 +35,11 @@ export default function BranchConsultantSection({
   quoteEmail,
   closingQuote,
   branchSlug,
+  photoUrl,
+  bio,
+  city,
+  contactPhone,
+  contactEmail,
 }: BranchConsultantSectionProps) {
   const isGoa = branchSlug === "goa";
   const person = consultant ?? (isGoa ? GOA_CONSULTANT : undefined);
@@ -33,6 +49,123 @@ export default function BranchConsultantSection({
 
   if (!person && !email && !quote) return null;
 
+  /* ── Goa variant: light editorial card with person photo ── */
+  if (isGoa) {
+    return (
+      <section className="bg-soft py-16 md:py-24">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true, margin: "-70px" }}
+            className="overflow-hidden rounded-3xl border border-black/8 bg-white shadow-[0_16px_60px_rgba(17,24,39,0.07)]"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto]">
+              {/* ── Left: text content ── */}
+              <div className="px-8 py-10 md:px-12 md:py-14">
+                {/* Company + branch */}
+                <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-brand md:text-3xl lg:text-4xl">
+                  Liftronic Homelifts Pvt. Ltd.
+                </h2>
+                <p className="mt-2 text-xl font-bold text-charcoal">
+                  {city ?? "Goa"} Branch
+                </p>
+                <div className="mt-3 h-[3px] w-10 rounded-full bg-brand" />
+
+                {/* Person info */}
+                {person?.name && (
+                  <div className="mt-7">
+                    <p className="text-lg font-bold text-charcoal">
+                      {person.name}
+                    </p>
+                    {person.position && (
+                      <p className="mt-0.5 text-sm text-gray-500">
+                        {person.position}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* Bio */}
+                {bio && (
+                  <div className="mt-5 max-w-xl space-y-3">
+                    {bio.split("\n\n").map((para, i) => (
+                      <p key={i} className="text-sm leading-relaxed text-gray-600 md:text-base">
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Contact row */}
+                {(contactPhone ?? contactEmail ?? person?.phone ?? person?.email) && (
+                  <div className="mt-8 flex flex-wrap gap-x-10 gap-y-5 border-t border-black/8 pt-6">
+                    {(contactPhone ?? person?.phone) && (
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+                          Number:
+                        </p>
+                        <a
+                          href={`tel:${(contactPhone ?? person?.phone)!.replace(/\s/g, "")}`}
+                          className="mt-1 block text-base font-bold text-charcoal transition-colors hover:text-brand md:text-lg"
+                        >
+                          {contactPhone ?? person?.phone}
+                        </a>
+                      </div>
+                    )}
+                    {(contactEmail ?? person?.email) && (
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+                          Email:
+                        </p>
+                        <a
+                          href={`mailto:${contactEmail ?? person?.email}`}
+                          className="mt-1 block break-all text-base font-bold text-charcoal transition-colors hover:text-brand md:text-lg"
+                        >
+                          {contactEmail ?? person?.email}
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* ── Right: photo with frame + dot pattern ── */}
+              {photoUrl && (
+                <div className="relative flex min-h-[300px] items-center justify-center overflow-hidden bg-soft/60 px-12 py-12 lg:min-h-0 lg:px-16 lg:py-14">
+                  {/* Dot grid background */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 [background-image:radial-gradient(rgba(42,227,148,0.4)_1.5px,transparent_1.5px)] [background-size:14px_14px]"
+                  />
+
+                  {/* Photo frame with offset green border */}
+                  <div className="relative z-10">
+                    {/* Offset green border (behind photo) */}
+                    <div className="absolute -bottom-4 -right-4 h-full w-full rounded-2xl border-2 border-brand/70" />
+
+                    {/* Photo */}
+                    <div className="relative h-72 w-56 overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/8 md:h-80 md:w-64">
+                      <Image
+                        src={photoUrl}
+                        alt={person?.name ?? "Branch Consultant"}
+                        fill
+                        className="object-cover object-top"
+                        sizes="(max-width: 768px) 224px, 256px"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ── Default variant: dark themed section for all other branches ── */
   return (
     <section className="relative isolate overflow-hidden py-16 md:py-24">
       <div className="absolute inset-0 -z-10 bg-[#071812]" />
@@ -51,11 +184,7 @@ export default function BranchConsultantSection({
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:44px_44px] opacity-20" />
 
           <div className="relative">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/35 bg-accent/12 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" />
-              Speak to consultant
-            </span>
-            <h2 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-white md:text-5xl xl:whitespace-nowrap">
+            <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-white md:text-5xl xl:whitespace-nowrap">
               Get your expert guidelines for the project
             </h2>
 
@@ -105,7 +234,7 @@ export default function BranchConsultantSection({
                   <div className="relative h-full overflow-hidden rounded-2xl border border-white/15 bg-black/20 px-5 py-6 md:px-6 md:py-7">
                     <span
                       aria-hidden
-                      className="pointer-events-none absolute right-3 top-0 text-[6rem] font-extrabold leading-none text-white/8 select-none"
+                      className="pointer-events-none absolute right-3 top-0 select-none text-[6rem] font-extrabold leading-none text-white/8"
                     >
                       &ldquo;
                     </span>

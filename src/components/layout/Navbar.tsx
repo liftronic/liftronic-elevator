@@ -242,9 +242,12 @@ export default function Navbar() {
               onMouseLeave={() => setBranchesOpen(false)}
             >
               <div className="inline-flex items-center gap-0">
-                <Link
-                  href="/branches"
-                  onClick={() => setBranchesOpen(false)}
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={branchesOpen}
+                  aria-controls="branches-menu"
+                  onClick={() => setBranchesOpen((value) => !value)}
                   className={`nav-link-underline relative inline-flex items-center rounded-sm px-1 py-1 transition-all focus-visible:outline-none focus-visible:ring-2 ${
                     isBranchesRoute
                       ? isTransparent
@@ -256,7 +259,7 @@ export default function Navbar() {
                   }`}
                 >
                   <span>Branches</span>
-                </Link>
+                </button>
                 <button
                   type="button"
                   aria-haspopup="menu"
@@ -272,13 +275,13 @@ export default function Navbar() {
                         ? "text-white/90 hover:text-white focus-visible:ring-white/80"
                         : "text-gray-700 hover:text-brand focus-visible:ring-brand/60"
                   }`}
-                >
-                  <HiChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      branchesOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
+                  >
+                    <HiChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        branchesOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
               </div>
               <AnimatePresence>
                 {branchesOpen && (
@@ -413,12 +416,7 @@ export default function Navbar() {
                       isTransparent ? "border-white/20" : "border-accent/20"
                     }`}
                   >
-                    <Link
-                      href="/branches"
-                      onClick={() => {
-                        setOpen(false);
-                        setBranchesOpen(false);
-                      }}
+                    <p
                       className={`block py-2 px-4 text-xs uppercase tracking-wide font-semibold transition-colors ${
                         isTransparent
                           ? "text-white/70 hover:text-white"
@@ -426,7 +424,7 @@ export default function Navbar() {
                       }`}
                     >
                       Our Branches
-                    </Link>
+                    </p>
                     {branchLocations.map((branch) => (
                       <Link
                         key={branch.href}

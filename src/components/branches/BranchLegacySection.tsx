@@ -37,9 +37,12 @@ export default function BranchLegacySection({
               and delivered with long-term support.
             </p>
 
-            <p className="mt-8 text-lg leading-relaxed text-gray-600 md:text-xl">
-              {data.body}
-            </p>
+            <div className="mt-8 flex gap-5">
+              <div className="w-1 shrink-0 rounded-full bg-brand/60" />
+              <p className="text-lg leading-[1.85] text-gray-600 md:text-xl">
+                {data.body}
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -9,6 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { usePathname } from "next/navigation";
 import type { PopupModel, PopupVariant } from "~/sanity/lib/popupTypes";
 
 interface PopupManagerProviderProps {
@@ -33,6 +34,8 @@ export function PopupManagerProvider({
   popups,
   productOptions,
 }: PopupManagerProviderProps) {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const [activePopupId, setActivePopupId] = useState<string | null>(null);
   const [flowCompletedIds, setFlowCompletedIds] = useState<string[]>([]);
   const [sessionCompletedIds, setSessionCompletedIds] = useState<string[]>([]);
@@ -48,8 +51,11 @@ export function PopupManagerProvider({
   );
 
   const autoPopups = useMemo(
-    () => orderedPopups.filter((popup) => popup.triggerMode === "auto"),
-    [orderedPopups],
+    () =>
+      isHomePage
+        ? orderedPopups.filter((popup) => popup.triggerMode === "auto")
+        : [],
+    [orderedPopups, isHomePage],
   );
 
   const popupById = useMemo(
@@ -252,6 +258,26 @@ export function PopupManagerProvider({
   useEffect(() => {
     return () => clearScheduledTimer();
   }, [clearScheduledTimer]);
+
+  useEffect(() => {
+    if (isHomePage) return;
+
+    clearScheduledTimer();
+    const timeoutId = window.setTimeout(() => {
+      setActivePopupId((currentId) => {
+        if (!currentId) return currentId;
+        const currentPopup = popupById.get(currentId);
+        if (currentPopup?.triggerMode === "auto") {
+          return null;
+        }
+        return currentId;
+      });
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isHomePage, popupById, clearScheduledTimer]);
 
   const value = useMemo<PopupManagerContextValue>(
     () => ({

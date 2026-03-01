@@ -1,17 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getSocial } from "~/sanity/utils/getSocials";
 import { getCompanyInfo } from "~/sanity/utils/getAboutUs";
+import { getBranchBySlug } from "~/sanity/utils/getBranches";
 import { getIcon } from "~/sanity/utils/iconMapper";
 import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 
 export default async function Footer() {
-  const [contactInfo, socials, companyInfo] = await Promise.all([
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") ?? "";
+  const branchSlugMatch = pathname.match(/^\/branches\/([^/]+)/);
+  const branchSlug = branchSlugMatch?.[1];
+
+  const [contactInfo, socials, companyInfo, branchData] = await Promise.all([
     getContactInfo(),
     getSocial(),
     getCompanyInfo(),
+    branchSlug ? getBranchBySlug(branchSlug) : Promise.resolve(null),
   ]);
+
+  // On branch pages show the branch address; everywhere else show HQ
+  const footerAddressLabel = branchData ? "Address" : "Headquarters";
+  const footerAddress = branchData?.address ?? contactInfo?.headquarters;
 
   const currentYear = new Date().getFullYear();
   const establishedYear = companyInfo?.establishedYear || 2000;
@@ -53,17 +65,17 @@ export default async function Footer() {
                   establishedYear +
                   "."}
             </p>
-            {contactInfo?.headquarters && (
+            {footerAddress && (
               <div className="flex items-start gap-3 text-sm">
                 <div className="p-2 bg-accent/10 rounded-lg">
                   <FiMapPin className="text-accent size-4" />
                 </div>
                 <div className="text-left">
                   <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                    Headquarters
+                    {footerAddressLabel}
                   </p>
                   <p className="text-white/80 font-medium">
-                    {contactInfo.headquarters}
+                    {footerAddress}
                   </p>
                 </div>
               </div>

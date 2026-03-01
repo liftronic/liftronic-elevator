@@ -31,8 +31,17 @@ export default function BranchWhyChoose({
           className="mb-10 md:mb-12"
         >
           <h2 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl">
-            Why homeowners choose our{" "}
-            <span className="text-brand">{city ?? "local"}</span> branch
+            {branchSlug === "goa" ? (
+              <>
+                Why choose{" "}
+                <span className="text-brand">Liftronic Goa</span>?
+              </>
+            ) : (
+              <>
+                Why homeowners choose our{" "}
+                <span className="text-brand">{city ?? "local"}</span> branch
+              </>
+            )}
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 md:text-lg">
             Precision-crafted solutions designed for architectural character,

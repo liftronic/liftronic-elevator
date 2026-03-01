@@ -8,6 +8,7 @@ import BranchStiltzExperience from "~/components/branches/BranchStiltzExperience
 import BranchSpecializedEngineering from "~/components/branches/BranchSpecializedEngineering";
 import BranchConsultantSection from "~/components/branches/BranchConsultantSection";
 import BranchInfoSection from "~/components/branches/BranchInfoSection";
+import BranchGoaContactForm from "~/components/branches/BranchGoaContactForm";
 import BranchSiltzProducts from "~/components/branches/BranchSiltzProducts";
 import BranchMediaGallery from "~/components/branches/BranchMediaGallery";
 import BranchTeamSection from "~/components/branches/BranchTeamSection";
@@ -73,18 +74,20 @@ export default async function BranchPage({ params }: BranchPageProps) {
   if (hasMedia) nextBg = toggleBg(nextBg);
   const infoBg = nextBg;
 
+  const isGoa = branch.slug === "goa";
+
   return (
     <main>
       <BranchHero branch={branch} />
 
-      <BranchWhyChoose
-        reasons={branch.whyChooseReasons}
-        city={branch.city}
+      <BranchLegacySection
+        legacy={branch.legacySection}
         branchSlug={branch.slug}
       />
 
-      <BranchLegacySection
-        legacy={branch.legacySection}
+      <BranchWhyChoose
+        reasons={branch.whyChooseReasons}
+        city={branch.city}
         branchSlug={branch.slug}
       />
 
@@ -94,6 +97,7 @@ export default async function BranchPage({ params }: BranchPageProps) {
 
       <BranchStiltzExperience
         experience={branch.stiltzExperience}
+        bookingSection={branch.bookingSection}
         branchSlug={branch.slug}
       />
 
@@ -107,6 +111,11 @@ export default async function BranchPage({ params }: BranchPageProps) {
         quoteEmail={branch.quoteEmail}
         closingQuote={branch.closingQuote}
         branchSlug={branch.slug}
+        photoUrl={branch.contactPerson?.photo?.asset?.url}
+        bio={branch.description}
+        city={branch.city}
+        contactPhone={branch.contactPerson?.phone}
+        contactEmail={branch.contactPerson?.email}
       />
 
       {branch.teamMembers && branch.teamMembers.length > 0 && (
@@ -120,7 +129,11 @@ export default async function BranchPage({ params }: BranchPageProps) {
         />
       )}
 
-      <BranchInfoSection branch={branch} bgVariant={infoBg} />
+      {isGoa ? (
+        <BranchGoaContactForm branch={branch} />
+      ) : (
+        <BranchInfoSection branch={branch} bgVariant={infoBg} />
+      )}
     </main>
   );
 }

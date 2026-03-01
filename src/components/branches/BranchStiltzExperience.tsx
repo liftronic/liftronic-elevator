@@ -1,16 +1,19 @@
 "use client";
 
 import { motion } from "motion/react";
-import type { StiltzExperience } from "~/sanity/lib/branchTypes";
+import { HiPhone } from "react-icons/hi2";
+import type { BookingSection, StiltzExperience } from "~/sanity/lib/branchTypes";
 import { GOA_STILTZ_EXPERIENCE } from "~/components/branches/goaFallbackData";
 
 interface BranchStiltzExperienceProps {
   experience?: StiltzExperience;
+  bookingSection?: BookingSection;
   branchSlug?: string;
 }
 
 export default function BranchStiltzExperience({
   experience,
+  bookingSection,
   branchSlug,
 }: BranchStiltzExperienceProps) {
   const fallback = branchSlug === "goa" ? GOA_STILTZ_EXPERIENCE : undefined;
@@ -19,6 +22,8 @@ export default function BranchStiltzExperience({
   if (!data?.intro && (!data?.experiences || data.experiences.length === 0)) {
     return null;
   }
+
+  const isGoa = branchSlug === "goa";
 
   return (
     <section className="bg-white py-16 md:py-24">
@@ -30,8 +35,13 @@ export default function BranchStiltzExperience({
           viewport={{ once: true, margin: "-80px" }}
           className="mb-10 md:mb-12"
         >
+          {isGoa && (
+            <span className="mb-4 inline-block rounded-full bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-brand">
+              Request a Private Experience
+            </span>
+          )}
           <h2 className="text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl">
-            Stiltz Experience
+            {isGoa ? "Experience the Lift of Luxury – Stiltz" : "Stiltz Experience"}
           </h2>
           <p className="mt-4 max-w-4xl text-base leading-relaxed text-gray-600 md:text-lg">
             {data.intro ||
@@ -70,6 +80,40 @@ export default function BranchStiltzExperience({
               </motion.article>
             ))}
           </div>
+        )}
+
+        {/* Goa booking block — data from Sanity bookingSection */}
+        {isGoa && bookingSection && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.2 }}
+            viewport={{ once: true, margin: "-60px" }}
+            className="mt-10 flex flex-col items-start gap-6 rounded-2xl border border-brand/20 bg-brand/[0.05] p-7 md:flex-row md:items-center md:justify-between"
+          >
+            <div className="space-y-1.5">
+              {bookingSection.description && (
+                <p className="text-sm font-medium leading-relaxed text-gray-600 md:text-base">
+                  {bookingSection.description}
+                </p>
+              )}
+              {bookingSection.conciergePhone && (
+                <a
+                  href={`tel:${bookingSection.conciergePhone.replace(/\s/g, "")}`}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-75"
+                >
+                  <HiPhone className="h-4 w-4" />
+                  {bookingSection.conciergePhone}
+                </a>
+              )}
+            </div>
+            <a
+              href="#goa-contact"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-brand/20 bg-white px-6 py-3 text-sm font-bold text-charcoal shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+            >
+              Book Your Visit Today
+            </a>
+          </motion.div>
         )}
       </div>
     </section>
