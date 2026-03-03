@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       try {
         await transporter.sendMail({
           from: `"${fromName || "Liftronic Elevators"}" <${user}>`,
-          to: recipientEmail,
+          to: Array.isArray(recipientEmail) ? recipientEmail.join(", ") : recipientEmail,
           subject: "New Catalog Download Request",
           html: emailHtml,
         });

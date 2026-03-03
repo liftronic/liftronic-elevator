@@ -1,20 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "motion/react";
 import { HiPhone } from "react-icons/hi2";
 import type { BookingSection, StiltzExperience } from "~/sanity/lib/branchTypes";
+import PrivateExperienceModal from "~/components/branches/PrivateExperienceModal";
 
 interface BranchStiltzExperienceProps {
   experience?: StiltzExperience;
   bookingSection?: BookingSection;
   branchSlug?: string;
+  branchName?: string;
+  bgVariant?: "white" | "soft";
 }
 
 export default function BranchStiltzExperience({
   experience,
   bookingSection,
   branchSlug,
+  branchName,
+  bgVariant = "white",
 }: BranchStiltzExperienceProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const data = experience;
 
   if (!data?.intro && (!data?.experiences || data.experiences.length === 0)) {
@@ -24,7 +31,7 @@ export default function BranchStiltzExperience({
   const isGoa = branchSlug === "goa";
 
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className={`bg-${bgVariant} py-10 md:py-16`}>
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -75,40 +82,56 @@ export default function BranchStiltzExperience({
           </div>
         )}
 
-        {/* Goa booking block — data from Sanity bookingSection */}
-        {isGoa && bookingSection && (
+        {/* Booking block — shown for any branch with bookingSection */}
+        {bookingSection && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.2 }}
             viewport={{ once: true, margin: "-60px" }}
-            className="mt-10 flex flex-col items-start gap-6 rounded-2xl border border-brand/20 bg-brand/[0.05] p-7 md:flex-row md:items-center md:justify-between"
+            className="mt-10 border-t border-black/8 pt-10"
           >
-            <div className="space-y-1.5">
-              {bookingSection.description && (
-                <p className="text-sm font-medium leading-relaxed text-gray-600 md:text-base">
-                  {bookingSection.description}
-                </p>
-              )}
-              {bookingSection.conciergePhone && (
-                <a
-                  href={`tel:${bookingSection.conciergePhone.replace(/\s/g, "")}`}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-75"
-                >
-                  <HiPhone className="h-4 w-4" />
-                  {bookingSection.conciergePhone}
-                </a>
-              )}
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              {/* Left: label + heading + description + phone */}
+              <div className="space-y-3">
+                <h3 className="text-2xl font-extrabold leading-tight tracking-tight text-charcoal md:text-3xl">
+                  Request a Private Experience
+                </h3>
+                {bookingSection.description && (
+                  <p className="max-w-md text-sm leading-relaxed text-gray-600 md:text-base">
+                    {bookingSection.description}
+                  </p>
+                )}
+                {bookingSection.conciergePhone && (
+                  <a
+                    href={`tel:${bookingSection.conciergePhone.replace(/\s/g, "")}`}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-brand transition-colors hover:text-charcoal"
+                  >
+                    <HiPhone className="h-4 w-4" />
+                    {bookingSection.conciergePhone}
+                  </a>
+                )}
+              </div>
+
+              {/* Right: CTA */}
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="group inline-flex shrink-0 items-center gap-2 rounded-xl bg-charcoal px-7 py-3.5 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-charcoal/90 hover:shadow-lg"
+              >
+                Book Your Visit Today
+              </button>
             </div>
-            <a
-              href="#goa-contact"
-              className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-brand/20 bg-white px-6 py-3 text-sm font-bold text-charcoal shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-            >
-              Book Your Visit Today
-            </a>
           </motion.div>
         )}
       </div>
+
+      <PrivateExperienceModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        branchName={branchName || ""}
+        branchSlug={branchSlug || ""}
+      />
     </section>
   );
 }

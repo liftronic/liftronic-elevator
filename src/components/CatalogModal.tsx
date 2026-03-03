@@ -1,8 +1,8 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
-import { useEffect } from "react";
 import { FiX } from "react-icons/fi";
 import CatalogForm from "~/components/CatalogForm";
+import { useModal } from "~/hooks/useModal";
 
 interface CatalogModalProps {
   isOpen: boolean;
@@ -10,35 +10,7 @@ interface CatalogModalProps {
 }
 
 export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  // Close modal on Escape key press
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen, onClose]);
+  useModal({ isOpen, onClose });
 
   return (
     <AnimatePresence>

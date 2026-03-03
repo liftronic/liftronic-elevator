@@ -1,8 +1,8 @@
 "use client";
-import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Image from "next/image";
 import type { Certificate } from "~/sanity/lib/certificateTypes";
+import { useModal } from "~/hooks/useModal";
 
 interface CertificateModalProps {
   certificate: Certificate | null;
@@ -15,17 +15,7 @@ export default function CertificateModal({
   isOpen,
   onClose,
 }: CertificateModalProps) {
-  // Handle Escape key press
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isOpen) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
+  useModal({ isOpen, onClose });
 
   if (!certificate) return null;
 

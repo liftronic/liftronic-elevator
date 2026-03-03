@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { HiXMark } from "react-icons/hi2";
 import type { TeaserPopupConfig } from "~/sanity/lib/popupTypes";
+import { useModal } from "~/hooks/useModal";
 
 interface TeaserPopupModalProps {
   popup: TeaserPopupConfig;
@@ -35,29 +35,7 @@ export default function TeaserPopupModal({
 }: TeaserPopupModalProps) {
   const videoId = extractYouTubeId(popup.videoUrl);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  useModal({ isOpen, onClose });
 
   if (!videoId) {
     return null;
@@ -95,16 +73,14 @@ export default function TeaserPopupModal({
               <HiXMark className="w-5 h-5" />
             </button>
 
-            {/* Header */}
-            <div className="px-6 pt-6 pb-4">
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900">
+            {/* Header — collapses entirely when both title and description are empty */}
+            <div className="px-6 pt-6 pb-4 [&:has(h3:empty):has(p:empty)]:hidden">
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 empty:hidden">
                 {popup.title}
               </h3>
-              {popup.description && (
-                <p className="mt-2 text-gray-600 text-sm md:text-base">
-                  {popup.description}
-                </p>
-              )}
+              <p className="mt-2 text-gray-600 text-sm md:text-base empty:hidden">
+                {popup.description}
+              </p>
             </div>
 
             {/* Video Container */}

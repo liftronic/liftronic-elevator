@@ -200,6 +200,51 @@ export const branchType = defineType({
       ],
     }),
 
+    /* Private Experience Form Config */
+    defineField({
+      name: "privateExperienceFormConfig",
+      title: "Private Experience Form Configuration",
+      type: "object",
+      description:
+        "Email and Google Sheets settings for the 'Request a Private Experience' form on this branch page",
+      fields: [
+        defineField({
+          name: "formGoogleSheetUrl",
+          title: "Google Sheet Webhook URL",
+          type: "url",
+          description:
+            "Google Apps Script Web App URL for logging form submissions to a spreadsheet",
+          validation: (Rule) =>
+            Rule.uri({
+              scheme: ["https"],
+            }),
+        }),
+        defineField({
+          name: "formRecipientEmails",
+          title: "Form Notification Recipients",
+          type: "array",
+          of: [{ type: "string" }],
+          description:
+            "Email addresses that receive notifications when someone submits the private experience form",
+          options: { layout: "tags" },
+          validation: (Rule) =>
+            Rule.min(1)
+              .required()
+              .custom((emails: unknown) => {
+                if (!Array.isArray(emails)) return true;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                for (const email of emails) {
+                  if (!emailRegex.test(email)) {
+                    return `"${email}" is not a valid email address`;
+                  }
+                }
+                return true;
+              }),
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.bookingSection,
+    }),
+
     /* Specialized Engineering */
     defineField({
       name: "specializedEngineering",

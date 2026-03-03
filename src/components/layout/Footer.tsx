@@ -1,29 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
-import { headers } from "next/headers";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getSocial } from "~/sanity/utils/getSocials";
 import { getCompanyInfo } from "~/sanity/utils/getAboutUs";
-import { getBranchBySlug } from "~/sanity/utils/getBranches";
+import { getBranches } from "~/sanity/utils/getBranches";
 import { getIcon } from "~/sanity/utils/iconMapper";
-import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
+import { FiMail, FiPhone } from "react-icons/fi";
+import FooterAddressBlock from "~/components/layout/FooterAddressBlock";
 
 export default async function Footer() {
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") ?? "";
-  const branchSlugMatch = pathname.match(/^\/branches\/([^/]+)/);
-  const branchSlug = branchSlugMatch?.[1];
-
-  const [contactInfo, socials, companyInfo, branchData] = await Promise.all([
+  const [contactInfo, socials, companyInfo, branches] = await Promise.all([
     getContactInfo(),
     getSocial(),
     getCompanyInfo(),
-    branchSlug ? getBranchBySlug(branchSlug) : Promise.resolve(null),
+    getBranches(),
   ]);
 
-  // On branch pages show the branch address; everywhere else show HQ
-  const footerAddressLabel = branchData ? "Address" : "Headquarters";
-  const footerAddress = branchData?.address ?? contactInfo?.headquarters;
+  // Build a lightweight list for the footer address block
+  const branchAddresses = branches.map((b) => ({
+    slug: b.slug,
+    city: b.city,
+    address: b.address,
+  }));
 
   const currentYear = new Date().getFullYear();
   const establishedYear = companyInfo?.establishedYear || 2000;
@@ -65,21 +63,10 @@ export default async function Footer() {
                   establishedYear +
                   "."}
             </p>
-            {footerAddress && (
-              <div className="flex items-start gap-3 text-sm">
-                <div className="p-2 bg-accent/10 rounded-lg">
-                  <FiMapPin className="text-accent size-4" />
-                </div>
-                <div className="text-left">
-                  <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                    {footerAddressLabel}
-                  </p>
-                  <p className="text-white/80 font-medium">
-                    {footerAddress}
-                  </p>
-                </div>
-              </div>
-            )}
+            <FooterAddressBlock
+              headquarters={contactInfo?.headquarters}
+              branches={branchAddresses}
+            />
           </div>
 
           {/* Contact Info and Quick Links - Side by side on mobile */}

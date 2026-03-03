@@ -92,7 +92,7 @@ export default function BranchHero({ branch }: BranchHeroProps) {
                     </h2>
                   )}
                   {tagline && (
-                    <p className="mt-4 text-lg italic leading-relaxed text-gray-500 md:text-xl">
+                    <p className="mt-4 font-serif italic text-lg leading-relaxed text-gray-500 md:text-xl">
                       {tagline}
                     </p>
                   )}
@@ -119,49 +119,33 @@ export default function BranchHero({ branch }: BranchHeroProps) {
             </motion.div>
 
             {/* CTA row */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="mt-9 flex flex-wrap items-center gap-3"
-            >
-              <a
-                href={`tel:${branch.phone}`}
-                className="inline-flex items-center gap-2 rounded-xl bg-charcoal px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-charcoal/90 hover:shadow-lg"
+            {!isGoa && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="mt-9 flex flex-wrap items-center gap-3"
               >
-                <HiPhone className="h-4 w-4 text-brand" />
-                Call Branch
-              </a>
-              {isGoa ? (
                 <a
-                  href="#goa-contact"
+                  href={`mailto:${branch.email}`}
                   className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
                 >
-                  Book Your Visit
+                  <HiEnvelope className="h-4 w-4 text-brand" />
+                  Email Team
                 </a>
-              ) : (
-                <>
+                {branch.mapUrl && (
                   <a
-                    href={`mailto:${branch.email}`}
+                    href={branch.mapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
                   >
-                    <HiEnvelope className="h-4 w-4 text-brand" />
-                    Email Team
+                    <HiMapPin className="h-4 w-4 text-brand" />
+                    View on Map
                   </a>
-                  {branch.mapUrl && (
-                    <a
-                      href={branch.mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
-                    >
-                      <HiMapPin className="h-4 w-4 text-brand" />
-                      View on Map
-                    </a>
-                  )}
-                </>
-              )}
-            </motion.div>
+                )}
+              </motion.div>
+            )}
           </div>
 
           {/* Branch lead contact card — hidden for Goa */}

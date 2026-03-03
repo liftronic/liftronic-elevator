@@ -19,7 +19,7 @@ export default function BranchBookVisit({
   if (!data) return null;
 
   return (
-    <section className="bg-soft py-16 md:py-24">
+    <section className="bg-soft py-10 md:py-16">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

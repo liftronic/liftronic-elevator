@@ -23,6 +23,7 @@ interface BranchConsultantSectionProps {
   contactPhone?: string;
   /** Contact person email (used for Goa card) */
   contactEmail?: string;
+  bgVariant?: "white" | "soft";
 }
 
 export default function BranchConsultantSection({
@@ -35,6 +36,7 @@ export default function BranchConsultantSection({
   city,
   contactPhone,
   contactEmail,
+  bgVariant = "soft",
 }: BranchConsultantSectionProps) {
   const isGoa = branchSlug === "goa";
   const person = consultant;
@@ -47,7 +49,7 @@ export default function BranchConsultantSection({
   /* ── Goa variant: light editorial card with person photo ── */
   if (isGoa) {
     return (
-      <section className="bg-soft py-16 md:py-24">
+      <section className={`bg-${bgVariant} py-10 md:py-16`}>
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -59,10 +61,14 @@ export default function BranchConsultantSection({
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto]">
               {/* ── Left: text content ── */}
               <div className="px-8 py-10 md:px-12 md:py-14">
-                {/* Company + branch */}
-                <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-brand md:text-3xl lg:text-4xl">
-                  Liftronic Homelifts Pvt. Ltd.
+                {/* Section title */}
+                <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-charcoal md:text-4xl lg:text-5xl">
+                  Speak to our consultant
                 </h2>
+                {/* Company + branch */}
+                <p className="mt-4 text-base font-bold text-brand md:text-lg">
+                  Liftronic Homelifts Pvt. Ltd.
+                </p>
                 <p className="mt-2 text-xl font-bold text-charcoal">
                   {city ?? "Goa"} Branch
                 </p>
@@ -162,7 +168,7 @@ export default function BranchConsultantSection({
 
   /* ── Default variant: dark themed section for all other branches ── */
   return (
-    <section className="relative isolate overflow-hidden py-16 md:py-24">
+    <section className="relative isolate overflow-hidden py-10 md:py-16">
       <div className="absolute inset-0 -z-10 bg-[#071812]" />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_0%,rgba(42,227,148,0.25),transparent_45%),radial-gradient(circle_at_85%_15%,rgba(42,227,148,0.12),transparent_50%),linear-gradient(130deg,#071812_10%,#0d221a_55%,#091713_100%)]" />
       <div className="pointer-events-none absolute -left-24 top-10 -z-10 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />

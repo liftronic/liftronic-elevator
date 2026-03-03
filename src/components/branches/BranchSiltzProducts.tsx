@@ -8,17 +8,19 @@ import type { BranchProduct } from "~/sanity/lib/branchTypes";
 
 interface BranchSiltzProductsProps {
   products: BranchProduct[];
+  bgVariant?: "white" | "soft";
 }
 
 export default function BranchSiltzProducts({
   products,
+  bgVariant = "soft",
 }: BranchSiltzProductsProps) {
   if (!products || products.length === 0) {
     return null;
   }
 
   return (
-    <section className="bg-soft py-16 md:py-24">
+    <section className={`bg-${bgVariant} py-10 md:py-16`}>
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

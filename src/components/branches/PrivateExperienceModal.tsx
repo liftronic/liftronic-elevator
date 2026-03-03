@@ -2,25 +2,22 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { FiX } from "react-icons/fi";
-import ContactForm from "~/components/ContactForm";
+import PrivateExperienceForm from "~/components/branches/PrivateExperienceForm";
 import { useModal } from "~/hooks/useModal";
 
-interface RequestQuoteModalProps {
+interface PrivateExperienceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  productOptions: string[];
-  title?: string;
-  subtitle?: string;
+  branchName: string;
+  branchSlug: string;
 }
 
-export default function RequestQuoteModal({
+export default function PrivateExperienceModal({
   isOpen,
   onClose,
-  productOptions,
-  title,
-  subtitle,
-}: RequestQuoteModalProps) {
-
+  branchName,
+  branchSlug,
+}: PrivateExperienceModalProps) {
   useModal({ isOpen, onClose });
 
   return (
@@ -44,35 +41,38 @@ export default function RequestQuoteModal({
 
           {/* Modal panel */}
           <motion.div
-            className="relative w-full max-w-2xl max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
             initial={{ scale: 0.95, opacity: 0, y: 16 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 16 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+            <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5">
               <div>
                 <h2 className="text-2xl font-semibold text-gray-900">
-                  {title || "Request a Quote"}
+                  Request a Private Experience
                 </h2>
                 <p className="mt-0.5 text-sm text-gray-500">
-                  {subtitle ||
-                    "Fill in your details and our team will get back to you shortly."}
+                  Fill in your details and we&apos;ll arrange an exclusive visit
+                  for you.
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="rounded-lg p-2 transition-colors hover:bg-gray-100"
                 aria-label="Close modal"
               >
-                <FiX className="w-6 h-6 text-gray-600" />
+                <FiX className="h-6 w-6 text-gray-600" />
               </button>
             </div>
 
             {/* Scrollable form area */}
             <div className="flex-1 overflow-y-auto px-6 py-6">
-              <ContactForm productOptions={productOptions} />
+              <PrivateExperienceForm
+                branchName={branchName}
+                branchSlug={branchSlug}
+              />
             </div>
           </motion.div>
         </motion.div>

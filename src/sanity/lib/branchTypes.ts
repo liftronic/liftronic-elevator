@@ -70,6 +70,11 @@ export interface BookingSection {
   gpsLink?: string;
 }
 
+export interface PrivateExperienceFormConfig {
+  formGoogleSheetUrl?: string;
+  formRecipientEmails?: string[];
+}
+
 export interface SpecializedEngineeringFeature {
   title: string;
   description: string;
@@ -110,6 +115,7 @@ export interface Branch {
   whyChooseReasons?: WhyChooseReason[];
   stiltzExperience?: StiltzExperience;
   bookingSection?: BookingSection;
+  privateExperienceFormConfig?: PrivateExperienceFormConfig;
   specializedEngineering?: SpecializedEngineeringSection[];
   consultant?: BranchConsultant;
   quoteEmail?: string;

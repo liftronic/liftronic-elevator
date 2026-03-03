@@ -7,6 +7,7 @@ import type { SpecializedEngineeringSection } from "~/sanity/lib/branchTypes";
 interface BranchSpecializedEngineeringProps {
   sections?: SpecializedEngineeringSection[];
   branchSlug?: string;
+  bgVariant?: "white" | "soft";
 }
 
 function getGridColumnsClass(count: number): string {
@@ -19,6 +20,7 @@ function getGridColumnsClass(count: number): string {
 export default function BranchSpecializedEngineering({
   sections,
   branchSlug,
+  bgVariant = "soft",
 }: BranchSpecializedEngineeringProps) {
   const data = sections;
 
@@ -27,7 +29,7 @@ export default function BranchSpecializedEngineering({
   const gridColumnsClass = getGridColumnsClass(data.length);
 
   return (
-    <section className="bg-soft py-16 md:py-24">
+    <section className={`bg-${bgVariant} py-10 md:py-16`}>
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

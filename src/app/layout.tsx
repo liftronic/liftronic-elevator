@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -8,6 +8,13 @@ const dmSans = DM_Sans({
   weight: ["400", "600", "700"],
   display: "swap",
   preload: true,
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  style: ["italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -61,7 +68,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${dmSans.variable} antialiased bg-soft text-charcoal`}
+        className={`${dmSans.variable} ${playfairDisplay.variable} antialiased bg-soft text-charcoal`}
         suppressHydrationWarning={true}
       >
         {children}
