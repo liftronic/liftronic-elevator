@@ -125,6 +125,8 @@ export interface Branch {
   teamMembers?: BranchTeamMember[];
   mediaGallery?: BranchMediaItem[];
   stiltzProducts?: BranchProduct[];
+  showStiltzCollection?: boolean;
+  showMediaGallery?: boolean;
   isActive: boolean;
   order: number;
 }

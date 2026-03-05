@@ -79,13 +79,16 @@ export default async function BranchPage({ params }: BranchPageProps) {
     {
       key: "legacy",
       renders: !!branch.legacySection?.body,
-      element: (bg) => <BranchLegacySection legacy={branch.legacySection} bgVariant={bg} />,
+      element: (bg) => (
+        <BranchLegacySection legacy={branch.legacySection} bgVariant={bg} />
+      ),
     },
     {
       key: "stiltz-experience",
       renders: !!(
         branch.stiltzExperience?.intro ||
-        (branch.stiltzExperience?.experiences && branch.stiltzExperience.experiences.length > 0)
+        (branch.stiltzExperience?.experiences &&
+          branch.stiltzExperience.experiences.length > 0)
       ),
       element: (bg) => (
         <BranchStiltzExperience
@@ -99,7 +102,9 @@ export default async function BranchPage({ params }: BranchPageProps) {
     },
     {
       key: "why-choose",
-      renders: !!(branch.whyChooseReasons && branch.whyChooseReasons.length > 0),
+      renders: !!(
+        branch.whyChooseReasons && branch.whyChooseReasons.length > 0
+      ),
       element: (bg) => (
         <BranchWhyChoose
           reasons={branch.whyChooseReasons}
@@ -110,15 +115,11 @@ export default async function BranchPage({ params }: BranchPageProps) {
       ),
     },
     {
-      key: "stiltz-products",
-      renders: !!(branch.stiltzProducts && branch.stiltzProducts.length > 0),
-      element: (bg) => (
-        <BranchSiltzProducts products={branch.stiltzProducts!} bgVariant={bg} />
-      ),
-    },
-    {
       key: "specialized",
-      renders: !!(branch.specializedEngineering && branch.specializedEngineering.length > 0),
+      renders: !!(
+        branch.specializedEngineering &&
+        branch.specializedEngineering.length > 0
+      ),
       element: (bg) => (
         <BranchSpecializedEngineering
           sections={branch.specializedEngineering}
@@ -129,7 +130,9 @@ export default async function BranchPage({ params }: BranchPageProps) {
     },
     {
       key: "consultant",
-      renders: !!(branch.consultant || branch.quoteEmail || branch.closingQuote) || isGoa,
+      renders:
+        !!(branch.consultant || branch.quoteEmail || branch.closingQuote) ||
+        isGoa,
       element: (bg) => (
         <BranchConsultantSection
           consultant={branch.consultant}
@@ -146,6 +149,15 @@ export default async function BranchPage({ params }: BranchPageProps) {
       ),
     },
     {
+      key: "stiltz-products",
+      renders:
+        branch.showStiltzCollection !== false &&
+        !!(branch.stiltzProducts && branch.stiltzProducts.length > 0),
+      element: (bg) => (
+        <BranchSiltzProducts products={branch.stiltzProducts!} bgVariant={bg} />
+      ),
+    },
+    {
       key: "team",
       renders: !!(branch.teamMembers && branch.teamMembers.length > 0),
       element: (bg) => (
@@ -154,7 +166,9 @@ export default async function BranchPage({ params }: BranchPageProps) {
     },
     {
       key: "media",
-      renders: !!(branch.mediaGallery && branch.mediaGallery.length > 0),
+      renders:
+        branch.showMediaGallery !== false &&
+        !!(branch.mediaGallery && branch.mediaGallery.length > 0),
       element: (bg) => (
         <BranchMediaGallery mediaItems={branch.mediaGallery!} bgVariant={bg} />
       ),

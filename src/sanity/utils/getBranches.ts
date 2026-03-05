@@ -167,6 +167,8 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
     "mainImageLqip": mainImage.asset->metadata.lqip,
     "imageAlt": mainImage.alt
   },
+  showStiltzCollection,
+  showMediaGallery,
   isActive,
   order
 }`;

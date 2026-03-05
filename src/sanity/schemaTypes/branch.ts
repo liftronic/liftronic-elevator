@@ -584,6 +584,24 @@ export const branchType = defineType({
       description: "Stiltz home lift models available at this branch",
     }),
 
+    /* Section Visibility Flags */
+    defineField({
+      name: "showStiltzCollection",
+      title: "Show Stiltz Collection Section",
+      type: "boolean",
+      description:
+        "Toggle visibility of the Stiltz Collection product showcase section",
+      initialValue: true,
+    }),
+    defineField({
+      name: "showMediaGallery",
+      title: "Show Highlights / Media Gallery Section",
+      type: "boolean",
+      description:
+        "Toggle visibility of the Highlights from our branch (media gallery) section",
+      initialValue: true,
+    }),
+
     /* Display Settings */
     defineField({
       name: "isActive",
