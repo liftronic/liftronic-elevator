@@ -23,10 +23,6 @@ const branchLocations = [
     name: "Goa Branch",
     href: "/branches/goa",
   },
-  {
-    name: "Hyderabad Branch",
-    href: "/branches/hyderabad",
-  },
 ];
 export default function Navbar() {
   const pathname = usePathname();
