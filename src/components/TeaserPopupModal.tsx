@@ -73,14 +73,11 @@ export default function TeaserPopupModal({
               <HiXMark className="w-5 h-5" />
             </button>
 
-            {/* Header — collapses entirely when both title and description are empty */}
-            <div className="px-6 pt-6 pb-4 [&:has(h3:empty):has(p:empty)]:hidden">
+            {/* Header — collapses entirely when title is empty */}
+            <div className="px-6 pt-6 pb-4 [&:has(h3:empty)]:hidden">
               <h3 className="text-xl md:text-2xl font-bold text-gray-900 empty:hidden">
                 {popup.title}
               </h3>
-              <p className="mt-2 text-gray-600 text-sm md:text-base empty:hidden">
-                {popup.description}
-              </p>
             </div>
 
             {/* Video Container */}
