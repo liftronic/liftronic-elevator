@@ -4,25 +4,28 @@ on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.CLIENT_REPO_TOKEN }}
-          
+
       - name: Configure Git
         run: |
           git config user.name "Rocket Dev Sync Bot"
           git config user.email "dev@rocketdevelopers.com"
-          
+
       - name: Push to client repository
         env:
           CLIENT_REPO_TOKEN: ${{ secrets.CLIENT_REPO_TOKEN }}
         run: |
+          BRANCH="${GITHUB_REF##*/}"
           git remote add client https://x-access-token:${CLIENT_REPO_TOKEN}@github.com/liftronic/liftronic-elevator.git
-          git push client main:main --force
+          git push client ${BRANCH}:${BRANCH} --force
