@@ -7,7 +7,6 @@ import {
   FiHeadphones,
   FiMail,
   FiPhoneCall,
-  FiMessageSquare,
   FiEye,
 } from "react-icons/fi";
 import { Social, ContactInfo } from "~/../typings";

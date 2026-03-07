@@ -63,6 +63,7 @@ export async function POST(request: NextRequest) {
         name: validatedData.name,
         email: validatedData.email,
         phone: validatedData.phone,
+        productInterest: validatedData.productInterest,
         company: validatedData.company || "",
         branch: validatedData.branchName,
       });
@@ -96,7 +97,7 @@ export async function POST(request: NextRequest) {
           to: Array.isArray(formRecipientEmails)
             ? formRecipientEmails.join(", ")
             : formRecipientEmails,
-          subject: `New Private Experience Request - ${validatedData.branchName}`,
+          subject: `New Private Experience Request - ${validatedData.productInterest} - ${validatedData.branchName}`,
           html: emailHtml,
           replyTo: validatedData.email,
         });

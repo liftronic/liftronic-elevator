@@ -8,18 +8,25 @@ import { PopupManagerProvider } from "~/contexts/PopupManagerContext";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getPopups } from "~/sanity/utils/getPopups";
 import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
+import { getBranches } from "~/sanity/utils/getBranches";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
-  const [contactInfo, popups, homePageSettings] = await Promise.all([
+  const [contactInfo, popups, homePageSettings, branches] = await Promise.all([
     getContactInfo(),
     getPopups(),
     getHomePageSettings(),
+    getBranches(),
   ]);
 
   const productOptions = homePageSettings.productOptions ?? [];
+  const navBranches = branches.map((b) => ({
+    name: b.name,
+    slug: b.slug,
+    city: b.city,
+  }));
 
   return (
-    <PopupManagerProvider popups={popups} productOptions={productOptions}>
+    <PopupManagerProvider popups={popups} productOptions={productOptions} branches={navBranches}>
       <div className="flex flex-col min-h-[100dvh]">
         {/* Skip to main content link for accessibility */}
         <a

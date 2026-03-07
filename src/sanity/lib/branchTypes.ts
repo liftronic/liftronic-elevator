@@ -87,13 +87,6 @@ export interface SpecializedEngineeringSection {
   features?: SpecializedEngineeringFeature[];
 }
 
-export interface BranchConsultant {
-  name?: string;
-  position?: string;
-  phone?: string;
-  email?: string;
-}
-
 export interface LegacySection {
   title?: string;
   body?: string;
@@ -117,16 +110,22 @@ export interface Branch {
   bookingSection?: BookingSection;
   privateExperienceFormConfig?: PrivateExperienceFormConfig;
   specializedEngineering?: SpecializedEngineeringSection[];
-  consultant?: BranchConsultant;
   quoteEmail?: string;
   closingQuote?: string;
-  heroImage?: SanityImage;
   contactPerson: ContactPerson;
   teamMembers?: BranchTeamMember[];
   mediaGallery?: BranchMediaItem[];
   stiltzProducts?: BranchProduct[];
-  showStiltzCollection?: boolean;
-  showMediaGallery?: boolean;
+  sectionVisibility?: {
+    legacy?: boolean;
+    stiltzExperience?: boolean;
+    whyChoose?: boolean;
+    specializedEngineering?: boolean;
+    consultant?: boolean;
+    stiltzProducts?: boolean;
+    team?: boolean;
+    media?: boolean;
+  };
   isActive: boolean;
   order: number;
 }

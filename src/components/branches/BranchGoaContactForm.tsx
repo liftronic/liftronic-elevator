@@ -6,23 +6,19 @@ import type { Branch } from "~/sanity/lib/branchTypes";
 
 interface BranchGoaContactFormProps {
   branch: Branch;
+  productOptions: string[];
 }
 
-const GOA_PRODUCT_OPTIONS = [
-  "Stiltz Home Lift",
-  "Inclined Elevator",
-  "ATEX-Certified Elevator",
-  "Passenger Elevator",
-  "Other",
-];
-
-export default function BranchGoaContactForm({ branch }: BranchGoaContactFormProps) {
+export default function BranchGoaContactForm({
+  branch,
+  productOptions,
+}: BranchGoaContactFormProps) {
   // All contact data sourced from Sanity — bookingSection takes priority over branch-level fields
   const phone = branch.bookingSection?.conciergePhone ?? branch.phone;
   const email = branch.quoteEmail ?? branch.email;
 
   // Build a Google Maps embed from the branch address stored in Sanity
-  const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(branch.address)}&output=embed`;
+  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(branch.address)}&output=embed`;
 
   return (
     <section
@@ -103,7 +99,7 @@ export default function BranchGoaContactForm({ branch }: BranchGoaContactFormPro
             <h3 className="mb-6 text-2xl font-semibold text-gray-900">
               Send us a message
             </h3>
-            <ContactForm productOptions={GOA_PRODUCT_OPTIONS} />
+            <ContactForm productOptions={productOptions} />
           </div>
         </motion.div>
       </div>

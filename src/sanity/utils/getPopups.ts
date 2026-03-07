@@ -27,7 +27,7 @@ export async function getPopups(): Promise<PopupModel[]> {
   const popups = await client.fetch<PopupModel[]>(
     popupsQuery,
     {},
-    { next: { revalidate: 60 } },
+    { next: { revalidate: 3600 } },
   );
   return popups ?? [];
 }

@@ -11,6 +11,7 @@ interface BranchStiltzExperienceProps {
   bookingSection?: BookingSection;
   branchSlug?: string;
   branchName?: string;
+  productOptions: string[];
   bgVariant?: "white" | "soft";
 }
 
@@ -19,6 +20,7 @@ export default function BranchStiltzExperience({
   bookingSection,
   branchSlug,
   branchName,
+  productOptions,
   bgVariant = "white",
 }: BranchStiltzExperienceProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,12 +96,13 @@ export default function BranchStiltzExperience({
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               {/* Left: label + heading + description + phone */}
               <div className="space-y-3">
-                <h3 className="text-2xl font-extrabold leading-tight tracking-tight text-charcoal md:text-3xl">
+                <p className="text-lg font-normal leading-tight tracking-tight text-gray-500 md:text-xl">
                   Request a Private Experience
-                </h3>
+                </p>
                 {bookingSection.description && (
-                  <p className="max-w-md text-sm leading-relaxed text-gray-600 md:text-base">
-                    {bookingSection.description}
+                  <p className="max-w-md text-base font-semibold leading-relaxed text-gray-700 md:text-lg">
+                    To ensure an exclusive personalized experience, we operate
+                    by rate of appointment.
                   </p>
                 )}
                 {bookingSection.conciergePhone && (
@@ -131,6 +134,7 @@ export default function BranchStiltzExperience({
         onClose={() => setIsModalOpen(false)}
         branchName={branchName || ""}
         branchSlug={branchSlug || ""}
+        productOptions={productOptions}
       />
     </section>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getBranchBySlug, getBranches } from "~/sanity/utils/getBranches";
+import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
 import BranchHero from "~/components/branches/BranchHero";
 import BranchLegacySection from "~/components/branches/BranchLegacySection";
 import BranchWhyChoose from "~/components/branches/BranchWhyChoose";
@@ -59,18 +60,26 @@ type BgVariant = "white" | "soft";
 
 export default async function BranchPage({ params }: BranchPageProps) {
   const { slug } = await params;
-  const branch = await getBranchBySlug(slug);
+  const [branch, homePageSettings] = await Promise.all([
+    getBranchBySlug(slug),
+    getHomePageSettings(),
+  ]);
 
   if (!branch) {
     notFound();
   }
 
   const isGoa = branch.slug === "goa";
+  const sv = branch.sectionVisibility;
 
-  // Declarative section registry. Each entry declares whether it renders and
-  // how to render itself given a background variant. After filtering out
-  // non-rendering sections, the index drives alternation: i % 2 → soft/white.
-  // No manual counter, no toggleBg — adding or removing a section just works.
+  /** Section visible unless explicitly hidden in CMS */
+  const on = (key: keyof NonNullable<typeof sv>) => sv?.[key] !== false;
+
+  /** Truthy check for a value or non-empty array */
+  const has = (v: unknown) =>
+    Array.isArray(v) ? v.length > 0 : Boolean(v);
+
+  // Declarative section registry — filtered sections drive alternating bg.
   const sections: Array<{
     key: string;
     renders: boolean;
@@ -78,33 +87,31 @@ export default async function BranchPage({ params }: BranchPageProps) {
   }> = [
     {
       key: "legacy",
-      renders: !!branch.legacySection?.body,
+      renders: on("legacy") && has(branch.legacySection?.body),
       element: (bg) => (
         <BranchLegacySection legacy={branch.legacySection} bgVariant={bg} />
       ),
     },
     {
       key: "stiltz-experience",
-      renders: !!(
-        branch.stiltzExperience?.intro ||
-        (branch.stiltzExperience?.experiences &&
-          branch.stiltzExperience.experiences.length > 0)
-      ),
+      renders:
+        on("stiltzExperience") &&
+        (has(branch.stiltzExperience?.intro) ||
+          has(branch.stiltzExperience?.experiences)),
       element: (bg) => (
         <BranchStiltzExperience
           experience={branch.stiltzExperience}
           bookingSection={branch.bookingSection}
           branchSlug={branch.slug}
           branchName={branch.name}
+          productOptions={homePageSettings.productOptions ?? []}
           bgVariant={bg}
         />
       ),
     },
     {
       key: "why-choose",
-      renders: !!(
-        branch.whyChooseReasons && branch.whyChooseReasons.length > 0
-      ),
+      renders: on("whyChoose") && has(branch.whyChooseReasons),
       element: (bg) => (
         <BranchWhyChoose
           reasons={branch.whyChooseReasons}
@@ -116,10 +123,8 @@ export default async function BranchPage({ params }: BranchPageProps) {
     },
     {
       key: "specialized",
-      renders: !!(
-        branch.specializedEngineering &&
-        branch.specializedEngineering.length > 0
-      ),
+      renders:
+        on("specializedEngineering") && has(branch.specializedEngineering),
       element: (bg) => (
         <BranchSpecializedEngineering
           sections={branch.specializedEngineering}
@@ -131,17 +136,23 @@ export default async function BranchPage({ params }: BranchPageProps) {
     {
       key: "consultant",
       renders:
-        !!(branch.consultant || branch.quoteEmail || branch.closingQuote) ||
-        isGoa,
+        on("consultant") &&
+        (isGoa ||
+          has(branch.contactPerson?.name) ||
+          has(branch.contactPerson?.phone) ||
+          has(branch.contactPerson?.email) ||
+          has(branch.quoteEmail) ||
+          has(branch.closingQuote)),
       element: (bg) => (
         <BranchConsultantSection
-          consultant={branch.consultant}
           quoteEmail={branch.quoteEmail}
           closingQuote={branch.closingQuote}
           branchSlug={branch.slug}
           photoUrl={branch.contactPerson?.photo?.asset?.url}
           bio={branch.description}
           city={branch.city}
+          contactName={branch.contactPerson?.name}
+          contactPosition={branch.contactPerson?.position}
           contactPhone={branch.contactPerson?.phone}
           contactEmail={branch.contactPerson?.email}
           bgVariant={bg}
@@ -150,25 +161,21 @@ export default async function BranchPage({ params }: BranchPageProps) {
     },
     {
       key: "stiltz-products",
-      renders:
-        branch.showStiltzCollection !== false &&
-        !!(branch.stiltzProducts && branch.stiltzProducts.length > 0),
+      renders: on("stiltzProducts") && has(branch.stiltzProducts),
       element: (bg) => (
         <BranchSiltzProducts products={branch.stiltzProducts!} bgVariant={bg} />
       ),
     },
     {
       key: "team",
-      renders: !!(branch.teamMembers && branch.teamMembers.length > 0),
+      renders: on("team") && has(branch.teamMembers),
       element: (bg) => (
         <BranchTeamSection teamMembers={branch.teamMembers!} bgVariant={bg} />
       ),
     },
     {
       key: "media",
-      renders:
-        branch.showMediaGallery !== false &&
-        !!(branch.mediaGallery && branch.mediaGallery.length > 0),
+      renders: on("media") && has(branch.mediaGallery),
       element: (bg) => (
         <BranchMediaGallery mediaItems={branch.mediaGallery!} bgVariant={bg} />
       ),
@@ -178,7 +185,10 @@ export default async function BranchPage({ params }: BranchPageProps) {
       renders: true,
       element: (bg) =>
         isGoa ? (
-          <BranchGoaContactForm branch={branch} />
+          <BranchGoaContactForm
+            branch={branch}
+            productOptions={homePageSettings.productOptions ?? []}
+          />
         ) : (
           <BranchInfoSection branch={branch} bgVariant={bg} />
         ),

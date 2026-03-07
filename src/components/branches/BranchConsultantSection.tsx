@@ -6,10 +6,8 @@ import {
   HiOutlineEnvelope,
   HiOutlinePhone,
 } from "react-icons/hi2";
-import type { BranchConsultant } from "~/sanity/lib/branchTypes";
 
 interface BranchConsultantSectionProps {
-  consultant?: BranchConsultant;
   quoteEmail?: string;
   closingQuote?: string;
   branchSlug?: string;
@@ -19,6 +17,10 @@ interface BranchConsultantSectionProps {
   bio?: string;
   /** Branch city name */
   city?: string;
+  /** Contact person name */
+  contactName?: string;
+  /** Contact person position */
+  contactPosition?: string;
   /** Contact person phone (used for Goa card) */
   contactPhone?: string;
   /** Contact person email (used for Goa card) */
@@ -27,24 +29,25 @@ interface BranchConsultantSectionProps {
 }
 
 export default function BranchConsultantSection({
-  consultant,
   quoteEmail,
   closingQuote,
   branchSlug,
   photoUrl,
   bio,
   city,
+  contactName,
+  contactPosition,
   contactPhone,
   contactEmail,
   bgVariant = "soft",
 }: BranchConsultantSectionProps) {
   const isGoa = branchSlug === "goa";
-  const person = consultant;
-  const email = quoteEmail;
   const quote = closingQuote;
-  const quoteContact = email ?? person?.email;
+  const quoteContact = quoteEmail ?? contactEmail;
 
-  if (!person && !email && !quote) return null;
+  if (!contactName && !contactPhone && !contactEmail && !quoteContact && !quote) {
+    return null;
+  }
 
   /* ── Goa variant: light editorial card with person photo ── */
   if (isGoa) {
@@ -75,14 +78,14 @@ export default function BranchConsultantSection({
                 <div className="mt-3 h-[3px] w-10 rounded-full bg-brand" />
 
                 {/* Person info */}
-                {person?.name && (
+                {contactName && (
                   <div className="mt-7">
                     <p className="text-lg font-bold text-charcoal">
-                      {person.name}
+                      {contactName}
                     </p>
-                    {person.position && (
+                    {contactPosition && (
                       <p className="mt-0.5 text-sm text-gray-500">
-                        {person.position}
+                        {contactPosition}
                       </p>
                     )}
                   </div>
@@ -100,31 +103,31 @@ export default function BranchConsultantSection({
                 )}
 
                 {/* Contact row */}
-                {(contactPhone ?? contactEmail ?? person?.phone ?? person?.email) && (
+                {(contactPhone || contactEmail) && (
                   <div className="mt-8 flex flex-wrap gap-x-10 gap-y-5 border-t border-black/8 pt-6">
-                    {(contactPhone ?? person?.phone) && (
+                    {contactPhone && (
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
                           Number:
                         </p>
                         <a
-                          href={`tel:${(contactPhone ?? person?.phone)!.replace(/\s/g, "")}`}
+                          href={`tel:${contactPhone.replace(/\s/g, "")}`}
                           className="mt-1 block text-base font-bold text-charcoal transition-colors hover:text-brand md:text-lg"
                         >
-                          {contactPhone ?? person?.phone}
+                          {contactPhone}
                         </a>
                       </div>
                     )}
-                    {(contactEmail ?? person?.email) && (
+                    {contactEmail && (
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
                           Email:
                         </p>
                         <a
-                          href={`mailto:${contactEmail ?? person?.email}`}
+                          href={`mailto:${contactEmail}`}
                           className="mt-1 block break-all text-base font-bold text-charcoal transition-colors hover:text-brand md:text-lg"
                         >
-                          {contactEmail ?? person?.email}
+                          {contactEmail}
                         </a>
                       </div>
                     )}
@@ -150,7 +153,7 @@ export default function BranchConsultantSection({
                     <div className="relative h-72 w-56 overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/8 md:h-80 md:w-64">
                       <Image
                         src={photoUrl}
-                        alt={person?.name ?? "Branch Consultant"}
+                        alt={contactName ?? "Branch Contact"}
                         fill
                         className="object-cover object-top"
                         sizes="(max-width: 768px) 224px, 256px"
@@ -191,38 +194,38 @@ export default function BranchConsultantSection({
 
             <div className="mt-8 grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
               <div>
-                {person?.name && (
+                {contactName && (
                   <div className="rounded-2xl border border-white/15 bg-black/15 px-5 py-5 md:px-6 md:py-6">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
-                      Your consultant
+                      Your contact person
                     </p>
                     <h3 className="mt-2 text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-                      {person.name}
+                      {contactName}
                     </h3>
-                    {person.position && (
-                      <p className="mt-1 text-sm text-white/65">{person.position}</p>
+                    {contactPosition && (
+                      <p className="mt-1 text-sm text-white/65">{contactPosition}</p>
                     )}
                     <div className="mt-5 space-y-3">
-                      {person.phone && (
+                      {contactPhone && (
                         <a
-                          href={`tel:${person.phone.replace(/\s/g, "")}`}
+                          href={`tel:${contactPhone.replace(/\s/g, "")}`}
                           className="group flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition-all hover:border-accent/45 hover:bg-accent/15"
                         >
                           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/45 bg-accent/12">
                             <HiOutlinePhone className="h-4 w-4 text-accent" />
                           </span>
-                          {person.phone}
+                          {contactPhone}
                         </a>
                       )}
-                      {person.email && (
+                      {contactEmail && (
                         <a
-                          href={`mailto:${person.email}`}
+                          href={`mailto:${contactEmail}`}
                           className="group flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm font-semibold text-white transition-all hover:border-accent/45 hover:bg-accent/15"
                         >
                           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/45 bg-accent/12">
                             <HiOutlineEnvelope className="h-4 w-4 text-accent" />
                           </span>
-                          <span className="break-all">{person.email}</span>
+                          <span className="break-all">{contactEmail}</span>
                         </a>
                       )}
                     </div>

@@ -11,55 +11,6 @@ const branchQuery = `*[_type == "branch" && isActive == true] | order(order asc)
   email,
   mapUrl,
   description,
-  heroImage {
-    asset -> { url, metadata { dimensions } },
-    alt,
-    hotspot
-  },
-  contactPerson {
-    name,
-    position,
-    photo {
-      asset -> { url, metadata { dimensions } },
-      alt,
-      hotspot
-    },
-    email,
-    phone
-  },
-  teamMembers[] {
-    name,
-    position,
-    bio,
-    image {
-      asset -> { url, metadata { dimensions } },
-      alt,
-      hotspot
-    },
-    email,
-    phone
-  },
-  mediaGallery[] {
-    title,
-    description,
-    type,
-    image {
-      asset -> { url, metadata { dimensions } },
-      alt,
-      hotspot
-    },
-    youtubeUrl
-  },
-  "stiltzProducts": stiltzProducts[] -> {
-    _id,
-    title,
-    "slug": slug.current,
-    subtitle,
-    description,
-    "mainImage": mainImage.asset->url + "?w=1200&h=900&fit=crop&auto=format&fm=webp&q=85",
-    "mainImageLqip": mainImage.asset->metadata.lqip,
-    "imageAlt": mainImage.alt
-  },
   isActive,
   order
 }`;
@@ -110,19 +61,8 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
       description
     }
   },
-  consultant {
-    name,
-    position,
-    phone,
-    email
-  },
   quoteEmail,
   closingQuote,
-  heroImage {
-    asset -> { url, metadata { dimensions } },
-    alt,
-    hotspot
-  },
   contactPerson {
     name,
     position,
@@ -167,8 +107,16 @@ const singleBranchQuery = `*[_type == "branch" && slug.current == $slug && isAct
     "mainImageLqip": mainImage.asset->metadata.lqip,
     "imageAlt": mainImage.alt
   },
-  showStiltzCollection,
-  showMediaGallery,
+  sectionVisibility {
+    legacy,
+    stiltzExperience,
+    whyChoose,
+    specializedEngineering,
+    consultant,
+    stiltzProducts,
+    team,
+    media
+  },
   isActive,
   order
 }`;

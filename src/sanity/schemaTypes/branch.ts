@@ -1,5 +1,6 @@
 import { CaseIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
+import { SectionVisibilityInput } from "../components/SectionVisibilityInput";
 
 export const branchType = defineType({
   name: "branch",
@@ -308,35 +309,6 @@ export const branchType = defineType({
         "Advanced engineering solution sections (e.g., Inclined Elevators, ATEX solutions)",
     }),
 
-    /* Consultant Info */
-    defineField({
-      name: "consultant",
-      title: "Branch Consultant",
-      type: "object",
-      fields: [
-        defineField({
-          name: "name",
-          title: "Full Name",
-          type: "string",
-        }),
-        defineField({
-          name: "position",
-          title: "Position / Title",
-          type: "string",
-        }),
-        defineField({
-          name: "phone",
-          title: "Phone",
-          type: "string",
-        }),
-        defineField({
-          name: "email",
-          title: "Email",
-          type: "string",
-        }),
-      ],
-    }),
-
     /* Quote Email */
     defineField({
       name: "quoteEmail",
@@ -354,27 +326,7 @@ export const branchType = defineType({
       description: "Inspirational closing quote at the bottom of the page",
     }),
 
-    defineField({
-      name: "heroImage",
-      title: "Hero Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Alternative text",
-          type: "string",
-          description: "Important for accessibility and SEO",
-        }),
-      ],
-      validation: (Rule) =>
-        Rule.custom(async (value, context) => {
-          const { validateImageSize } = await import("../lib/imageValidation");
-          return validateImageSize(value, context);
-        }),
-    }),
+
 
     /* Contact Person Section */
     defineField({
@@ -586,20 +538,68 @@ export const branchType = defineType({
 
     /* Section Visibility Flags */
     defineField({
-      name: "showStiltzCollection",
-      title: "Show Stiltz Collection Section",
-      type: "boolean",
+      name: "sectionVisibility",
+      title: "Section Visibility",
+      type: "object",
       description:
-        "Toggle visibility of the Stiltz Collection product showcase section",
-      initialValue: true,
-    }),
-    defineField({
-      name: "showMediaGallery",
-      title: "Show Highlights / Media Gallery Section",
-      type: "boolean",
-      description:
-        "Toggle visibility of the Highlights from our branch (media gallery) section",
-      initialValue: true,
+        "Control which sections are shown on this branch page. All sections are visible by default — uncheck to hide.",
+      components: {
+        input: SectionVisibilityInput,
+      },
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        defineField({
+          name: "legacy",
+          title: "Our Legacy Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "stiltzExperience",
+          title: "Stiltz Experience Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "whyChoose",
+          title: "Why Choose Us Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "specializedEngineering",
+          title: "Specialized Engineering Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "consultant",
+          title: "Consultant / Contact Person Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "stiltzProducts",
+          title: "Stiltz Collection Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "team",
+          title: "Branch Team Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "media",
+          title: "Highlights / Media Gallery Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+      ],
     }),
 
     /* Display Settings */
@@ -623,7 +623,6 @@ export const branchType = defineType({
     select: {
       title: "name",
       subtitle: "city",
-      media: "heroImage",
     },
   },
 });

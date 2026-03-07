@@ -12,15 +12,23 @@ import {
 import { usePathname } from "next/navigation";
 import type { PopupModel, PopupVariant } from "~/sanity/lib/popupTypes";
 
+export interface NavBranch {
+  name: string;
+  slug: string;
+  city: string;
+}
+
 interface PopupManagerProviderProps {
   children: React.ReactNode;
   popups: PopupModel[];
   productOptions: string[];
+  branches: NavBranch[];
 }
 
 interface PopupManagerContextValue {
   activePopup: PopupModel | null;
   productOptions: string[];
+  branches: NavBranch[];
   closeActivePopup: () => void;
   triggerPopupByType: (type: PopupVariant) => void;
 }
@@ -33,6 +41,7 @@ export function PopupManagerProvider({
   children,
   popups,
   productOptions,
+  branches,
 }: PopupManagerProviderProps) {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
@@ -283,10 +292,11 @@ export function PopupManagerProvider({
     () => ({
       activePopup,
       productOptions,
+      branches,
       closeActivePopup,
       triggerPopupByType,
     }),
-    [activePopup, productOptions, closeActivePopup, triggerPopupByType],
+    [activePopup, productOptions, branches, closeActivePopup, triggerPopupByType],
   );
 
   return (

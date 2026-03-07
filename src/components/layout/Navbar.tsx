@@ -10,7 +10,13 @@ import { HiMapPin } from "react-icons/hi2";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 import { useOptionalPopupManager } from "~/contexts/PopupManagerContext";
 
-const navLinks = [
+interface NavLink {
+  href: string;
+  label: string;
+  highlight?: boolean;
+}
+
+const navLinks: NavLink[] = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
   { href: "/products/stiltz-homelifts", label: "Stiltz", highlight: true },
@@ -18,17 +24,12 @@ const navLinks = [
   { href: "/aboutus", label: "About Us" },
 ];
 
-const branchLocations = [
-  {
-    name: "Goa Branch",
-    href: "/branches/goa",
-  },
-];
 export default function Navbar() {
   const pathname = usePathname();
   const { scrollTo } = useSmoothScroll();
   const router = useRouter();
   const popupManager = useOptionalPopupManager();
+  const branches = popupManager?.branches ?? [];
   const isHomePage = pathname === "/";
   const isBranchesRoute = pathname.startsWith("/branches");
 
@@ -292,14 +293,16 @@ export default function Navbar() {
                     className="absolute top-full right-0 mt-3 w-72 rounded-2xl border border-brand/20 bg-white/95 shadow-[0_22px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-xl overflow-hidden z-50"
                   >
                     <div className="p-2">
-                      {branchLocations.map((branch) => (
+                      {branches.map((branch) => {
+                        const href = `/branches/${branch.slug}`;
+                        return (
                         <Link
-                          key={branch.href}
-                          href={branch.href}
+                          key={branch.slug}
+                          href={href}
                           role="menuitem"
                           onClick={() => setBranchesOpen(false)}
                           className={`mb-1 group block rounded-xl px-4 py-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 ${
-                            isBranchLocationActive(branch.href)
+                            isBranchLocationActive(href)
                               ? "bg-brand/10 text-brand"
                               : "text-gray-800 hover:bg-accent/15 hover:text-brand"
                           }`}
@@ -311,7 +314,8 @@ export default function Navbar() {
                             </p>
                           </div>
                         </Link>
-                      ))}
+                        );
+                      })}
                     </div>
                   </motion.div>
                 )}
@@ -421,23 +425,26 @@ export default function Navbar() {
                     >
                       Our Branches
                     </p>
-                    {branchLocations.map((branch) => (
-                      <Link
-                        key={branch.href}
-                        href={branch.href}
-                        onClick={() => {
-                          setOpen(false);
-                          setBranchesOpen(false);
-                        }}
-                        className={`block py-3 px-4 rounded-lg transition-colors font-semibold text-sm ${
-                          isTransparent
-                            ? "text-white/90 hover:bg-white/10 hover:text-white"
-                            : "text-gray-700 hover:bg-accent/10 hover:text-brand"
-                        }`}
-                      >
-                        {branch.name}
-                      </Link>
-                    ))}
+                    {branches.map((branch) => {
+                        const href = `/branches/${branch.slug}`;
+                        return (
+                        <Link
+                          key={branch.slug}
+                          href={href}
+                          onClick={() => {
+                            setOpen(false);
+                            setBranchesOpen(false);
+                          }}
+                          className={`block py-3 px-4 rounded-lg transition-colors font-semibold text-sm ${
+                            isTransparent
+                              ? "text-white/90 hover:bg-white/10 hover:text-white"
+                              : "text-gray-700 hover:bg-accent/10 hover:text-brand"
+                          }`}
+                        >
+                          {branch.name}
+                        </Link>
+                        );
+                      })}
                   </div>
                   <button
                     onClick={() => {
