@@ -10,6 +10,8 @@ import { HiMapPin } from "react-icons/hi2";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
 import { useOptionalPopupManager } from "~/contexts/PopupManagerContext";
 
+import { FeaturedLift } from "~/sanity/utils/getFeaturedLifts";
+
 interface NavLink {
   href: string;
   label: string;
@@ -19,12 +21,16 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { href: "/products", label: "Products" },
   { href: "/services", label: "Services" },
-  { href: "/products/stiltz-homelifts", label: "Stiltz", highlight: true },
+  { href: "/products/stiltz-homelifts", label: "Featured", highlight: true },
   { href: "/media", label: "Success Stories" },
   { href: "/aboutus", label: "About Us" },
 ];
 
-export default function Navbar() {
+export interface NavbarProps {
+  featuredLifts?: FeaturedLift[];
+}
+
+export default function Navbar({ featuredLifts = [] }: NavbarProps = {}) {
   const pathname = usePathname();
   const { scrollTo } = useSmoothScroll();
   const router = useRouter();
@@ -37,6 +43,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [branchesOpen, setBranchesOpen] = useState(false);
+  const [stiltzOpen, setStiltzOpen] = useState(false);
+  const [stiltzMobileOpen, setStiltzMobileOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
   // isTransparent: ONLY true when we're on the home page and haven't scrolled yet.
@@ -62,16 +70,17 @@ export default function Navbar() {
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
       if (
-        (open || branchesOpen) &&
+        (open || branchesOpen || stiltzOpen) &&
         navRef.current &&
         !navRef.current.contains(event.target as Node)
       ) {
         setOpen(false);
         setBranchesOpen(false);
+        setStiltzOpen(false);
       }
     };
 
-    if (open || branchesOpen) {
+    if (open || branchesOpen || stiltzOpen) {
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("touchstart", handleClickOutside);
     }
@@ -80,13 +89,14 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
-  }, [open, branchesOpen]);
+  }, [open, branchesOpen, stiltzOpen]);
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
         setBranchesOpen(false);
+        setStiltzOpen(false);
       }
     };
 
@@ -136,6 +146,7 @@ export default function Navbar() {
     // For normal links, just close the mobile menu (no-op on desktop)
     setOpen(false);
     setBranchesOpen(false);
+    setStiltzOpen(false);
   };
 
   const handleLogoClick = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -145,6 +156,7 @@ export default function Navbar() {
     // close mobile menu if open
     setOpen(false);
     setBranchesOpen(false);
+    setStiltzOpen(false);
     if (isHomePage) {
       // scroll to top element
       try {
@@ -208,6 +220,79 @@ export default function Navbar() {
                 : isTransparent
                   ? "nav-link-underline relative text-white/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-sm"
                   : "nav-link-underline relative text-gray-700 hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 rounded-sm";
+
+              if (l.label === "Featured") {
+                return (
+                  <div
+                    key={l.href}
+                    className="relative"
+                    onMouseEnter={() => setStiltzOpen(true)}
+                    onMouseLeave={() => setStiltzOpen(false)}
+                  >
+                    <Link
+                      href={l.href}
+                      onClick={(e) => handleLinkClick(e, l.href)}
+                      className={featuredClasses}
+                    >
+                      <span>{l.label}</span>
+                      <HiChevronDown
+                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${
+                          stiltzOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </Link>
+                    <AnimatePresence>
+                      {stiltzOpen && featuredLifts.length > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          id="stiltz-menu"
+                          role="menu"
+                          aria-label="Featured Stiltz Lifts"
+                          className="absolute top-full left-0 mt-3 w-64 rounded-2xl border border-brand/20 bg-white/95 shadow-[0_22px_40px_-18px_rgba(0,0,0,0.35)] backdrop-blur-xl overflow-hidden z-50"
+                        >
+                          <div className="p-2">
+                            {featuredLifts.map((lift) => {
+                              const href = `/products/${lift.slug}`;
+                              return (
+                                <Link
+                                  key={lift.slug}
+                                  href={href}
+                                  role="menuitem"
+                                  onClick={() => setStiltzOpen(false)}
+                                  className={`mb-1 group block rounded-xl px-4 py-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 text-gray-800 hover:bg-accent/15 hover:text-brand`}
+                                >
+                                  <div className="flex flex-col gap-0.5">
+                                    <p className="truncate text-sm font-semibold group-hover:text-brand transition-colors">
+                                      {lift.title}
+                                    </p>
+                                    {lift.subtitle && (
+                                      <p className="truncate text-[11px] text-gray-500">
+                                        {lift.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                            <div className="mx-2 mt-1 mb-1 border-t border-gray-100" />
+                            <Link
+                              href="/products/stiltz-homelifts"
+                              role="menuitem"
+                              onClick={() => setStiltzOpen(false)}
+                              className="block rounded-xl px-4 py-2 hover:bg-brand/5 text-center text-xs font-semibold text-brand transition-colors"
+                            >
+                              View all models
+                            </Link>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
 
               return (
                 <Link
@@ -382,6 +467,80 @@ export default function Navbar() {
                       : isTransparent
                         ? "py-3 px-4 rounded-lg text-white/90 hover:bg-white/10 hover:text-white"
                         : "py-3 px-4 rounded-lg text-gray-700 hover:bg-accent/10 hover:text-brand";
+
+                    if (l.label === "Featured") {
+                      return (
+                        <div key={l.href} className="flex flex-col gap-1">
+                          <div className={`transition-colors font-semibold relative ${featuredClasses}`}>
+                            <Link
+                              href={l.href}
+                              onClick={(e) => handleLinkClick(e, l.href)}
+                              className="flex items-center gap-2 flex-grow"
+                            >
+                              <span>{l.label}</span>
+                            </Link>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setStiltzMobileOpen(!stiltzMobileOpen);
+                              }}
+                              className="p-1 -mr-1 rounded-md hover:bg-white/20 transition-colors z-10"
+                              aria-label="Toggle featured lifts"
+                            >
+                              <HiChevronDown
+                                className={`w-5 h-5 transition-transform duration-200 ${
+                                  stiltzMobileOpen ? "rotate-180" : ""
+                                }`}
+                              />
+                            </button>
+                          </div>
+                          <AnimatePresence initial={false}>
+                            {stiltzMobileOpen && featuredLifts.length > 0 && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="pl-4 pr-2 pt-1 pb-2 flex flex-col gap-1">
+                                  {featuredLifts.map((lift) => (
+                                    <Link
+                                      key={lift.slug}
+                                      href={`/products/${lift.slug}`}
+                                      onClick={() => {
+                                        setOpen(false);
+                                        setStiltzMobileOpen(false);
+                                      }}
+                                      className={`py-2 px-3 rounded-lg text-sm font-semibold transition-colors ${
+                                        isTransparent
+                                          ? "text-white/80 hover:bg-white/10 hover:text-white"
+                                          : "text-gray-600 hover:bg-accent/10 hover:text-brand"
+                                      }`}
+                                    >
+                                      {lift.title}
+                                    </Link>
+                                  ))}
+                                  <Link
+                                    href="/products/stiltz-homelifts"
+                                    onClick={() => {
+                                      setOpen(false);
+                                      setStiltzMobileOpen(false);
+                                    }}
+                                    className={`py-2 px-3 mt-1 rounded-lg text-xs font-semibold transition-colors flex items-center justify-between ${
+                                      isTransparent
+                                        ? "text-charcoal bg-white/90 hover:bg-white"
+                                        : "text-brand bg-brand/10 hover:bg-brand/20"
+                                    }`}
+                                  >
+                                    View all models
+                                  </Link>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    }
 
                     return (
                       <Link

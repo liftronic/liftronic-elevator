@@ -9,13 +9,15 @@ import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getPopups } from "~/sanity/utils/getPopups";
 import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
 import { getBranches } from "~/sanity/utils/getBranches";
+import { getFeaturedLifts } from "~/sanity/utils/getFeaturedLifts";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
-  const [contactInfo, popups, homePageSettings, branches] = await Promise.all([
+  const [contactInfo, popups, homePageSettings, branches, featuredLifts] = await Promise.all([
     getContactInfo(),
     getPopups(),
     getHomePageSettings(),
     getBranches(),
+    getFeaturedLifts(),
   ]);
 
   const productOptions = homePageSettings.productOptions ?? [];
@@ -46,7 +48,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
           speed={200}
           shadow="0 0 10px #2ae394,0 0 5px #2ae394"
         />
-        <Navbar />
+        <Navbar featuredLifts={featuredLifts} />
         <main id="main-content">{children}</main>
         <Footer />
         <WhatsAppButton
