@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import NextTopLoader from "nextjs-toploader";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
@@ -46,7 +47,9 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
           speed={200}
           shadow="0 0 10px #2ae394,0 0 5px #2ae394"
         />
-        <Navbar />
+        <Suspense fallback={null}>
+          <Navbar />
+        </Suspense>
         <main id="main-content">{children}</main>
         <Footer />
         <WhatsAppButton
