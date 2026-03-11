@@ -15,7 +15,7 @@ import Services from "~/components/homepage/Services";
 import ClientsMarquee from "~/components/homepage/ClientsMarquee";
 import MediaPreview from "~/components/homepage/MediaPreview";
 import BlogSection from "~/components/homepage/BlogSection";
-import Testimonials from "~/components/homepage/Testimonials";
+
 import FAQSection from "~/components/homepage/FAQSection";
 import SEOContentSection from "~/components/homepage/SEOContentSection";
 import ContactSection from "~/components/homepage/ContactSection";
@@ -237,7 +237,6 @@ export default async function Home() {
         <ClientsMarquee clients={homeData.clients} />
         <MediaPreview mediaItems={homeData.featuredMedia} />
         <BlogSection blogs={homeData.featuredBlogs} />
-        <Testimonials testimonials={homeData.testimonials} />
         {homePageSettings &&
           homePageSettings.showFaqSection &&
           homePageSettings.featuredFaqs.length > 0 && (
