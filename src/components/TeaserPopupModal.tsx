@@ -2,11 +2,13 @@
 
 import { motion, AnimatePresence } from "motion/react";
 import { HiXMark } from "react-icons/hi2";
-import type { TeaserPopupConfig } from "~/sanity/lib/popupTypes";
+import type { TeaserPopup } from "~/sanity/lib/teaserPopupTypes";
 import { useModal } from "~/hooks/useModal";
 
+type TeaserPopupData = Pick<TeaserPopup, "title" | "description" | "videoUrl">;
+
 interface TeaserPopupModalProps {
-  popup: TeaserPopupConfig;
+  popup: TeaserPopupData;
   isOpen: boolean;
   onClose: () => void;
 }

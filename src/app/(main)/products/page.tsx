@@ -2,31 +2,35 @@ import type { Metadata } from "next";
 import ProductRangeSection from "~/components/products/ProductRangeCarouselCard";
 import ProductMiniCard from "~/components/products/ProductMiniCard";
 import CallToActionSection from "~/components/CallToActionSection";
-import ProductsHero from "~/components/products/ProductsHero";
 import { getProductRanges } from "~/sanity/utils/getProductRanges";
 
 type ProductsPageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function generateMetadata(props: ProductsPageProps): Promise<Metadata> {
+export async function generateMetadata(
+  props: ProductsPageProps,
+): Promise<Metadata> {
   const searchParams = await props.searchParams;
-  const isFeaturedFilter = searchParams.featured === 'true';
+  const isFeaturedFilter = searchParams.featured === "true";
 
   if (isFeaturedFilter) {
     return {
       title: "Featured Lifts - Elevator Solutions | Lift Solutions",
-      description: "Explore our handpicked selection of top-tier residential and commercial featured elevator solutions.",
+      description:
+        "Explore our handpicked selection of top-tier residential and commercial featured elevator solutions.",
       openGraph: {
         title: "Featured Lifts - Elevator Solutions | Lift Solutions",
-        description: "Explore our handpicked selection of top-tier residential and commercial featured elevator solutions.",
+        description:
+          "Explore our handpicked selection of top-tier residential and commercial featured elevator solutions.",
         type: "website",
         url: "/products?featured=true",
       },
       twitter: {
         card: "summary_large_image",
         title: "Featured Lifts - Elevator Solutions | Lift Solutions",
-        description: "Explore our handpicked selection of top-tier residential and commercial featured elevator solutions.",
+        description:
+          "Explore our handpicked selection of top-tier residential and commercial featured elevator solutions.",
       },
       alternates: {
         canonical: "/products?featured=true",
@@ -36,17 +40,20 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
 
   return {
     title: "Product Ranges - Elevator Solutions | Lift Solutions",
-    description: "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+    description:
+      "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
     openGraph: {
       title: "Elevate every building with precision - Product Ranges",
-      description: "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
+      description:
+        "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs. Designed for safety, efficiency and seamless ride quality.",
       type: "website",
       url: "/products",
     },
     twitter: {
       card: "summary_large_image",
       title: "Product Ranges - Elevator Solutions | Lift Solutions",
-      description: "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs.",
+      description:
+        "Explore our comprehensive range of elevator solutions spanning residential, commercial and industrial needs.",
     },
     alternates: {
       canonical: "/products",
@@ -56,23 +63,25 @@ export async function generateMetadata(props: ProductsPageProps): Promise<Metada
 
 export const revalidate = 3600; // 60 minutes
 
-
 export default async function ProductsPage(props: ProductsPageProps) {
   const searchParams = await props.searchParams;
-  const isFeaturedFilter = searchParams.featured === 'true';
-  
+  const isFeaturedFilter = searchParams.featured === "true";
+
   const productRanges = await getProductRanges(isFeaturedFilter);
 
   let content;
   if (isFeaturedFilter) {
     // Extract all products along with their parent range title for the flat list
     const featuredProductsWithRange = productRanges.flatMap((range) =>
-      range.products.map((product) => ({ ...product, rangeTitle: range.title }))
+      range.products.map((product) => ({
+        ...product,
+        rangeTitle: range.title,
+      })),
     );
 
     // De-duplicate any products that might be cross-listed
     const uniqueFeaturedProducts = Array.from(
-      new Map(featuredProductsWithRange.map((p) => [p._id, p])).values()
+      new Map(featuredProductsWithRange.map((p) => [p._id, p])).values(),
     );
 
     content = (
@@ -130,17 +139,19 @@ export default async function ProductsPage(props: ProductsPageProps) {
               Featured Elevators
             </h1>
             <p className="mt-4 md:mt-6 text-base md:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              Explore our handpicked selection of top-tier residential and commercial elevator solutions, designed for space-saving efficiency and elegant integration.
+              Explore our handpicked selection of top-tier residential and
+              commercial elevator solutions, designed for space-saving
+              efficiency and elegant integration.
             </p>
           </div>
         </section>
       )}
 
       {/* Product Ranges / Grid */}
-      <section className={`pb-16 md:pb-24 ${isFeaturedFilter ? "pt-12 md:pt-16" : "pt-24 md:pt-28"}`}>
-        <div className="container mx-auto px-6">
-          {content}
-        </div>
+      <section
+        className={`pb-16 md:pb-24 ${isFeaturedFilter ? "pt-12 md:pt-16" : "pt-24 md:pt-28"}`}
+      >
+        <div className="container mx-auto px-6">{content}</div>
       </section>
 
       <CallToActionSection />

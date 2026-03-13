@@ -5,6 +5,7 @@ import { BiCheck } from "react-icons/bi";
 import WhyUsSection from "~/components/aboutus/WhyUsSection";
 import VisionMissionValues from "~/components/aboutus/VisionMissionValues";
 import TeamSection from "~/components/aboutus/TeamSection";
+import TimelineSection from "~/components/aboutus/TimelineSection";
 import CertificatesSection from "~/components/aboutus/CertificatesSection";
 import CallToActionSection from "~/components/CallToActionSection";
 import {

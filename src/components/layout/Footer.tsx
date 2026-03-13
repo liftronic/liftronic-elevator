@@ -23,6 +23,10 @@ export default async function Footer() {
     address: b.address,
   }));
 
+  const headquarters =
+    contactInfo?.addresses?.find((item) => /head|hq/i.test(item.label ?? ""))
+      ?.address ?? contactInfo?.addresses?.[0]?.address;
+
   const currentYear = new Date().getFullYear();
   const establishedYear = companyInfo?.establishedYear || 2000;
 
@@ -64,7 +68,7 @@ export default async function Footer() {
                   "."}
             </p>
             <FooterAddressBlock
-              headquarters={contactInfo?.headquarters}
+              headquarters={headquarters}
               branches={branchAddresses}
             />
           </div>
@@ -147,7 +151,7 @@ export default async function Footer() {
                     <a
                       href={`tel:${contactInfo.supportPhone.replace(
                         /\s/g,
-                        ""
+                        "",
                       )}`}
                       className="flex items-start gap-3 text-white/70 hover:text-white transition-all duration-300 group"
                     >

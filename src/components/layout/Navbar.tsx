@@ -24,19 +24,6 @@ const navLinks: NavLink[] = [
   { href: "/aboutus", label: "About Us" },
 ];
 
-const branchLocations = [
-  {
-    name: "Goa Branch",
-    address: "Shop No. 3, Ground Floor, Kamat Classic, Porvorim, Goa - 403521",
-    mapUrl: "https://maps.google.com/?q=Kamat+Classic+Porvorim+Goa",
-  },
-  {
-    name: "Hyderabad Branch",
-    address: "Plot No. 45, Jubilee Hills, Hyderabad, Telangana - 500033",
-    mapUrl: "https://maps.google.com/?q=Jubilee+Hills+Hyderabad",
-  },
-];
-
 export default function Navbar() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -302,13 +289,13 @@ export default function Navbar() {
                         ? "text-white/90 hover:text-white focus-visible:ring-white/80"
                         : "text-gray-700 hover:text-brand focus-visible:ring-brand/60"
                   }`}
-                  >
-                    <HiChevronDown
-                      className={`w-4 h-4 transition-transform duration-200 ${
-                        branchesOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
+                >
+                  <HiChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      branchesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
               </div>
               <AnimatePresence>
                 {branchesOpen && (
@@ -326,24 +313,24 @@ export default function Navbar() {
                       {branches.map((branch) => {
                         const href = `/branches/${branch.slug}`;
                         return (
-                        <Link
-                          key={branch.slug}
-                          href={href}
-                          role="menuitem"
-                          onClick={() => setBranchesOpen(false)}
-                          className={`mb-1 group block rounded-xl px-4 py-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 ${
-                            isBranchLocationActive(href)
-                              ? "bg-brand/10 text-brand"
-                              : "text-gray-800 hover:bg-accent/15 hover:text-brand"
-                          }`}
-                        >
-                          <div className="flex items-center gap-2.5">
-                            <HiMapPin className="h-4 w-4 shrink-0 opacity-80" />
-                            <p className="truncate text-sm font-semibold">
-                              {branch.name}
-                            </p>
-                          </div>
-                        </Link>
+                          <Link
+                            key={branch.slug}
+                            href={href}
+                            role="menuitem"
+                            onClick={() => setBranchesOpen(false)}
+                            className={`mb-1 group block rounded-xl px-4 py-3 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 ${
+                              isBranchLocationActive(href)
+                                ? "bg-brand/10 text-brand"
+                                : "text-gray-800 hover:bg-accent/15 hover:text-brand"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <HiMapPin className="h-4 w-4 shrink-0 opacity-80" />
+                              <p className="truncate text-sm font-semibold">
+                                {branch.name}
+                              </p>
+                            </div>
+                          </Link>
                         );
                       })}
                     </div>
@@ -451,8 +438,8 @@ export default function Navbar() {
                       Our Branches
                     </p>
                     {branches.map((branch) => {
-                        const href = `/branches/${branch.slug}`;
-                        return (
+                      const href = `/branches/${branch.slug}`;
+                      return (
                         <Link
                           key={branch.slug}
                           href={href}
@@ -468,8 +455,8 @@ export default function Navbar() {
                         >
                           {branch.name}
                         </Link>
-                        );
-                      })}
+                      );
+                    })}
                   </div>
                   <button
                     onClick={() => {
@@ -487,12 +474,6 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </div>
-
-      {/* Contact Modal */}
-      <ContactModal
-        isOpen={isContactModalOpen}
-        onClose={() => setIsContactModalOpen(false)}
-      />
     </div>
   );
 }

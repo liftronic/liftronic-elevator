@@ -2,7 +2,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
-import { TiStar } from "react-icons/ti";
 import ProductMiniCard from "./ProductMiniCard";
 import type { Product } from "~/sanity/lib/productTypes";
 
@@ -28,9 +27,6 @@ export default function ProductRangeCarouselCard({
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleProducts, setVisibleProducts] = useState(1);
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const shouldTruncate = description.length > 150;
 
   // Check scroll position to enable/disable arrows
   const checkScrollPosition = () => {

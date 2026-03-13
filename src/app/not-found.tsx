@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
 import { Suspense } from "react";
+import { getContactInfo } from "~/sanity/utils/getContactInfo";
 
 export default async function NotFound() {
   const contactInfo = await getContactInfo();
@@ -69,7 +70,8 @@ export default async function NotFound() {
                 {contactInfo?.supportPhone || "+91 1231231233"}
               </p>
               <p className="text-sm text-charcoal/60">
-                {contactInfo?.supportPhoneLabel || "Call us for elevator consultations"}
+                {contactInfo?.supportPhoneLabel ||
+                  "Call us for elevator consultations"}
               </p>
             </div>
             <div className="space-y-1">
@@ -80,7 +82,8 @@ export default async function NotFound() {
                 {contactInfo?.email || "contact@liftronic.com"}
               </p>
               <p className="text-sm text-charcoal/60">
-                {contactInfo?.emailLabel || "We respond within one business day"}
+                {contactInfo?.emailLabel ||
+                  "We respond within one business day"}
               </p>
             </div>
             <div className="space-y-1">
