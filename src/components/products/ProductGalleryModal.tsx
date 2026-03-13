@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { HiX, HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { GalleryImage } from "~/sanity/lib/productTypes";
+import { useModal } from "~/hooks/useModal";
 
 type ProductGalleryModalProps = {
   images: GalleryImage[];
@@ -26,28 +27,15 @@ export default function ProductGalleryModal({
   const currentImage = images[currentIndex];
   const hasMultiple = images.length > 1;
 
-  useEffect(() => {
-    // Prevent body scroll when modal is open
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, []);
+  const handleArrowKeys = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" && hasMultiple) onNext();
+      else if (e.key === "ArrowLeft" && hasMultiple) onPrevious();
+    },
+    [hasMultiple, onNext, onPrevious],
+  );
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      } else if (e.key === "ArrowRight" && hasMultiple) {
-        onNext();
-      } else if (e.key === "ArrowLeft" && hasMultiple) {
-        onPrevious();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [hasMultiple, onClose, onNext, onPrevious]);
+  useModal({ onClose, onKeyDown: handleArrowKeys });
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {

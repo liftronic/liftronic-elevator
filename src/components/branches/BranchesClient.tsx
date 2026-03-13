@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { HiArrowUpRight, HiMapPin } from "react-icons/hi2";
 import type { Branch } from "~/sanity/lib/branchTypes";
 
 interface BranchesClientProps {
@@ -10,74 +10,73 @@ interface BranchesClientProps {
 }
 
 export default function BranchesClient({ branches }: BranchesClientProps) {
+  if (!branches || branches.length === 0) {
+    return null;
+  }
+
+  const isSingle = branches.length === 1;
+  const isDouble = branches.length === 2;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div
+      className={`grid gap-5 ${
+        isSingle
+          ? "grid-cols-1"
+          : isDouble
+            ? "grid-cols-1 md:grid-cols-2"
+            : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+      }`}
+    >
       {branches.map((branch, index) => (
         <motion.div
           key={branch._id}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
-          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.4, delay: index * 0.06 }}
+          viewport={{ once: true, margin: "-80px" }}
+          className={isSingle ? "w-full" : ""}
         >
-          <Link href={`/branches/${branch.slug}`}>
-            <div className="h-full bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:border-accent border border-transparent group cursor-pointer">
-              {/* Branch Image */}
-              {branch.heroImage && (
-                <div className="relative h-48 w-full overflow-hidden bg-gray-200">
-                  <Image
-                    src={branch.heroImage.asset.url}
-                    alt={branch.heroImage.alt || branch.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+          <Link
+            href={`/branches/${branch.slug}`}
+            className="group block h-full overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_12px_34px_rgba(17,24,39,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-brand/35 hover:shadow-[0_18px_42px_rgba(17,24,39,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+          >
+            <article className="flex h-full flex-col">
+              <div className="flex flex-1 flex-col p-5 md:p-6">
+                <div className="mb-2 flex items-center justify-between">
+                  <div className="inline-flex items-center gap-1.5">
+                    <span className="mr-2 text-2xl font-extrabold leading-none text-black/10">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <HiMapPin className="h-3.5 w-3.5 text-brand" />
+                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+                      {branch.city}
+                    </span>
+                  </div>
+                  <span className="rounded-full border border-black/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400">
+                    Branch
+                  </span>
                 </div>
-              )}
-
-              {/* Branch Info */}
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-2">
-                  <h2 className="text-2xl font-bold text-charcoal group-hover:text-brand transition-colors">
-                    {branch.name}
-                  </h2>
-                </div>
-                <p className="text-brand font-semibold mb-4 text-sm">
+                <h3 className="text-2xl font-extrabold leading-tight tracking-tight text-charcoal transition-colors duration-300 group-hover:text-brand md:text-3xl">
                   {branch.city}
-                </p>
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">{branch.name}</p>
 
                 {branch.description && (
-                  <p className="text-gray-600 text-sm mb-6 line-clamp-3">
+                  <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-gray-600 md:text-base">
                     {branch.description}
                   </p>
                 )}
 
-                {/* Contact Details */}
-                <div className="space-y-2 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-100">
-                  <p className="flex gap-2">
-                    <span className="text-brand">📍</span>
-                    <span className="line-clamp-2">{branch.address}</span>
-                  </p>
-                  <p className="flex gap-2 hover:text-brand transition-colors">
-                    <span>📞</span>
-                    <a href={`tel:${branch.phone}`}>{branch.phone}</a>
-                  </p>
-                  <p className="flex gap-2 hover:text-brand transition-colors">
-                    <span>✉️</span>
-                    <a href={`mailto:${branch.email}`} className="truncate">
-                      {branch.email}
-                    </a>
-                  </p>
-                </div>
-
-                {/* CTA */}
-                <div className="flex items-center gap-2 text-brand font-semibold group-hover:gap-3 transition-all">
-                  <span>Learn More</span>
-                  <span className="group-hover:translate-x-1 transition-transform">
-                    →
+                <div className="mt-auto flex items-center justify-between border-t border-black/10 pt-5">
+                  <span className="text-sm font-semibold text-charcoal transition-colors duration-300 group-hover:text-brand">
+                    Explore branch
+                  </span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-black/10 transition-all duration-300 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
+                    <HiArrowUpRight className="h-4 w-4" />
                   </span>
                 </div>
               </div>
-            </div>
+            </article>
           </Link>
         </motion.div>
       ))}

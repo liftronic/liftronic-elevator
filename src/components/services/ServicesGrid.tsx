@@ -9,7 +9,6 @@ import ServiceCard from "./ServiceCard";
 function useIntersectionObserver(
   elementRef: React.RefObject<HTMLDivElement | null>,
   threshold = 0.1,
-  triggerOnce = false,
 ) {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasIntersected, setHasIntersected] = useState(false);
@@ -46,7 +45,8 @@ function LazyServiceCard({
   index: number;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const isLoaded = useIntersectionObserver(cardRef, 0.1, true);
+  const isVisible = useIntersectionObserver(cardRef, 0.1);
+  const isLoaded = isVisible;
 
   return (
     <motion.div

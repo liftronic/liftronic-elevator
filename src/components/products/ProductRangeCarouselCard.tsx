@@ -12,6 +12,7 @@ type ProductRangeCarouselCardProps = {
   slug: string;
   featured: boolean;
   products: Product[];
+  index?: number;
 };
 
 export default function ProductRangeCarouselCard({
@@ -20,6 +21,7 @@ export default function ProductRangeCarouselCard({
   slug,
   featured,
   products,
+  index = 0,
 }: ProductRangeCarouselCardProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -42,8 +44,8 @@ export default function ProductRangeCarouselCard({
     const cardWidth =
       scrollContainerRef.current.querySelector("article")?.clientWidth || 0;
     const gap = 24; // gap-6 = 24px
-    const index = Math.round(scrollLeft / (cardWidth + gap));
-    setCurrentIndex(index);
+    const idx = Math.round(scrollLeft / (cardWidth + gap));
+    setCurrentIndex(idx);
   };
 
   useEffect(() => {
@@ -88,176 +90,152 @@ export default function ProductRangeCarouselCard({
 
   const totalDots = products.length;
 
+  // ─── Single product: render as a standalone card that fills its grid cell ───
+  if (products.length === 1) {
+    const product = products[0];
+    return (
+      <motion.div
+        id={slug}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-60px" }}
+        className="h-full"
+      >
+        <ProductMiniCard
+          title={product.title}
+          description={product.subtitle || product.description}
+          slug={product.slug}
+          imageSrc={product.mainImage}
+          imageAlt={product.imageAlt}
+          blurDataURL={product.mainImageLqip}
+          featured={product.featured}
+          rangeTitle={title}
+        />
+      </motion.div>
+    );
+  }
+
+  // ─── Multiple products: carousel layout spanning full width ───
   return (
-    <section id={slug} className="relative h-full flex flex-col">
-      {/* Content */}
-      <div className="relative flex-1 flex flex-col bg-gradient-to-br from-white via-white to-gray-50/30 rounded-2xl border-2 border-gray-200/60 shadow-xl shadow-gray-200/40 p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300/50 hover:border-accent/20">
-        {/* Header */}
-        <div className="mb-8">
-          {featured && (
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent/15 to-accent/5 px-4 py-2 mb-4 border border-accent/20">
-              <TiStar className="w-4 h-4 text-accent" />
-              <span className="text-sm font-bold uppercase tracking-wider text-accent">
-                Featured Range
+    <motion.section
+      id={slug}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-60px" }}
+    >
+      {/* Header Row: title + description on left, arrows on right */}
+      <div className="flex items-end justify-between gap-6 mb-6 md:mb-8">
+        <div className="min-w-0">
+          <div className="flex items-center gap-3 mb-1.5">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 tracking-tight leading-tight">
+              {title}
+            </h2>
+            {featured && (
+              <span className="inline-flex items-center rounded-md bg-gray-900 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">
+                Featured
               </span>
-            </div>
-          )}
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
-            {title}
-          </h2>
-          <div className="mt-1">
-            <p
-              className={`text-base text-gray-600 leading-relaxed max-w-3xl ${!isExpanded && shouldTruncate ? "line-clamp-2" : ""}`}
-            >
-              {description}
-            </p>
-            {shouldTruncate && (
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="mt-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-1"
-              >
-                {isExpanded ? (
-                  <>
-                    See less
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 15l7-7 7 7"
-                      />
-                    </svg>
-                  </>
-                ) : (
-                  <>
-                    See more
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </>
-                )}
-              </button>
             )}
           </div>
+          <p className="text-sm text-gray-500 leading-relaxed max-w-2xl line-clamp-2">
+            {description}
+          </p>
         </div>
 
-        {/* Carousel Container */}
-        <div className="relative">
-          {/* Navigation Arrows */}
-          {products.length > visibleProducts && (
-            <>
-              <button
-                onClick={() => scroll("left")}
-                disabled={!canScrollLeft}
-                className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 -ml-4 md:-ml-6 w-12 h-12 rounded-full bg-white border-2 border-gray-200 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                  canScrollLeft
-                    ? "hover:bg-accent hover:border-accent hover:scale-110 cursor-pointer"
-                    : "opacity-30 cursor-not-allowed"
-                }`}
-                aria-label="Previous products"
-              >
-                <HiChevronLeft className="w-6 h-6" />
-              </button>
-
-              <button
-                onClick={() => scroll("right")}
-                disabled={!canScrollRight}
-                className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 -mr-4 md:-mr-6 w-12 h-12 rounded-full bg-white border-2 border-gray-200 shadow-lg flex items-center justify-center transition-all duration-300 ${
-                  canScrollRight
-                    ? "hover:bg-accent hover:border-accent hover:scale-110 cursor-pointer"
-                    : "opacity-30 cursor-not-allowed"
-                }`}
-                aria-label="Next products"
-              >
-                <HiChevronRight className="w-6 h-6" />
-              </button>
-            </>
-          )}
-
-          {/* Scrollable Products Container */}
-          <div
-            ref={scrollContainerRef}
-            onScroll={checkScrollPosition}
-            className="overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory"
-            style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              WebkitOverflowScrolling: "touch",
-            }}
-          >
-            <div
-              className={`flex gap-6 pb-2 ${products.length === 1 ? "justify-start" : ""}`}
+        {/* Desktop Navigation Arrows */}
+        {products.length > visibleProducts && (
+          <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            <button
+              onClick={() => scroll("left")}
+              disabled={!canScrollLeft}
+              className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                canScrollLeft
+                  ? "border-gray-300 text-gray-700 hover:border-gray-900 hover:text-gray-900 cursor-pointer"
+                  : "border-gray-200 text-gray-300 cursor-not-allowed"
+              }`}
+              aria-label="Previous products"
             >
-              {products.map((product, index) => (
-                <motion.div
-                  key={product._id}
-                  className={`flex-shrink-0 snap-start ${
-                    products.length === 1
-                      ? "w-full"
-                      : "w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
-                  }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                >
-                  <ProductMiniCard
-                    title={product.title}
-                    description={product.subtitle || product.description}
-                    slug={product.slug}
-                    imageSrc={product.mainImage}
-                    imageAlt={product.imageAlt}
-                    blurDataURL={product.mainImageLqip}
-                    featured={product.featured}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </div>
+              <HiChevronLeft className="w-4 h-4" />
+            </button>
 
-          {/* Dot Indicators - Hidden on desktop (lg+), visible on mobile/tablet when >1 product */}
-          {products.length > 1 && (
-            <div className="flex lg:hidden justify-center gap-2 mt-6">
-              {Array.from({ length: totalDots }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    if (!scrollContainerRef.current) return;
-                    const container = scrollContainerRef.current;
-                    const cardWidth =
-                      container.querySelector("article")?.clientWidth || 0;
-                    const gap = 24;
-                    container.scrollTo({
-                      left: index * (cardWidth + gap),
-                      behavior: "smooth",
-                    });
-                  }}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    index === currentIndex
-                      ? "w-8 bg-accent"
-                      : "w-2 bg-gray-300 hover:bg-gray-400"
-                  }`}
-                  aria-label={`Go to product ${index + 1}`}
-                />
-              ))}
-            </div>
-          )}
+            <button
+              onClick={() => scroll("right")}
+              disabled={!canScrollRight}
+              className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                canScrollRight
+                  ? "border-gray-300 text-gray-700 hover:border-gray-900 hover:text-gray-900 cursor-pointer"
+                  : "border-gray-200 text-gray-300 cursor-not-allowed"
+              }`}
+              aria-label="Next products"
+            >
+              <HiChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Scrollable Products Container */}
+      <div
+        ref={scrollContainerRef}
+        onScroll={checkScrollPosition}
+        className="overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        <div className="flex gap-5 md:gap-6">
+          {products.map((product, productIndex) => (
+            <motion.div
+              key={product._id}
+              className="flex-shrink-0 snap-start w-[85%] sm:w-[70%] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: productIndex * 0.08 }}
+            >
+              <ProductMiniCard
+                title={product.title}
+                description={product.subtitle || product.description}
+                slug={product.slug}
+                imageSrc={product.mainImage}
+                imageAlt={product.imageAlt}
+                blurDataURL={product.mainImageLqip}
+                featured={product.featured}
+              />
+            </motion.div>
+          ))}
         </div>
       </div>
-    </section>
+
+      {/* Dot Indicators — mobile/tablet only */}
+      {products.length > 1 && (
+        <div className="flex lg:hidden justify-center gap-1.5 mt-5">
+          {Array.from({ length: totalDots }).map((_, dotIndex) => (
+            <button
+              key={dotIndex}
+              onClick={() => {
+                if (!scrollContainerRef.current) return;
+                const container = scrollContainerRef.current;
+                const cardWidth =
+                  container.querySelector("article")?.clientWidth || 0;
+                const gap = 24;
+                container.scrollTo({
+                  left: dotIndex * (cardWidth + gap),
+                  behavior: "smooth",
+                });
+              }}
+              className={`rounded-full transition-all duration-300 ${
+                dotIndex === currentIndex
+                  ? "w-6 h-1.5 bg-gray-900"
+                  : "w-1.5 h-1.5 bg-gray-300 hover:bg-gray-400"
+              }`}
+              aria-label={`Go to product ${dotIndex + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </motion.section>
   );
 }

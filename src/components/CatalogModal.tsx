@@ -1,8 +1,8 @@
 "use client";
 import { motion, AnimatePresence } from "motion/react";
-import { useEffect } from "react";
 import { FiX } from "react-icons/fi";
 import CatalogForm from "~/components/CatalogForm";
+import { useModal } from "~/hooks/useModal";
 
 interface CatalogModalProps {
   isOpen: boolean;
@@ -10,37 +10,7 @@ interface CatalogModalProps {
 }
 
 export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
-
-
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  // Close modal on Escape key press
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen, onClose]);
+  useModal({ isOpen, onClose });
 
   return (
     <AnimatePresence>
@@ -63,7 +33,7 @@ export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
 
           {/* Modal Content */}
           <motion.div
-            className="relative w-full max-w-2xl h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+            className="relative w-full max-w-2xl h-auto max-h-[90vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col"
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
@@ -86,7 +56,8 @@ export default function CatalogModal({ isOpen, onClose }: CatalogModalProps) {
             {/* Form Container */}
             <div className="bg-white p-6 flex-1 overflow-y-auto">
               <p className="text-gray-600 mb-6 text-sm">
-                Fill in your details below to download our comprehensive product catalog.
+                Fill in your details below to download our comprehensive product
+                catalog.
               </p>
               <CatalogForm onSuccess={onClose} />
             </div>

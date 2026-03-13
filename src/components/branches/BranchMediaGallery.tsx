@@ -2,149 +2,134 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
-import { HiXMark } from "react-icons/hi2";
+import { motion } from "motion/react";
 import type { BranchMediaItem } from "~/sanity/lib/branchTypes";
+import ProductGalleryModal from "~/components/products/ProductGalleryModal";
+import type { GalleryImage } from "~/sanity/lib/productTypes";
 
 interface BranchMediaGalleryProps {
   mediaItems: BranchMediaItem[];
+  bgVariant?: "white" | "soft";
 }
 
 export default function BranchMediaGallery({
   mediaItems,
+  bgVariant = "white",
 }: BranchMediaGalleryProps) {
-  const [selectedMedia, setSelectedMedia] = useState<BranchMediaItem | null>(
-    null
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
   );
 
   if (!mediaItems || mediaItems.length === 0) {
     return null;
   }
 
+  const imageItems = mediaItems.filter(
+    (item) => item.type === "image" && item.image?.asset?.url,
+  );
+
+  if (imageItems.length === 0) {
+    return null;
+  }
+
+  const galleryImages: GalleryImage[] = imageItems.map((item, index) => ({
+    _key: `${item.title}-${index}`,
+    url: item.image!.asset.url,
+    alt: item.image?.alt || item.title,
+  }));
+
+  const handleNext = () => {
+    if (selectedImageIndex === null || galleryImages.length <= 1) return;
+    setSelectedImageIndex((selectedImageIndex + 1) % galleryImages.length);
+  };
+
+  const handlePrevious = () => {
+    if (selectedImageIndex === null || galleryImages.length <= 1) return;
+    setSelectedImageIndex(
+      (selectedImageIndex - 1 + galleryImages.length) % galleryImages.length,
+    );
+  };
+
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
-        {/* Section Title */}
+    <section
+      className={`bg-${bgVariant} py-10 md:py-16`}
+    >
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="mb-12 text-center"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          viewport={{ once: true, margin: "-80px" }}
+          className="mb-10"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
-            Branch Gallery
+          <h2 className="text-4xl font-extrabold leading-tight tracking-tight text-charcoal md:text-5xl">
+            Highlights from our branch
           </h2>
-          <div className="inline-block h-1 w-16 bg-accent rounded-full" />
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-600 md:text-lg">
+            A visual showcase of installations, spaces, and project moments
+            from this branch.
+          </p>
         </motion.div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mediaItems.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              viewport={{ once: true, margin: "-50px" }}
-              onClick={() => setSelectedMedia(item)}
-              className="group cursor-pointer"
-            >
-              <div className="relative h-64 bg-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all">
-                {item.type === "image" && item.image ? (
-                  <Image
-                    src={item.image.asset.url}
-                    alt={item.image.alt || item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : item.youtubeUrl ? (
-                  <div className="w-full h-full bg-black flex items-center justify-center">
-                    <div className="text-4xl text-white">▶</div>
-                  </div>
-                ) : null}
+        <div className="grid grid-cols-2 gap-4 auto-rows-[200px] md:grid-cols-4 md:auto-rows-[280px]">
+          {imageItems.map((item, index) => {
+            const bentoPatterns = [
+              "col-span-2 row-span-2",
+              "col-span-1 row-span-1",
+              "col-span-1 row-span-1",
+              "col-span-1 row-span-2",
+              "col-span-1 row-span-1",
+              "col-span-2 row-span-1",
+            ];
+            const pattern = bentoPatterns[index % bentoPatterns.length];
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-end">
-                  <div className="w-full p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <h3 className="text-white font-semibold text-sm line-clamp-2">
-                      {item.title}
-                    </h3>
-                  </div>
+            return (
+              <motion.button
+                key={`${item.title}-${index}`}
+                type="button"
+                className={`group relative overflow-hidden rounded-2xl border border-black/10 shadow-lg transition-all duration-500 hover:shadow-2xl cursor-pointer ${pattern}`}
+                onClick={() => setSelectedImageIndex(index)}
+                aria-label={`Open ${item.image?.alt || item.title}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+              >
+                <Image
+                  src={item.image!.asset.url}
+                  alt={item.image?.alt || item.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                  <h3 className="text-sm md:text-lg font-semibold text-white drop-shadow-lg line-clamp-2">
+                    {item.title}
+                  </h3>
+                  {item.description && (
+                    <p className="mt-1 text-xs md:text-sm text-white/85 line-clamp-2">
+                      {item.description}
+                    </p>
+                  )}
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Media Modal */}
-      <AnimatePresence>
-        {selectedMedia && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedMedia(null)}
-            className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full bg-white rounded-lg overflow-hidden"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedMedia(null)}
-                className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
-                aria-label="Close media"
-              >
-                <HiXMark className="w-6 h-6" />
-              </button>
-
-              {/* Media Content */}
-              {selectedMedia.type === "image" && selectedMedia.image ? (
-                <div className="relative w-full h-auto max-h-[80vh]">
-                  <Image
-                    src={selectedMedia.image.asset.url}
-                    alt={selectedMedia.image.alt || selectedMedia.title}
-                    width={800}
-                    height={600}
-                    className="w-full h-auto"
-                  />
-                </div>
-              ) : selectedMedia.youtubeUrl ? (
-                <div className="aspect-video">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={selectedMedia.youtubeUrl.replace(
-                      /watch\?v=/,
-                      "embed/"
-                    )}
-                    title={selectedMedia.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </div>
-              ) : null}
-
-              {/* Media Info */}
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-charcoal mb-2">
-                  {selectedMedia.title}
-                </h3>
-                {selectedMedia.description && (
-                  <p className="text-gray-600">{selectedMedia.description}</p>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {selectedImageIndex !== null && (
+        <ProductGalleryModal
+          images={galleryImages}
+          currentIndex={selectedImageIndex}
+          onClose={() => setSelectedImageIndex(null)}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          productTitle="Branch Highlights"
+        />
+      )}
     </section>
   );
 }

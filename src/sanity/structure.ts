@@ -13,6 +13,9 @@ export const structure: StructureResolver = (S) =>
             .schemaType('homePageSettings')
             .documentId('homePageSettings')
         ),
+      S.listItem()
+        .title('Popup model')
+        .child(S.documentTypeList('popup').title('Popup model')),
       S.divider(),
       // Blog section
       S.listItem()
@@ -29,6 +32,6 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       // All other document types (excluding the ones we've already listed)
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author', 'homePageSettings'].includes(item.getId()!),
+        (item) => item.getId() && !['post', 'category', 'author', 'homePageSettings', 'popup'].includes(item.getId()!),
       ),
     ])

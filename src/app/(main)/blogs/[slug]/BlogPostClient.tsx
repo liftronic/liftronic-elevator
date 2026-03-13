@@ -34,7 +34,11 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
     day: "numeric",
   });
 
-  // Get related posts and products from the post data
+  const authorName = post.author?.name || "Liftronic Team";
+  const tagLabel = post.tag || "Insights";
+  const readTimeLabel = post.readTime || "";
+
+  // Get related posts from the post data
   const relatedPosts = post.relatedPosts || [];
   const relatedProducts = post.relatedProducts || [];
 
@@ -64,28 +68,16 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
             {/* Content */}
             <div className="space-y-8">
               {/* Meta information */}
-              {(post.tag || post.readTime || post.author?.name) && (
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                  {post.tag && (
-                    <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-accent font-semibold">
-                      {post.tag}
-                    </span>
-                  )}
-                  <time dateTime={post.publishedAt}>{formattedDate}</time>
-                  {post.readTime && (
-                    <>
-                      <span>•</span>
-                      <span>{post.readTime}</span>
-                    </>
-                  )}
-                  {post.author?.name && (
-                    <>
-                      <span>•</span>
-                      <span>{post.author.name}</span>
-                    </>
-                  )}
-                </div>
-              )}
+              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-accent font-semibold">
+                  {tagLabel}
+                </span>
+                <time dateTime={post.publishedAt}>{formattedDate}</time>
+                <span>•</span>
+                <span>{readTimeLabel}</span>
+                <span>•</span>
+                <span>{authorName}</span>
+              </div>
 
               {/* Title and Summary */}
               <div className="space-y-4">
@@ -248,6 +240,15 @@ export default function BlogPostClient({ post }: BlogPostClientProps) {
                     title={relatedPost.title}
                     excerpt={relatedPost.excerpt}
                     tag={relatedPost.tag}
+                    date={new Date(relatedPost.publishedAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      },
+                    )}
+                    readTime={relatedPost.readTime}
                     author={relatedPost.author}
                     blogId={relatedPost.slug}
                     imageSrc={relatedPost.mainImage}

@@ -2,13 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
-import { getContactInfo } from "~/sanity/utils/getContactInfo";
+import { Suspense } from "react";
 
 export default async function NotFound() {
   const contactInfo = await getContactInfo();
   return (
     <div className="flex min-h-[100dvh] flex-col bg-soft text-charcoal">
-      <Navbar />
+      <Suspense fallback={<div className="h-16 md:h-18" />}>
+        <Navbar />
+      </Suspense>
 
       <main className="relative isolate flex-1 overflow-hidden pt-32 pb-24 md:pb-32">
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white via-soft to-soft" />

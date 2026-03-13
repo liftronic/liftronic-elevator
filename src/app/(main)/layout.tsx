@@ -1,20 +1,33 @@
+import { Suspense } from "react";
 import NextTopLoader from "nextjs-toploader";
 import Footer from "~/components/layout/Footer";
 import Navbar from "~/components/layout/Navbar";
 import WhatsAppButton from "~/components/WhatsAppButton";
-import RequestQuoteButton from "~/components/RequestQuoteButton";
-import ContactModalAutoOpen from "~/components/ContactModalAutoOpen";
+import DownloadCatalogButton from "~/components/DownloadCatalogButton";
+import PopupRenderer from "~/components/PopupRenderer";
+import { PopupManagerProvider } from "~/contexts/PopupManagerContext";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
+import { getPopups } from "~/sanity/utils/getPopups";
 import { getHomePageSettings } from "~/sanity/utils/getHomePageSettings";
-import { ModalProvider } from "~/contexts/ModalContext";
+import { getBranches } from "~/sanity/utils/getBranches";
 
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
-  // Fetch contact info for WhatsApp button and product options for quote modal
-  const contactInfo = await getContactInfo();
-  const homePageSettings = await getHomePageSettings();
+  const [contactInfo, popups, homePageSettings, branches] = await Promise.all([
+    getContactInfo(),
+    getPopups(),
+    getHomePageSettings(),
+    getBranches(),
+  ]);
+
+  const productOptions = homePageSettings.productOptions ?? [];
+  const navBranches = branches.map((b) => ({
+    name: b.name,
+    slug: b.slug,
+    city: b.city,
+  }));
 
   return (
-    <ModalProvider>
+    <PopupManagerProvider popups={popups} productOptions={productOptions} branches={navBranches}>
       <div className="flex flex-col min-h-[100dvh]">
         {/* Skip to main content link for accessibility */}
         <a
@@ -34,17 +47,19 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
           speed={200}
           shadow="0 0 10px #2ae394,0 0 5px #2ae394"
         />
-        <Navbar />
+        <Suspense fallback={null}>
+          <Navbar />
+        </Suspense>
         <main id="main-content">{children}</main>
         <Footer />
         <WhatsAppButton
           whatsappNumber={contactInfo?.whatsappNumber}
           whatsappMessage={contactInfo?.whatsappMessage}
         />
-        <RequestQuoteButton productOptions={homePageSettings?.productOptions} />
-        <ContactModalAutoOpen productOptions={homePageSettings?.productOptions} />
+        <DownloadCatalogButton />
+        <PopupRenderer />
       </div>
-    </ModalProvider>
+    </PopupManagerProvider>
   );
 };
 

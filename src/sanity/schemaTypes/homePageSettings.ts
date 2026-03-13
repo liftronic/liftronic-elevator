@@ -260,20 +260,18 @@ export const homePageSettingsType = defineType({
           title: "Recipient Emails",
           type: "array",
           of: [{ type: "string" }],
-          description: "Email addresses to receive form submissions (multiple emails supported)",
-          validation: (Rule) => 
+          description: "Email addresses to receive form submissions (add multiple to notify multiple people)",
+          options: { layout: "tags" },
+          validation: (Rule) =>
             Rule.required()
               .min(1)
               .custom((emails: unknown) => {
-                if (!emails || !Array.isArray(emails)) {
-                  return "At least one recipient email is required";
-                }
+                if (!Array.isArray(emails)) return true;
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const invalidEmails = emails.filter(
-                  (email): email is string => typeof email === "string" && !emailRegex.test(email)
-                );
-                if (invalidEmails.length > 0) {
-                  return `Invalid email(s): ${invalidEmails.join(", ")}`;
+                for (const email of emails) {
+                  if (!emailRegex.test(email)) {
+                    return `"${email}" is not a valid email address`;
+                  }
                 }
                 return true;
               }),

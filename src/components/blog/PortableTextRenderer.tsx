@@ -60,7 +60,7 @@ const components: PortableTextComponents = {
     em: ({ children }) => <em className="italic">{children}</em>,
     link: ({ children, value }) => {
       const href = value?.href || "#";
-      const rel = !href.startsWith("/") ? "noreferrer noopener" : undefined;
+      const rel = href.startsWith("/") ? undefined : "noreferrer noopener";
       return (
         <a
           href={href}

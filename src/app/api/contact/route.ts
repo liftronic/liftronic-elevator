@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       try {
         await transporter.sendMail({
           from: `"${fromName || "Liftronic Elevators"}" <${user}>`,
-          to: recipients,
+          to: Array.isArray(recipientEmail) ? recipientEmail.join(", ") : recipientEmail,
           subject: `New Contact Form Submission - ${validatedData.productInterest}`,
           html: emailHtml,
           replyTo: validatedData.email || undefined,

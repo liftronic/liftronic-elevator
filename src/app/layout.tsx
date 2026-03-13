@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import TeaserPopupProvider from "~/components/TeaserPopupProvider";
 import { getTeaserPopup } from "~/sanity/utils/getTeaserPopup";
@@ -11,6 +10,13 @@ const dmSans = DM_Sans({
   weight: ["400", "600", "700"],
   display: "swap",
   preload: true,
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  style: ["italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -96,11 +102,9 @@ export default async function RootLayout({
           href="https://cdn.sanity.io"
           crossOrigin="anonymous"
         />
-        {/* Musk Font from CDN Fonts */}
-        <link href="https://fonts.cdnfonts.com/css/musk" rel="stylesheet" />
       </head>
       <body
-        className={`${dmSans.variable} antialiased bg-soft text-charcoal`}
+        className={`${dmSans.variable} ${playfairDisplay.variable} antialiased bg-soft text-charcoal`}
         suppressHydrationWarning={true}
       >
         {/* Google Tag Manager (noscript) */}

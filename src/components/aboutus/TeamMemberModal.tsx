@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import type { TeamMember } from "~/sanity/lib/aboutTypes";
+import { useModal } from "~/hooks/useModal";
 
 type TeamMemberModalProps = {
   member: TeamMember;
@@ -12,6 +13,8 @@ export default function TeamMemberModal({
   member,
   onClose,
 }: TeamMemberModalProps) {
+  useModal({ onClose });
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <motion.div

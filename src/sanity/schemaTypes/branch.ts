@@ -1,5 +1,6 @@
 import { CaseIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
+import { SectionVisibilityInput } from "../components/SectionVisibilityInput";
 
 export const branchType = defineType({
   name: "branch",
@@ -63,26 +64,269 @@ export const branchType = defineType({
       description: "Overview of the branch and its services",
     }),
     defineField({
-      name: "heroImage",
-      title: "Hero Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
+      name: "heroTitle",
+      title: "Hero Title",
+      type: "string",
+      description:
+        "Custom hero heading (e.g., 'Crafting the future of Vertical Living')",
+    }),
+    defineField({
+      name: "tagline",
+      title: "Tagline",
+      type: "string",
+      description:
+        'Short inspirational quote (e.g., "Preserving the soul of historic Goa…")',
+    }),
+
+    /* Legacy Section */
+    defineField({
+      name: "legacySection",
+      title: "Our Legacy Section",
+      type: "object",
       fields: [
         defineField({
-          name: "alt",
-          title: "Alternative text",
+          name: "title",
+          title: "Section Title",
           type: "string",
-          description: "Important for accessibility and SEO",
+          initialValue: "Our Legacy in Motion",
+        }),
+        defineField({
+          name: "body",
+          title: "Body Text",
+          type: "text",
+          description: "Main paragraph for the legacy section",
         }),
       ],
-      validation: (Rule) =>
-        Rule.custom(async (value, context) => {
-          const { validateImageSize } = await import("../lib/imageValidation");
-          return validateImageSize(value, context);
-        }),
     }),
+
+    /* Why Choose Section */
+    defineField({
+      name: "whyChooseReasons",
+      title: "Why Choose Us Reasons",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
+              title: "Reason Title",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "description",
+              title: "Reason Description",
+              type: "text",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: { title: "title" },
+          },
+        },
+      ],
+      description: 'Reasons displayed under "Why Choose Liftronic [city]?"',
+    }),
+
+    /* Stiltz Experience Section */
+    defineField({
+      name: "stiltzExperience",
+      title: "Stiltz Experience Section",
+      type: "object",
+      fields: [
+        defineField({
+          name: "intro",
+          title: "Introduction Text",
+          type: "text",
+          description:
+            "Paragraph inviting visitors to experience the product in person",
+        }),
+        defineField({
+          name: "experiences",
+          title: "Experience Items",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                defineField({
+                  name: "title",
+                  title: "Title",
+                  type: "string",
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: "description",
+                  title: "Description",
+                  type: "text",
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+              preview: {
+                select: { title: "title" },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+
+    /* Booking Section */
+    defineField({
+      name: "bookingSection",
+      title: "Book Your Visit Section",
+      type: "object",
+      fields: [
+        defineField({
+          name: "description",
+          title: "Booking Description",
+          type: "text",
+        }),
+        defineField({
+          name: "conciergePhone",
+          title: "Concierge Phone",
+          type: "string",
+        }),
+        defineField({
+          name: "visitAddress",
+          title: "Visit Address",
+          type: "text",
+        }),
+        defineField({
+          name: "gpsLink",
+          title: "GPS / Google Maps Link",
+          type: "url",
+        }),
+      ],
+    }),
+
+    /* Private Experience Form Config */
+    defineField({
+      name: "privateExperienceFormConfig",
+      title: "Private Experience Form Configuration",
+      type: "object",
+      description:
+        "Email and Google Sheets settings for the 'Request a Private Experience' form on this branch page",
+      fields: [
+        defineField({
+          name: "formGoogleSheetUrl",
+          title: "Google Sheet Webhook URL",
+          type: "url",
+          description:
+            "Google Apps Script Web App URL for logging form submissions to a spreadsheet",
+          validation: (Rule) =>
+            Rule.uri({
+              scheme: ["https"],
+            }),
+        }),
+        defineField({
+          name: "formRecipientEmails",
+          title: "Form Notification Recipients",
+          type: "array",
+          of: [{ type: "string" }],
+          description:
+            "Email addresses that receive notifications when someone submits the private experience form",
+          options: { layout: "tags" },
+          validation: (Rule) =>
+            Rule.min(1)
+              .required()
+              .custom((emails: unknown) => {
+                if (!Array.isArray(emails)) return true;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                for (const email of emails) {
+                  if (!emailRegex.test(email)) {
+                    return `"${email}" is not a valid email address`;
+                  }
+                }
+                return true;
+              }),
+        }),
+      ],
+      hidden: ({ parent }) => !parent?.bookingSection,
+    }),
+
+    /* Specialized Engineering */
+    defineField({
+      name: "specializedEngineering",
+      title: "Specialized Engineering Sections",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "title",
+              title: "Section Title",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "subtitle",
+              title: "Subtitle",
+              type: "string",
+            }),
+            defineField({
+              name: "description",
+              title: "Description",
+              type: "text",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "features",
+              title: "Key Features",
+              type: "array",
+              of: [
+                {
+                  type: "object",
+                  fields: [
+                    defineField({
+                      name: "title",
+                      title: "Feature Title",
+                      type: "string",
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: "description",
+                      title: "Feature Description",
+                      type: "text",
+                      validation: (Rule) => Rule.required(),
+                    }),
+                  ],
+                  preview: {
+                    select: { title: "title" },
+                  },
+                },
+              ],
+            }),
+          ],
+          preview: {
+            select: { title: "title" },
+          },
+        },
+      ],
+      description:
+        "Advanced engineering solution sections (e.g., Inclined Elevators, ATEX solutions)",
+    }),
+
+    /* Quote Email */
+    defineField({
+      name: "quoteEmail",
+      title: "Quote Request Email",
+      type: "string",
+      description:
+        "Email for quote requests (e.g., info@liftronicelevator.com)",
+    }),
+
+    /* Closing Quote */
+    defineField({
+      name: "closingQuote",
+      title: "Closing Quote",
+      type: "string",
+      description: "Inspirational closing quote at the bottom of the page",
+    }),
+
+
 
     /* Contact Person Section */
     defineField({
@@ -118,9 +362,8 @@ export const branchType = defineType({
           ],
           validation: (Rule) =>
             Rule.custom(async (value, context) => {
-              const { validateImageSize } = await import(
-                "../lib/imageValidation"
-              );
+              const { validateImageSize } =
+                await import("../lib/imageValidation");
               return validateImageSize(value, context);
             }),
         }),
@@ -181,9 +424,8 @@ export const branchType = defineType({
               ],
               validation: (Rule) =>
                 Rule.required().custom(async (value, context) => {
-                  const { validateImageSize } = await import(
-                    "../lib/imageValidation"
-                  );
+                  const { validateImageSize } =
+                    await import("../lib/imageValidation");
                   return validateImageSize(value, context);
                 }),
             }),
@@ -252,9 +494,8 @@ export const branchType = defineType({
                     return "Image is required for image type media";
                   }
 
-                  const { validateImageSize } = await import(
-                    "../lib/imageValidation"
-                  );
+                  const { validateImageSize } =
+                    await import("../lib/imageValidation");
                   return validateImageSize(image, context);
                 }),
             }),
@@ -295,6 +536,72 @@ export const branchType = defineType({
       description: "Stiltz home lift models available at this branch",
     }),
 
+    /* Section Visibility Flags */
+    defineField({
+      name: "sectionVisibility",
+      title: "Section Visibility",
+      type: "object",
+      description:
+        "Control which sections are shown on this branch page. All sections are visible by default — uncheck to hide.",
+      components: {
+        input: SectionVisibilityInput,
+      },
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+      fields: [
+        defineField({
+          name: "legacy",
+          title: "Our Legacy Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "stiltzExperience",
+          title: "Stiltz Experience Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "whyChoose",
+          title: "Why Choose Us Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "specializedEngineering",
+          title: "Specialized Engineering Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "consultant",
+          title: "Consultant / Contact Person Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "stiltzProducts",
+          title: "Stiltz Collection Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "team",
+          title: "Branch Team Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+        defineField({
+          name: "media",
+          title: "Highlights / Media Gallery Section",
+          type: "boolean",
+          initialValue: true,
+        }),
+      ],
+    }),
+
     /* Display Settings */
     defineField({
       name: "isActive",
@@ -316,7 +623,6 @@ export const branchType = defineType({
     select: {
       title: "name",
       subtitle: "city",
-      media: "heroImage",
     },
   },
 });

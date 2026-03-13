@@ -7,7 +7,11 @@ import { postBySlugQuery, postSlugsQuery } from "~/sanity/lib/queries";
 import type { BlogPostFull } from "~/sanity/lib/blogTypes";
 
 async function getPostBySlug(slug: string): Promise<BlogPostFull | null> {
-  return client.fetch(postBySlugQuery, { slug }, { next: { revalidate: 3600 } });
+  return client.fetch(
+    postBySlugQuery,
+    { slug },
+    { next: { revalidate: 3600 } },
+  );
 }
 
 async function getAllPostSlugs(): Promise<string[]> {
@@ -33,32 +37,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+  const authorName = post.author?.name || "Liftronic Team";
+  const authorSlug = post.author?.slug || "liftronic";
+  const imageUrl = post.mainImage || `${siteUrl}/assets/service_banner.png`;
+  const imageAlt = post.imageAlt || `${post.title} cover image`;
+  const tag = post.tag || "Insights";
+
   return {
     title: post.seoTitle || post.title,
     description: post.seoDescription || post.excerpt,
     keywords: post.seoKeywords?.join(", "),
-    ...(post.author && { authors: [{ name: post.author.name }] }),
+    authors: [{ name: authorName }],
     alternates: {
       canonical: `/blogs/${slug}`,
     },
     openGraph: {
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.excerpt,
-      ...(post.mainImage && {
-        images: [
-          {
-            url: post.mainImage,
-            alt: post.imageAlt,
-            width: 1200,
-            height: 800,
-          },
-        ],
-      }),
+      images: [
+        {
+          url: imageUrl,
+          alt: imageAlt,
+          width: 1200,
+          height: 800,
+        },
+      ],
       type: "article",
       publishedTime: post.publishedAt,
       modifiedTime: post._updatedAt || post.publishedAt,
-      ...(post.author && { authors: [post.author.name] }),
-      ...(post.tag && { section: post.tag }),
+      authors: [authorName],
+      section: tag,
       tags: post.seoKeywords || [],
       url: `${siteUrl}/blogs/${slug}`,
     },
@@ -66,8 +74,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.excerpt,
-      ...(post.mainImage && { images: [post.mainImage] }),
-      ...(post.author && { creator: `@${post.author.slug}` }),
+      images: [imageUrl],
+      creator: `@${authorSlug}`,
     },
     robots: {
       index: true,
@@ -89,11 +97,17 @@ export default async function BlogPostPage({ params }: Props) {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+  const authorName = post.author?.name || "Liftronic Team";
+  const authorSlug = post.author?.slug || "liftronic";
+  const imageUrl = post.mainImage || `${siteUrl}/assets/service_banner.png`;
+  const imageAlt = post.imageAlt || `${post.title} cover image`;
+  const tag = post.tag || "Insights";
+
   // Calculate word count for reading time
   const wordCount = post.body
     .filter((block: any) => block._type === "block")
     .map((block: any) =>
-      block.children?.map((child: any) => child.text || "").join(" ")
+      block.children?.map((child: any) => child.text || "").join(" "),
     )
     .join(" ")
     .split(/\s+/).length;
@@ -104,22 +118,18 @@ export default async function BlogPostPage({ params }: Props) {
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
-    ...(post.mainImage && {
-      image: {
-        "@type": "ImageObject",
-        url: post.mainImage,
-        width: 1200,
-        height: 800,
-        caption: post.imageAlt,
-      },
-    }),
-    ...(post.author && {
-      author: {
-        "@type": "Person",
-        name: post.author.name,
-        url: `${siteUrl}/blogs?author=${post.author.slug}`,
-      },
-    }),
+    image: {
+      "@type": "ImageObject",
+      url: imageUrl,
+      width: 1200,
+      height: 800,
+      caption: imageAlt,
+    },
+    author: {
+      "@type": "Person",
+      name: authorName,
+      url: `${siteUrl}/blogs?author=${authorSlug}`,
+    },
     publisher: {
       "@type": "Organization",
       name: "Lift Solutions",
@@ -130,7 +140,7 @@ export default async function BlogPostPage({ params }: Props) {
     },
     datePublished: post.publishedAt,
     dateModified: post._updatedAt || post.publishedAt,
-    ...(post.tag && { articleSection: post.tag }),
+    articleSection: tag,
     keywords: post.seoKeywords?.join(", "),
     wordCount,
     url: `${siteUrl}/blogs/${slug}`,

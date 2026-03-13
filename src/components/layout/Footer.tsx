@@ -3,15 +3,25 @@ import Link from "next/link";
 import { getContactInfo } from "~/sanity/utils/getContactInfo";
 import { getSocial } from "~/sanity/utils/getSocials";
 import { getCompanyInfo } from "~/sanity/utils/getAboutUs";
+import { getBranches } from "~/sanity/utils/getBranches";
 import { getIcon } from "~/sanity/utils/iconMapper";
-import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
+import { FiMail, FiPhone } from "react-icons/fi";
+import FooterAddressBlock from "~/components/layout/FooterAddressBlock";
 
 export default async function Footer() {
-  const [contactInfo, socials, companyInfo] = await Promise.all([
+  const [contactInfo, socials, companyInfo, branches] = await Promise.all([
     getContactInfo(),
     getSocial(),
     getCompanyInfo(),
+    getBranches(),
   ]);
+
+  // Build a lightweight list for the footer address block
+  const branchAddresses = branches.map((b) => ({
+    slug: b.slug,
+    city: b.city,
+    address: b.address,
+  }));
 
   const currentYear = new Date().getFullYear();
   const establishedYear = companyInfo?.establishedYear || 2000;
@@ -53,27 +63,10 @@ export default async function Footer() {
                   establishedYear +
                   "."}
             </p>
-            {/* Multiple Addresses */}
-            {contactInfo?.addresses &&
-              contactInfo.addresses.length > 0 &&
-              contactInfo.addresses.map((address) => (
-                <div
-                  key={address._key}
-                  className="flex items-start gap-3 text-sm"
-                >
-                  <div className="p-2 bg-accent/10 rounded-lg">
-                    <FiMapPin className="text-accent size-4" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs text-white/50 mb-1 uppercase tracking-wider">
-                      {address.label}
-                    </p>
-                    <p className="text-white/80 font-medium whitespace-pre-line">
-                      {address.address}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <FooterAddressBlock
+              headquarters={contactInfo?.headquarters}
+              branches={branchAddresses}
+            />
           </div>
 
           {/* Contact Info and Quick Links - Side by side on mobile */}
