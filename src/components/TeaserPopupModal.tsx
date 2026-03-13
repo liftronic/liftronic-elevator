@@ -36,6 +36,7 @@ export default function TeaserPopupModal({
   onClose,
 }: TeaserPopupModalProps) {
   const videoId = extractYouTubeId(popup.videoUrl);
+  const title = popup.title?.trim();
 
   useModal({ isOpen, onClose });
 
@@ -76,17 +77,19 @@ export default function TeaserPopupModal({
             </button>
 
             {/* Header — collapses entirely when title is empty */}
-            <div className="px-6 pt-6 pb-4 [&:has(h3:empty)]:hidden">
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 empty:hidden">
-                {popup.title}
-              </h3>
-            </div>
+            {title ? (
+              <div className="px-6 pt-6 pb-4">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900">
+                  {title}
+                </h3>
+              </div>
+            ) : null}
 
             {/* Video Container */}
             <div className="relative w-full aspect-video bg-black">
               <iframe
                 src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding=1&controls=0&showinfo=0&fs=0&loop=1&playlist=${videoId}`}
-                title={popup.title}
+                title={title || "Teaser popup video"}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="absolute inset-0 w-full h-full"

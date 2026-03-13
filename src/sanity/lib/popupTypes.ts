@@ -2,7 +2,7 @@ export type PopupVariant = "teaser" | "requestQuote";
 export type PopupTriggerMode = "auto" | "manual";
 
 export interface TeaserPopupConfig {
-  title: string;
+  title?: string;
   description?: string;
   videoUrl: string;
 }

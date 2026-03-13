@@ -90,7 +90,7 @@ export const popupType = defineType({
           name: "title",
           title: "Popup Title",
           type: "string",
-          validation: (Rule) => Rule.required(),
+          description: "Optional title shown above the teaser video",
         }),
         defineField({
           name: "description",
@@ -144,8 +144,8 @@ export const popupType = defineType({
       if (!popup) return true;
 
       if (popup.popupType === "teaser") {
-        if (!popup.teaserConfig?.title || !popup.teaserConfig.videoUrl) {
-          return "Teaser popups require teaser title and video URL.";
+        if (!popup.teaserConfig?.videoUrl) {
+          return "Teaser popups require a video URL.";
         }
       }
 

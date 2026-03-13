@@ -11,8 +11,8 @@ export const teaserPopupType = defineType({
       name: "title",
       title: "Popup Title",
       type: "string",
-      description: "The title displayed above the video",
-      validation: (Rule) => Rule.required().max(100),
+      description: "Optional title displayed above the video",
+      validation: (Rule) => Rule.max(100),
     }),
     defineField({
       name: "description",
