@@ -5,6 +5,8 @@ import ProductCard from "~/components/products/ProductCard";
 import QuoteCTA from "~/components/QuoteCTA";
 import type { Product } from "~/sanity/lib/productTypes";
 
+const ENABLE_PRODUCT_ROTATION = false;
+
 interface ProductsInteractiveProps {
   products: Product[];
 }
@@ -13,13 +15,18 @@ export default function ProductsInteractive({
   products,
 }: ProductsInteractiveProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoRotating, setIsAutoRotating] = useState(true);
+  const [isAutoRotating, setIsAutoRotating] = useState(ENABLE_PRODUCT_ROTATION);
   const [isDragging, setIsDragging] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Auto-rotate products every 8 seconds
   useEffect(() => {
-    if (isAutoRotating && products.length > 0 && !isDragging) {
+    if (
+      ENABLE_PRODUCT_ROTATION &&
+      isAutoRotating &&
+      products.length > 0 &&
+      !isDragging
+    ) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
       }, 8000);
@@ -38,6 +45,8 @@ export default function ProductsInteractive({
 
   // Handle manual interaction
   const handleInteraction = () => {
+    if (!ENABLE_PRODUCT_ROTATION) return;
+
     setIsAutoRotating(false);
     // Resume auto-rotation after 20 seconds of inactivity
     setTimeout(() => {
@@ -48,6 +57,8 @@ export default function ProductsInteractive({
   // Handle swipe on mobile
   const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
     setIsDragging(false);
+    if (!ENABLE_PRODUCT_ROTATION) return;
+
     const swipeThreshold = 50;
 
     if (info.offset.x > swipeThreshold) {
@@ -64,6 +75,10 @@ export default function ProductsInteractive({
   // Get up to 3 visible products starting from currentIndex
   // Ensure we don't show duplicate products if there are fewer than 3 products
   const getVisibleProducts = () => {
+    if (!ENABLE_PRODUCT_ROTATION) {
+      return products.slice(0, 3);
+    }
+
     const visible = [];
     const maxVisible = Math.min(3, products.length);
     for (let i = 0; i < maxVisible; i++) {
@@ -78,7 +93,9 @@ export default function ProductsInteractive({
     return null;
   }
 
-  const currentProduct = products[currentIndex];
+  const mobileProducts = ENABLE_PRODUCT_ROTATION
+    ? [products[currentIndex]]
+    : products.slice(0, 3);
 
   return (
     <section id="products" className="py-20 bg-white">
@@ -101,30 +118,44 @@ export default function ProductsInteractive({
           </p>
         </motion.div>
 
-        {/* Mobile - Single Product with Swipe */}
-        <div className="md:hidden mb-12">
+        {/* Mobile - Static stack by default. Re-enable rotation with ENABLE_PRODUCT_ROTATION if needed later. */}
+        <div className="mb-12 grid gap-6 md:hidden">
           <AnimatePresence initial={false} mode="wait">
-            <motion.div
-              key={`${currentProduct._id}-${currentIndex}`}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.7}
-              onDragStart={() => setIsDragging(true)}
-              onDragEnd={handleDragEnd}
-              className="touch-pan-y"
-              onClick={handleInteraction}
-            >
-              <ProductCard
-                title={currentProduct.title}
-                summary={currentProduct.description}
-                tags={currentProduct.tags?.map((tag) => tag.title) || []}
-                productId={currentProduct.slug}
-                badge={currentProduct.featured ? "Featured" : undefined}
-                imageSrc={currentProduct.mainImage}
-                imageAlt={currentProduct.imageAlt}
-                blurDataURL={currentProduct.mainImageLqip}
-              />
-            </motion.div>
+            {mobileProducts.map((product, index) => (
+              <motion.div
+                key={
+                  ENABLE_PRODUCT_ROTATION
+                    ? `${product._id}-${currentIndex}`
+                    : product._id
+                }
+                drag={ENABLE_PRODUCT_ROTATION ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={ENABLE_PRODUCT_ROTATION ? 0.7 : 0}
+                onDragStart={() => {
+                  if (ENABLE_PRODUCT_ROTATION) {
+                    setIsDragging(true);
+                  }
+                }}
+                onDragEnd={handleDragEnd}
+                className={ENABLE_PRODUCT_ROTATION ? "touch-pan-y" : undefined}
+                onClick={handleInteraction}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.35, delay: ENABLE_PRODUCT_ROTATION ? 0 : index * 0.08 }}
+              >
+                <ProductCard
+                  title={product.title}
+                  summary={product.description}
+                  tags={product.tags?.map((tag) => tag.title) || []}
+                  productId={product.slug}
+                  badge={product.featured ? "Featured" : undefined}
+                  imageSrc={product.mainImage}
+                  imageAlt={product.imageAlt}
+                  blurDataURL={product.mainImageLqip}
+                />
+              </motion.div>
+            ))}
           </AnimatePresence>
         </div>
 
@@ -140,27 +171,27 @@ export default function ProductsInteractive({
             {visibleProducts.map((product) => (
               <motion.div
                 key={product._id}
-                layout
-                initial={{ opacity: 0, x: 80 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -80 }}
+                layout={ENABLE_PRODUCT_ROTATION}
+                initial={{ opacity: 0, x: ENABLE_PRODUCT_ROTATION ? 80 : 0, y: 18 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                exit={{ opacity: 0, x: ENABLE_PRODUCT_ROTATION ? -80 : 0, y: -18 }}
                 transition={{
-                  duration: 0.55,
+                  duration: ENABLE_PRODUCT_ROTATION ? 0.55 : 0.35,
                   ease: "easeOut",
                 }}
                 onMouseEnter={handleInteraction}
                 onClick={handleInteraction}
               >
-                <ProductCard
-                  title={product.title}
-                  summary={product.description}
-                  tags={product.tags?.map((tag) => tag.title) || []}
-                  productId={product.slug}
-                  badge={product.featured ? "Featured" : undefined}
-                  imageSrc={product.mainImage}
-                  imageAlt={product.imageAlt}
-                  blurDataURL={product.mainImageLqip}
-                />
+              <ProductCard
+                title={product.title}
+                summary={product.description}
+                tags={product.tags?.map((tag) => tag.title) || []}
+                productId={product.slug}
+                badge={product.featured ? "Featured" : undefined}
+                imageSrc={product.mainImage}
+                imageAlt={product.imageAlt}
+                blurDataURL={product.mainImageLqip}
+              />
               </motion.div>
             ))}
           </AnimatePresence>
