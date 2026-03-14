@@ -34,6 +34,7 @@ export default function PrivateExperienceForm({
     resolver: zodResolver(privateExperienceFormSchema),
     mode: "onBlur",
     defaultValues: {
+      website: "",
       branchName,
       branchSlug,
     },
@@ -61,7 +62,11 @@ export default function PrivateExperienceForm({
             result.message ||
             "Thank you! We'll arrange your private experience shortly.",
         });
-        reset({ branchName, branchSlug });
+        reset({
+          website: "",
+          branchName,
+          branchSlug,
+        });
       } else {
         setSubmitStatus({
           type: "error",
@@ -85,6 +90,19 @@ export default function PrivateExperienceForm({
         {/* Hidden fields */}
         <input type="hidden" {...register("branchName")} />
         <input type="hidden" {...register("branchSlug")} />
+        <div
+          aria-hidden="true"
+          className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+        >
+          <label htmlFor="pe-website">Website</label>
+          <input
+            id="pe-website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            {...register("website")}
+          />
+        </div>
 
         {/* Full Name Field */}
         <div>
@@ -142,11 +160,6 @@ export default function PrivateExperienceForm({
             id="pe-phone"
             type="tel"
             {...register("phone")}
-            onInput={(e) => {
-              const input = e.target as HTMLInputElement;
-              input.value = input.value.replace(/\D/g, "");
-            }}
-            maxLength={10}
             className={`w-full rounded-lg border px-4 py-3 ${
               errors.phone ? "border-red-500" : "border-gray-300"
             } transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-accent`}

@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { privateExperienceFormSchema } from "~/lib/validation-schemas";
 import { submitToGoogleSheets } from "~/lib/google-sheets";
 import { generatePrivateExperienceEmail } from "~/lib/email-template";
+import { protectFormSubmission } from "~/lib/request-protection";
 import { client } from "~/sanity/lib/client";
 
 // Fetch global SMTP config from homePageSettings
@@ -39,6 +40,15 @@ export async function POST(request: NextRequest) {
     // Parse and validate request body
     const body = await request.json();
     const validatedData = privateExperienceFormSchema.parse(body);
+    const protectionError = protectFormSubmission(
+      request,
+      validatedData,
+      "private-experience",
+    );
+
+    if (protectionError) {
+      return protectionError;
+    }
 
     // Fetch configs in parallel
     const [globalSettings, branchConfig] = await Promise.all([

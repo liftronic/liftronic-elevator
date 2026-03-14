@@ -4,6 +4,7 @@ import ProductPageClient from "./ProductPageClient";
 import { client } from "~/sanity/lib/client";
 import { productBySlugQuery, productSlugsQuery } from "~/sanity/lib/queries";
 import type { ProductFull } from "~/sanity/lib/productTypes";
+import { getSiteUrl } from "~/lib/site-url";
 
 async function getProductBySlug(slug: string): Promise<ProductFull | null> {
   return client.fetch(
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   return {
     title: product.seoTitle || `${product.title} | Lift Solutions`,
@@ -82,7 +83,7 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   // Product JSON-LD
   const productJsonLd = {

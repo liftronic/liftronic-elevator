@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
+import { getSiteUrl } from "~/lib/site-url";
 
 type ServiceSitemap = {
   slug: string;
@@ -23,7 +24,7 @@ async function getServicesForSitemap(): Promise<ServiceSitemap[]> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const services = await getServicesForSitemap();
 
   const serviceUrls: MetadataRoute.Sitemap = services.map((service) => ({

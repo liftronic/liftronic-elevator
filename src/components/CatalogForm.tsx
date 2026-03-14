@@ -29,6 +29,9 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
   } = useForm<CatalogFormData>({
     resolver: zodResolver(catalogFormSchema),
     mode: "onBlur", // Validate on blur for better UX
+    defaultValues: {
+      website: "",
+    },
   });
 
   const onSubmit = async (data: CatalogFormData) => {
@@ -51,7 +54,9 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
           type: "success",
           message: result.message || "Download will begin shortly!",
         });
-        reset();
+        reset({
+          website: "",
+        });
 
         // Trigger PDF download if URL is available
         if (result.catalogUrl) {
@@ -95,6 +100,20 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
   return (
     <div className="relative">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div
+          aria-hidden="true"
+          className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+        >
+          <label htmlFor="catalog-website">Website</label>
+          <input
+            id="catalog-website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            {...register("website")}
+          />
+        </div>
+
         {/* Name Field */}
         <div>
           <label
@@ -134,7 +153,7 @@ export default function CatalogForm({ onSuccess }: CatalogFormProps) {
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.phone ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all`}
-            placeholder="Enter phone number with country code"
+            placeholder="Enter your phone number"
           />
           {errors.phone && (
             <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>

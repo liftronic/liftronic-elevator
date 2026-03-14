@@ -10,7 +10,23 @@ const LOGO_URL =
 const ACCENT_COLOR = "#2ae394";
 const CHARCOAL_COLOR = "#1a1a1a";
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export function generateContactFormEmail(data: ContactFormData): string {
+  const safeName = escapeHtml(data.name);
+  const safeEmail = data.email ? escapeHtml(data.email) : "";
+  const safePhone = escapeHtml(data.phone);
+  const safeProductInterest = escapeHtml(data.productInterest);
+  const safeLocation = data.location ? escapeHtml(data.location) : "";
+  const safeRequirements = data.requirements ? escapeHtml(data.requirements) : "";
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -44,18 +60,18 @@ export function generateContactFormEmail(data: ContactFormData): string {
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Name</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.name}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeName}</p>
                   </td>
                 </tr>
 
                 ${
-                  data.email
+                  safeEmail
                     ? `
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</p>
                     <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 600;">
-                      <a href="mailto:${data.email}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${data.email}</a>
+                      <a href="mailto:${safeEmail}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${safeEmail}</a>
                     </p>
                   </td>
                 </tr>
@@ -67,7 +83,7 @@ export function generateContactFormEmail(data: ContactFormData): string {
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</p>
                     <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 600;">
-                      <a href="tel:${data.phone}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${data.phone}</a>
+                      <a href="tel:${safePhone}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${safePhone}</a>
                     </p>
                   </td>
                 </tr>
@@ -75,17 +91,17 @@ export function generateContactFormEmail(data: ContactFormData): string {
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Product Interest</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.productInterest}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeProductInterest}</p>
                   </td>
                 </tr>
 
                 ${
-                  data.location
+                  safeLocation
                     ? `
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Location</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.location}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeLocation}</p>
                   </td>
                 </tr>
                 `
@@ -93,12 +109,12 @@ export function generateContactFormEmail(data: ContactFormData): string {
                 }
 
                 ${
-                  data.requirements
+                  safeRequirements
                     ? `
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Requirements</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; line-height: 1.6; white-space: pre-wrap;">${data.requirements}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; line-height: 1.6; white-space: pre-wrap;">${safeRequirements}</p>
                   </td>
                 </tr>
                 `
@@ -138,6 +154,10 @@ export function generateContactFormEmail(data: ContactFormData): string {
 }
 
 export function generateCatalogFormEmail(data: CatalogFormData): string {
+  const safeName = escapeHtml(data.name);
+  const safePhone = escapeHtml(data.phone);
+  const safeLocation = data.location ? escapeHtml(data.location) : "";
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -171,7 +191,7 @@ export function generateCatalogFormEmail(data: CatalogFormData): string {
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Name</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.name}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeName}</p>
                   </td>
                 </tr>
 
@@ -179,18 +199,18 @@ export function generateCatalogFormEmail(data: CatalogFormData): string {
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</p>
                     <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 600;">
-                      <a href="tel:${data.phone}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${data.phone}</a>
+                      <a href="tel:${safePhone}" style="color: ${CHARCOAL_COLOR}; text-decoration: none; font-weight: 600;">${safePhone}</a>
                     </p>
                   </td>
                 </tr>
 
                 ${
-                  data.location
+                  safeLocation
                     ? `
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Location</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.location}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeLocation}</p>
                   </td>
                 </tr>
                 `
@@ -230,6 +250,12 @@ export function generateCatalogFormEmail(data: CatalogFormData): string {
 }
 
 export function generatePrivateExperienceEmail(data: PrivateExperienceFormData): string {
+  const safeBranchName = escapeHtml(data.branchName);
+  const safeName = escapeHtml(data.name);
+  const safeEmail = escapeHtml(data.email);
+  const safePhone = escapeHtml(data.phone);
+  const safeCompany = data.company ? escapeHtml(data.company) : "";
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -255,7 +281,7 @@ export function generatePrivateExperienceEmail(data: PrivateExperienceFormData):
           <tr>
             <td style="padding: 32px;">
               <p style="margin: 0 0 24px; color: #666666; font-size: 16px; line-height: 1.5;">
-                A visitor has requested a private experience at your <strong>${data.branchName}</strong> branch.
+                A visitor has requested a private experience at your <strong>${safeBranchName}</strong> branch.
               </p>
 
               <!-- Form Data -->
@@ -263,7 +289,7 @@ export function generatePrivateExperienceEmail(data: PrivateExperienceFormData):
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Name</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.name}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeName}</p>
                   </td>
                 </tr>
 
@@ -271,7 +297,7 @@ export function generatePrivateExperienceEmail(data: PrivateExperienceFormData):
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Email</p>
                     <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">
-                      <a href="mailto:${data.email}" style="color: ${ACCENT_COLOR}; text-decoration: none;">${data.email}</a>
+                      <a href="mailto:${safeEmail}" style="color: ${ACCENT_COLOR}; text-decoration: none;">${safeEmail}</a>
                     </p>
                   </td>
                 </tr>
@@ -280,18 +306,18 @@ export function generatePrivateExperienceEmail(data: PrivateExperienceFormData):
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Phone</p>
                     <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">
-                      <a href="tel:${data.phone}" style="color: ${ACCENT_COLOR}; text-decoration: none;">${data.phone}</a>
+                      <a href="tel:${safePhone}" style="color: ${ACCENT_COLOR}; text-decoration: none;">${safePhone}</a>
                     </p>
                   </td>
                 </tr>
 
                 ${
-                  data.company
+                  safeCompany
                     ? `
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Company</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.company}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeCompany}</p>
                   </td>
                 </tr>
                 `
@@ -301,7 +327,7 @@ export function generatePrivateExperienceEmail(data: PrivateExperienceFormData):
                 <tr>
                   <td style="padding: 12px 16px; background-color: #f9f9f9; border-left: 4px solid ${ACCENT_COLOR}; margin-bottom: 8px;">
                     <p style="margin: 0; color: #999999; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Branch</p>
-                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${data.branchName}</p>
+                    <p style="margin: 4px 0 0; color: ${CHARCOAL_COLOR}; font-size: 16px; font-weight: 500;">${safeBranchName}</p>
                   </td>
                 </tr>
               </table>

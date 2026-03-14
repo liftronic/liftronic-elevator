@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ServicePageClient from "./ServicePageClient";
 import { getServiceBySlug, getServiceSlugs } from "~/sanity/utils/getServices";
 import { ServiceOfferedFull } from "~/sanity/lib/serviceTypes";
+import { getSiteUrl } from "~/lib/site-url";
 
 type Props = {
   params: Promise<{
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const title = service.seoTitle || `${service.title} | Liftronic Services`;
   const description = service.seoDescription || service.summary;
   const keywords = service.seoKeywords || service.tags || [];
@@ -74,7 +75,7 @@ export default async function ServicePage({ params }: Props) {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   // Service JSON-LD
   const serviceJsonLd = {

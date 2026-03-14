@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { contactFormSchema } from "~/lib/validation-schemas";
 import { submitToGoogleSheets } from "~/lib/google-sheets";
 import { generateContactFormEmail } from "~/lib/email-template";
+import { protectFormSubmission } from "~/lib/request-protection";
 import { client } from "~/sanity/lib/client";
 
 // Fetch homePageSettings from Sanity
@@ -45,6 +46,15 @@ export async function POST(request: NextRequest) {
     // Parse and validate request body
     const body = await request.json();
     const validatedData = contactFormSchema.parse(body);
+    const protectionError = protectFormSubmission(
+      request,
+      validatedData,
+      "contact",
+    );
+
+    if (protectionError) {
+      return protectionError;
+    }
 
     // Get configuration from Sanity
     const settings = await getHomePageSettings();

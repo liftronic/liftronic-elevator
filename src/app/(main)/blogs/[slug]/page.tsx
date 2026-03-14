@@ -5,6 +5,7 @@ import BlogPostClient from "./BlogPostClient";
 import { client } from "~/sanity/lib/client";
 import { postBySlugQuery, postSlugsQuery } from "~/sanity/lib/queries";
 import type { BlogPostFull } from "~/sanity/lib/blogTypes";
+import { getSiteUrl } from "~/lib/site-url";
 
 async function getPostBySlug(slug: string): Promise<BlogPostFull | null> {
   return client.fetch(
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   const authorName = post.author?.name || "Liftronic Team";
   const authorSlug = post.author?.slug || "liftronic";
@@ -95,7 +96,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   const authorName = post.author?.name || "Liftronic Team";
   const authorSlug = post.author?.slug || "liftronic";
@@ -135,7 +136,7 @@ export default async function BlogPostPage({ params }: Props) {
       name: "Lift Solutions",
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/liftronic.png`,
       },
     },
     datePublished: post.publishedAt,

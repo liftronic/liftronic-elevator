@@ -1,71 +1,60 @@
 import { z } from "zod";
 
+const formProtectionFields = {
+  website: z.string().trim().max(0),
+};
+
+const phoneNumberSchema = z
+  .string()
+  .trim()
+  .min(7, "Please enter a valid phone number")
+  .max(25, "Please enter a valid phone number")
+  .refine((val) => {
+    const digits = val.replace(/\D/g, "");
+    const validFormat = /^[+]?[\d\s\-()./]+$/.test(val);
+
+    return validFormat && digits.length >= 7 && digits.length <= 15;
+  }, "Please enter a valid phone number");
+
 // Contact Form Validation Schema
 export const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  email: z.email("Please enter a valid email address").optional().or(z.literal("")),
-  phone: z.string()
-    .refine(
-      (val) => {
-        // Remove all non-digit characters
-        const digits = val.replace(/\D/g, "");
-        // Check if it's 10 digits (without country code) or 12 digits (with 91 country code)
-        if (digits.length === 10) {
-          // Check if first digit is 6-9 (valid mobile range)
-          return /^[6-9]/.test(digits);
-        } else if (digits.length === 12) {
-          // Must start with 91 (India country code) followed by 6-9
-          return /^91[6-9]/.test(digits);
-        }
-        return false;
-      },
-      "Please enter a valid Indian phone number (10 digits starting with 6-9)"
-    ),
-  productInterest: z.string().min(1, "Please select a product"),
-  location: z.string().optional(),
-  requirements: z.string().optional(),
+  ...formProtectionFields,
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  email: z
+    .string()
+    .trim()
+    .pipe(z.email("Please enter a valid email address"))
+    .optional()
+    .or(z.literal("")),
+  phone: phoneNumberSchema,
+  productInterest: z.string().trim().min(1, "Please select a product").max(120),
+  location: z.string().trim().max(250).optional(),
+  requirements: z.string().trim().max(5000).optional(),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
 // Catalog Form Validation Schema
 export const catalogFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  phone: z
-    .string()
-    .min(1, "Phone number is required")
-    .refine((val) => {
-      // Remove all spaces and hyphens, keep + for country code
-      const cleaned = val.replace(/[\s-]/g, "");
-      // Must start with + or digit, and contain only valid phone characters
-      const validFormat = /^[\+]?[0-9]{7,15}$/.test(cleaned);
-      return validFormat && cleaned.length >= 8;
-    }, "Please enter a valid phone number with country code"),
-  location: z.string().optional(),
+  ...formProtectionFields,
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  phone: phoneNumberSchema,
+  location: z.string().trim().max(250).optional(),
 });
 
 export type CatalogFormData = z.infer<typeof catalogFormSchema>;
 
 // Private Experience Form Validation Schema
 export const privateExperienceFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  email: z.email("Please enter a valid email address"),
-  phone: z.string()
-    .refine(
-      (val) => {
-        const digits = val.replace(/\D/g, "");
-        if (digits.length === 10) {
-          return /^[6-9]/.test(digits);
-        } else if (digits.length === 12) {
-          return /^91[6-9]/.test(digits);
-        }
-        return false;
-      },
-      "Please enter a valid Indian phone number (10 digits starting with 6-9)"
-    ),
-  company: z.string().optional(),
-  branchName: z.string(),
-  branchSlug: z.string(),
+  ...formProtectionFields,
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().trim().pipe(z.email("Please enter a valid email address")),
+  phone: phoneNumberSchema,
+  company: z.string().trim().max(250).optional(),
+  branchName: z.string().trim().min(1).max(120),
+  branchSlug: z.string().trim().min(1).max(120),
 });
 
-export type PrivateExperienceFormData = z.infer<typeof privateExperienceFormSchema>;
+export type PrivateExperienceFormData = z.infer<
+  typeof privateExperienceFormSchema
+>;

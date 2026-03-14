@@ -32,6 +32,9 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     mode: "onBlur", // Validate on blur for better UX
+    defaultValues: {
+      website: "",
+    },
   });
 
   // Watch all form fields to detect user interaction
@@ -39,8 +42,11 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
 
   // Track when user is actively typing in any field
   useEffect(() => {
-    const hasAnyInput = Object.values(watchedFields).some(
-      (value) => value && String(value).trim().length > 0
+    const visibleFieldEntries = Object.entries(watchedFields).filter(
+      ([fieldName]) => fieldName !== "website",
+    );
+    const hasAnyInput = visibleFieldEntries.some(
+      ([, value]) => value && String(value).trim().length > 0,
     );
     setUserTyping(hasAnyInput);
   }, [watchedFields, setUserTyping]);
@@ -65,7 +71,9 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
           type: "success",
           message: result.message || "Thank you! We'll get back to you soon.",
         });
-        reset();
+        reset({
+          website: "",
+        });
       } else {
         setSubmitStatus({
           type: "error",
@@ -86,6 +94,20 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
   return (
     <div className="relative">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div
+          aria-hidden="true"
+          className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+        >
+          <label htmlFor="contact-website">Website</label>
+          <input
+            id="contact-website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            {...register("website")}
+          />
+        </div>
+
         {/* Name Field */}
         <div>
           <label
@@ -150,7 +172,7 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.phone ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all`}
-            placeholder="Enter phone number with country code"
+            placeholder="Enter your phone number"
           />
           {errors.phone && (
             <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>

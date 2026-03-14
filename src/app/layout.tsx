@@ -3,6 +3,7 @@ import Script from "next/script";
 import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import TeaserPopupProvider from "~/components/TeaserPopupProvider";
+import { getSiteUrl } from "~/lib/site-url";
 import { getTeaserPopup } from "~/sanity/utils/getTeaserPopup";
 
 const dmSans = DM_Sans({
@@ -21,9 +22,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-  ),
+  metadataBase: new URL(getSiteUrl()),
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -32,13 +31,6 @@ export const metadata: Metadata = {
     ],
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      {
-        rel: "mask-icon",
-        url: "/safari-pinned-tab.svg",
-        color: "#2ae394",
-      },
     ],
   },
   manifest: "/site.webmanifest",

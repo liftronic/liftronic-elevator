@@ -20,13 +20,14 @@ import FAQSection from "~/components/homepage/FAQSection";
 import SEOContentSection from "~/components/homepage/SEOContentSection";
 import ContactSection from "~/components/homepage/ContactSection";
 import FooterSitemapLinks from "~/components/layout/FooterSitemapLinks";
+import { getSiteUrl } from "~/lib/site-url";
 
 // ISR - revalidate every 60 minutes (3600 seconds)
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const seoData = await getHomePageSeo();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
 
   // Fallback defaults if no SEO data in Sanity
   const title =
@@ -110,7 +111,10 @@ export default async function Home() {
     getHomePageSettings(),
   ]);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
+  const primaryAddress =
+    contactInfo?.addresses?.find((item) => /head|hq/i.test(item.label ?? "")) ||
+    contactInfo?.addresses?.[0];
 
   // Calculate average rating from testimonials
   const testimonialRatings = homeData.testimonials
@@ -142,7 +146,7 @@ export default async function Home() {
       "@type": "ContactPoint",
       contactType: "customer support",
       email: contactInfo?.email || "info@liftronicelevator.com",
-      telephone: contactInfo?.phone || "+91-22-2567-8910",
+      telephone: contactInfo?.supportPhone || "+91-22-2567-8910",
       areaServed: "IN",
       availableLanguage: ["en", "hi"],
     },
@@ -166,12 +170,12 @@ export default async function Home() {
     image: `${siteUrl}/liftronic.png`,
     "@id": siteUrl,
     url: siteUrl,
-    telephone: contactInfo?.phone || "+91-22-2567-8910",
+    telephone: contactInfo?.supportPhone || "+91-22-2567-8910",
     email: contactInfo?.email || "info@liftronicelevator.com",
-    address: contactInfo?.address
+    address: primaryAddress?.address
       ? {
           "@type": "PostalAddress",
-          streetAddress: contactInfo.address,
+          streetAddress: primaryAddress.address,
           addressLocality: "Mumbai",
           addressRegion: "Maharashtra",
           addressCountry: "IN",

@@ -5,6 +5,7 @@ import { groq } from "next-sanity";
 import type { PortableTextBlock } from "@portabletext/types";
 import ProductPageClient from "../ProductPageClient";
 import type { ProductFull } from "~/sanity/lib/productTypes";
+import { getSiteUrl } from "~/lib/site-url";
 
 interface LocationPageData {
   city: string;
@@ -128,7 +129,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const locationPage = product.locationPage;
 
   return {
@@ -182,7 +183,7 @@ export default async function LocationProductPage({ params }: Props) {
     notFound();
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const locationPage = product.locationPage;
 
   // Product JSON-LD with location

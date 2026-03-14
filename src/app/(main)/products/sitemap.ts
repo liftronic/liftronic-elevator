@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { client } from "~/sanity/lib/client";
 import { groq } from "next-sanity";
+import { getSiteUrl } from "~/lib/site-url";
 
 type ProductSitemap = {
   productSlug: string;
@@ -33,7 +34,7 @@ async function getProductsForSitemap(): Promise<ProductSitemap[]> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   const products = await getProductsForSitemap();
 
   const urls: MetadataRoute.Sitemap = [];
