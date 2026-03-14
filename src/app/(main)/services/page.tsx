@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import ServiceCard from "~/components/services/ServiceCard";
 import CallToActionSection from "~/components/CallToActionSection";
+import PageIntroBody from "~/components/PageIntroBody";
 import { getServices } from "~/sanity/utils/getServices";
 import { ServiceOffered } from "~/sanity/lib/serviceTypes";
 
@@ -35,18 +36,14 @@ export default async function ServicesPage() {
 
   return (
     <main>
-      {/* All Services Grid */}
-      <section className="pt-28 md:pt-32 pb-12 md:pb-16 shadow-sm">
-        <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              All services
-            </h2>
-            <p className="mt-2 text-gray-600">
-              Browse our complete service lineup ({services.length} services)
-            </p>
-          </div>
+      <PageIntroBody
+        heading="Services"
+        subheading="Complete elevator care across every lifecycle stage, from design consultation and installation support to maintenance, modernization, and emergency response."
+      />
 
+      {/* All Services Grid */}
+      <section className="pb-12 pt-12 shadow-sm md:pb-16 md:pt-16">
+        <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {services.map((service) => (
               <ServiceCard

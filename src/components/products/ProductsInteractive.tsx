@@ -166,7 +166,7 @@ export default function ProductsInteractive({
           </AnimatePresence>
         </motion.div>
 
-        {/* Carousel Dots - matching Services section */}
+        {/*
         <motion.div
           className="flex justify-center mb-8"
           initial={{ opacity: 0 }}
@@ -193,6 +193,7 @@ export default function ProductsInteractive({
             ))}
           </div>
         </motion.div>
+        */}
 
         {/* Quote and CTA Section */}
         <QuoteCTA

@@ -378,7 +378,7 @@ export const homePageSettingsQuery = groq`*[_type == "homePageSettings"][0] {
 
 // Query to get all home page data in a single request
 export const homePageDataQuery = groq`{
-  "featuredProducts": *[_type == "product" && featured == true] | order(title asc) [0...6] {
+  "featuredProducts": *[_type == "product"] | order(featured desc, order asc) [0...3] {
     _id,
     title,
     "slug": slug.current,

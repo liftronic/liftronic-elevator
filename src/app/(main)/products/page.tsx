@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ProductRangeSection from "~/components/products/ProductRangeCarouselCard";
 import ProductMiniCard from "~/components/products/ProductMiniCard";
 import CallToActionSection from "~/components/CallToActionSection";
+import PageIntroBody from "~/components/PageIntroBody";
 import { getProductRanges } from "~/sanity/utils/getProductRanges";
 
 type ProductsPageProps = {
@@ -131,25 +132,29 @@ export default async function ProductsPage(props: ProductsPageProps) {
 
   return (
     <main className="bg-white">
-      {/* Page Header for Featured Filter */}
-      {isFeaturedFilter && (
-        <section className="bg-gray-50 pt-32 pb-12 md:pb-16 border-b border-gray-100">
-          <div className="container mx-auto px-6 text-center max-w-3xl">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
+      {isFeaturedFilter ? (
+        <section className="border-b border-gray-100 bg-gray-50 pt-32 pb-12 md:pb-16">
+          <div className="container mx-auto max-w-3xl px-6 text-center">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl lg:text-5xl">
               Featured Elevators
             </h1>
-            <p className="mt-4 md:mt-6 text-base md:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-600 md:mt-6 md:text-lg">
               Explore our handpicked selection of top-tier residential and
               commercial elevator solutions, designed for space-saving
               efficiency and elegant integration.
             </p>
           </div>
         </section>
+      ) : (
+        <PageIntroBody
+          heading="Product Ranges"
+          subheading="Explore our complete range of elevator solutions for residential, commercial, and industrial spaces."
+        />
       )}
 
       {/* Product Ranges / Grid */}
       <section
-        className={`pb-16 md:pb-24 ${isFeaturedFilter ? "pt-12 md:pt-16" : "pt-24 md:pt-28"}`}
+        className={`pb-16 md:pb-24 ${isFeaturedFilter ? "pt-12 md:pt-16" : "pt-8 md:pt-10"}`}
       >
         <div className="container mx-auto px-6">{content}</div>
       </section>

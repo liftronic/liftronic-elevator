@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CallToActionSection from "~/components/CallToActionSection";
+import PageIntroBody from "~/components/PageIntroBody";
 import { client } from "~/sanity/lib/client";
 import { mediaQuery } from "~/sanity/lib/queries";
 import type { MediaItem } from "~/sanity/lib/mediaTypes";
@@ -37,7 +38,12 @@ export default async function MediaPage() {
   const mediaItems = await getAllMedia();
 
   return (
-    <main className="pt-28 md:pt-32">
+    <main>
+      <PageIntroBody
+        heading="Media Gallery"
+        subheading="Explore our latest elevator installations, product showcases, project highlights, and behind-the-scenes media from completed work."
+      />
+
       <MediaPageClient mediaItems={mediaItems} />
 
       <CallToActionSection
