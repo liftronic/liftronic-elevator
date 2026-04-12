@@ -264,10 +264,6 @@
     "destination": "https://www.liftronicelevator.com/blogs"
   },
   {
-    "source": "/contact",
-    "destination": "https://www.liftronicelevator.com/#contact"
-  },
-  {
     "source": "/product-goods-elevators",
     "destination": "https://www.liftronicelevator.com/products/goods-and-freight-elevators"
   },
@@ -701,7 +697,7 @@
   },
   {
     "source": "/contact-us/",
-    "destination": "https://www.liftronicelevator.com/#contact"
+    "destination": "/contact"
   },
   {
     "source": "/how-to-choose-the-perfect-villa-lift/",

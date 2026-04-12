@@ -32,7 +32,7 @@ export default async function Footer() {
 
   return (
     <footer
-      className="relative bg-gradient-to-br from-charcoal via-charcoal/95 to-charcoal text-white overflow-hidden"
+      className="relative bg-linear-to-br from-charcoal via-charcoal/95 to-charcoal text-white overflow-hidden"
       suppressHydrationWarning
     >
       {/* Decorative Background Elements */}
@@ -41,7 +41,7 @@ export default async function Footer() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/50 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 py-10 md:py-16 lg:py-20">
+      <div className="relative max-w-350 mx-auto px-6 md:px-12 lg:px-16 py-10 md:py-16 lg:py-20">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-12 mb-8 md:mb-8">
           {/* Company Info - Takes more space */}
@@ -115,6 +115,13 @@ export default async function Footer() {
                   className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
                 >
                   Media
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-white/70 hover:text-accent transition-all duration-300 text-sm md:text-sm group w-fit relative"
+                >
+                  Contact
                   <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
                 </Link>
               </nav>
@@ -224,7 +231,7 @@ export default async function Footer() {
             {/* Additional Links */}
             <div className="mt-6 md:mt-8 space-y-3 w-full flex justify-center md:justify-start">
               <Link
-                href="/#contact"
+                href="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 text-charcoal font-semibold text-sm rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-accent/30 hover:scale-105 group"
               >
                 Request a Quote
@@ -249,7 +256,7 @@ export default async function Footer() {
         {/* Divider */}
         <div className="relative border-t border-white/10 pt-6 md:pt-8">
           {/* Decorative accent line */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-0.5 bg-linear-to-r from-transparent via-accent to-transparent" />
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
             <div className="text-center md:text-left">

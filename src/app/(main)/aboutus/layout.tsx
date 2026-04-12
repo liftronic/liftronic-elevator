@@ -2,17 +2,33 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Liftronic - Leading Elevator Services Provider",
+  title: "Best all types of Lift & Elevator Manufacturers in Mumbai",
   description:
-    "Learn about Liftronic's journey, mission, values, and expert team. Discover why we're the trusted choice for elevator installation, maintenance, and modernization services.",
+    "Best elevator service provider in Mumbai, Maharashtra specializing in customized elevator solutions for efficient performance and seamless vertical mobility.",
   keywords: [
-    "about liftronic",
-    "elevator company",
-    "team",
-    "mission",
-    "vision",
-    "values",
+    "lift manufacturer in Mumbai",
+    "elevator manufacturer in Mumbai",
+    "elevator company Mumbai",
+    "customized elevator solutions",
+    "vertical mobility solutions",
+    "Liftronic Elevator",
   ],
+  alternates: {
+    canonical: "/aboutus",
+  },
+  openGraph: {
+    title: "Best all types of Lift & Elevator Manufacturers in Mumbai",
+    description:
+      "Best elevator service provider in Mumbai, Maharashtra specializing in customized elevator solutions for efficient performance and seamless vertical mobility.",
+    url: "/aboutus",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Best all types of Lift & Elevator Manufacturers in Mumbai",
+    description:
+      "Best elevator service provider in Mumbai, Maharashtra specializing in customized elevator solutions for efficient performance and seamless vertical mobility.",
+  },
 };
 
 export default function AboutLayout({

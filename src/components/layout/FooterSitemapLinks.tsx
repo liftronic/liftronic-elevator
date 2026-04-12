@@ -39,6 +39,7 @@ async function getAllSitemapLinks() {
     main: [
       { title: "Home", slug: "/" },
       { title: "About Us", slug: "/aboutus" },
+      { title: "Contact", slug: "/contact" },
       { title: "Services", slug: "/services" },
       { title: "Products", slug: "/products" },
       { title: "Blog", slug: "/blogs" },
@@ -59,7 +60,7 @@ export default async function FooterSitemapLinks() {
         <div className="space-y-4">
           {/* Main Pages */}
           <div className="flex items-center">
-            <h3 className="text-accent font-semibold text-sm w-24 flex-shrink-0 mr-4">
+            <h3 className="text-accent font-semibold text-sm w-24 shrink-0 mr-4">
               Main Pages
             </h3>
             <ul className="flex flex-wrap gap-x-4 gap-y-1">
@@ -78,7 +79,7 @@ export default async function FooterSitemapLinks() {
 
           {/* Product Ranges */}
           <div className="flex items-center">
-            <h3 className="text-accent font-semibold text-sm w-24 flex-shrink-0 mr-4">
+            <h3 className="text-accent font-semibold text-sm w-24 shrink-0 mr-4">
               Product Ranges
             </h3>
             <ul className="flex flex-wrap gap-x-4 gap-y-1">
@@ -101,7 +102,7 @@ export default async function FooterSitemapLinks() {
 
           {/* Services */}
           <div className="flex items-center">
-            <h3 className="text-accent font-semibold text-sm w-24 flex-shrink-0 mr-4">
+            <h3 className="text-accent font-semibold text-sm w-24 shrink-0 mr-4">
               Services
             </h3>
             <ul className="flex flex-wrap gap-x-4 gap-y-1">
@@ -124,7 +125,7 @@ export default async function FooterSitemapLinks() {
 
           {/* Recent Content */}
           <div className="flex items-center">
-            <h3 className="text-accent font-semibold text-sm w-24 flex-shrink-0 mr-4">
+            <h3 className="text-accent font-semibold text-sm w-24 shrink-0 mr-4">
               Recent Content
             </h3>
             <ul className="flex flex-wrap gap-x-4 gap-y-1">
