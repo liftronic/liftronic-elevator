@@ -1,2 +1,9 @@
+[mcp_servers.Sanity]
+url = "https://mcp.sanity.io"
+
+[mcp_servers.playwright]
+args = ["@playwright/mcp@latest"]
+command = "npx"
+
 [mcp_servers.sanity]
 url = "https://mcp.sanity.io"

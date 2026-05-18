@@ -1,14 +1,9 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useSmoothScroll } from "~/hooks/useSmoothScroll";
-import {
-  FiHeadphones,
-  FiMail,
-  FiPhoneCall,
-  FiEye,
-} from "react-icons/fi";
+import { useOptionalPopupManager } from "~/contexts/PopupManagerContext";
+import { FiHeadphones, FiMail, FiPhoneCall } from "react-icons/fi";
 import { Social, ContactInfo } from "~/../typings";
 import { getIcon } from "~/sanity/utils/iconMapper";
 
@@ -19,6 +14,7 @@ interface HeroProps {
 
 export default function Hero({ socials, contactInfo }: HeroProps) {
   const { scrollTo } = useSmoothScroll();
+  const popupManager = useOptionalPopupManager();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -56,7 +52,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
             setVideoLoaded(true);
             tryPlay();
           },
-          { once: true }
+          { once: true },
         );
       }
     };
@@ -72,7 +68,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const heroElement = document.querySelector("#hero-section");
@@ -96,7 +92,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
   return (
     <section
       id="hero-section"
-      className="relative h-[100svh] min-h-[600px] w-full overflow-hidden bg-gradient-to-b from-[#010101] via-[#050505] to-[#0e0e0e] text-white pt-24 md:pt-28 lg:pt-32"
+      className="relative h-svh min-h-150 w-full overflow-hidden bg-linear-to-b from-[#010101] via-[#050505] to-[#0e0e0e] text-white pt-24 md:pt-28 lg:pt-32"
     >
       {/* === BACKGROUND VIDEO + OVERLAY === */}
       <div className="absolute inset-0 overflow-hidden">
@@ -122,7 +118,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
         />
 
         {/* Gradient overlays + elevator glow */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/50 to-black/90" />
         <div className="absolute inset-0 [background:radial-gradient(40%_60%_at_50%_30%,rgba(0,255,163,0.1),transparent_70%)]" />
         <div className="absolute inset-0 [background:radial-gradient(40%_60%_at_60%_80%,rgba(0,200,255,0.1),transparent_70%)]" />
       </div>
@@ -140,7 +136,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
         >
           {/* Heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-            <span className="bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-accent via-white to-accent bg-clip-text text-transparent">
               Redefining Vertical Luxury
             </span>
           </h1>
@@ -155,13 +151,16 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
           <div className="mt-5 md:mt-6 flex flex-col items-center lg:items-start gap-3 md:gap-4">
             {/* Buttons */}
             <div className="order-2 lg:order-1 flex flex-row justify-center lg:justify-start gap-2 md:gap-4 w-full">
-              <Link
-                href="/products"
+              <button
+                type="button"
+                onClick={() => {
+                  popupManager?.triggerPopupByType("requestQuote");
+                }}
                 className="group inline-flex items-center justify-center gap-1.5 md:gap-2 rounded-2xl border border-white/10 bg-white/10 px-4 md:px-8 py-3 md:py-3.5 text-xs sm:text-base font-medium hover:bg-accent hover:text-black hover:shadow-[0_0_30px_rgba(0,255,163,0.4)] transition-all duration-300"
               >
-                <FiEye className="text-base md:text-lg group-hover:scale-110 transition-transform" />
-                <span>View Lifts</span>
-              </Link>
+                <FiMail className="text-base md:text-lg group-hover:scale-110 transition-transform" />
+                <span>Request a Quote</span>
+              </button>
 
               <a
                 href="#services"
@@ -221,7 +220,7 @@ export default function Hero({ socials, contactInfo }: HeroProps) {
                 Speak to our design & installation team
               </p>
             </div>
-            <div className="rounded-full bg-accent/20 p-2.5 lg:p-3 flex-shrink-0">
+            <div className="rounded-full bg-accent/20 p-2.5 lg:p-3 shrink-0">
               <FiHeadphones className="text-accent text-xl lg:text-2xl" />
             </div>
           </div>
