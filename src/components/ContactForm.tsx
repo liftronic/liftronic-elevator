@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "motion/react";
@@ -15,6 +15,9 @@ interface ContactFormProps {
   productOptions?: string[];
 }
 
+const hasVisibleInputValue = (value: FormDataEntryValue) =>
+  typeof value === "string" ? value.trim().length > 0 : value.size > 0;
+
 export default function ContactForm({ productOptions = [] }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
@@ -28,7 +31,6 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
     mode: "onBlur", // Validate on blur for better UX
@@ -37,19 +39,18 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
     },
   });
 
-  // Watch all form fields to detect user interaction
-  const watchedFields = watch();
-
-  // Track when user is actively typing in any field
   useEffect(() => {
-    const visibleFieldEntries = Object.entries(watchedFields).filter(
-      ([fieldName]) => fieldName !== "website",
-    );
-    const hasAnyInput = visibleFieldEntries.some(
-      ([, value]) => value && String(value).trim().length > 0,
-    );
-    setUserTyping(hasAnyInput);
-  }, [watchedFields, setUserTyping]);
+    return () => setUserTyping(false);
+  }, [setUserTyping]);
+
+  const handleFormChange = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      const formData = new FormData(event.currentTarget);
+      formData.delete("website");
+      setUserTyping(Array.from(formData.values()).some(hasVisibleInputValue));
+    },
+    [setUserTyping],
+  );
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
@@ -74,6 +75,7 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
         reset({
           website: "",
         });
+        setUserTyping(false);
       } else {
         setSubmitStatus({
           type: "error",
@@ -93,7 +95,11 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
 
   return (
     <div className="relative">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        onChange={handleFormChange}
+        className="space-y-4"
+      >
         <div
           aria-hidden="true"
           className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
