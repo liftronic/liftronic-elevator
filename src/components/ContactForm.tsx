@@ -223,13 +223,13 @@ export default function ContactForm({ productOptions = [] }: ContactFormProps) {
             htmlFor="location"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
-            Location
+            Location <span className="text-accent">*</span>
           </label>
           <input
             id="location"
             type="text"
             autoComplete="off"
-            {...register("location")}
+            {...register("location", { required: "Location is required" })}
             className={`w-full px-4 py-3 rounded-lg border ${
               errors.location ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all`}

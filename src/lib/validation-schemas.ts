@@ -28,7 +28,7 @@ export const contactFormSchema = z.object({
     .or(z.literal("")),
   phone: phoneNumberSchema,
   productInterest: z.string().trim().min(1, "Please select a product").max(120),
-  location: z.string().trim().max(250).optional(),
+  location: z.string().trim().min(1, "Location is required").max(250),
   requirements: z.string().trim().max(5000).optional(),
 });
 
@@ -39,7 +39,7 @@ export const catalogFormSchema = z.object({
   ...formProtectionFields,
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
   phone: phoneNumberSchema,
-  location: z.string().trim().max(250).optional(),
+  location: z.string().trim().min(1, "Location is required").max(250),
 });
 
 export type CatalogFormData = z.infer<typeof catalogFormSchema>;
